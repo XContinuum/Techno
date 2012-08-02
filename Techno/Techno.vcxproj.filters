@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\header">
+      <UniqueIdentifier>{bd3800c8-972d-4250-b8d4-778275b44aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\lib">
+      <UniqueIdentifier>{a6af8b2d-9d14-4cba-9ba6-3bc52f5276b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{1022b12e-dc5c-433f-97ab-2234952f94aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\MainMenu">
+      <UniqueIdentifier>{5cac2ce7-8a56-46ac-b75e-9747226b1e44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play">
+      <UniqueIdentifier>{eabf01c9-758c-4be1-8da9-6cdd3a94db22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\CreateMap">
+      <UniqueIdentifier>{15446fc7-51a3-4cb2-b4f9-df2b8f2e7291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Other">
+      <UniqueIdentifier>{3e3f8509-25ab-43f7-a6ae-8546c0b9a8ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing">
+      <UniqueIdentifier>{49c9a945-b4e1-4681-bffe-72badee3970a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Hero">
+      <UniqueIdentifier>{e4a9e70c-aada-4f4f-bd7c-b8c9d7b62acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Bonus">
+      <UniqueIdentifier>{cc11552d-cf87-406e-8fd9-a9257a3085ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Book">
+      <UniqueIdentifier>{0b052d07-56ad-4648-aac6-171b67e1f41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Fire">
+      <UniqueIdentifier>{88ae3a44-f604-400c-8a45-2d86881f8142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Missions">
+      <UniqueIdentifier>{49aaffcb-93a2-496d-89b0-76a41d621469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Maps">
+      <UniqueIdentifier>{8e5ca2cd-f706-4702-a265-94cdba458f2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Door">
+      <UniqueIdentifier>{da57bd18-c1a3-4050-af0e-426ed2124994}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\..\DirectX\Include\d3d9.h">
+      <Filter>Header Files\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\DirectX\Include\d3dx9.h">
+      <Filter>Header Files\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\DirectX\Include\dinput.h">
+      <Filter>Header Files\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\DirectX\Include\d3dx9core.h">
+      <Filter>Header Files\header</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Playing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\..\..\..\DirectX\Lib\x86\d3d9.lib">
+      <Filter>Header Files\lib</Filter>
+    </Library>
+    <Library Include="..\..\..\..\..\..\..\DirectX\Lib\x86\d3dx9.lib">
+      <Filter>Header Files\lib</Filter>
+    </Library>
+    <Library Include="..\..\..\..\..\..\..\DirectX\Lib\x86\dinput8.lib">
+      <Filter>Header Files\lib</Filter>
+    </Library>
+    <Library Include="..\..\..\..\..\..\..\DirectX\Lib\x86\dxguid.lib">
+      <Filter>Header Files\lib</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\white.bmp">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\btn_Exit.bmp">
+      <Filter>Resource Files\Images\MainMenu</Filter>
+    </Image>
+    <Image Include="Images\btn_Map.bmp">
+      <Filter>Resource Files\Images\MainMenu</Filter>
+    </Image>
+    <Image Include="Images\btn_Play.bmp">
+      <Filter>Resource Files\Images\MainMenu</Filter>
+    </Image>
+    <Image Include="Images\btn_Settings.bmp">
+      <Filter>Resource Files\Images\MainMenu</Filter>
+    </Image>
+    <Image Include="Images\btnT1.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btnT2.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btnT3.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btnT4.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btnT5.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btnT6.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\colorSQ.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\check.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\square.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareBack.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\map_tools.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btn_tool3.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btn_tool1.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btn_tool2.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareB1.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareB2.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareWood.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareMetal.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareStone.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareUP.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\map.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\border.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\main_menu.bmp">
+      <Filter>Resource Files\Images\MainMenu</Filter>
+    </Image>
+    <Image Include="Images\redSelect.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\icon.ico">
+      <Filter>Resource Files\Other</Filter>
+    </Image>
+    <Image Include="Images\backTextures.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\empty.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\btn3_1.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\squareSmall.bmp">
+      <Filter>Resource Files\Images\CreateMap</Filter>
+    </Image>
+    <Image Include="Images\bonus1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus10.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus5.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus6.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus7.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus8.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\bonus9.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+    </Image>
+    <Image Include="Images\heroJ1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroJ2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroJ3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroJ4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroL1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroL2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroL3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroL4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroL5.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroR1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroR2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroR3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroR4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroR5.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroU1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroU2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroU3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\heroU4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+    </Image>
+    <Image Include="Images\fire1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+    </Image>
+    <Image Include="Images\fire2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+    </Image>
+    <Image Include="Images\fire3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+    </Image>
+    <Image Include="Images\book1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Book</Filter>
+    </Image>
+    <Image Include="Images\book.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Book</Filter>
+    </Image>
+    <Image Include="Images\door2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Door</Filter>
+    </Image>
+    <Image Include="Images\door1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Door</Filter>
+    </Image>
+    <Image Include="Images\missions.bmp">
+      <Filter>Resource Files\Images\Play\Missions</Filter>
+    </Image>
+    <Image Include="Images\key.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\chest1.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\m1.bmp">
+      <Filter>Resource Files\Images\Play\Missions</Filter>
+    </Image>
+    <Image Include="Images\pause.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\blocked.bmp">
+      <Filter>Resource Files\Images\Play\Missions</Filter>
+    </Image>
+    <Image Include="Images\Pause_menu.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\Data\map2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+    </Image>
+    <Image Include="Images\Data\map1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+    </Image>
+    <Image Include="Images\blockM.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\buttonON.bmp">
+      <Filter>Resource Files\Images\Play\Playing</Filter>
+    </Image>
+    <Image Include="Images\Data\map3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Techno.rc">
+      <Filter>Resource Files\Other</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
