@@ -1,809 +1,18 @@
-﻿class Hero
-{
-public:
-	int x,y;
-	int w,h;
-	int countCadr;
-	int UCadr;
-	int JCadr;
-    int CountJ;
-
-	bool MoveL;
-	bool MoveR;
-	bool MoveD;
-	bool MoveU;
-	bool Jump;
-	bool FallDown;
-
-	char Direction;
-	
-	Sprite* Image;
-
-	Sprite* ImageR[5];
-	Sprite* ImageL[5];
-	Sprite* ImageU[4];
-	Sprite* ImageJR[4];
-	Sprite* ImageJL[4];
-
-	static int dt;
-	static int timer;
-	static int timer1;
-
-	static int dtj;
-	static int timerj;
-	static int timerj1;
-
-	int vel;
-	int acel;
-
-public:
-	Hero():countCadr(0),UCadr(0),JCadr(0),MoveR(false),MoveL(false),MoveD(false),MoveU(false),FallDown(true),CountJ(0),acel(5),vel(0)
-	{
-	Image=NULL;
-	ImageR[0]=new Sprite("Images/heroR1.bmp",0xffffffff);
-	ImageR[1]=new Sprite("Images/heroR2.bmp",0xffffffff);
-	ImageR[2]=new Sprite("Images/heroR3.bmp",0xffffffff);
-	ImageR[3]=new Sprite("Images/heroR4.bmp",0xffffffff);
-	ImageR[4]=new Sprite("Images/heroR5.bmp",0xffffffff);
-	
-	ImageL[0]=new Sprite("Images/heroL1.bmp",0xffffffff);
-	ImageL[1]=new Sprite("Images/heroL2.bmp",0xffffffff);
-	ImageL[2]=new Sprite("Images/heroL3.bmp",0xffffffff);
-	ImageL[3]=new Sprite("Images/heroL4.bmp",0xffffffff);
-	ImageL[4]=new Sprite("Images/heroL5.bmp",0xffffffff);
-
-	ImageU[0]=new Sprite("Images/heroU1.bmp",0xffffffff);
-	ImageU[1]=new Sprite("Images/heroU2.bmp",0xffffffff);
-	ImageU[2]=new Sprite("Images/heroU3.bmp",0xffffffff);
-	ImageU[3]=new Sprite("Images/heroU4.bmp",0xffffffff);
-
-	ImageJR[0]=new Sprite("Images/heroJ1.bmp",0xffffffff);
-	ImageJR[1]=new Sprite("Images/heroJ2.bmp",0xffffffff);
-	ImageJR[2]=new Sprite("Images/heroJ3.bmp",0xffffffff);
-	ImageJR[3]=new Sprite("Images/heroJ4.bmp",0xffffffff);
-
-	ImageJL[0]=new Sprite("Images/heroJ1.bmp",0xffffffff);
-	ImageJL[1]=new Sprite("Images/heroJ2.bmp",0xffffffff);
-	ImageJL[2]=new Sprite("Images/heroJ3.bmp",0xffffffff);
-	ImageJL[3]=new Sprite("Images/heroJ4.bmp",0xffffffff);
-
-	for (int i=0;i<4;i++)
-	ImageJL[i]->Rotate();
-
-
-	w=ImageR[0]->width;
-	h=ImageR[0]->height;
-	Jump=false;
-
-	Image=ImageR[0];
-	}
-
-	bool Left(int MatMap[30][40])
-	{
-		Direction='L';
-
-		w=Image->width;
-		h=Image->height;
-
-	bool l=true;
-	int BlockSize=20;
-
-	int j1=x/20-2;
-	int j2=(x+w)/20+2;
-	int i1=y/20-2;
-	int i2=(y+h)/20+2;
-
-
-	for (int i=i1;i<i2;i++)
-	{
-	for (int j=j1;j<j2;j++)
-	{
-		if (MatMap[i][j]==1 || MatMap[i][j]==4 || MatMap[i][j]==6)
-		{
-			if (x>=BlockSize*(j+1) && x<=BlockSize*(j+1)+5 && ((y>=i*BlockSize && y<=BlockSize*(i+1)) || (y+h-2>=i*BlockSize && y+h-2<=BlockSize*(i+1))))
-		{
-		l=false;
-
-		if (x-BlockSize*(j+1)>1)
-		x-=(x-BlockSize*(j+1));
-			}
-		}
-	}
-	}
-
-	return l;
-	}
-	bool Right(int MatMap[30][40])
-	{
-		Direction='R';
-
-        w=Image->width;
-		h=Image->height;
-
-	bool r=true;
-	int BlockSize=20;
-
-	int j1=x/20-2;
-	int j2=(x+w)/20+2;
-	int i1=y/20-2;
-	int i2=(y+h)/20+2;
-
-
-	for (int i=i1;i<i2;i++)
-	{
-	for (int j=j1;j<j2;j++)
-	{
-		if (MatMap[i][j]==1 || MatMap[i][j]==4 || MatMap[i][j]==6)
-		{
-			if (x+w<=BlockSize*j && x+w>=BlockSize*j-5 && ((y>=i*BlockSize && y<=BlockSize*(i+1))||(y+h-2>=i*BlockSize && y+h-2<=BlockSize*(i+1))))
-			{
-		if (BlockSize*j-(x+w)>0)
-		x+=BlockSize*j-(x+w);
-
-		r=false;
-			}
-		}
-	}
-	}
-
-	return r;
-	}
-	bool Gravitation(int MatMap[30][40])
-	{
-	bool g=true;
-	
-	if (FallDown==true)
-	{
-	int BlockSize=20;
-
-
-	for (int i=0;i<30;i++)
-	{
-	for (int j=0;j<40;j++)
-	{
-		if (MatMap[i][j]==1 || MatMap[i][j]==3 || MatMap[i][j]==6)
-		{
-			if (((x>=BlockSize*j && x<=BlockSize*(j+1))||(x+w>=BlockSize*j && x+w<=BlockSize*(j+1))) && y+h<=i*BlockSize && y+h>=BlockSize*i-5)
-			{
-		g=false;
-
-		if (MatMap[i][j]!=3)
-		{
-		if (i*BlockSize-(y+h)>1)
-		y+=i*BlockSize-(y+h);
-		}
-			}
-		}
-	}
-	}
-	}
-	else
-		g=false;
-
-	if (DOWN(MatMap)==1)
-		g=false;
-
-	return g;
-	}
-	bool JUMP(int MatMap[30][40])
-	{
-	bool j=true;
-
-		if (DOWN(MatMap)==1 || DOWN(MatMap)==3 ||DOWN(MatMap)==6)
-		j=false;
-	
-		return j;
-	}
-
-	void Move(char d,int MatMap[30][40])
-	{
-	switch(d)
-	{
-	case 'L':
-		if (dt>3 && MoveL==true && Left(MatMap)==true)
-		{
-		if (countCadr<4)
-		countCadr++;
-		else
-			countCadr=0;
-		
-		Image=ImageL[countCadr];
-		x-=5;
-
-    	timer1=0;
-	    dt=0;
-    	MoveL=false;
-		}
-		break;
-
-	case 'R':
-	if (dt>3 && MoveR==true && Right(MatMap)==true)
-	{
-			if (countCadr<4)
-		countCadr++;
-		else
-			countCadr=0;
-		
-		Image=ImageR[countCadr];
-
-
-	x+=5;
-
-
-	timer1=0;
-	dt=0;
-	MoveR=false;
-	}
-	break;
-	
-
-	case 'D':
-		if (dt>10 && MoveD==true)
-		{
-		int eX=x/20;
-		int eX2=(x+Image->width)/20;
-		int eY=(y+Image->height+5)/20;
-
-		if (MatMap[eY][eX]==1 && MatMap[eY][eX2]==1)
-			y=eY*20-Image->height;
-		else
-		y+=5;
-		
-		ChangeImageU();
-
-	    timer1=0;
-	    dt=0;
-	   MoveD=false;
-		}
-		break;
-
-
-	case 'U':
-		if (dt>10 && MoveU==true)
-	   {
-		 y-=5;
-		
-		ChangeImageU();
-
-	//++++
-	int mapX=x/20;
-	int mapY=y/20;
-
-	int mapY1=(y+Image->height)/20;
-
-	if (MatMap[mapY][mapX]==0 && MatMap[mapY1][mapX]==3 && MoveD==false)
-	{
-		Image=ImageR[0];
-		countCadr=0;
-		y=(mapY+1)*20-Image->height;
-	}
-	//++++
-	
-	timer1=0;
-	dt=0;
-	MoveU=false;
-
-	if (UP(MatMap)!=3)
-		FallDown=true;
-	}
-		break;
-	}
-	
-	}
-	void MoveUD(char d,int MatMap[30][40])
-	{
-   switch(d)
-	{
-	case 'G':
-	if (dt>5 && Jump==false && Gravitation(MatMap)==true)
-	{
-		vel+=acel;
-		int some=(y+vel+Image->height)/20;
-		
-		if (MatMap[(y+vel+Image->height)/20][x/20]==0)
-		y+=vel;
-		else
-			y=(some)*20-Image->height;
-
-			/*if (Image==ImageJR[3] || Image==ImageJL[3])
-			{
-				if (Direction=='R')
-				Image=ImageR[0];
-
-				if (Direction=='L')
-				Image=ImageL[0];
-			}*/
-
-		timer1=0;
-		dt=0;
-	}
-	break;
-
-	case 'J':
-	if (UP(MatMap)==1 || UP(MatMap)==3 || UP(MatMap)==6)
-	{
-		JCadr=0;
-		CountJ=0;
-		Jump=false;
-	}
-
-	if (dtj>5 && Jump==true)
-	{
-		if (JCadr!=3)
-		{
-		ChangeImageJ();
-		vel=20;
-		}
-
-		if (JCadr==3)
-		{
-			vel-=acel;
-			y-=vel;
-			CountJ++;
-
-			if (CountJ>4)
-			{
-			CountJ=0;
-			JCadr=0;
-			vel=0;
-			Jump=false;
-			}
-
-		}
-			timerj1=0;
-			dtj=0;
-	}
-		break;
-	}
-	
-	}
-
-	int UP(int MatMap[30][40])
-	{
-	int block=0;
-
-	int mapX=x/20;
-	int mapY=y/20;
-
-	block=MatMap[mapY][mapX];
-
-	return block;
-	}
-    int DOWN(int MatMap[30][40])
-	{
-	int block=0;
-
-	int mapX=x/20;
-	int mapY=(y+Image->height)/20;
-
-	block=MatMap[mapY][mapX];
-
-	return block;
-	}
-
-	void ChangeImageU()
-	{
-		if (UCadr<3)
-		UCadr++;
-		else
-			UCadr=0;
-
-		Image=ImageU[UCadr];
-	}
-	void ChangeImageJ()
-	{
-		if (JCadr<3)
-		JCadr++;
-		else
-			JCadr=0;
-
-
-		if (Direction=='R')
-		Image=ImageJR[JCadr];
-
-		if (Direction=='L')
-		Image=ImageJL[JCadr];
-	}
-	
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Image->width;
-	 rectSize.bottom =rectSize.top+ Image->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	}
-	static void Timer()
-	{
-	if (timer1 == 0)
-				timer1 = timeGetTime();
-
-			timer = timeGetTime();
-			dt = timer - timer1;
-	}
-	static void TimerJ()
-	{
-	if (timerj1 == 0)
-				timerj1 = timeGetTime();
-
-			timerj = timeGetTime();
-			dtj = timerj - timerj1;
-	}
-
-};
- int Hero::dt=0;
-int Hero::timer=0;
-int Hero::timer1=0;
-
- int Hero::dtj=0;
-int Hero::timerj=0;
-int Hero::timerj1=0;
-
-
-class Fire
-{
-public:
-	int x,y;
-	int CountCadr;
-	Sprite* ImageView;
-	Sprite* Image[3];
-
-	static int counter;
-	static int dt;
-	static int timer;
-	static int timer1;
-
-public:
-	Fire(int _x,int _y):x(_x),y(_y),CountCadr(0)
-	{
-		ImageView=NULL;
-
-		Image[0]=new Sprite("Images/fire1.bmp",0xffffffff);
-		Image[1]=new Sprite("Images/fire2.bmp",0xffffffff);
-		Image[2]=new Sprite("Images/fire3.bmp",0xffffffff);
-
-		ImageView=Image[0];
-
-		counter++;
-	}
-	void ChangeCadr()
-	{
-	 if (CountCadr<2)
-		 CountCadr++;
-	 else
-		 CountCadr=0;
-
-	 ImageView=Image[CountCadr];
-	}
-	static void Timer()
-	{
-	if (timer1 == 0)
-				timer1 = timeGetTime();
-
-			timer = timeGetTime();
-			dt = timer - timer1;
-	}
-};
-int Fire::counter=0;
-int Fire::dt=0;
-int Fire::timer=0;
-int Fire::timer1=0;
-
-class Door
-{
-public: 
-	int x,y;
-	int Cadr;
-	int num;
-
-	Sprite* ImageView;
-	Sprite* Image[2];
-
-	static int counter;
-public:
-	Door(int _x,int _y):x(_x),y(_y),Cadr(0),num(5)
-	{
-		ImageView=NULL;
-	Image[0]=new Sprite("Images/Door1.bmp",0xffffffff);
-	Image[1]=new Sprite("Images/Door2.bmp",0xffffffff);
-
-	ImageView=Image[0];
-
-	counter++;
-	}
-
-	void ChangeCadr(int MatMap[30][40])
-	{
-	if (Cadr<1)
-    Cadr++;
-	else
-		Cadr=0;
-	
-	ImageView=Image[Cadr];
-
-	MatMap[y/20][x/20]=num;
-	MatMap[y/20+1][x/20]=num;
-	MatMap[y/20+2][x/20]=num;
-	MatMap[y/20+3][x/20]=num;
-
-	if (num==5)
-	num=4;
-	else
-		num=5;
-	}
-
-	void Touch(int X,int Y,int MatMap[30][40],bool &rmb)
-	{
-		if (X>=x && X<=x+ImageView->width && Y>=y && Y<=y+ImageView->height && rmb==true)
-	    {
-		ChangeCadr(MatMap);
-		rmb=false;
-	    }
-	}
-};
-int Door::counter=0;
-
-class Book
-{
-public:
-	int x,y;
-	bool show;
-
-	Sprite* Image;
-
-	Sprite* Image1;
-	Sprite* ImageBack;
-
-	static int counter;
-	char state;
-
-public:
-	Book(int _x,int _y):x(_x),y(_y),show(true),state('C')
-	{
-		ImageBack=NULL;
-		Image=NULL;
-		Image1=new Sprite("Images/book.bmp");
-
-		Image=Image1;
-		counter++;
-	}
-
-	bool Touch(int X,int Y)
-	{
-		bool t=false;
-
-		if (X>=x && X<=x+Image->width && Y>=y && y<=Y+Image->height)
-			t=true;
-
-		return t;
-	}
-};
-int Book::counter=0;
-
-class Bonus
-{
-public:
-	int x,y;
-	int Cadr;
-	bool show;
-
-	Sprite* ImageView;
-	Sprite* Image[10];
-
-	static int counter;
-	static int dt;
-	static int timer;
-	static int timer1;
-
-	int c;
-
-public:
-	Bonus(int _x, int _y):x(_x),y(_y),Cadr(0),show(true),c(0)
-	{
-	ImageView=NULL;
-
-	Image[0]=new Sprite("Images/bonus1.bmp",0xffffffff);
-	Image[1]=new Sprite("Images/bonus2.bmp",0xffffffff);
-	Image[2]=new Sprite("Images/bonus3.bmp",0xffffffff);
-	Image[3]=new Sprite("Images/bonus4.bmp",0xffffffff);
-	Image[4]=new Sprite("Images/bonus5.bmp",0xffffffff);
-	Image[5]=new Sprite("Images/bonus6.bmp",0xffffffff);
-	Image[6]=new Sprite("Images/bonus7.bmp",0xffffffff);
-	Image[7]=new Sprite("Images/bonus8.bmp",0xffffffff);
-	Image[8]=new Sprite("Images/bonus9.bmp",0xffffffff);
-	Image[9]=new Sprite("Images/bonus10.bmp",0xffffffff);
-
-
-	ImageView=Image[0];
-
-	counter++;
-	}
-
-	void ChangeCadr()
-	{
-	if (Cadr<9)
-		Cadr++;
-	else
-		Cadr=0;
-
-	ImageView=Image[Cadr];
-	}
-
-	static void Timer()
-	{
-	if (timer1 == 0)
-				timer1 = timeGetTime();
-
-			timer = timeGetTime();
-			dt = timer - timer1;
-	}
-	
-};
-int Bonus::counter=0;
-int Bonus::dt=0;
-int Bonus::timer=0;
-int Bonus::timer1=0;
-
-class Chest
-{
-public:
-	int x,y;
-	int Cadr;
-
-	Sprite* ImageView;
-	Sprite* Image[2];
-
-	static int counter;
-
-public:
-	Chest(int _x,int _y):x(_x),y(_y),Cadr(0)
-	{
-	ImageView=NULL;
-	Image[0]=new Sprite("Images/chest1.bmp");
-	Image[1]=new Sprite("Images/chest2.bmp");
-	ImageView=Image[0];
-
-	counter++;
-	}
-
-	bool Touch(int X,int Y)
-	{
-	bool t=false;
-
-	if (X>=x && X<=x+ImageView->width && Y>=y && Y<=y+ImageView->height)
-	t=true;
-
-	return t;
-	}
-
-	void ChangeCadr()
-	{
-	if (Cadr<1)
-		Cadr++;
-	else
-		Cadr=0;
-	
-	ImageView=Image[Cadr];
-	}
-};
-int Chest::counter=0;
-
-
-class ButtonON
-{
-public:
-	int x,y;
-	Sprite* Image;
-
-	static int counter;
-
-public:
-	ButtonON(int _x,int _y):x(_x),y(_y)
-	{
-	Image=new Sprite("Images/buttonON.bmp");
-
-	counter++;
-	}
-
-	bool Touch(int X,int Y)
-	{
-		bool t=false;
-
-		if (X>=x && X<=x+Image->width && Y>=y && Y<=y+Image->height)
-		t=true;
-
-	return t;
-	}
-};
-int ButtonON::counter=0;
-
-class BlockMoves
-{
-public:
-	int x,y;
-	int pX,pY;
-	int pI;
-
-	Sprite* Image;
-
-	static bool UP;
-	static int counter;
-	static int dt;
-	static int timer;
-	static int timer1;
-
-public:
-	BlockMoves(int _x,int _y,int _pI):x(_x),y(_y-1),pX(_x),pY(_y-1),pI(_pI-1)
-	{
-		Image=new Sprite("Images/blockM.bmp");
-
-		counter++;
-	}
-
-	void BlockMoveUp(int MatMap[30][40],bool &b)
-	{
-
-			if (y>pI)
-			{
-			MatMap[pY/20+1][pX/20]=0;
-
-			if (y-pI<=5)
-				y-=(y-pI);
-			else
-		    y-=5;
-			}
-
-			if (y==pI)
-			{
-			MatMap[y/20+1][x/20]=6;
-		b=false;
-			}
-	}
-	void BlockMoveDown(int MatMap[30][40])
-	{
-			if (y<pY)
-			{
-			MatMap[pI/20+1][x/20]=0;
-
-			if (pY-y<=5)
-				y+=(pY-y);
-			else
-		    y+=5;
-			}
-
-			if (y==pY)
-			{
-			MatMap[y/20+1][x/20]=6;
-			}
-	}
-
-	static void Timer()
-	{
-	if (timer1 == 0)
-				timer1 = timeGetTime();
-
-			timer = timeGetTime();
-			dt = timer - timer1;
-	}
-};
-bool BlockMoves::UP=false;
-int BlockMoves::counter=0;
-int BlockMoves::dt=0;
-int BlockMoves::timer=0;
-int BlockMoves::timer1=0;
-
+﻿#include "class.h"
 //Play++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bool Play=false;
 
 //Missions+++
 bool Missions=false;
 
+char* MapTxt="Images/Data/map1.txt";
+char* MapBmp="Images/Data/map1.bmp";
+
+
 Sprite* missions;
 Button* btnOfMissions[1];
 Sprite* blocked;
+Button* Back;
 //Missions---
 
 //Game+++
@@ -813,9 +22,12 @@ int timer;
 int timer1;
 int dt;
 int Level=1;
+int sd=0;
 
 bool stopB=false;
 bool stop=false;
+
+Button* PM[4];
 
 Sprite* map;
 Sprite* pause;
@@ -830,8 +42,32 @@ Bonus* bons[10];
 Chest* chest[10];
 BlockMoves* bm[5];
 ButtonON* bt[10];
+FinalDoor* Fd[10];
 //Objects in the game---
+Button* lock;
+Button* locker;
+Button* LockerLight;
+Button* lOK;
+
+NumberDraw* nmb[8];
+Arrow* ar;
+Inventar* Inv;
+
+//Move Invent Chest+++
+int posObject=0;
+int* memObjc;
+//Move Invent Chest---
+
+int stateK=0;
+int vseA=0;
+Text* txt;
+
+int score=0;
+char* sc;
+
+DrawRectangle* dr;
 //Play------------------------------------------------------
+
 
 //PLAYING+++
 void DrawPlay()
@@ -843,17 +79,17 @@ void DrawPlay()
 		 if(btnOfMissions[0]->show==true)
 			 btnOfMissions[0]->Draw(rectangle,rectSize,backBuffer);
 
-
 		 for (int i=0;i<4;i++)
 		 for (int j=0;j<11;j++)
 			 if (i!=0 || j!=0)
 		 resRect(22+j*13+j*blocked->width,63+i*36+i*blocked->height,blocked->width,blocked->height,blocked);
-		 
+
+		 	 if (Back->show==true)
+				 Back->Draw(rectangle,rectSize,backBuffer);
 		 }
 		 else
 		 {
 	 resRect(0,0,w,h,map);
-
 
 	 //Fire++++
 	 for (int i=0;i<Fire::counter;i++)
@@ -865,6 +101,11 @@ void DrawPlay()
 	 resRect(d[i]->x,d[i]->y,d[i]->ImageView->width,d[i]->ImageView->height,d[i]->ImageView);
 	 //Door---
 
+	 //FinalDoor++++
+	 for (int i=0;i<FinalDoor::counter;i++)
+		 Fd[i]->Draw(rectangle,rectSize,backBuffer);
+	 //FinalDoor---
+
 	 //Bonus++++
 	 for (int i=0;i<Bonus::counter;i++)
 	 {
@@ -873,19 +114,55 @@ void DrawPlay()
 	 }
 	 //Bonus---
 
-	  //Chest++++
-	 for (int i=0;i<Chest::counter;i++)
-	 resRect(chest[i]->x,chest[i]->y,chest[i]->ImageView->width,chest[i]->ImageView->height,chest[i]->ImageView);
-	 //Chest---
-
 	  //BlockMoves++++
 	 for (int i=0;i<BlockMoves::counter;i++)
 	 resRect(bm[i]->x,bm[i]->y,bm[i]->Image->width,bm[i]->Image->height,bm[i]->Image);
 	 //BlockMoves---
+
+	
+
+	  //Chest++++
+	 for (int i=0;i<Chest::counter;i++)
+	 {
+		 chest[i]->Draw(rectangle,rectSize,backBuffer);
+	 }
 	 
 	 Personnage->Draw(rectangle,rectSize,backBuffer);
 
-	   //Book++++
+	 for (int i=0;i<Chest::counter;i++)
+	 {
+	 if (chest[i]->show==true)
+	 {
+	 resRect(0,0,pause->width,pause->height,pause);
+
+	 lock->Draw(rectangle,rectSize,backBuffer);
+
+
+		 if (chest[i]->showC==false)
+		 locker->Draw(rectangle,rectSize,backBuffer);
+
+		 ar->Draw(rectangle,rectSize,backBuffer);
+
+		 for (int i=0;i<8;i++)
+			 nmb[i]->Draw(rectangle,rectSize,backBuffer);
+
+		 LockerLight->Draw(rectangle,rectSize,backBuffer);
+		 lOK->Draw(rectangle,rectSize,backBuffer);
+
+		 chest[i]->txt->Draw(rectangle,rectSize,backBuffer);
+
+		 chest[i]->DrawC(rectangle,rectSize,backBuffer);
+	 }
+	 }
+	 //Chest---
+
+	  //Inventar+++
+	 Inv->Draw(rectangle,rectSize,backBuffer);
+
+	 //dr->Draw(rectangle,rectSize,backBuffer);
+	 //Inventar---
+
+	    //Book++++
 	 for (int i=0;i<Book::counter;i++)
 	 {
 		 if (b[i]->show==true)
@@ -898,17 +175,88 @@ void DrawPlay()
 	 }
 	 //Book---
 
+	 //Cursor+++
+	 if (posObject!=0)
+	 {
+	 char* path=new char[20];
+	 int num = sprintf(path, "Images/o%d.bmp",posObject);
+
+	 Sprite* cur=new Sprite(path,0xffffffff);
+
+	 resRect(mX,mY,cur->width,cur->height,cur);
+	 }
+	 //Cursor---
 
 	 //Menu Pause+++
 	 if (stop==true)
 	 {
 	 resRect(0,0,pause->width,pause->height,pause);
 	 resRect((w-Menu_pause->width)/2,(h-Menu_pause->height)/2,Menu_pause->width,Menu_pause->height,Menu_pause);
+
+	 for (int i=0;i<4;i++)
+		PM[i]->Draw(rectangle,rectSize,backBuffer);
 	 }
 	 //Menu Pause---
+
+
+	 ///Text
+	 txt->Draw(rectangle,rectSize,backBuffer);
+	 ///Text
 		 }
 }
 
+//Missions+++
+void LoadMapp(char* c,int k,int z)
+{
+char num;
+int pi=0;
+int t=0;
+
+	for (int i=0;i<mH;i++)
+	for (int j=0;j<mW;j++)
+	{
+    num=c[k+z];
+
+	if (num!='\0')
+	MatMap[i][j]=atoi(&num);
+
+	z++;
+	}
+
+	//Загрузка дверей+++
+	for (int i=0;i<mH;i++)
+	for (int j=0;j<mW;j++)
+	{
+		if (MatMap[i][j]==4 && MatMap[i-1][j]!=4)
+			d[Door::counter-1]=new Door(j*20,i*20);
+
+
+		//Загрузка конечных дверей+++
+		if (j==0)
+			t=1;
+		else if (j==mW-1)
+			t=0;
+
+		if (MatMap[i][j]==8 && MatMap[i-1][j]!=8)
+			Fd[FinalDoor::counter-1]=new FinalDoor(j*20,i*20,t);
+		//Загрузка конечных дверей---
+
+
+		//Block moves+++
+		if (MatMap[i][j]==6)
+		{
+			if (BlockMoves::counter==0)
+				pi=(i-1)*20;
+
+			bm[BlockMoves::counter-1]=new BlockMoves(j*20,i*20,pi);
+		}
+		//Block moves---
+	}
+	//Загрузка дверей---
+
+
+	
+}
 int* Read(int p1,int p2,char* c)
 {
 	int* cor=NULL;
@@ -919,9 +267,9 @@ int* Read(int p1,int p2,char* c)
 
 		if (line[0]!='N')
 		{
-	int quantiteXY=(p2-p1+2)/4; //количество координат для бонусов
+	int quantiteXY=(p2-p1+2)/4; //количество координат
 
-	int quantite=quantiteXY/2; //количество бонусов
+	int quantite=quantiteXY/2; //количество объектов
 
 	cor=new int[quantiteXY];
 
@@ -943,8 +291,7 @@ void ReadScript()
 {
 	//Чтение файла---
 	char* c=new char[mH*mW+100];
-
-	std::ifstream is("Images/Data/map1.txt");
+	std::ifstream is(MapTxt);
 
 	for (int i=0;i<mH*mW+100;i++)
 	is>>c[i];
@@ -952,63 +299,43 @@ void ReadScript()
     is.close();
 	//Чтение файла+++
 
-bool LoadMap=false;
+bool LM=false;	
 int z=0;
-char l;
-int pi=0;
 
-int pos[5]={-1,-1,-1,-1,-1};
+int pos[6]={-1,-1,-1,-1,-1,-1};
 
 for (int k=0;k<mH*mW+100;k++)
 {
 	//Загрузка карты+++++++++++++++++++++
-	if (LoadMap==true)
+	if (LM==true)
 	{
-
-	for (int i=0;i<mH;i++)
-	for (int j=0;j<mW;j++)
-	{
-    l=c[k+z];
-
-	if (l!='\0')
-	MatMap[i][j]=atoi(&l);
-
-	z++;
-	}
-
-	//Загрузка дверей+++
-	for (int i=0;i<mH;i++)
-	for (int j=0;j<mW;j++)
-	{
-		if (MatMap[i][j]==4 && MatMap[i-1][j]!=4)
-			d[Door::counter-1]=new Door(j*20,i*20);
-
-
-		//Block moves+++
-		if (MatMap[i][j]==6)
-		{
-			if (BlockMoves::counter==0)
-				pi=(i-1)*20;
-
-			bm[BlockMoves::counter-1]=new BlockMoves(j*20,i*20,pi);
-		}
-		//Block moves---
-	}
-	//Загрузка дверей---
-
-	LoadMap=false;
+    LoadMapp(c,k,z);
+	LM=false;
 	}
 	//Загрузка карты--------------------------
 
 	if (c[k]=='|' && z==0)
-	{
-	LoadMap=true;
-	}
+	LM=true;
+
+	//Загрузка перехода на следующую миссию---
+	if (c[k]==':' && pos[5]!=-1)
+		{
+	    int* cor=Read(pos[5],k,c); //Выделение координат X и Y
+
+	   if (cor!=NULL)
+	   {
+		   Personnage->exitX=cor[0];
+		   Personnage->exitY=cor[1];
+	   }
+		}
+	//Загрузка перехода на следующую миссию---
 
 
 	//Загрузка кнопок---
-	if (c[k]==':' && pos[4]!=-1)
+	if (c[k]==':' && pos[4]!=-1 && pos[5]==-1)
 		{
+		pos[5]=k+1;
+
 	    int* cor=Read(pos[4],k,c); //Выделение координат X и Y
 
 	   if (cor!=NULL)
@@ -1016,6 +343,7 @@ for (int k=0;k<mH*mW+100;k++)
 				bt[i]=new ButtonON(cor[i*2],cor[i*2+1]);
 		}
 	//Загрузка кнопок---
+
 
 	//Загрузка сундуков---
 	if (c[k]==':' && pos[3]!=-1 && pos[4]==-1)
@@ -1025,8 +353,10 @@ for (int k=0;k<mH*mW+100;k++)
 	    int* cor=Read(pos[3],k,c); //Выделение координат X и Y
 
 	   if (cor!=NULL)
-		for (int i=0;i<(k-pos[3]+2)/8;i++)
-				chest[i]=new Chest(cor[i*2],cor[i*2+1]);
+		for (int i=0;i<(k-pos[3]+2)/16;i++)
+			chest[i]=new Chest(cor[i*4],cor[i*4+1],Level,cor[i*4+2],cor[i*4+3]);
+
+	   pos[3]=0;
 		}
 	//Загрузка сундуков---
 
@@ -1039,7 +369,7 @@ for (int k=0;k<mH*mW+100;k++)
 	    int* cor=Read(pos[2],k,c); //Выделение координат X и Y
 
 	   if (cor!=NULL)
-		for (int i=0;i<(k-pos[2]+2)/8;i++)
+		for (int i=0;i<(k-pos[2]+1)/12;i++)
 				bons[i]=new Bonus(cor[i*2],cor[i*2+1]);
 		}
 	//Загрузка бонусов---
@@ -1077,17 +407,336 @@ for (int k=0;k<mH*mW+100;k++)
 	
 
 	//Загрузка координат игрока+++
-	if (LoadMap==false)
+	if (LM==false)
 	{
     Personnage->x=atoi(&c[0]);
 	Personnage->y=atoi(&c[4]);
 	}
 	//Загрузка координат игрока+++
 }
+
+
+for(int i=0;i<Chest::counter;i++)
+	chest[i]->LoadQuestion(Level);
+}
+void Mission()
+{
+//Exit+++
+		if (Back->Touch(X,Y)==true)
+		{
+		Missions=false;
+		Play=false;
+		Menu=true;
+		}
+
+		if (Back->Touch(mX,mY)==true)
+			Back->show=true;
+		else
+			Back->show=false;
+		//Exit---
+
+		if (btnOfMissions[0]->Touch(X,Y)==true)
+		{
+			Personnage=new Hero();
+            Personnage->x=40;
+            Personnage->y=40;
+
+            ReadScript();
+
+			map=new Sprite(MapBmp,0xffffffff);
+
+			for (int i=0;i<30;i++)
+			for (int j=0;j<40;j++)
+			Personnage->MatMap[i][j]=MatMap[i][j];
+
+		Missions=false;
+		}
+		
+			if (btnOfMissions[0]->Touch(mX,mY)==true)
+				btnOfMissions[0]->show=true;
+			else
+				btnOfMissions[0]->show=false;
+}
+//Missions---
+
+//Play+++
+void Lock()
+{
+	for (int i=0;i<Chest::counter;i++)
+	{
+	if (chest[i]->show==true)
+	{
+	if (lock->Touch(X,Y)==false && lmb==true && Inv->TouchInvShow(X,Y)==false)
+	{
+		for (int i=0;i<Chest::counter;i++)
+			chest[i]->show=false;
+	}
+
+	int mmx=mX-locker->x;
+	int mmy=mY-locker->y;
+	int dist=sqrt((mmx-locker->w/2)*(mmx-locker->w/2)+(locker->h/2-mmy)*(locker->h/2-mmy));
+
+
+	if (lOK->Touch(X,Y)==true && lmb==true)
+	{
+		lOK->show=true;
+		
+		if (sd<6)
+		sd+=3;
+		else
+			sd=0;
+
+		lmb=false;
+	}
+	else
+		lOK->show=false;
+
+
+
+	if (LockerLight->Touch(mX,mY)==true && dist>55 && dist<88)
+	{
+	LockerLight->show=true;
+
+
+	if (locker->Touch(X,Y)==true && lmb==true)
+	{
+	double xn=locker->w/2;
+	double yn=locker->h/2;
+
+	double x1=0;
+	double y1=locker->h/2;
+
+	double xm=(X-locker->x)-xn;
+	double ym=yn-(Y-locker->y);
+	
+	double a1=ym;
+	double a2=sqrt(xm*xm+ym*ym);
+
+	double angle1=acos(a1/a2);
+	double angle2=(angle1*180)/3.14;
+
+	if (X-locker->x<xn)
+		angle2=360-angle2;
+
+	int angle=angle2/9;
+	
+		  //Show angle+++
+		  char* aq1=new char[100];
+
+			int num1;
+
+			if (angle<10)
+            num1 = sprintf(aq1,"0%d",angle);
+			else
+            num1 = sprintf(aq1,"%d",angle);
+
+			char n1,n2;
+
+			n1=aq1[0];
+			n2=aq1[1];
+
+			nmb[sd]->num=atoi(&n1);
+			nmb[sd+1]->num=atoi(&n2);
+
+			ar->num=angle;
+		  //Show angle---
+
+
+			//OpenChest+++
+			int combinaison=nmb[0]->num*100000+nmb[1]->num*10000+nmb[3]->num*1000+nmb[4]->num*100+nmb[6]->num*10+nmb[7]->num;
+			vseA=combinaison;
+
+		
+			//OpenChest---
+
+			lmb=false;
+	}
+	}
+	else
+			LockerLight->show=false;
+
+
+
+	//Open++++
+   if (vseA==chest[i]->Answer && sd==0)
+				chest[i]->BOk=true;
+
+	if (chest[i]->BOk==true)
+	{
+	            Chest::Timer();
+
+				if (Chest::dt>2000)
+				{
+				chest[i]->showC=true;
+				chest[i]->BOk=false;
+				vseA=0;
+
+				Chest::dt=0;
+				Chest::timer=0;
+				Chest::timer1=0;
+				}
+	}
+	//Open----
+	}
+}
 }
 
 void InteractiveObjects()
 {
+	//BONUS+++
+	for (int i=0;i<Bonus::counter;i++)
+	{
+		if (bons[i]->show==true && (bons[i]->Touch(Personnage->x,Personnage->y+Personnage->h-1)==true || bons[i]->Touch(Personnage->x+Personnage->w,Personnage->y+Personnage->h-1)==true))
+	{
+		score+=10;
+
+		sc=new char[100];
+		int n=0;
+		n=sprintf(sc,"score:%d",score);
+
+		txt->changeText(sc);
+		bons[i]->show=false;
+	}
+	}
+	//BUNUS---
+
+
+	//Inventar+++
+		if (Inv->Touch(mX,mY)==true)
+		{
+			Inv->exp=true;
+			Inv->mX=mX+10;
+			Inv->mY=mY;
+		}
+		else
+			Inv->exp=false;
+
+
+		if (Inv->Touch(X,Y)==true)
+			Inv->show=true;
+		
+		//Move objects+++
+		if (Inv->TouchInvShow(Inventar::Xi,Inventar::Yi)==true)
+		{
+		if (Inventar::iLmb==true)
+		{
+		if (Inv->move==false)
+		{
+		Inv->check=Inv->TouchObject(Inventar::Xi,Inventar::Yi);
+
+		if (Inv->check!=-1)
+		{
+		Inv->move=true;
+		
+		for (int i=0;i<Chest::counter;i++)
+		chest[i]->move=true;
+
+		posObject=Inv->objects[Inv->check];
+		Inv->objects[Inv->check]=0;
+		}
+
+		}
+		else 
+			if (Inv->move==true)
+			{
+			int nt=Inv->TouchObject(Inventar::Xi,Inventar::Yi);
+
+			if (nt!=-1 && Inv->check!=nt && Inv->objects[nt]==0)
+			{
+			Inv->objects[nt]=posObject;
+			Inv->ChangeImages();
+			posObject=0;
+			}
+		for (int i=0;i<Chest::counter;i++)
+		    chest[i]->move=false;
+		    Inv->move=false;
+			}
+
+			Inventar::Xi=0;
+			Inventar::Yi=0;
+			Inventar::iLmb=false;
+		}
+		}
+		//Move objects---
+
+		//Move chest's objects+++
+		for (int i=0;i<Chest::counter;i++)
+		{
+			if (chest[i]->TouchInvChest(Chest::Xi,Chest::Yi)==true && chest[i]->showC==true)
+		{
+		if (Chest::iLmb==true)
+		{
+		if (chest[i]->move==false)
+		{
+		chest[i]->check=chest[i]->TouchObject(Chest::Xi,Chest::Yi);
+
+		if (chest[i]->check!=-1)
+		{
+		chest[i]->move=true;
+		Inv->move=true;
+		posObject=chest[i]->objects[chest[i]->check];
+		chest[i]->objects[chest[i]->check]=0;
+		}
+		}
+		else 
+			if (chest[i]->move==true)
+			{
+			int nt=chest[i]->TouchObject(Chest::Xi,Chest::Yi);
+
+			if (nt!=-1 && chest[i]->check!=nt && chest[i]->objects[nt]==i)
+			{
+			chest[i]->objects[nt]=posObject;
+			chest[i]->ChangeImages();
+			posObject=i;
+			}
+		    chest[i]->move=false;
+		    Inv->move=false;
+			}
+
+			Chest::Xi=i;
+			Chest::Yi=i;
+			Chest::iLmb=false;
+		}
+
+
+		}
+		}
+		//Move chest's objects---
+
+		//++++++
+		if (stateK==1)
+		{
+			
+			if (Inv->show==false)
+				Inv->show=true;
+			else 
+				if (Inv->show==true)
+				Inv->show=false;
+
+			stateK=2;
+		}
+
+		if (buffer[DIK_E] & 0x80 && stateK==0)
+			stateK=1;
+
+		if (stateK==2)
+			stateK=0;
+		//-----
+
+		//Chest+++
+		for (int i=0;i<Chest::counter;i++)
+		{
+		if (chest[i]->Touch(mX,mY)==true)
+		{
+			chest[i]->expO=true;
+			chest[i]->mX1=mX+10;
+			chest[i]->mY1=mY;
+		}
+		else
+			chest[i]->expO=false;
+		}
+	    //Chest---
+
         //FIRE---
 		Fire::Timer();
 
@@ -1121,10 +770,15 @@ void InteractiveObjects()
 			d[i]->Touch(X,Y,MatMap,lmb);
 		//DOOR---
 
+		//FinalDoor+++
+		for (int i=0;i<FinalDoor::counter;i++)
+			Fd[i]->Touch(X,Y,MatMap,lmb,Inv->objects[0]);
+		//FinalDoor---
+
 		//ButtonON+++
 		for (int i=0;i<ButtonON::counter;i++)
 		{
-			if (bt[i]->Touch(Personnage->x,Personnage->y+Personnage->Image->height)==true)
+			if (bt[i]->Touch(Personnage->x,Personnage->y+Personnage->h-1)==true)
 				BlockMoves::UP=true;
 		}
 		//ButtonON---
@@ -1153,6 +807,7 @@ void InteractiveObjects()
 		}
 		//Block Moves---
 
+
 			//BOOKS+++
 		for (int i=0;i<Book::counter;i++)
 			if (b[i]->state='C' && b[i]->show==true && (b[i]->Touch(Personnage->x,Personnage->y+Personnage->Image->height)==true ||b[i]->Touch(Personnage->x+Personnage->Image->width,Personnage->y+Personnage->Image->height)==true))
@@ -1162,108 +817,175 @@ void InteractiveObjects()
 			b[i]->Image=b[i]->ImageBack;
 			b[i]->x=(w-b[i]->ImageBack->width)/2;
 			b[i]->y=(h-b[i]->ImageBack->height)/2;
+			Inv->AddObject(1);
 			stopB=true;
 			}
 			//BOOKS---
 
+			//CHEST+++
+	if (buffer[DIK_O] & 0x80)
+		for (int i=0;i<Chest::counter;i++)
+			if (chest[i]->Touch(Personnage->x,Personnage->y+Personnage->h-1)==true || chest[i]->Touch(Personnage->x+Personnage->w,Personnage->y+Personnage->h-1)==true)
+				chest[i]->show=true;
+			//CHEST---
+
+		Lock();
 }
 void HeroMoves()
 {
+	Personnage->ChargeMatMap(MatMap);
+
 	Hero::Timer();
-	Hero::TimerJ();
+	Hero::TimerG();
 
-	//GRAVITAION+++
-	Personnage->MoveUD('G',MatMap);
-	//GRAVITAION---
+	if (buffer[DIK_N] & 0x80)
+		Inv->AddObject(2);
 
-	//JUMP+++
-	if (buffer[DIK_SPACE] & 0x80 && Personnage->JUMP(MatMap)==false &&  Personnage->DOWN(MatMap)!=3)
-		Personnage->Jump=true;
-	
-	Personnage->MoveUD('J',MatMap);
-	//JUMP---
-
-	//UP+++
-	if (buffer[DIK_UP] & 0x80 && Personnage->UP(MatMap)==3)
-		{
-		Personnage->MoveU=true;
-		Personnage->MoveD=false;
-		Personnage->FallDown=false;
-	}
-
-	Personnage->Move('U',MatMap);
-	//UP---
-	
-	//DOWN+++
-	if (buffer[DIK_DOWN] & 0x80 && Personnage->DOWN(MatMap)==3)
-	{
-		Personnage->MoveD=true;
-		Personnage->MoveU=false;
-	}
-		
-	Personnage->Move('D',MatMap);
-
-	if (Personnage->dt>10 && Personnage->MoveD==true && Personnage->DOWN(MatMap)!=3)
-	Personnage->MoveD=false;
-	//DOWN---
+	if (buffer[DIK_P] & 0x80)
+	vseA=0;
 
 
-	//LEFT+++
-	if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80))
-	{
-		Personnage->MoveL=true;
-		Personnage->MoveR=false;	
-		Personnage->FallDown=true;
-	}
-
-	Personnage->Move('L',MatMap);
-	//LEFT---
-
-	//RIGHT+++
 	if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80))
 	{
-		Personnage->MoveR=true;	
-		Personnage->MoveL=false;	
-		Personnage->FallDown=true;
+		Personnage->R=true;
+		Personnage->L=false;
 	}
-		
-	Personnage->Move('R',MatMap);
-	//RIGHT---
 
+	if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80))
+	{
+		Personnage->L=true;
+		Personnage->R=false;
+	}
+
+	if (buffer[DIK_SPACE] & 0x80)
+	{
+		int nx=Personnage->x/20;
+		int nx1=(Personnage->x+Personnage->w)/20;
+		int ny=(Personnage->y+Personnage->h)/20;
+
+	if (MatMap[ny][nx]!=0 || MatMap[ny][nx1]!=0)
+		{
+		Personnage->J=true;
+		Personnage->velocityJ=15;
+		}
+	}
+
+	if ((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80))
+	{
+		Personnage->U=true;
+		Personnage->D=false;
+	}
+
+	if ((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80))
+	{
+		Personnage->D=true;
+		Personnage->U=false;
+	}
+
+	Personnage->Jump();
+
+	if (Hero::dtG>20)
+		Personnage->Gravitaton();
+
+	if (Hero::dt>15)
+	{
+	Personnage->MoveL();
+	Personnage->MoveR();
+	Personnage->UD('U');
+	Personnage->UD('D');
+
+	int nx=Personnage->x/20;
+	int ny=(Personnage->y+Personnage->h)/20;
+
+	if (MatMap[ny][nx]==3)
+	{
+		Personnage->G=false;
+	}
+	else
+		Personnage->G=true;
+	}
 }
+void NextLevel()
+{
+		if (Personnage->ChangeLevel()==true)
+		{
+			Level++;
+			
+			for (int i=0;i<9;i++)
+				if (Inv->objects[i]==2)
+			        Inv->objects[i]=0;
+
+			Fire::counter=0;
+            Door::counter=0;
+            Book::counter=0;
+            Bonus::counter=0;
+			//++++++
+            Chest::dt=0;
+		    Chest::timer=0;
+		    Chest::timer1=0;
+
+		    Chest::counter=0;
+		    Chest::Xi=0;
+		    Chest::Yi=0;
+			
+		    Chest::iLmb=false;
+		   //------
+            BlockMoves::counter=0;
+            ButtonON::counter=0;
+			FinalDoor::counter=0;
+
+			for (int i=0;i<10;i++)
+			{
+			f[i]=NULL;
+			d[i]=NULL;
+			b[i]=NULL;
+			bons[i]=NULL;
+			chest[i]=NULL;
+			bm[i]=NULL;
+			bt[i]=NULL;
+			Fd[i]=NULL;
+			}
+
+			for (int i=0;i<mH;i++)
+			for (int j=0;j<mW;j++)
+				MatMap[i][j]=0;
+
+			MapBmp=new char[100];
+			MapTxt=new char[100];
+
+            int num;
+            num = sprintf(MapBmp, "Images/Data/map%d.bmp",Level);
+            num = sprintf(MapTxt, "Images/Data/map%d.txt",Level);
+
+		ReadScript();
+
+		map=new Sprite(MapBmp,0xffffffff);
+
+			for (int i=0;i<30;i++)
+			for (int j=0;j<40;j++)
+			Personnage->MatMap[i][j]=MatMap[i][j];
+
+		}
+}
+//Play---
+
 void PLAYING()
 {
 if (Play==true)
 {
 	if (Missions==true)
-	{
-		if (btnOfMissions[0]->Touch(X,Y)==true)
-		{
-			Personnage=new Hero();
-            Personnage->x=40;
-            Personnage->y=40;
-
-            ReadScript();
-
-			map=new Sprite("Images/Data/map1.bmp",0xffffffff);
-
-		Missions=false;
-		}
-		
-			if (btnOfMissions[0]->Touch(mX,mY)==true)
-				btnOfMissions[0]->show=true;
-			else
-				btnOfMissions[0]->show=false;
-	}
+		Mission();
 	else
 	{
+		NextLevel();
+
 		if (stopB==false && stop==false)
 		{
 		InteractiveObjects();
         HeroMoves();
 		}
 
-			//CLOSE THE BOOK++++
+		//CLOSE THE BOOK++++
 	   if (buffer[DIK_RETURN] & 0x80)
 		{
 			for (int i=0;i<Book::counter;i++)
@@ -1279,12 +1001,36 @@ if (Play==true)
 		//CLOSE THE BOOK---
 
 
-	//EXIT++++
+	//MenuPause++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		if (buffer[DIK_ESCAPE] & 0x80)
-		{
 			stop=true;
+
+
+		if (stop==true)
+		{
+			for (int j=0;j<4;j++)
+				PM[j]->show=false;
+
+			for (int i=0;i<4;i++)
+			if (PM[i]->Touch(mX,mY)==true)
+			PM[i]->show=true;
+
+			if (PM[PM_CONTINUE]->Touch(X,Y)==true)
+			stop=false;
+
+			if (PM[PM_SAVE]->Touch(X,Y)==true)
+			stop=false;
+
+			if (PM[PM_SETTINGS]->Touch(X,Y)==true)
+			stop=false;
+
+			if (PM[PM_EXIT]->Touch(X,Y)==true)
+			{
+				Play=false;
+				Menu=true;
+			}
 		}
-	//EXIT----
+	//MenuPause----------------------------------------------------
 	}
 
 

@@ -37,26 +37,53 @@
     <Filter Include="Resource Files\Images\Play\Playing">
       <UniqueIdentifier>{49c9a945-b4e1-4681-bffe-72badee3970a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Hero">
-      <UniqueIdentifier>{e4a9e70c-aada-4f4f-bd7c-b8c9d7b62acc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Bonus">
-      <UniqueIdentifier>{cc11552d-cf87-406e-8fd9-a9257a3085ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Book">
-      <UniqueIdentifier>{0b052d07-56ad-4648-aac6-171b67e1f41e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Fire">
-      <UniqueIdentifier>{88ae3a44-f604-400c-8a45-2d86881f8142}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Images\Play\Missions">
       <UniqueIdentifier>{49aaffcb-93a2-496d-89b0-76a41d621469}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Maps">
+    <Filter Include="Resource Files\Images\Play\Playing\Groups">
+      <UniqueIdentifier>{331f2551-91de-4094-87fc-7a5b70c5d3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Maps">
       <UniqueIdentifier>{8e5ca2cd-f706-4702-a265-94cdba458f2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Images\Play\Playing\Door">
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Bonus">
+      <UniqueIdentifier>{cc11552d-cf87-406e-8fd9-a9257a3085ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Book">
+      <UniqueIdentifier>{0b052d07-56ad-4648-aac6-171b67e1f41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Door">
       <UniqueIdentifier>{da57bd18-c1a3-4050-af0e-426ed2124994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Fire">
+      <UniqueIdentifier>{88ae3a44-f604-400c-8a45-2d86881f8142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Hero">
+      <UniqueIdentifier>{e4a9e70c-aada-4f4f-bd7c-b8c9d7b62acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Locker">
+      <UniqueIdentifier>{d3f9ddc0-af01-4b98-82d5-a13b7f1181db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Questions">
+      <UniqueIdentifier>{62fa2d2d-f6e1-4b6c-a68b-33bcea517337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Number">
+      <UniqueIdentifier>{fb8df3d7-3891-4511-96c2-daf3f545f776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Pause_menu">
+      <UniqueIdentifier>{61c11e3c-53ae-4921-b16a-c895e76e096f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Inventar">
+      <UniqueIdentifier>{4681f907-72f3-419b-b6d3-9df9ca57a75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Explications">
+      <UniqueIdentifier>{31efb1c3-7cd8-4bf2-a2b7-1157f4536456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\Objects">
+      <UniqueIdentifier>{66f08104-8abd-4dd4-abde-0ba0606ad132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\Play\Playing\Groups\LockerShow">
+      <UniqueIdentifier>{9a96b210-70f1-453a-9675-c349ce4226f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +108,12 @@
       <Filter>Resource Files\Other</Filter>
     </ClInclude>
     <ClInclude Include="Playing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Create_map.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="class.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -202,117 +235,114 @@
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
     <Image Include="Images\bonus1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus10.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus4.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus5.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus6.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus7.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus8.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\bonus9.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Bonus</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Bonus</Filter>
     </Image>
     <Image Include="Images\heroJ1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroJ2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroJ3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroJ4.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroL1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroL2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroL3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroL4.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroL5.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroR1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroR2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroR3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroR4.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroR5.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroU1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroU2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroU3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\heroU4.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Hero</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Hero</Filter>
     </Image>
     <Image Include="Images\fire1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Fire</Filter>
     </Image>
     <Image Include="Images\fire2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Fire</Filter>
     </Image>
     <Image Include="Images\fire3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Fire</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Fire</Filter>
     </Image>
     <Image Include="Images\book1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Book</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Book</Filter>
     </Image>
     <Image Include="Images\book.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Book</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Book</Filter>
     </Image>
     <Image Include="Images\door2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Door</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Door</Filter>
     </Image>
     <Image Include="Images\door1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Door</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Door</Filter>
     </Image>
     <Image Include="Images\missions.bmp">
       <Filter>Resource Files\Images\Play\Missions</Filter>
     </Image>
     <Image Include="Images\key.bmp">
-      <Filter>Resource Files\Images\Play\Playing</Filter>
-    </Image>
-    <Image Include="Images\chest1.bmp">
       <Filter>Resource Files\Images\Play\Playing</Filter>
     </Image>
     <Image Include="Images\m1.bmp">
@@ -324,14 +354,11 @@
     <Image Include="Images\blocked.bmp">
       <Filter>Resource Files\Images\Play\Missions</Filter>
     </Image>
-    <Image Include="Images\Pause_menu.bmp">
-      <Filter>Resource Files\Images\Play\Playing</Filter>
-    </Image>
     <Image Include="Images\Data\map2.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Maps</Filter>
     </Image>
     <Image Include="Images\Data\map1.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Maps</Filter>
     </Image>
     <Image Include="Images\blockM.bmp">
       <Filter>Resource Files\Images\Play\Playing</Filter>
@@ -340,7 +367,232 @@
       <Filter>Resource Files\Images\Play\Playing</Filter>
     </Image>
     <Image Include="Images\Data\map3.bmp">
-      <Filter>Resource Files\Images\Play\Playing\Maps</Filter>
+      <Filter>Resource Files\Images\Play\Playing\Groups\Maps</Filter>
+    </Image>
+    <Image Include="Images\Pause_menu.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Pause_menu</Filter>
+    </Image>
+    <Image Include="Images\pm_continue.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Pause_menu</Filter>
+    </Image>
+    <Image Include="Images\pm_exit.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Pause_menu</Filter>
+    </Image>
+    <Image Include="Images\pm_save.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Pause_menu</Filter>
+    </Image>
+    <Image Include="Images\pm_settings.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Pause_menu</Filter>
+    </Image>
+    <Image Include="Images\0.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\5.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\6.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\7.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\8.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\9.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\10.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Number</Filter>
+    </Image>
+    <Image Include="Images\c0.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c3.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c4.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c5.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c6.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c7.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c8.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c9.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c10.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c11.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c12.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c13.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c14.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c15.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c16.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c17.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c18.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c19.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c20.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c21.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c22.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c23.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c24.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c25.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c26.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c27.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c28.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c29.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c30.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c31.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c32.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c33.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c34.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c35.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c36.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c37.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c38.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\c39.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Locker</Filter>
+    </Image>
+    <Image Include="Images\back.bmp">
+      <Filter>Resource Files\Images\Play\Missions</Filter>
+    </Image>
+    <Image Include="Images\Data\question1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Questions</Filter>
+    </Image>
+    <Image Include="Images\InventarOpen.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Inventar</Filter>
+    </Image>
+    <Image Include="Images\InvChest.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Inventar</Filter>
+    </Image>
+    <Image Include="Images\Inventar.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Inventar</Filter>
+    </Image>
+    <Image Include="Images\InventarExp.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Inventar</Filter>
+    </Image>
+    <Image Include="Images\OpenChest.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Explications</Filter>
+    </Image>
+    <Image Include="Images\o1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Objects</Filter>
+    </Image>
+    <Image Include="Images\o2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Objects</Filter>
+    </Image>
+    <Image Include="Images\code.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\chest1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\locker.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\lockerL.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\lOK.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\OpenTrue.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\LockerShow</Filter>
+    </Image>
+    <Image Include="Images\NextDoor1.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Door</Filter>
+    </Image>
+    <Image Include="Images\NextDoor2.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Door</Filter>
+    </Image>
+    <Image Include="Images\NeedKey.bmp">
+      <Filter>Resource Files\Images\Play\Playing\Groups\Door</Filter>
+    </Image>
+    <Image Include="Images\Text.bmp">
+      <Filter>Resource Files\Images\Play</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

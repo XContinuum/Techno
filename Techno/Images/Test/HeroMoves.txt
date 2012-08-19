@@ -1,0 +1,66 @@
+void HeroMoves()
+{
+	Hero::Timer();
+	Hero::TimerJ();
+
+	//GRAVITAION+++
+	Personnage->MoveUD('G',MatMap);
+	//GRAVITAION---
+
+	//JUMP+++
+	if (buffer[DIK_SPACE] & 0x80 && Personnage->JUMP(MatMap)==false &&  Personnage->DOWN(MatMap)!=3)
+		Personnage->Jump=true;
+	
+	Personnage->MoveUD('J',MatMap);
+	//JUMP---
+
+	//UP+++
+	if (((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80)) && Personnage->UP(MatMap)==3)
+		{
+		Personnage->MoveU=true;
+		Personnage->MoveD=false;
+		Personnage->FallDown=false;
+	}
+
+	Personnage->Move('U',MatMap);
+	//UP---
+	
+	//DOWN+++
+	if (((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80)) && Personnage->DOWN(MatMap)==3)
+	{
+		Personnage->MoveD=true;
+		Personnage->MoveU=false;
+	}
+		
+
+	if (Personnage->dt>10 && Personnage->MoveD==true)
+	{
+	Personnage->MoveU=false;
+	Personnage->Move('D',MatMap);
+	}
+	//DOWN---
+
+
+	//LEFT+++
+	if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80))
+	{
+		Personnage->MoveL=true;
+		Personnage->MoveR=false;	
+		Personnage->FallDown=true;
+	}
+
+	Personnage->Move('L',MatMap);
+	//LEFT---
+
+	//RIGHT+++
+	if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80))
+	{
+		Personnage->MoveR=true;	
+		Personnage->MoveL=false;	
+		Personnage->FallDown=true;
+	}
+		
+	Personnage->Move('R',MatMap);
+	//RIGHT---
+
+}
