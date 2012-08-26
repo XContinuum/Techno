@@ -85,6 +85,12 @@
     <Filter Include="Resource Files\Images\Play\Playing\Groups\LockerShow">
       <UniqueIdentifier>{9a96b210-70f1-453a-9675-c349ce4226f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images\CreateMap\Buttons">
+      <UniqueIdentifier>{9e136fd8-2c51-4d75-b593-d84d60267892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images\CreateMap\Matrerials">
+      <UniqueIdentifier>{c23cfdbb-e97e-4685-b24e-11ef0623da55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -147,64 +153,13 @@
     <Image Include="Images\btn_Settings.bmp">
       <Filter>Resource Files\Images\MainMenu</Filter>
     </Image>
-    <Image Include="Images\btnT1.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btnT2.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btnT3.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btnT4.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btnT5.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btnT6.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
     <Image Include="Images\colorSQ.bmp">
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
     <Image Include="Images\check.bmp">
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
-    <Image Include="Images\square.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareBack.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
     <Image Include="Images\map_tools.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btn_tool3.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btn_tool1.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btn_tool2.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareB1.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareB2.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareWood.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareMetal.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareStone.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareUP.bmp">
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
     <Image Include="Images\map.bmp">
@@ -226,12 +181,6 @@
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
     <Image Include="Images\empty.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\btn3_1.bmp">
-      <Filter>Resource Files\Images\CreateMap</Filter>
-    </Image>
-    <Image Include="Images\squareSmall.bmp">
       <Filter>Resource Files\Images\CreateMap</Filter>
     </Image>
     <Image Include="Images\bonus1.bmp">
@@ -593,6 +542,63 @@
     </Image>
     <Image Include="Images\Text.bmp">
       <Filter>Resource Files\Images\Play</Filter>
+    </Image>
+    <Image Include="Images\btnT1.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btnT2.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btnT3.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btnT4.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btnT5.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btnT6.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btn3_1.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btn_tool1.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btn_tool2.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\btn_tool3.bmp">
+      <Filter>Resource Files\Images\CreateMap\Buttons</Filter>
+    </Image>
+    <Image Include="Images\square.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareB1.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareB2.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareBack.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareMetal.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareSmall.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareStone.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareUP.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
+    </Image>
+    <Image Include="Images\squareWood.bmp">
+      <Filter>Resource Files\Images\CreateMap\Matrerials</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

@@ -37,8 +37,7 @@
 #define PM_SETTINGS 2
 #define PM_EXIT 3
 
-
-//Classes+++
+//Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class Sprite
 {
 public:
@@ -161,213 +160,36 @@ public:
 					img[j+i*width]=to;
 	}
 };
-class Button
+class Param
 {
 public:
-	int x,y;
-	int w,h;
-
-	bool show;
-	bool SubShow;
-	bool showBorder;
-
-	Sprite* Image;
-	Sprite* Border;
+	D3DLOCKED_RECT rectangle;
+	RECT rectSize;
+	IDirect3DSurface9* backBuffer;
 
 public:
-	Button(int _x,int _y,char* name):x(_x),y(_y)
+	Param()
 	{
-    Image=new Sprite(name);
-	w=Image->width;
-	h=Image->height;
-	}
-	Button(char* name)
-	{
-    Image=new Sprite(name);
-	w=Image->width;
-	h=Image->height;
-	}
-	Button(char* name,int trColor)
-	{
-	Image=new Sprite(name,trColor);
-	w=Image->width;
-	h=Image->height;
+		backBuffer=NULL;
 	}
 
-	bool Touch(int X,int Y)
+	void Draw(int x,int y,int w,int h,Sprite* Image)
 	{
-	bool t=false;
+	  rectSize.left =x;
+      rectSize.top =y;
+	  rectSize.right = rectSize.left+w;
+	  rectSize.bottom =rectSize.top+ h;
 
-	if (X>=x && X<=x+w && Y>=y && Y<=y+h)
-	t=true;
-
-	return t;
-	}
-
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-		if (show==true)
-		{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+w;
-	 rectSize.bottom =rectSize.top+ h;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-		}
+	  backBuffer->LockRect(&rectangle,&rectSize,0);		
+	  Image->DrawIntObject(rectangle);
+	  backBuffer->UnlockRect();
 	}
 };
 
-class NeoElement:public Sprite,public Button
-{
-public:
-	NeoElement(char* name):Sprite(name),Button(name)
-	{}
-	NeoElement(char* name,int trColor):Sprite(name,trColor),Button(name,trColor)
-	{}
-
-	void ChangeColor(int from,int to)
-	{
-	for (int i = 0; i < height; ++i)
-			for (int j = 0; j < width; ++j)
-				if (Button::Image->img[j+i*width] == from)
-					Button::Image->img[j+i*width]=to;
-	}
-	int FollowColor(int X,int Y)
-	{
-	int color=Button::Image->img[X+Y*width];
-
-	return color;
-	}
-};
-class NeoSprite:public Sprite
-{
-public: 
-	int w,h;
-
-public:
-	NeoSprite(char* name):Sprite(name)
-	{
-		w=width;
-		h=height;
-	}
-	NeoSprite(char* name,int trColor):Sprite(name,trColor)
-	{
-		w=width;
-		h=height;
-	}
-
-
-	void AddImage(int x,int y,Sprite* sp)
-	{
-		for (int i = y; i < y+sp->height; i++)
-		{
-			for (int j =x; j <x+sp->width; j++)
-			{
-				if (j<=width && i<=height && sp->img[(j-x)+(i-y)*sp->width]!=TransparentColor)
-				img[j+i*width]=sp->img[(j-x)+(i-y)*sp->width];
-			}
-		}
-	}
-	void AddImage(int x,int y,Sprite* sp,int i)
-	{
-		for (int i = y; i < y+sp->height; i++)
-		{
-			for (int j =x; j <x+sp->width; j++)
-			{
-				if (j<=width && i<=height)
-				img[j+i*width]=sp->img[(j-x)+(i-y)*sp->width];
-			}
-		}
-	}
-
-	int Color(int X,int Y,char letter)
-	{
-	int color=img[X+Y*width];
-    int r,g,b;
-	int final=0;
-
-	r = (BYTE)color;
-	g = (WORD)color >>8;
-	b = (DWORD)color >>16;
-
-	if (letter=='R')
-	final=r;
-	
-	if (letter=='G')
-	final=g;
-	
-	if (letter=='B')
-	final=b;
-
-	return final;
-	}
-
-	void Save(char* name)
-	{
-	std::ofstream os(name, std::ios::binary);
-
-unsigned char signature[2] = { 'B', 'M' };
-unsigned int fileSize = 14 + 40 + w*h*4;
-unsigned int reserved = 0;
-unsigned int offset = 14 + 40;
-
-unsigned int headerSize = 40;
-unsigned int dimensions[2] = {w,h};
-unsigned short colorPlanes = 1;
-unsigned short bpp = 32;
-unsigned int compression = 0;
-unsigned int imgSize = dimensions[0]*dimensions[1]*4;
-unsigned int resolution[2] = { 2795, 2795 };
-unsigned int pltColors = 0;
-unsigned int impColors = 0;
-
-os.write(reinterpret_cast<char*>(signature), sizeof(signature));
-os.write(reinterpret_cast<char*>(&fileSize), sizeof(fileSize));
-os.write(reinterpret_cast<char*>(&reserved), sizeof(reserved));
-os.write(reinterpret_cast<char*>(&offset),   sizeof(offset));
-
-os.write(reinterpret_cast<char*>(&headerSize),  sizeof(headerSize));
-os.write(reinterpret_cast<char*>(dimensions),   sizeof(dimensions));
-os.write(reinterpret_cast<char*>(&colorPlanes), sizeof(colorPlanes));
-os.write(reinterpret_cast<char*>(&bpp),         sizeof(bpp));
-os.write(reinterpret_cast<char*>(&compression), sizeof(compression));
-os.write(reinterpret_cast<char*>(&imgSize),     sizeof(imgSize));
-os.write(reinterpret_cast<char*>(resolution),   sizeof(resolution));
-os.write(reinterpret_cast<char*>(&pltColors),   sizeof(pltColors));
-os.write(reinterpret_cast<char*>(&impColors),   sizeof(impColors));
-
-unsigned char x,r,g,b;
-
-for (int i=dimensions[1]; i >0; --i)
-{
-  for (int j=0; j < dimensions[0]; ++j)
-  {
-    x = 0;
-	r = Color(j,i,'R');
-    g =Color(j,i,'G');
-    b =Color(j,i,'B');
-    os.write(reinterpret_cast<char*>(&b),sizeof(b));
-    os.write(reinterpret_cast<char*>(&g),sizeof(g));
-    os.write(reinterpret_cast<char*>(&r),sizeof(r));
-    os.write(reinterpret_cast<char*>(&x),sizeof(x));
-  }
-}
-
-os.close();
-	}
-};
-struct Tochka
-{
-	int X,Y;
-};
-//Classes---
-
-//Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 int w=800;
 int h=600;
+
+#include "class.h"
 
 int mW=40;
 int mH=30;
@@ -391,9 +213,6 @@ HWND hWnd;
 
 IDirect3D9* d3d = NULL;
 IDirect3DDevice9* videocard = NULL;
-IDirect3DSurface9* backBuffer = NULL;
-D3DLOCKED_RECT rectangle;
-RECT rectSize;
 D3DPRESENT_PARAMETERS pp;
 HRESULT hr;
 
@@ -401,20 +220,11 @@ IDirectInputDevice8* keyboard;
 IDirectInput8* di;
 
 char buffer[256];
+
+Param* paramDraw;
 //Global variables---------------
 
 
-void resRect(int l,int t,int r,int b,Sprite* sp)
-{
-	 rectSize.left =l;
-     rectSize.top =t;
-	 rectSize.right = rectSize.left+r;
-	 rectSize.bottom =rectSize.top+ b;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 sp->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-}
 
 #include "Playing.h"
 #include "Create_map.h"
@@ -424,13 +234,12 @@ void Draw()
 	 //MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 if (Menu==true)
 	 {
-	 resRect(0,0,w,h,MainMenu);
+		 paramDraw->Draw(0,0,w,h,MainMenu);
 
 	 for (int i=0;i<4;i++)
-		btnMain[i]->Draw(rectangle,rectSize,backBuffer);
+		btnMain[i]->Draw(paramDraw);
 	 }
 	 //MAIN MENU-------------------------------------------------------
-
 
 	 //PLAY++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 if (Play==true)
@@ -470,7 +279,7 @@ btnMain[EXIT]->show=false;
 
 //Play+++
 char* tt="score:0";//delete
-txt=new Text(tt,0xFF808E9B,8,43);//delete
+txt=new Text(tt,0xFF808E9B,8,43);//score
 
 //Rectangle+++
 dr=new DrawRectangle(5,5,40,50,0xff000000,0xffffffff);
@@ -494,35 +303,7 @@ lock->x=(w-lock->w)/2;
 lock->y=(h-lock->h)/2;
 lock->show=true;
 
-locker=new Button("Images/locker.bmp",0xffffffff);
-locker->x=(w-lock->w)/2+99;
-locker->y=(h-lock->h)/2+107;
-locker->show=true;
 
-for (int i=0;i<8;i++)
-{
-nmb[i]=new NumberDraw();
-
-nmb[i]->x=lock->x+i*2+nmb[i]->Image->width*i+162;
-nmb[i]->y=lock->y+190;
-
-if (i%3==0 && i!=0)
-	nmb[i-1]->num=10;
-}
-
-LockerLight=new Button("Images/lockerL.bmp",0xffffffff);
-LockerLight->x=locker->x;
-LockerLight->y=locker->y;
-LockerLight->show=false;
-
-ar=new Arrow();
-ar->x=lock->x+145;
-ar->y=lock->y+149;
-
-lOK=new Button("Images/lOK.bmp",0xffffffff);
-lOK->x=lock->x+156;
-lOK->y=lock->y+161;
-lOK->show=false;
 //Locker---
 
 Back=new Button("Images/back.bmp",0xffffffff);
@@ -561,6 +342,8 @@ PM[PM_EXIT]->show=false;
 
 void InitialSys(HINSTANCE hInstance)
 {
+	paramDraw=new Param();
+
 d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
 	ZeroMemory(&pp,sizeof(pp));
@@ -587,7 +370,7 @@ d3d = Direct3DCreate9(D3D_SDK_VERSION);
 	ZeroMemory(buffer,sizeof(buffer));
 		
 
-	videocard->GetBackBuffer(0,0,D3DBACKBUFFER_TYPE_MONO,&backBuffer);
+	videocard->GetBackBuffer(0,0,D3DBACKBUFFER_TYPE_MONO,&paramDraw->backBuffer);
 }
 void MAINMENU()
 {

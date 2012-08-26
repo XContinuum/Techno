@@ -1,5 +1,4 @@
-﻿#include "class.h"
-//Play++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+﻿//Play++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bool Play=false;
 
 //Missions+++
@@ -22,7 +21,6 @@ int timer;
 int timer1;
 int dt;
 int Level=1;
-int sd=0;
 
 bool stopB=false;
 bool stop=false;
@@ -45,12 +43,7 @@ ButtonON* bt[10];
 FinalDoor* Fd[10];
 //Objects in the game---
 Button* lock;
-Button* locker;
-Button* LockerLight;
-Button* lOK;
 
-NumberDraw* nmb[8];
-Arrow* ar;
 Inventar* Inv;
 
 //Move Invent Chest+++
@@ -66,6 +59,7 @@ int score=0;
 char* sc;
 
 DrawRectangle* dr;
+
 //Play------------------------------------------------------
 
 
@@ -74,49 +68,49 @@ void DrawPlay()
 {
  if (Missions==true)
 		 {
-		 resRect(0,0,w,h,missions);
+			 paramDraw->Draw(0,0,w,h,missions);
 
 		 if(btnOfMissions[0]->show==true)
-			 btnOfMissions[0]->Draw(rectangle,rectSize,backBuffer);
+			 btnOfMissions[0]->Draw(paramDraw);
 
 		 for (int i=0;i<4;i++)
 		 for (int j=0;j<11;j++)
 			 if (i!=0 || j!=0)
-		 resRect(22+j*13+j*blocked->width,63+i*36+i*blocked->height,blocked->width,blocked->height,blocked);
+		 paramDraw->Draw(22+j*13+j*blocked->width,63+i*36+i*blocked->height,blocked->width,blocked->height,blocked);
 
 		 	 if (Back->show==true)
-				 Back->Draw(rectangle,rectSize,backBuffer);
+				 Back->Draw(paramDraw);
 		 }
 		 else
 		 {
-	 resRect(0,0,w,h,map);
+	 paramDraw->Draw(0,0,w,h,map);
 
 	 //Fire++++
 	 for (int i=0;i<Fire::counter;i++)
-	 resRect(f[i]->x,f[i]->y,f[i]->ImageView->width,f[i]->ImageView->height,f[i]->ImageView);
+	 paramDraw->Draw(f[i]->x,f[i]->y,f[i]->ImageView->width,f[i]->ImageView->height,f[i]->ImageView);
 	 //Fire---
 
 	 //Door++++
 	 for (int i=0;i<Door::counter;i++)
-	 resRect(d[i]->x,d[i]->y,d[i]->ImageView->width,d[i]->ImageView->height,d[i]->ImageView);
+	 paramDraw->Draw(d[i]->x,d[i]->y,d[i]->ImageView->width,d[i]->ImageView->height,d[i]->ImageView);
 	 //Door---
 
 	 //FinalDoor++++
 	 for (int i=0;i<FinalDoor::counter;i++)
-		 Fd[i]->Draw(rectangle,rectSize,backBuffer);
+		 Fd[i]->Draw(paramDraw);
 	 //FinalDoor---
 
 	 //Bonus++++
 	 for (int i=0;i<Bonus::counter;i++)
 	 {
 		 if (bons[i]->show==true)
-			 resRect(bons[i]->x,bons[i]->y,bons[i]->ImageView->width,bons[i]->ImageView->height,bons[i]->ImageView);
+			 paramDraw->Draw(bons[i]->x,bons[i]->y,bons[i]->ImageView->width,bons[i]->ImageView->height,bons[i]->ImageView);
 	 }
 	 //Bonus---
 
 	  //BlockMoves++++
 	 for (int i=0;i<BlockMoves::counter;i++)
-	 resRect(bm[i]->x,bm[i]->y,bm[i]->Image->width,bm[i]->Image->height,bm[i]->Image);
+	 paramDraw->Draw(bm[i]->x,bm[i]->y,bm[i]->Image->width,bm[i]->Image->height,bm[i]->Image);
 	 //BlockMoves---
 
 	
@@ -124,42 +118,24 @@ void DrawPlay()
 	  //Chest++++
 	 for (int i=0;i<Chest::counter;i++)
 	 {
-		 chest[i]->Draw(rectangle,rectSize,backBuffer);
+		 chest[i]->Draw(paramDraw);
 	 }
 	 
-	 Personnage->Draw(rectangle,rectSize,backBuffer);
+	 Personnage->Draw(paramDraw);
+
 
 	 for (int i=0;i<Chest::counter;i++)
 	 {
 	 if (chest[i]->show==true)
 	 {
-	 resRect(0,0,pause->width,pause->height,pause);
-
-	 lock->Draw(rectangle,rectSize,backBuffer);
-
-
-		 if (chest[i]->showC==false)
-		 locker->Draw(rectangle,rectSize,backBuffer);
-
-		 ar->Draw(rectangle,rectSize,backBuffer);
-
-		 for (int i=0;i<8;i++)
-			 nmb[i]->Draw(rectangle,rectSize,backBuffer);
-
-		 LockerLight->Draw(rectangle,rectSize,backBuffer);
-		 lOK->Draw(rectangle,rectSize,backBuffer);
-
-		 chest[i]->txt->Draw(rectangle,rectSize,backBuffer);
-
-		 chest[i]->DrawC(rectangle,rectSize,backBuffer);
+	 paramDraw->Draw(0,0,pause->width,pause->height,pause);
+	 chest[i]->DrawC(paramDraw);
 	 }
 	 }
 	 //Chest---
 
 	  //Inventar+++
-	 Inv->Draw(rectangle,rectSize,backBuffer);
-
-	 //dr->Draw(rectangle,rectSize,backBuffer);
+	 Inv->Draw(paramDraw);
 	 //Inventar---
 
 	    //Book++++
@@ -168,9 +144,9 @@ void DrawPlay()
 		 if (b[i]->show==true)
 		 {
 			 if (b[i]->state=='O')
-	 resRect(0,0,pause->width,pause->height,pause);
+	  paramDraw->Draw(0,0,pause->width,pause->height,pause);
 
-	 resRect(b[i]->x,b[i]->y,b[i]->Image->width,b[i]->Image->height,b[i]->Image);
+	  paramDraw->Draw(b[i]->x,b[i]->y,b[i]->Image->width,b[i]->Image->height,b[i]->Image);
 		 }
 	 }
 	 //Book---
@@ -183,25 +159,22 @@ void DrawPlay()
 
 	 Sprite* cur=new Sprite(path,0xffffffff);
 
-	 resRect(mX,mY,cur->width,cur->height,cur);
+	  paramDraw->Draw(mX,mY,cur->width,cur->height,cur);
 	 }
 	 //Cursor---
 
 	 //Menu Pause+++
 	 if (stop==true)
 	 {
-	 resRect(0,0,pause->width,pause->height,pause);
-	 resRect((w-Menu_pause->width)/2,(h-Menu_pause->height)/2,Menu_pause->width,Menu_pause->height,Menu_pause);
+	  paramDraw->Draw(0,0,pause->width,pause->height,pause);
+	  paramDraw->Draw((w-Menu_pause->width)/2,(h-Menu_pause->height)/2,Menu_pause->width,Menu_pause->height,Menu_pause);
 
 	 for (int i=0;i<4;i++)
-		PM[i]->Draw(rectangle,rectSize,backBuffer);
+		 PM[i]->Draw(paramDraw);
 	 }
 	 //Menu Pause---
 
-
-	 ///Text
-	 txt->Draw(rectangle,rectSize,backBuffer);
-	 ///Text
+	 txt->Draw(paramDraw);
 		 }
 }
 
@@ -419,6 +392,7 @@ for (int k=0;k<mH*mW+100;k++)
 for(int i=0;i<Chest::counter;i++)
 	chest[i]->LoadQuestion(Level);
 }
+
 void Mission()
 {
 //Exit+++
@@ -460,127 +434,6 @@ void Mission()
 //Missions---
 
 //Play+++
-void Lock()
-{
-	for (int i=0;i<Chest::counter;i++)
-	{
-	if (chest[i]->show==true)
-	{
-	if (lock->Touch(X,Y)==false && lmb==true && Inv->TouchInvShow(X,Y)==false)
-	{
-		for (int i=0;i<Chest::counter;i++)
-			chest[i]->show=false;
-	}
-
-	int mmx=mX-locker->x;
-	int mmy=mY-locker->y;
-	int dist=sqrt((mmx-locker->w/2)*(mmx-locker->w/2)+(locker->h/2-mmy)*(locker->h/2-mmy));
-
-
-	if (lOK->Touch(X,Y)==true && lmb==true)
-	{
-		lOK->show=true;
-		
-		if (sd<6)
-		sd+=3;
-		else
-			sd=0;
-
-		lmb=false;
-	}
-	else
-		lOK->show=false;
-
-
-
-	if (LockerLight->Touch(mX,mY)==true && dist>55 && dist<88)
-	{
-	LockerLight->show=true;
-
-
-	if (locker->Touch(X,Y)==true && lmb==true)
-	{
-	double xn=locker->w/2;
-	double yn=locker->h/2;
-
-	double x1=0;
-	double y1=locker->h/2;
-
-	double xm=(X-locker->x)-xn;
-	double ym=yn-(Y-locker->y);
-	
-	double a1=ym;
-	double a2=sqrt(xm*xm+ym*ym);
-
-	double angle1=acos(a1/a2);
-	double angle2=(angle1*180)/3.14;
-
-	if (X-locker->x<xn)
-		angle2=360-angle2;
-
-	int angle=angle2/9;
-	
-		  //Show angle+++
-		  char* aq1=new char[100];
-
-			int num1;
-
-			if (angle<10)
-            num1 = sprintf(aq1,"0%d",angle);
-			else
-            num1 = sprintf(aq1,"%d",angle);
-
-			char n1,n2;
-
-			n1=aq1[0];
-			n2=aq1[1];
-
-			nmb[sd]->num=atoi(&n1);
-			nmb[sd+1]->num=atoi(&n2);
-
-			ar->num=angle;
-		  //Show angle---
-
-
-			//OpenChest+++
-			int combinaison=nmb[0]->num*100000+nmb[1]->num*10000+nmb[3]->num*1000+nmb[4]->num*100+nmb[6]->num*10+nmb[7]->num;
-			vseA=combinaison;
-
-		
-			//OpenChest---
-
-			lmb=false;
-	}
-	}
-	else
-			LockerLight->show=false;
-
-
-
-	//Open++++
-   if (vseA==chest[i]->Answer && sd==0)
-				chest[i]->BOk=true;
-
-	if (chest[i]->BOk==true)
-	{
-	            Chest::Timer();
-
-				if (Chest::dt>2000)
-				{
-				chest[i]->showC=true;
-				chest[i]->BOk=false;
-				vseA=0;
-
-				Chest::dt=0;
-				Chest::timer=0;
-				Chest::timer1=0;
-				}
-	}
-	//Open----
-	}
-}
-}
-
 void InteractiveObjects()
 {
 	//BONUS+++
@@ -726,6 +579,8 @@ void InteractiveObjects()
 		//Chest+++
 		for (int i=0;i<Chest::counter;i++)
 		{
+	    chest[i]->OpenLock(Inv,lmb,X,Y,mX,mY);
+
 		if (chest[i]->Touch(mX,mY)==true)
 		{
 			chest[i]->expO=true;
@@ -829,7 +684,7 @@ void InteractiveObjects()
 				chest[i]->show=true;
 			//CHEST---
 
-		Lock();
+	
 }
 void HeroMoves()
 {

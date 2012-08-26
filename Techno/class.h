@@ -1,18 +1,217 @@
+﻿//Classes+++
+class Button
+{
+public:
+	int x,y;
+	int w,h;
+
+	bool show;
+	bool SubShow;
+	bool showBorder;
+
+	Sprite* Image;
+	Sprite* Border;
+
+public:
+	Button(int _x,int _y,char* name):x(_x),y(_y)
+	{
+    Image=new Sprite(name);
+	w=Image->width;
+	h=Image->height;
+	}
+	Button(char* name)
+	{
+    Image=new Sprite(name);
+	w=Image->width;
+	h=Image->height;
+	}
+	Button(char* name,int trColor)
+	{
+	Image=new Sprite(name,trColor);
+	w=Image->width;
+	h=Image->height;
+	}
+
+	bool Touch(int X,int Y)
+	{
+	bool t=false;
+
+	if (X>=x && X<=x+w && Y>=y && Y<=y+h)
+	t=true;
+
+	return t;
+	}
+
+	void Draw(Param* p)
+	{
+		if (show==true)
+			p->Draw(x,y,w,h,Image);
+	}
+};
+
+class NeoElement:public Sprite,public Button
+{
+public:
+	NeoElement(char* name):Sprite(name),Button(name)
+	{}
+	NeoElement(char* name,int trColor):Sprite(name,trColor),Button(name,trColor)
+	{}
+
+	void ChangeColor(int from,int to)
+	{
+	for (int i = 0; i < height; ++i)
+			for (int j = 0; j < width; ++j)
+				if (Button::Image->img[j+i*width] == from)
+					Button::Image->img[j+i*width]=to;
+	}
+	int FollowColor(int X,int Y)
+	{
+	int color=Button::Image->img[X+Y*width];
+
+	return color;
+	}
+};
+class NeoSprite:public Sprite
+{
+public: 
+	int w,h;
+
+public:
+	NeoSprite(char* name):Sprite(name)
+	{
+		w=width;
+		h=height;
+	}
+	NeoSprite(char* name,int trColor):Sprite(name,trColor)
+	{
+		w=width;
+		h=height;
+	}
+
+
+	void AddImage(int x,int y,Sprite* sp)
+	{
+		for (int i = y; i < y+sp->height; i++)
+		{
+			for (int j =x; j <x+sp->width; j++)
+			{
+				if (j<=width && i<=height && sp->img[(j-x)+(i-y)*sp->width]!=TransparentColor)
+				img[j+i*width]=sp->img[(j-x)+(i-y)*sp->width];
+			}
+		}
+	}
+	void AddImage(int x,int y,Sprite* sp,int i)
+	{
+		for (int i = y; i < y+sp->height; i++)
+		{
+			for (int j =x; j <x+sp->width; j++)
+			{
+				if (j<=width && i<=height)
+				img[j+i*width]=sp->img[(j-x)+(i-y)*sp->width];
+			}
+		}
+	}
+
+	int Color(int X,int Y,char letter)
+	{
+	int color=img[X+Y*width];
+    int r,g,b;
+	int final=0;
+
+	r = (BYTE)color;
+	g = (WORD)color >>8;
+	b = (DWORD)color >>16;
+
+	if (letter=='R')
+	final=r;
+	
+	if (letter=='G')
+	final=g;
+	
+	if (letter=='B')
+	final=b;
+
+	return final;
+	}
+
+	void Save(char* name)
+	{
+	std::ofstream os(name, std::ios::binary);
+
+unsigned char signature[2] = { 'B', 'M' };
+unsigned int fileSize = 14 + 40 + w*h*4;
+unsigned int reserved = 0;
+unsigned int offset = 14 + 40;
+
+unsigned int headerSize = 40;
+unsigned int dimensions[2] = {w,h};
+unsigned short colorPlanes = 1;
+unsigned short bpp = 32;
+unsigned int compression = 0;
+unsigned int imgSize = dimensions[0]*dimensions[1]*4;
+unsigned int resolution[2] = { 2795, 2795 };
+unsigned int pltColors = 0;
+unsigned int impColors = 0;
+
+os.write(reinterpret_cast<char*>(signature), sizeof(signature));
+os.write(reinterpret_cast<char*>(&fileSize), sizeof(fileSize));
+os.write(reinterpret_cast<char*>(&reserved), sizeof(reserved));
+os.write(reinterpret_cast<char*>(&offset),   sizeof(offset));
+
+os.write(reinterpret_cast<char*>(&headerSize),  sizeof(headerSize));
+os.write(reinterpret_cast<char*>(dimensions),   sizeof(dimensions));
+os.write(reinterpret_cast<char*>(&colorPlanes), sizeof(colorPlanes));
+os.write(reinterpret_cast<char*>(&bpp),         sizeof(bpp));
+os.write(reinterpret_cast<char*>(&compression), sizeof(compression));
+os.write(reinterpret_cast<char*>(&imgSize),     sizeof(imgSize));
+os.write(reinterpret_cast<char*>(resolution),   sizeof(resolution));
+os.write(reinterpret_cast<char*>(&pltColors),   sizeof(pltColors));
+os.write(reinterpret_cast<char*>(&impColors),   sizeof(impColors));
+
+unsigned char x,r,g,b;
+
+for (int i=dimensions[1]; i >0; --i)
+{
+  for (int j=0; j < dimensions[0]; ++j)
+  {
+    x = 0;
+	r = Color(j,i,'R');
+    g =Color(j,i,'G');
+    b =Color(j,i,'B');
+    os.write(reinterpret_cast<char*>(&b),sizeof(b));
+    os.write(reinterpret_cast<char*>(&g),sizeof(g));
+    os.write(reinterpret_cast<char*>(&r),sizeof(r));
+    os.write(reinterpret_cast<char*>(&x),sizeof(x));
+  }
+}
+
+os.close();
+	}
+};
+struct Tochka
+{
+	int X,Y;
+};
+//Classes---
 class Text
 {
 public:
 	char* string;
 	int x,y;
 
+	
+
 private:
 	Sprite* txt;
 	Sprite* letters[77];
+	Sprite* lettersColor[77];
 
 	int size;
 	int w,h;
 	int* encode;
 
 	char* szLetters;
+	int initColor;
 
 public:
 	Text(char* str,int color,int _x,int _y):string(str)
@@ -22,23 +221,8 @@ public:
 
 		txt=new Sprite("Images/Text.bmp",0xffffffff);
 
-		int i=0;
-		int j=0;
-
-		for (int k=0;k<77;k++)
-		{
-		letters[k]=new Sprite("Images/Text.bmp",0xffffffff);
-		letters[k]->cut(w*j,h*i,w,h);
-		letters[k]->RemplaceColor(0xFF000000,color);
-		
-		j++;
-		
-		if (j==26)
-		{
-			i++;
-			j=0;
-		}
-		}
+		initColor=color;
+		ChangeColor(color);
 
 		x=_x;
 		y=_y;
@@ -57,7 +241,37 @@ public:
 	for (int i=0;i<size;i++)
 		encode[i]=convertion(static_cast<int>(string[i]),i);
 	}
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
+	Text(char* str,int color,int _x,int _y,int addC):string(str)
+	{
+		w=11;
+		h=11;
+
+		txt=new Sprite("Images/Text.bmp",0xffffffff);
+
+		initColor=color;
+		ChangeColor(color);
+
+		x=_x;
+		y=_y;
+		//Conv+++
+		size=0;
+
+		while(string[size]!='\0')
+        size++;
+
+		encode=new int[size];
+		
+		szLetters=new char[size];
+	    szLetters[size]='\0';
+
+
+	for (int i=0;i<size;i++)
+		encode[i]=convertion(static_cast<int>(string[i]),i);
+
+	addColor(addC);
+	}
+
+	void Draw(Param* p)
 	{
 	int n=0;
 	int distance=0;
@@ -76,16 +290,39 @@ public:
 		  distance=5;
 
 
-		  rectSize.left =x+i*letters[i]->width-distance*i;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+letters[n]->width;
-	 rectSize.bottom =rectSize.top+ letters[n]->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 letters[n]->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
+	 p->Draw(x+i*letters[i]->width-distance*i,y,letters[n]->width,letters[n]->height,letters[n]);
 	}
-	};
+	}
+	void Draw(Param* p,int* pos,int s)
+	{
+	int n=0;
+	int distance=0;
+	Sprite* temp;
+
+	for (int i=0;i<size;i++)
+	{
+	  n=encode[i];
+	  temp=letters[n];
+
+			//++++
+			for (int j=0;j<s;j++)
+				if (i==pos[j])
+					temp=lettersColor[n];
+			//----
+
+	  if (szLetters[i]=='U')
+		  distance=1;
+
+	  if (szLetters[i]=='L')
+		  distance=5;
+
+	  if (szLetters[i]=='N')
+		  distance=5;
+
+
+	 p->Draw(x+i*temp->width-distance*i,y,temp->width,temp->height,temp);
+	}
+	}
 	void changeText(char* str)
 	{
 		string=str;
@@ -185,6 +422,47 @@ private:
 
 
 		return sym;
+	}
+	void ChangeColor(int color)
+	{
+		int i=0;
+		int j=0;
+
+	for (int k=0;k<77;k++)
+		{
+		letters[k]=new Sprite("Images/Text.bmp",0xffffffff);
+		letters[k]->cut(w*j,h*i,w,h);
+		letters[k]->RemplaceColor(0xFF000000,color);
+		
+		j++;
+		
+		if (j==26)
+		{
+			i++;
+			j=0;
+		}
+		}
+	}
+
+	void addColor(int color)
+	{
+		int i=0;
+		int j=0;
+
+	for (int k=0;k<77;k++)
+		{
+		lettersColor[k]=new Sprite("Images/Text.bmp",0xffffffff);
+		lettersColor[k]->cut(w*j,h*i,w,h);
+		lettersColor[k]->RemplaceColor(0xFF000000,color);
+		
+		j++;
+		
+		if (j==26)
+		{
+			i++;
+			j=0;
+		}
+		}
 	}
 };
 
@@ -452,16 +730,9 @@ public:
 		w=Image->width;
 		h=Image->height;
 	}
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
+	void Draw(Param* p)
 	{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Image->width;
-	 rectSize.bottom =rectSize.top+ Image->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
+		p->Draw(x,y,Image->width,Image->height,Image);
 	}
 	bool ChangeLevel()
 	{
@@ -721,6 +992,217 @@ int Bonus::dt=0;
 int Bonus::timer=0;
 int Bonus::timer1=0;
 
+class Arrow
+{
+public:
+	int x,y;
+	int num;
+
+	Sprite* Image;
+	Sprite* Images[40];
+
+public:
+	Arrow()
+	{
+		x=0;
+		y=0;
+		num=0;
+
+		Images[0]=new Sprite("Images/c0.bmp",0xffffffff);
+		Images[1]=new Sprite("Images/c1.bmp",0xffffffff);
+		Images[2]=new Sprite("Images/c2.bmp",0xffffffff);
+		Images[3]=new Sprite("Images/c3.bmp",0xffffffff);
+		Images[4]=new Sprite("Images/c4.bmp",0xffffffff);
+		Images[5]=new Sprite("Images/c5.bmp",0xffffffff);
+		Images[6]=new Sprite("Images/c6.bmp",0xffffffff);
+		Images[7]=new Sprite("Images/c7.bmp",0xffffffff);
+		Images[8]=new Sprite("Images/c8.bmp",0xffffffff);
+		Images[9]=new Sprite("Images/c9.bmp",0xffffffff);
+		Images[10]=new Sprite("Images/c10.bmp",0xffffffff);
+		Images[11]=new Sprite("Images/c11.bmp",0xffffffff);
+		Images[12]=new Sprite("Images/c12.bmp",0xffffffff);
+		Images[13]=new Sprite("Images/c13.bmp",0xffffffff);
+		Images[14]=new Sprite("Images/c14.bmp",0xffffffff);
+		Images[15]=new Sprite("Images/c15.bmp",0xffffffff);
+		Images[16]=new Sprite("Images/c16.bmp",0xffffffff);
+		Images[17]=new Sprite("Images/c17.bmp",0xffffffff);
+		Images[18]=new Sprite("Images/c18.bmp",0xffffffff);
+		Images[19]=new Sprite("Images/c19.bmp",0xffffffff);
+		Images[20]=new Sprite("Images/c20.bmp",0xffffffff);
+		Images[21]=new Sprite("Images/c21.bmp",0xffffffff);
+		Images[22]=new Sprite("Images/c22.bmp",0xffffffff);
+		Images[23]=new Sprite("Images/c23.bmp",0xffffffff);
+		Images[24]=new Sprite("Images/c24.bmp",0xffffffff);
+		Images[25]=new Sprite("Images/c25.bmp",0xffffffff);
+		Images[26]=new Sprite("Images/c26.bmp",0xffffffff);
+		Images[27]=new Sprite("Images/c27.bmp",0xffffffff);
+		Images[28]=new Sprite("Images/c28.bmp",0xffffffff);
+		Images[29]=new Sprite("Images/c29.bmp",0xffffffff);
+		Images[30]=new Sprite("Images/c30.bmp",0xffffffff);
+		Images[31]=new Sprite("Images/c31.bmp",0xffffffff);
+		Images[32]=new Sprite("Images/c32.bmp",0xffffffff);
+		Images[33]=new Sprite("Images/c33.bmp",0xffffffff);
+		Images[34]=new Sprite("Images/c34.bmp",0xffffffff);
+		Images[35]=new Sprite("Images/c35.bmp",0xffffffff);
+		Images[36]=new Sprite("Images/c36.bmp",0xffffffff);
+		Images[37]=new Sprite("Images/c37.bmp",0xffffffff);
+		Images[38]=new Sprite("Images/c38.bmp",0xffffffff);
+		Images[39]=new Sprite("Images/c39.bmp",0xffffffff);
+	}
+
+	void Draw(Param* p)
+	{
+	Image=Images[num];
+
+	p->Draw(x,y,Image->width,Image->height,Image);
+	}
+};
+
+class Inventar
+{
+public:
+	int x,y;
+	int mX,mY;
+	int w,h;
+	int objects[9];
+	int move;
+	int check;
+
+	bool show;
+	bool exp;
+	
+	static bool iLmb;
+	static int Xi;
+	static int Yi;
+
+	Sprite* Image;
+	Sprite* Open;
+	Sprite* InventarExp;
+	Sprite* ImObjects[9];
+
+public:
+	Inventar():exp(false),move(false)
+	{
+	x=0;
+	y=0;
+	mX=0;
+	mY=0;
+
+	Image=new Sprite("Images/Inventar.bmp",0xffffffff);
+	Open=new Sprite("Images/InventarOpen.bmp",0xffffffff);
+	InventarExp=new Sprite("Images/InventarExp.bmp",0xffffffff);
+
+	for (int i=0;i<9;i++)
+	objects[i]=0;
+
+	ChangeImages();
+	}
+
+	void Draw(Param* p)
+	{
+	 p->Draw(x,y,Image->width,Image->height,Image);
+
+	 //0---
+		 if (objects[0]!=0)
+	 p->Draw(17+0*7+0*25-7,7,ImObjects[0]->width,ImObjects[0]->height,ImObjects[0]);
+	 //0+++
+
+	 if (show==true)
+	 {
+	 p->Draw(x,y,Open->width,Open->height,Open);
+
+	 for (int i=0;i<9;i++)
+	 {
+		 if (objects[i]!=0)
+		 {
+	 int l =17+i*7+i*25;
+
+	 if (i==0)
+		 l=17+i*7+i*25-7;
+
+	 p->Draw(l,7,ImObjects[i]->width,ImObjects[i]->height,ImObjects[i]);
+		 }
+	 }
+	 }
+
+
+	 if (exp==true)
+	 p->Draw(mX,mY,InventarExp->width,InventarExp->height,InventarExp);
+	
+	}
+	void ChangeImages()
+	{
+		char* path=new char[30];
+	 int num;
+
+		for (int i=0;i<9;i++)
+		{
+		 if (objects[i]!=0)
+		 {
+     num = sprintf(path, "Images/o%d.bmp",objects[i]);
+
+	 ImObjects[i]=new Sprite(path,0xffffffff);
+		 }
+		}
+	}
+	bool Touch(int X,int Y)
+	{
+		bool t=false;
+
+		if (X>=x && X<=x+Image->width && Y>=y && Y<=y+Image->height)
+		t=true;
+
+		return t;
+	}
+	int TouchObject(int X,int Y)
+	{
+		int x1=17,x2=297;
+		int y1=7,y2=31;
+
+		int zn=-1;
+		int block=(X-x1)/(25+7);
+
+		if (X>=x1 && X<=x2 && Y>=y1 && Y<=y2)
+			if (X-x1-block*(25+7)<=25)
+			zn=block;
+
+		return zn;
+	}
+
+   static void SetPosition(int X,int Y)
+   {
+   Xi=X;
+   Yi=Y;
+   iLmb=true;
+   }
+
+	int TouchInvShow(int X,int Y)
+	{
+		bool t=false;
+
+		if (X>=x && X<=x+Open->width && Y>=y && Y<=y+Open->height)
+		t=true;
+
+		return t;
+	}
+
+	void AddObject(int num)
+	{
+	for (int i=0;i<9;i++)
+	{
+		if (num!=0 && objects[i]==0)
+	   {
+		objects[i]=num;
+		ChangeImages();
+		break;
+	   }
+	}
+	}
+};
+bool Inventar::iLmb=false;
+int Inventar::Xi=0;
+int Inventar::Yi=0;
+
 class Chest
 {
 public:
@@ -730,6 +1212,9 @@ public:
 	int Answer;
 	int check;
 	int objects[6*8];
+	int sd;
+	int cd[3];
+	int combinaison;
 
 	bool expO;
 	bool show;
@@ -737,44 +1222,46 @@ public:
 	bool move;
 	bool BOk;
 
-	static int counter;
 	static bool iLmb;
+	static int counter;
 	static int Xi;
 	static int Yi;
-	
-	Sprite* ImObjects[6*8];
-	Sprite* Image[2];
-	Sprite* ImageView;
-	Sprite* SubImage;
-	Sprite* OpenExp;
-	Sprite* Content;
-	Sprite* OkOpen;
-    Button* lock;
-
-	Text* txt;
-	char* question;
-
 	static int dt;
     static int timer;
     static int timer1;
 
+	char* question;
+	
+	Sprite* ImageView;
+	Sprite* ImObjects[6*8];
+	Sprite* Image[2];
+	Sprite* code;
+	Sprite* OpenExp;
+	Sprite* Content;
+	Sprite* OkOpen;
+	Text* txt;
+    Text* codeView;
+    Button* lock;
+    Button* locker;
+Button* LockerLight;
+Button* lOK;
+
+    Arrow* ar;
+
 public:
 	Chest(int _x,int _y,int Level,int ans1,int ans2):x(_x),y(_y),Cadr(0),show(false),expO(false),showC(false),move(false),check(0)
 	{
-	ImageView=NULL;
 	Image[0]=new Sprite("Images/chest1.bmp");
 	Image[1]=new Sprite("Images/chest2.bmp");
-	ImageView=Image[0];
-
-	counter++;
-
-	SubImage=new Sprite("Images/code.bmp");
-
-	Answer=ans1*1000+ans2;
-
+	code=new Sprite("Images/code.bmp");
 	OpenExp=new Sprite("Images/OpenChest.bmp",0xffffffff);
 	Content=new Sprite("Images/InvChest.bmp",0xffffffff);
 	OkOpen=new Sprite("Images/OpenTrue.bmp",0xffffffff);
+	ImageView=Image[0];
+
+	counter++;
+	Answer=ans1*1000+ans2;
+	
 	BOk=false;
 	//----
 	for (int i=0;i<6*8;i++)
@@ -783,117 +1270,50 @@ public:
 	 objects[0]=2;
 
 	ChangeImages();
-
 	//+++
+	sd=0;
+	for (int i=0;i<3;i++)
+	   cd[i]=0;
+
+	combinaison=0;
+
+	InitButtons();
+	}
+	void InitButtons()
+	{
 	lock=new Button("Images/code.bmp",0xffffffff);
-lock->x=(w-lock->w)/2;
-lock->y=(h-lock->h)/2;
-lock->show=true;
-	//---
+    lock->x=(w-lock->w)/2;
+    lock->y=(h-lock->h)/2;
+    lock->show=true;
+
+	ar=new Arrow();
+	ar->x=lock->x+145;
+	ar->y=lock->y+149;
+
+	locker=new Button("Images/locker.bmp",0xffffffff);
+	locker->x=(w-lock->w)/2+99;
+	locker->y=(h-lock->h)/2+107;
+	locker->show=true;
+
+
+	LockerLight=new Button("Images/lockerL.bmp",0xffffffff);
+	LockerLight->x=locker->x;
+	LockerLight->y=locker->y;
+	LockerLight->show=false;
+
+
+	lOK=new Button("Images/lOK.bmp",0xffffffff);
+	lOK->x=lock->x+156;
+	lOK->y=lock->y+161;
+	lOK->show=false;
+
+	codeView=new Text("00 00 00",0xFF808E9B,locker->x+100,locker->y+100,0xFFED1C24);//code
 	}
 
-	bool Touch(int X,int Y)
-	{
-	bool t=false;
-
-	if (X>=x && X<=x+ImageView->width && Y>=y && Y<=y+ImageView->height)
-	t=true;
-
-	return t;
-	}
-	void ChangeCadr()
-	{
-	if (Cadr<1)
-		Cadr++;
-	else
-		Cadr=0;
-	
-	ImageView=Image[Cadr];
-	}
-
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+ImageView->width;
-	 rectSize.bottom =rectSize.top+ ImageView->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 ImageView->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-
-
-	  if (expO==true)
-	 {
-     rectSize.left =mX1;
-     rectSize.top =mY1;
-	 rectSize.right = rectSize.left+OpenExp->width;
-	 rectSize.bottom =rectSize.top+ OpenExp->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 OpenExp->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	 }
-
-
-	}
-	void DrawC(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	  if (showC==true)
-	 {
-	 rectSize.left =(w-SubImage->width)/2;
-	 rectSize.top =(h-SubImage->height)/2;
-	 rectSize.right = rectSize.left+Content->width;
-	 rectSize.bottom =rectSize.top+ Content->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Content->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-
-
-	 int ix=0;
-	 int iy=0;
-
-	  for (int i=0;i<6*8;i++)
-	 {
-		 if (objects[i]!=0)
-		 {
-	rectSize.left =(w-SubImage->width)/2+71+(ix)*5+(ix)*25;
-     rectSize.top =(h-SubImage->height)/2+109+(iy)*5+(iy)*25;
-	 rectSize.right = rectSize.left+ImObjects[i]->width;
-	 rectSize.bottom =rectSize.top+ ImObjects[i]->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 ImObjects[i]->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-		 }
-	 if (ix<7)
-	 ix++;
-	 else
-	 {
-		 iy++;
-		 ix=0;
-	 }
-	 }
-	 }
-
-	  	if (BOk==true)
-	 {
-	 rectSize.left =(w-lock->w)/2+99+2;
-     rectSize.top=(h-lock->h)/2+107;
-	 rectSize.right = rectSize.left+OkOpen->width;
-	 rectSize.bottom =rectSize.top+ OkOpen->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 OkOpen->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	}
-	 }
-	//++++++
 	int TouchObject(int X,int Y)
 	{
-		int x1=71+(w-SubImage->width)/2,x2=305+(w-SubImage->width)/2;
-		int y1=109+(h-SubImage->height)/2,y2=283+(h-SubImage->height)/2;
+		int x1=71+(w-code->width)/2,x2=305+(w-code->width)/2;
+		int y1=109+(h-code->height)/2,y2=283+(h-code->height)/2;
 
 		int zn=-1;
 		int blockX=(X-x1)/(25+5);
@@ -908,6 +1328,44 @@ lock->show=true;
 
 		return zn;
 	}
+	bool TouchInvChest(int X,int Y)
+	{
+	bool t=false;
+
+	int x1=71+(w-code->width)/2,x2=305+(w-code->width)/2;
+	int y1=109+(h-code->height)/2,y2=283+(h-code->height)/2;
+
+
+	if (X>=x1 && X<=x2 && Y>=y1 && Y<=y2)
+	t=true;
+
+	return t;
+	}
+	bool Touch(int X,int Y)
+	{
+	bool t=false;
+
+	if (X>=x && X<=x+ImageView->width && Y>=y && Y<=y+ImageView->height)
+	t=true;
+
+	return t;
+	}
+
+	static void SetPosition(int X,int Y)
+   {
+   Xi=X;
+   Yi=Y;
+   iLmb=true;
+   }
+	static void Timer()
+	{
+	if (timer1 == 0)
+				timer1 = timeGetTime();
+
+			timer = timeGetTime();
+			dt = timer - timer1;
+	}
+
 	void ChangeImages()
 	{
 		char* path=new char[30];
@@ -923,36 +1381,6 @@ lock->show=true;
 		 }
 		}
 	}
-
-    static void SetPosition(int X,int Y)
-   {
-   Xi=X;
-   Yi=Y;
-   iLmb=true;
-   }
-	bool TouchInvChest(int X,int Y)
-	{
-	bool t=false;
-
-	int x1=71+(w-SubImage->width)/2,x2=305+(w-SubImage->width)/2;
-	int y1=109+(h-SubImage->height)/2,y2=283+(h-SubImage->height)/2;
-
-
-	if (X>=x1 && X<=x2 && Y>=y1 && Y<=y2)
-	t=true;
-
-	return t;
-	}
-
-	static void Timer()
-	{
-	if (timer1 == 0)
-				timer1 = timeGetTime();
-
-			timer = timeGetTime();
-			dt = timer - timer1;
-	}
-	//++++
 	void LoadQuestion(int Level)
 	{
 	char* c=new char[300];
@@ -976,7 +1404,6 @@ lock->show=true;
 			if (cont==Level)
 			pos=j+1;
 		}
-
 
 		if (cont==Level+1)
 		{
@@ -1014,8 +1441,173 @@ lock->show=true;
     j++;
 	}
 
-	txt=new Text(question,0xFF3D3D3D,(w-SubImage->width)/2+15,(h-SubImage->height)/2+68);
+	txt=new Text(question,0xFF3D3D3D,(w-code->width)/2+15,(h-code->height)/2+68);
 	}
+	//+++
+	void OpenLock(Inventar* Inv,bool& lmb,int X,int Y,int mX,int mY)
+	{
+	if (show==true)
+	{
+	if (lock->Touch(X,Y)==false && lmb==true && Inv->TouchInvShow(X,Y)==false)
+			show=false;
+
+	int mmx=mX-locker->x;
+	int mmy=mY-locker->y;
+	int dist=sqrt((mmx-locker->w/2)*(mmx-locker->w/2)+(locker->h/2-mmy)*(locker->h/2-mmy));
+
+
+	if (lOK->Touch(X,Y)==true && lmb==true)
+	{
+		lOK->show=true;
+		
+		if (sd<2)
+		sd++;
+		else
+			sd=0;
+
+		lmb=false;
+	}
+	else
+		lOK->show=false;
+
+
+
+	if (LockerLight->Touch(mX,mY)==true && dist>55 && dist<88)
+	{
+	LockerLight->show=true;
+
+
+	if (locker->Touch(X,Y)==true && lmb==true)
+	{
+		//Calculate angle+++
+	double xn=locker->w/2;
+	double yn=locker->h/2;
+
+	double x1=0;
+	double y1=locker->h/2;
+
+	double xm=(X-locker->x)-xn;
+	double ym=yn-(Y-locker->y);
+	
+	double a2=sqrt(xm*xm+ym*ym);
+
+	double angle1=acos(ym/a2);
+	double angle2=(angle1*180)/3.14;
+
+	if (X-locker->x<xn)
+		angle2=360-angle2;
+
+	int angle=angle2/9;
+
+	        cd[sd]=angle;
+		    combinaison=cd[0]*10000+cd[1]*100+cd[2];
+		//Calculate angle---
+	
+
+		  //Show angle+++
+			ar->num=angle;
+
+			//Показ комбинации на экран+++
+			char* showText=new char[100];
+			int ran=0;
+
+			if (cd[0]<10)
+				ran=sprintf(showText,"0%d 0%d 0%d",cd[0],cd[1],cd[2]);
+			else
+				//ran=sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
+
+			codeView->changeText(showText);
+			//Показ комбинации на экран---
+		  //Show angle---
+
+
+			lmb=false;
+	}
+	}
+	else
+			LockerLight->show=false;
+
+
+	//Open++++
+   if (combinaison==Answer && sd==0)
+				BOk=true;
+
+	if (BOk==true)
+	{
+	            Timer();
+
+				if (dt>2000)
+				{
+				showC=true;
+				BOk=false;
+				combinaison=0;
+
+				dt=0;
+				timer=0;
+				timer1=0;
+				}
+	}
+	//Open----
+	}
+	}
+	//++++
+	void Draw(Param* p)
+	{
+	 p->Draw(x,y,ImageView->width,ImageView->height,ImageView);
+
+	  if (expO==true)
+	 p->Draw(mX1,mY1,OpenExp->width,OpenExp->height,OpenExp);
+
+	    
+	}
+	void DrawC(Param* p)
+	{
+		 lock->Draw(p);
+
+		 if (showC==false)
+		 locker->Draw(p);
+
+		 ar->Draw(p);
+		 //---
+		 int* pos=new int[2];
+
+		 pos[0]=sd;
+		 pos[1]=sd+1;
+
+		 codeView->Draw(p,pos,2);
+		 //+++
+		 LockerLight->Draw(p);
+		 lOK->Draw(p);
+		 txt->Draw(p);
+
+
+	  if (showC==true)
+	 {
+	 p->Draw((w-code->width)/2,(h-code->height)/2,Content->width,Content->height,Content);
+
+
+	 int ix=0;
+	 int iy=0;
+
+	  for (int i=0;i<6*8;i++)
+	 {
+		 if (objects[i]!=0)
+	 p->Draw((w-code->width)/2+71+(ix)*5+(ix)*25,(h-code->height)/2+109+(iy)*5+(iy)*25,ImObjects[i]->width,ImObjects[i]->height,ImObjects[i]);
+	 
+	 if (ix<7)
+	 ix++;
+	 else
+	 {
+		 iy++;
+		 ix=0;
+	 }
+	 }
+
+	 }
+
+	  	if (BOk==true)
+	 p->Draw((w-lock->w)/2+99+2,(h-lock->h)/2+107,OkOpen->width, OkOpen->height,OkOpen);
+	 }
 };
 int Chest::dt=0;
 int Chest::timer=0;
@@ -1128,311 +1720,8 @@ int BlockMoves::dt=0;
 int BlockMoves::timer=0;
 int BlockMoves::timer1=0;
 
-class NumberDraw
-{
-public:
-	int num;
-	int x,y;
-
-	Sprite* Image;
-	Sprite* Images[11];
-
-public:
-	NumberDraw()
-	{
-	num=0;
-
-	Image=NULL;
-	Images[0]=new Sprite("Images/0.bmp",0xffffffff);
-	Images[1]=new Sprite("Images/1.bmp",0xffffffff);
-	Images[2]=new Sprite("Images/2.bmp",0xffffffff);
-	Images[3]=new Sprite("Images/3.bmp",0xffffffff);
-	Images[4]=new Sprite("Images/4.bmp",0xffffffff);
-	Images[5]=new Sprite("Images/5.bmp",0xffffffff);
-	Images[6]=new Sprite("Images/6.bmp",0xffffffff);
-	Images[7]=new Sprite("Images/7.bmp",0xffffffff);
-	Images[8]=new Sprite("Images/8.bmp",0xffffffff);
-	Images[9]=new Sprite("Images/9.bmp",0xffffffff);
-	Images[10]=new Sprite("Images/10.bmp",0xffffffff);
-	Image=Images[num];
-
-	x=0;
-	y=0;
-	}
-
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	Image=Images[num];
-
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Image->width;
-	 rectSize.bottom =rectSize.top+ Image->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	}
-};
-
-class Arrow
-{
-public:
-	int x,y;
-	int num;
-
-	Sprite* Image;
-	Sprite* Images[40];
-
-public:
-	Arrow()
-	{
-		x=0;
-		y=0;
-		num=0;
-
-		Images[0]=new Sprite("Images/c0.bmp",0xffffffff);
-		Images[1]=new Sprite("Images/c1.bmp",0xffffffff);
-		Images[2]=new Sprite("Images/c2.bmp",0xffffffff);
-		Images[3]=new Sprite("Images/c3.bmp",0xffffffff);
-		Images[4]=new Sprite("Images/c4.bmp",0xffffffff);
-		Images[5]=new Sprite("Images/c5.bmp",0xffffffff);
-		Images[6]=new Sprite("Images/c6.bmp",0xffffffff);
-		Images[7]=new Sprite("Images/c7.bmp",0xffffffff);
-		Images[8]=new Sprite("Images/c8.bmp",0xffffffff);
-		Images[9]=new Sprite("Images/c9.bmp",0xffffffff);
-		Images[10]=new Sprite("Images/c10.bmp",0xffffffff);
-		Images[11]=new Sprite("Images/c11.bmp",0xffffffff);
-		Images[12]=new Sprite("Images/c12.bmp",0xffffffff);
-		Images[13]=new Sprite("Images/c13.bmp",0xffffffff);
-		Images[14]=new Sprite("Images/c14.bmp",0xffffffff);
-		Images[15]=new Sprite("Images/c15.bmp",0xffffffff);
-		Images[16]=new Sprite("Images/c16.bmp",0xffffffff);
-		Images[17]=new Sprite("Images/c17.bmp",0xffffffff);
-		Images[18]=new Sprite("Images/c18.bmp",0xffffffff);
-		Images[19]=new Sprite("Images/c19.bmp",0xffffffff);
-		Images[20]=new Sprite("Images/c20.bmp",0xffffffff);
-		Images[21]=new Sprite("Images/c21.bmp",0xffffffff);
-		Images[22]=new Sprite("Images/c22.bmp",0xffffffff);
-		Images[23]=new Sprite("Images/c23.bmp",0xffffffff);
-		Images[24]=new Sprite("Images/c24.bmp",0xffffffff);
-		Images[25]=new Sprite("Images/c25.bmp",0xffffffff);
-		Images[26]=new Sprite("Images/c26.bmp",0xffffffff);
-		Images[27]=new Sprite("Images/c27.bmp",0xffffffff);
-		Images[28]=new Sprite("Images/c28.bmp",0xffffffff);
-		Images[29]=new Sprite("Images/c29.bmp",0xffffffff);
-		Images[30]=new Sprite("Images/c30.bmp",0xffffffff);
-		Images[31]=new Sprite("Images/c31.bmp",0xffffffff);
-		Images[32]=new Sprite("Images/c32.bmp",0xffffffff);
-		Images[33]=new Sprite("Images/c33.bmp",0xffffffff);
-		Images[34]=new Sprite("Images/c34.bmp",0xffffffff);
-		Images[35]=new Sprite("Images/c35.bmp",0xffffffff);
-		Images[36]=new Sprite("Images/c36.bmp",0xffffffff);
-		Images[37]=new Sprite("Images/c37.bmp",0xffffffff);
-		Images[38]=new Sprite("Images/c38.bmp",0xffffffff);
-		Images[39]=new Sprite("Images/c39.bmp",0xffffffff);
-	}
-
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	Image=Images[num];
-
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Image->width;
-	 rectSize.bottom =rectSize.top+ Image->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	}
-};
-
-class Inventar
-{
-public:
-	int x,y;
-	int mX,mY;
-	int w,h;
-	int objects[9];
-	int move;
-	int check;
-
-	bool show;
-	bool exp;
-	
-	static bool iLmb;
-	static int Xi;
-	static int Yi;
-
-	Sprite* Image;
-	Sprite* Open;
-	Sprite* InventarExp;
-	Sprite* ImObjects[9];
-
-public:
-	Inventar():exp(false),move(false)
-	{
-	x=0;
-	y=0;
-	mX=0;
-	mY=0;
-
-	Image=new Sprite("Images/Inventar.bmp",0xffffffff);
-	Open=new Sprite("Images/InventarOpen.bmp",0xffffffff);
-	InventarExp=new Sprite("Images/InventarExp.bmp",0xffffffff);
-
-	for (int i=0;i<9;i++)
-	objects[i]=0;
-
-	ChangeImages();
-	}
-
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
-	{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Image->width;
-	 rectSize.bottom =rectSize.top+ Image->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Image->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
 
 
-	 //0---
-		 if (objects[0]!=0)
-		 {
-	  rectSize.left =17+0*7+0*25-7;
-
-     rectSize.top =7;
-	 rectSize.right = rectSize.left+ImObjects[0]->width;
-	 rectSize.bottom =rectSize.top+ ImObjects[0]->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 ImObjects[0]->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-		 }
-	 //0+++
-
-	 if (show==true)
-	 {
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+Open->width;
-	 rectSize.bottom =rectSize.top+ Open->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 Open->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-
-
-	 for (int i=0;i<9;i++)
-	 {
-		 if (objects[i]!=0)
-		 {
-	 rectSize.left =17+i*7+i*25;
-
-	 if (i==0)
-	 rectSize.left =17+i*7+i*25-7;
-
-     rectSize.top =7;
-	 rectSize.right = rectSize.left+ImObjects[i]->width;
-	 rectSize.bottom =rectSize.top+ ImObjects[i]->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 ImObjects[i]->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-		 }
-	 }
-	 }
-
-
-	 if (exp==true)
-	 {
-     rectSize.left =mX;
-     rectSize.top =mY;
-	 rectSize.right = rectSize.left+InventarExp->width;
-	 rectSize.bottom =rectSize.top+ InventarExp->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 InventarExp->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	 }
-
-	}
-	void ChangeImages()
-	{
-		char* path=new char[30];
-	 int num;
-
-		for (int i=0;i<9;i++)
-		{
-		 if (objects[i]!=0)
-		 {
-     num = sprintf(path, "Images/o%d.bmp",objects[i]);
-
-	 ImObjects[i]=new Sprite(path,0xffffffff);
-		 }
-		}
-	}
-	bool Touch(int X,int Y)
-	{
-		bool t=false;
-
-		if (X>=x && X<=x+Image->width && Y>=y && Y<=y+Image->height)
-		t=true;
-
-		return t;
-	}
-	int TouchObject(int X,int Y)
-	{
-		int x1=17,x2=297;
-		int y1=7,y2=31;
-
-		int zn=-1;
-		int block=(X-x1)/(25+7);
-
-		if (X>=x1 && X<=x2 && Y>=y1 && Y<=y2)
-			if (X-x1-block*(25+7)<=25)
-			zn=block;
-
-		return zn;
-	}
-
-   static void SetPosition(int X,int Y)
-   {
-   Xi=X;
-   Yi=Y;
-   iLmb=true;
-   }
-
-	int TouchInvShow(int X,int Y)
-	{
-		bool t=false;
-
-		if (X>=x && X<=x+Open->width && Y>=y && Y<=y+Open->height)
-		t=true;
-
-		return t;
-	}
-
-	void AddObject(int num)
-	{
-	for (int i=0;i<9;i++)
-	{
-		if (num!=0 && objects[i]==0)
-	   {
-		objects[i]=num;
-		ChangeImages();
-		break;
-	   }
-	}
-	}
-};
-bool Inventar::iLmb=false;
-int Inventar::Xi=0;
-int Inventar::Yi=0;
 
 
 class FinalDoor
@@ -1508,35 +1797,16 @@ public:
 			nk=false;
 	}
 
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
+	void Draw(Param* p)
 	{
-	 rectSize.left =(x+Image[0]->width)-ImageView->width;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+ImageView->width;
-	 rectSize.bottom =rectSize.top+ ImageView->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 ImageView->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
+	 p->Draw((x+Image[0]->width)-ImageView->width,y,ImageView->width,ImageView->height,ImageView);
 
 	 //NeedKey
 	 if (nk==true)
-	 {
-	 rectSize.left =(w-NeedKey->width)/2;
-	 rectSize.top =(h-NeedKey->height)/2;
-	 rectSize.right = rectSize.left+NeedKey->width;
-	 rectSize.bottom =rectSize.top+ NeedKey->height;
-
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 NeedKey->DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
-	 }
+	 p->Draw((w-NeedKey->width)/2,(h-NeedKey->height)/2,NeedKey->width,NeedKey->height,NeedKey);
 	}
 };
 int FinalDoor::counter=0;
-
-
-
 
 
 class DrawRectangle
@@ -1581,16 +1851,16 @@ public:
 		  }
 	}
 
-	void Draw(D3DLOCKED_RECT rectangle,RECT rectSize,IDirect3DSurface9* backBuffer)
+	void Draw(Param* p)
 	{
-	 rectSize.left =x;
-     rectSize.top =y;
-	 rectSize.right = rectSize.left+w;
-	 rectSize.bottom =rectSize.top+ h;
+	  p->rectSize.left =x;
+      p->rectSize.top =y;
+	  p->rectSize.right =  p->rectSize.left+w;
+	  p->rectSize.bottom = p->rectSize.top+ h;
 
-	 backBuffer->LockRect(&rectangle,&rectSize,0);		
-	 DrawIntObject(rectangle);
-	 backBuffer->UnlockRect();
+	  p->backBuffer->LockRect(& p->rectangle,& p->rectSize,0);		
+	  DrawIntObject(p->rectangle);
+	  p->backBuffer->UnlockRect();
 	}
 private:
 	void DrawIntObject(D3DLOCKED_RECT& lockedRect)
