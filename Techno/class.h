@@ -1,6 +1,5 @@
-﻿//Classes+++
-class Button
-{
+﻿// Classes+++
+class Button {
 public:
 	int x, y;
 	int w, h;
@@ -13,27 +12,23 @@ public:
 	Sprite *Border;
 
 public:
-	Button(int _x, int _y, char *name) : x(_x), y(_y)
-	{
+	Button(int _x, int _y, char *name): x(_x), y(_y) {
 		Image = new Sprite(name);
 		w = Image->width;
 		h = Image->height;
 	}
-	Button(char *name)
-	{
+	Button(char *name) {
 		Image = new Sprite(name);
 		w = Image->width;
 		h = Image->height;
 	}
-	Button(char *name, int trColor)
-	{
+	Button(char *name, int trColor) {
 		Image = new Sprite(name, trColor);
 		w = Image->width;
 		h = Image->height;
 	}
 
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + w && Y >= y && Y <= y + h)
@@ -42,79 +37,61 @@ public:
 		return t;
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		if (show == true)
 			p->Draw(x, y, w, h, Image);
 	}
 };
 
-class NeoElement : public Sprite, public Button
-{
+class NeoElement: public Sprite, public Button {
 public:
-	NeoElement(char *name) : Sprite(name), Button(name)
-	{
-	}
-	NeoElement(char *name, int trColor) : Sprite(name, trColor), Button(name, trColor)
-	{
-	}
+	NeoElement(char *name) : Sprite(name), Button(name) { }
+	NeoElement(char *name, int trColor) : Sprite(name, trColor), Button(name, trColor) { }
 
-	void ChangeColor(int from, int to)
-	{
+	void ChangeColor(int from, int to) {
 		for (int i = 0; i < height; ++i)
 			for (int j = 0; j < width; ++j)
 				if (Button::Image->img[j + i * width] == from)
 					Button::Image->img[j + i * width] = to;
 	}
-	int FollowColor(int X, int Y)
-	{
+	int FollowColor(int X, int Y) {
 		int color = Button::Image->img[X + Y * width];
 
 		return color;
 	}
 };
-class NeoSprite : public Sprite
-{
+class NeoSprite : public Sprite {
 public:
 	int w, h;
 
 public:
-	NeoSprite(char *name) : Sprite(name)
-	{
+	NeoSprite(char *name) : Sprite(name) {
 		w = width;
 		h = height;
 	}
-	NeoSprite(char *name, int trColor) : Sprite(name, trColor)
-	{
+	NeoSprite(char *name, int trColor) : Sprite(name, trColor) {
 		w = width;
 		h = height;
 	}
 
-	void AddImage(int x, int y, Sprite *sp)
-	{
-		for (int i = y; i < y + sp->height; i++)
-		{
-			for (int j = x; j < x + sp->width; j++)
-			{
+	void AddImage(int x, int y, Sprite *sp) {
+		for (int i = y; i < y + sp->height; i++) {
+			for (int j = x; j < x + sp->width; j++) {
 				if (j <= width && i <= height && sp->img[(j - x) + (i - y) * sp->width] != TransparentColor)
 					img[j + i * width] = sp->img[(j - x) + (i - y) * sp->width];
 			}
 		}
 	}
-	void AddImage(int x, int y, Sprite *sp, int i)
-	{
-		for (int i = y; i < y + sp->height; i++)
-		{
-			for (int j = x; j < x + sp->width; j++)
-			{
+	void AddImage(int x, int y, Sprite *sp, int i) {
+		for (int i = y; i < y + sp->height; i++) {
+			for (int j = x; j < x + sp->width; j++) {
 				if (j <= width && i <= height)
 					img[j + i * width] = sp->img[(j - x) + (i - y) * sp->width];
 			}
 		}
 	}
 
-	int Color(int X, int Y, char letter)
-	{
+	int Color(int X, int Y, char letter) {
 		int color = img[X + Y * width];
 		int r, g, b;
 		int final = 0;
@@ -135,8 +112,7 @@ public:
 		return final;
 	}
 
-	void Save(char *name)
-	{
+	void Save(char *name) {
 		std::ofstream os(name, std::ios::binary);
 
 		unsigned char signature[2] = {'B', 'M'};
@@ -171,10 +147,8 @@ public:
 
 		unsigned char x, r, g, b;
 
-		for (int i = dimensions[1]; i > 0; --i)
-		{
-			for (int j = 0; j < dimensions[0]; ++j)
-			{
+		for (int i = dimensions[1]; i > 0; --i) {
+			for (int j = 0; j < dimensions[0]; ++j) {
 				x = 0;
 				r = Color(j, i, 'R');
 				g = Color(j, i, 'G');
@@ -189,13 +163,11 @@ public:
 		os.close();
 	}
 };
-struct Tochka
-{
+struct Tochka {
 	int X, Y;
 };
 //Classes---
-class Text
-{
+class Text {
 public:
 	char *string;
 	int x, y;
@@ -213,8 +185,7 @@ private:
 	int initColor;
 
 public:
-	Text(char *str, int color, int _x, int _y) : string(str)
-	{
+	Text(char *str, int color, int _x, int _y): string(str) {
 		w = 11;
 		h = 11;
 
@@ -239,8 +210,7 @@ public:
 		for (int i = 0; i < size; i++)
 			encode[i] = convertion(static_cast<int>(string[i]), i);
 	}
-	Text(char *str, int color, int _x, int _y, int addC) : string(str)
-	{
+	Text(char *str, int color, int _x, int _y, int addC): string(str) {
 		w = 11;
 		h = 11;
 
@@ -268,13 +238,11 @@ public:
 		addColor(addC);
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		int n = 0;
 		int distance = 0;
 
-		for (int i = 0; i < size; i++)
-		{
+		for (int i = 0; i < size; i++) {
 			n = encode[i];
 
 			if (szLetters[i] == 'U')
@@ -289,14 +257,13 @@ public:
 			p->Draw(x + i * letters[i]->width - distance * i, y, letters[n]->width, letters[n]->height, letters[n]);
 		}
 	}
-	void Draw(Param *p, int *pos, int s)
-	{
+
+	void Draw(Param *p, int *pos, int s) {
 		int n = 0;
 		int distance = 0;
 		Sprite *temp;
 
-		for (int i = 0; i < size; i++)
-		{
+		for (int i = 0; i < size; i++) {
 			n = encode[i];
 			temp = letters[n];
 
@@ -318,8 +285,8 @@ public:
 			p->Draw(x + i * temp->width - distance * i, y, temp->width, temp->height, temp);
 		}
 	}
-	void changeText(char *str)
-	{
+
+	void changeText(char *str) {
 		string = str;
 		size = 0;
 
@@ -336,15 +303,13 @@ public:
 	}
 
 private:
-	int convertion(char ASC, int i)
-	{
+	int convertion(char ASC, int i) {
 		int ASCII = static_cast<int>(ASC);
 		int sym = 0;
 		szLetters[i] = 'O';
 
 		//Symb+++
-		switch (ASC)
-		{
+		switch (ASC) {
 		case '.':
 			sym = 62;
 			break;
@@ -394,18 +359,13 @@ private:
 			break;
 
 		default:
-			if (ASCII - 97 >= 0) //low
-			{
+			if (ASCII - 97 >= 0) { //low
 				sym = ASCII - 97;
 				szLetters[i] = 'L';
-			}
-			else if (ASCII - 65 >= 0) //up
-			{
+			} else if (ASCII - 65 >= 0) {//up
 				sym = ASCII - 65 + 26;
 				szLetters[i] = 'U';
-			}
-			else if (ASCII - 48 >= 0) //num
-			{
+			} else if (ASCII - 48 >= 0) {//num
 				sym = ASCII - 48 + 52;
 				szLetters[i] = 'N';
 			}
@@ -415,42 +375,37 @@ private:
 
 		return sym;
 	}
-	void ChangeColor(int color)
-	{
+
+	void ChangeColor(int color) {
 		int i = 0;
 		int j = 0;
 
-		for (int k = 0; k < 77; k++)
-		{
+		for (int k = 0; k < 77; k++) {
 			letters[k] = new Sprite("Images/Text.bmp", 0xffffffff);
 			letters[k]->cut(w * j, h * i, w, h);
 			letters[k]->RemplaceColor(0xFF000000, color);
 
 			j++;
 
-			if (j == 26)
-			{
+			if (j == 26) {
 				i++;
 				j = 0;
 			}
 		}
 	}
 
-	void addColor(int color)
-	{
+	void addColor(int color) {
 		int i = 0;
 		int j = 0;
 
-		for (int k = 0; k < 77; k++)
-		{
+		for (int k = 0; k < 77; k++) {
 			lettersColor[k] = new Sprite("Images/Text.bmp", 0xffffffff);
 			lettersColor[k]->cut(w * j, h * i, w, h);
 			lettersColor[k]->RemplaceColor(0xFF000000, color);
 
 			j++;
 
-			if (j == 26)
-			{
+			if (j == 26) {
 				i++;
 				j = 0;
 			}
@@ -458,8 +413,7 @@ private:
 	}
 };
 
-class Hero
-{
+class Hero {
 public:
 	int x, y;
 	int w, h;
@@ -495,8 +449,7 @@ public:
 	int accel, accelJ;
 
 public:
-	Hero() : x(0), y(0), CadrR(0), CadrL(0), L(false), R(false), J(false), velocity(0), accel(3), velocityJ(0), accelJ(3), U(false), D(false), CadrU(0), G(true)
-	{
+	Hero(): x(0), y(0), CadrR(0), CadrL(0), L(false), R(false), J(false), velocity(0), accel(3), velocityJ(0), accelJ(3), U(false), D(false), CadrU(0), G(true) {
 		Image = NULL;
 
 		ImageR[0] = new Sprite("Images/heroR1.bmp", 0xffffffff);
@@ -526,8 +479,7 @@ public:
 		ImageUD[2] = new Sprite("Images/heroU3.bmp", 0xffffffff);
 		ImageUD[3] = new Sprite("Images/heroU4.bmp", 0xffffffff);
 
-		for (int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			if (i != 4)
 				ImageJL[i]->Rotate();
 		}
@@ -537,23 +489,18 @@ public:
 		h = Image->height;
 	}
 
-	void MoveR()
-	{
+	void MoveR() {
 		int step = 7;
 
-		if (R == true)
-		{
+		if (R == true) {
 			int nx = (x + w + step) / 20;
 			int ny = y / 20;
 			int ny1 = y / 20 + 1;
 			int ny2 = y / 20 + 2;
 
-			if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 || MatMap[ny][nx] == 9)
-			{
-				if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 || MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9)
-				{
-					if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 || MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9)
-					{
+			if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 || MatMap[ny][nx] == 9) {
+				if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 || MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9) {
+					if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 || MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9) {
 						ChangeImage('R');
 						x += step;
 						timer1 = 0;
@@ -563,23 +510,19 @@ public:
 			R = false;
 		}
 	}
-	void MoveL()
-	{
+
+	void MoveL() {
 		int step = 7;
 
-		if (L == true)
-		{
+		if (L == true) {
 			int nx = (x - step) / 20;
 			int ny = y / 20;
 			int ny1 = y / 20 + 1;
 			int ny2 = y / 20 + 2;
 
-			if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 || MatMap[ny][nx] == 9)
-			{
-				if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 || MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9)
-				{
-					if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 || MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9)
-					{
+			if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 || MatMap[ny][nx] == 9) {
+				if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 || MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9) {
+					if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 || MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9) {
 						ChangeImage('L');
 						x -= step;
 						timer1 = 0;
@@ -589,10 +532,8 @@ public:
 			L = false;
 		}
 	}
-	void Gravitaton()
-	{
-		if (J == false && G == true)
-		{
+	void Gravitaton() {
+		if (J == false && G == true) {
 			if (velocity <= 20)
 				velocity += accel;
 
@@ -600,54 +541,42 @@ public:
 			int nx1 = (x + w) / 20;
 			int ny = (y + h + velocity) / 20;
 
-			if (MatMap[ny][nx] == 0 && MatMap[ny][nx1] == 0)
-			{
+			if (MatMap[ny][nx] == 0 && MatMap[ny][nx1] == 0) {
 				y += velocity;
 				timerG1 = 0;
-			}
-			else if (MatMap[ny][nx] != 0)
-			{
+			} else if (MatMap[ny][nx] != 0) {
 				y = ny * 20 - h;
 
 				velocity = 0;
 			}
 		}
 	}
-	void Jump()
-	{
-		if (J == true && dtG > 20)
-		{
+	void Jump() {
+		if (J == true && dtG > 20) {
 			velocityJ -= accel;
 
 			int nx = x / 20;
 			int ny = (y - velocityJ) / 20;
 
-			if (MatMap[ny][nx] == 0 && velocityJ >= 0)
-			{
+			if (MatMap[ny][nx] == 0 && velocityJ >= 0) {
 				y -= velocityJ;
 
 				timerG1 = 0;
-			}
-			else
-			{
+			} else {
 				velocityJ = 0;
 				timerG1 = 0;
 				J = false;
 			}
 		}
 	}
-	void UD(char d)
-	{
-		switch (d)
-		{
+	void UD(char d) {
+		switch (d) {
 		case 'U':
-			if (U == true)
-			{
+			if (U == true) {
 				int nx = x / 20;
 				int ny = y / 20;
 
-				if (MatMap[ny][nx] == 3)
-				{
+				if (MatMap[ny][nx] == 3) {
 					ChangeImage('U');
 					y -= 5;
 				}
@@ -661,13 +590,11 @@ public:
 			break;
 
 		case 'D':
-			if (D == true)
-			{
+			if (D == true) {
 				int nx = x / 20;
 				int ny = (y + h + 5) / 20;
 
-				if (MatMap[ny][nx] == 3)
-				{
+				if (MatMap[ny][nx] == 3) {
 					ChangeImage('U');
 					y += 5;
 				}
@@ -679,10 +606,8 @@ public:
 		}
 	}
 
-	void ChangeImage(char d)
-	{
-		switch (d)
-		{
+	void ChangeImage(char d) {
+		switch (d) {
 		case 'L':
 			if (CadrL < 4)
 				CadrL++;
@@ -714,12 +639,10 @@ public:
 		w = Image->width;
 		h = Image->height;
 	}
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		p->Draw(x, y, Image->width, Image->height, Image);
 	}
-	bool ChangeLevel()
-	{
+	bool ChangeLevel() {
 		bool c = false;
 
 		if (x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5)
@@ -731,16 +654,14 @@ public:
 		return c;
 	}
 
-	static void Timer()
-	{
+	static void Timer() {
 		if (timer1 == 0)
 			timer1 = timeGetTime();
 
 		timer = timeGetTime();
 		dt = timer - timer1;
 	}
-	static void TimerG()
-	{
+	static void TimerG() {
 		if (timerG1 == 0)
 			timerG1 = timeGetTime();
 
@@ -748,8 +669,7 @@ public:
 		dtG = timerG - timerG1;
 	}
 
-	void ChargeMatMap(int MatMap1[30][40])
-	{
+	void ChargeMatMap(int MatMap1[30][40]) {
 		for (int i = 0; i < 30; i++)
 			for (int j = 0; j < 40; j++)
 				MatMap[i][j] = MatMap1[i][j];
@@ -763,8 +683,7 @@ int Hero::dtG = 0;
 int Hero::timerG = 0;
 int Hero::timerG1 = 0;
 
-class Fire
-{
+class Fire {
 public:
 	int x, y;
 	int CountCadr;
@@ -777,8 +696,7 @@ public:
 	static int timer1;
 
 public:
-	Fire(int _x, int _y) : x(_x), y(_y), CountCadr(0)
-	{
+	Fire(int _x, int _y): x(_x), y(_y), CountCadr(0) {
 		ImageView = NULL;
 
 		Image[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
@@ -789,8 +707,7 @@ public:
 
 		counter++;
 	}
-	void ChangeCadr()
-	{
+	void ChangeCadr() {
 		if (CountCadr < 2)
 			CountCadr++;
 		else
@@ -798,8 +715,7 @@ public:
 
 		ImageView = Image[CountCadr];
 	}
-	static void Timer()
-	{
+	static void Timer() {
 		if (timer1 == 0)
 			timer1 = timeGetTime();
 
@@ -812,8 +728,7 @@ int Fire::dt = 0;
 int Fire::timer = 0;
 int Fire::timer1 = 0;
 
-class Door
-{
+class Door {
 public:
 	int x, y;
 	int Cadr;
@@ -825,8 +740,7 @@ public:
 	static int counter;
 
 public:
-	Door(int _x, int _y) : x(_x), y(_y), Cadr(0), num(5)
-	{
+	Door(int _x, int _y) : x(_x), y(_y), Cadr(0), num(5) {
 		ImageView = NULL;
 		Image[0] = new Sprite("Images/Door1.bmp", 0xffffffff);
 		Image[1] = new Sprite("Images/Door2.bmp", 0xffffffff);
@@ -836,8 +750,7 @@ public:
 		counter++;
 	}
 
-	void ChangeCadr(int MatMap[30][40])
-	{
+	void ChangeCadr(int MatMap[30][40]) {
 		if (Cadr < 1)
 			Cadr++;
 		else
@@ -855,10 +768,8 @@ public:
 		else
 			num = 5;
 	}
-	void Touch(int X, int Y, int MatMap[30][40], bool &rmb)
-	{
-		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height && rmb == true)
-		{
+	void Touch(int X, int Y, int MatMap[30][40], bool &rmb) {
+		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height && rmb == true) {
 			ChangeCadr(MatMap);
 			rmb = false;
 		}
@@ -866,8 +777,7 @@ public:
 };
 int Door::counter = 0;
 
-class Book
-{
+class Book {
 public:
 	int x, y;
 	bool show;
@@ -881,8 +791,7 @@ public:
 	char state;
 
 public:
-	Book(int _x, int _y) : x(_x), y(_y), show(true), state('C')
-	{
+	Book(int _x, int _y): x(_x), y(_y), show(true), state('C') {
 		ImageBack = NULL;
 		Image = NULL;
 		Image1 = new Sprite("Images/book.bmp");
@@ -891,8 +800,7 @@ public:
 		counter++;
 	}
 
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + Image->width && Y >= y && y <= Y + Image->height)
@@ -903,8 +811,7 @@ public:
 };
 int Book::counter = 0;
 
-class Bonus
-{
+class Bonus {
 public:
 	int x, y;
 	int Cadr;
@@ -921,8 +828,7 @@ public:
 	int c;
 
 public:
-	Bonus(int _x, int _y) : x(_x), y(_y), Cadr(0), show(true), c(0)
-	{
+	Bonus(int _x, int _y) : x(_x), y(_y), Cadr(0), show(true), c(0) {
 		ImageView = NULL;
 
 		Image[0] = new Sprite("Images/bonus1.bmp", 0xffffffff);
@@ -941,8 +847,7 @@ public:
 		counter++;
 	}
 
-	void ChangeCadr()
-	{
+	void ChangeCadr() {
 		if (Cadr < 9)
 			Cadr++;
 		else
@@ -951,8 +856,7 @@ public:
 		ImageView = Image[Cadr];
 	}
 
-	static void Timer()
-	{
+	static void Timer() {
 		if (timer1 == 0)
 			timer1 = timeGetTime();
 
@@ -960,8 +864,7 @@ public:
 		dt = timer - timer1;
 	}
 
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height)
@@ -975,8 +878,7 @@ int Bonus::dt = 0;
 int Bonus::timer = 0;
 int Bonus::timer1 = 0;
 
-class Arrow
-{
+class Arrow {
 public:
 	int x, y;
 	int num;
@@ -985,8 +887,7 @@ public:
 	Sprite *Images[40];
 
 public:
-	Arrow()
-	{
+	Arrow() {
 		x = 0;
 		y = 0;
 		num = 0;
@@ -1033,16 +934,14 @@ public:
 		Images[39] = new Sprite("Images/c39.bmp", 0xffffffff);
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		Image = Images[num];
 
 		p->Draw(x, y, Image->width, Image->height, Image);
 	}
 };
 
-class Inventar
-{
+class Inventar {
 public:
 	int x, y;
 	int mX, mY;
@@ -1064,8 +963,7 @@ public:
 	Sprite *ImObjects[9];
 
 public:
-	Inventar() : exp(false), move(false)
-	{
+	Inventar(): exp(false), move(false) {
 		x = 0;
 		y = 0;
 		mX = 0;
@@ -1081,8 +979,7 @@ public:
 		ChangeImages();
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		p->Draw(x, y, Image->width, Image->height, Image);
 
 		//0---
@@ -1090,14 +987,11 @@ public:
 			p->Draw(17 + 0 * 7 + 0 * 25 - 7, 7, ImObjects[0]->width, ImObjects[0]->height, ImObjects[0]);
 		//0+++
 
-		if (show == true)
-		{
+		if (show == true) {
 			p->Draw(x, y, Open->width, Open->height, Open);
 
-			for (int i = 0; i < 9; i++)
-			{
-				if (objects[i] != 0)
-				{
+			for (int i = 0; i < 9; i++) {
+				if (objects[i] != 0) {
 					int l = 17 + i * 7 + i * 25;
 
 					if (i == 0)
@@ -1111,23 +1005,19 @@ public:
 		if (exp == true)
 			p->Draw(mX, mY, InventarExp->width, InventarExp->height, InventarExp);
 	}
-	void ChangeImages()
-	{
+	void ChangeImages() {
 		char *path = new char[30];
 		int num;
 
-		for (int i = 0; i < 9; i++)
-		{
-			if (objects[i] != 0)
-			{
+		for (int i = 0; i < 9; i++) {
+			if (objects[i] != 0) {
 				num = sprintf(path, "Images/o%d.bmp", objects[i]);
 
 				ImObjects[i] = new Sprite(path, 0xffffffff);
 			}
 		}
 	}
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
@@ -1135,8 +1025,7 @@ public:
 
 		return t;
 	}
-	int TouchObject(int X, int Y)
-	{
+	int TouchObject(int X, int Y) {
 		int x1 = 17, x2 = 297;
 		int y1 = 7, y2 = 31;
 
@@ -1150,15 +1039,13 @@ public:
 		return zn;
 	}
 
-	static void SetPosition(int X, int Y)
-	{
+	static void SetPosition(int X, int Y) {
 		Xi = X;
 		Yi = Y;
 		iLmb = true;
 	}
 
-	int TouchInvShow(int X, int Y)
-	{
+	int TouchInvShow(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + Open->width && Y >= y && Y <= y + Open->height)
@@ -1167,12 +1054,9 @@ public:
 		return t;
 	}
 
-	void AddObject(int num)
-	{
-		for (int i = 0; i < 9; i++)
-		{
-			if (num != 0 && objects[i] == 0)
-			{
+	void AddObject(int num) {
+		for (int i = 0; i < 9; i++) {
+			if (num != 0 && objects[i] == 0) {
 				objects[i] = num;
 				ChangeImages();
 				break;
@@ -1184,8 +1068,7 @@ bool Inventar::iLmb = false;
 int Inventar::Xi = 0;
 int Inventar::Yi = 0;
 
-class Chest
-{
+class Chest {
 public:
 	int x, y;
 	int Cadr;
@@ -1230,8 +1113,7 @@ public:
 	Arrow *ar;
 
 public:
-	Chest(int _x, int _y, int Level, int ans1, int ans2) : x(_x), y(_y), Cadr(0), show(false), expO(false), showC(false), move(false), check(0)
-	{
+	Chest(int _x, int _y, int Level, int ans1, int ans2): x(_x), y(_y), Cadr(0), show(false), expO(false), showC(false), move(false), check(0) {
 		Image[0] = new Sprite("Images/chest1.bmp");
 		Image[1] = new Sprite("Images/chest2.bmp");
 		code = new Sprite("Images/code.bmp");
@@ -1260,8 +1142,7 @@ public:
 
 		InitButtons();
 	}
-	void InitButtons()
-	{
+	void InitButtons() {
 		lock = new Button("Images/code.bmp", 0xffffffff);
 		lock->x = (w - lock->w) / 2;
 		lock->y = (h - lock->h) / 2;
@@ -1289,8 +1170,7 @@ public:
 		codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100, locker->y + 100, 0xFFED1C24); //code
 	}
 
-	int TouchObject(int X, int Y)
-	{
+	int TouchObject(int X, int Y) {
 		int x1 = 71 + (w - code->width) / 2, x2 = 305 + (w - code->width) / 2;
 		int y1 = 109 + (h - code->height) / 2, y2 = 283 + (h - code->height) / 2;
 
@@ -1298,8 +1178,7 @@ public:
 		int blockX = (X - x1) / (25 + 5);
 		int blockY = (Y - y1) / (25 + 5);
 
-		if (X >= x1 && X <= x2 && Y >= y1 && Y <= y2)
-		{
+		if (X >= x1 && X <= x2 && Y >= y1 && Y <= y2) {
 			if (X - x1 - blockX * (25 + 5) <= 25)
 				if (Y - y1 - blockY * (25 + 5) <= 25)
 					zn = blockY * 8 + blockX;
@@ -1307,8 +1186,7 @@ public:
 
 		return zn;
 	}
-	bool TouchInvChest(int X, int Y)
-	{
+	bool TouchInvChest(int X, int Y) {
 		bool t = false;
 
 		int x1 = 71 + (w - code->width) / 2, x2 = 305 + (w - code->width) / 2;
@@ -1319,8 +1197,7 @@ public:
 
 		return t;
 	}
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height)
@@ -1329,14 +1206,12 @@ public:
 		return t;
 	}
 
-	static void SetPosition(int X, int Y)
-	{
+	static void SetPosition(int X, int Y) {
 		Xi = X;
 		Yi = Y;
 		iLmb = true;
 	}
-	static void Timer()
-	{
+	static void Timer() {
 		if (timer1 == 0)
 			timer1 = timeGetTime();
 
@@ -1344,23 +1219,19 @@ public:
 		dt = timer - timer1;
 	}
 
-	void ChangeImages()
-	{
+	void ChangeImages() {
 		char *path = new char[30];
 		int num;
 
-		for (int i = 0; i < 6 * 8; i++)
-		{
-			if (objects[i] != 0)
-			{
+		for (int i = 0; i < 6 * 8; i++) {
+			if (objects[i] != 0) {
 				num = sprintf(path, "Images/o%d.bmp", objects[i]);
 
 				ImObjects[i] = new Sprite(path, 0xffffffff);
 			}
 		}
 	}
-	void LoadQuestion(int Level)
-	{
+	void LoadQuestion(int Level) {
 		char *c = new char[300];
 		std::ifstream ifs("Images/Data/questions.txt");
 
@@ -1373,18 +1244,15 @@ public:
 		int cont = 0;
 		int pos = 0;
 
-		while (c[j] != '\0')
-		{
-			if (c[j] == '%')
-			{
+		while (c[j] != '\0') {
+			if (c[j] == '%') {
 				cont++;
 
 				if (cont == Level)
 					pos = j + 1;
 			}
 
-			if (cont == Level + 1)
-			{
+			if (cont == Level + 1) {
 				char *str = new char[j - pos];
 
 				for (int z = 0; z < j - pos; z++)
@@ -1422,10 +1290,8 @@ public:
 		txt = new Text(question, 0xFF3D3D3D, (w - code->width) / 2 + 15, (h - code->height) / 2 + 68);
 	}
 	//+++
-	void OpenLock(Inventar *Inv, bool &lmb, int X, int Y, int mX, int mY)
-	{
-		if (show == true)
-		{
+	void OpenLock(Inventar *Inv, bool &lmb, int X, int Y, int mX, int mY) {
+		if (show == true) {
 			if (lock->Touch(X, Y) == false && lmb == true && Inv->TouchInvShow(X, Y) == false)
 				show = false;
 
@@ -1433,8 +1299,7 @@ public:
 			int mmy = mY - locker->y;
 			int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) + (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
 
-			if (lOK->Touch(X, Y) == true && lmb == true)
-			{
+			if (lOK->Touch(X, Y) == true && lmb == true) {
 				lOK->show = true;
 
 				if (sd < 2)
@@ -1443,16 +1308,13 @@ public:
 					sd = 0;
 
 				lmb = false;
-			}
-			else
+			} else
 				lOK->show = false;
 
-			if (LockerLight->Touch(mX, mY) == true && dist > 55 && dist < 88)
-			{
+			if (LockerLight->Touch(mX, mY) == true && dist > 55 && dist < 88) {
 				LockerLight->show = true;
 
-				if (locker->Touch(X, Y) == true && lmb == true)
-				{
+				if (locker->Touch(X, Y) == true && lmb == true) {
 					//Calculate angle+++
 					double xn = locker->w / 2;
 					double yn = locker->h / 2;
@@ -1495,20 +1357,18 @@ public:
 
 					lmb = false;
 				}
-			}
-			else
+			} else {
 				LockerLight->show = false;
+			}
 
 			//Open++++
 			if (combinaison == Answer && sd == 0)
 				BOk = true;
 
-			if (BOk == true)
-			{
+			if (BOk == true) {
 				Timer();
 
-				if (dt > 2000)
-				{
+				if (dt > 2000) {
 					showC = true;
 					BOk = false;
 					combinaison = 0;
@@ -1522,15 +1382,13 @@ public:
 		}
 	}
 	//++++
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		p->Draw(x, y, ImageView->width, ImageView->height, ImageView);
 
 		if (expO == true)
 			p->Draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
 	}
-	void DrawC(Param *p)
-	{
+	void DrawC(Param *p) {
 		lock->Draw(p);
 
 		if (showC == false)
@@ -1549,22 +1407,19 @@ public:
 		lOK->Draw(p);
 		txt->Draw(p);
 
-		if (showC == true)
-		{
+		if (showC == true) {
 			p->Draw((w - code->width) / 2, (h - code->height) / 2, Content->width, Content->height, Content);
 
 			int ix = 0;
 			int iy = 0;
 
-			for (int i = 0; i < 6 * 8; i++)
-			{
+			for (int i = 0; i < 6 * 8; i++) {
 				if (objects[i] != 0)
 					p->Draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25, (h - code->height) / 2 + 109 + (iy)*5 + (iy)*25, ImObjects[i]->width, ImObjects[i]->height, ImObjects[i]);
 
 				if (ix < 7)
 					ix++;
-				else
-				{
+				else {
 					iy++;
 					ix = 0;
 				}
@@ -1584,8 +1439,7 @@ bool Chest::iLmb = false;
 int Chest::Xi = 0;
 int Chest::Yi = 0;
 
-class ButtonON
-{
+class ButtonON {
 public:
 	int x, y;
 	Sprite *Image;
@@ -1593,15 +1447,13 @@ public:
 	static int counter;
 
 public:
-	ButtonON(int _x, int _y) : x(_x), y(_y)
-	{
+	ButtonON(int _x, int _y): x(_x), y(_y) {
 		Image = new Sprite("Images/buttonON.bmp");
 
 		counter++;
 	}
 
-	bool Touch(int X, int Y)
-	{
+	bool Touch(int X, int Y) {
 		bool t = false;
 
 		if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
@@ -1612,8 +1464,7 @@ public:
 };
 int ButtonON::counter = 0;
 
-class BlockMoves
-{
+class BlockMoves {
 public:
 	int x, y;
 	int pX, pY;
@@ -1628,17 +1479,14 @@ public:
 	static int timer1;
 
 public:
-	BlockMoves(int _x, int _y, int _pI) : x(_x), y(_y - 1), pX(_x), pY(_y - 1), pI(_pI - 1)
-	{
+	BlockMoves(int _x, int _y, int _pI): x(_x), y(_y - 1), pX(_x), pY(_y - 1), pI(_pI - 1) {
 		Image = new Sprite("Images/blockM.bmp");
 
 		counter++;
 	}
 
-	void BlockMoveUp(int MatMap[30][40], bool &b)
-	{
-		if (y > pI)
-		{
+	void BlockMoveUp(int MatMap[30][40], bool &b) {
+		if (y > pI) {
 			MatMap[pY / 20 + 1][pX / 20] = 0;
 
 			if (y - pI <= 5)
@@ -1647,16 +1495,13 @@ public:
 				y -= 5;
 		}
 
-		if (y == pI)
-		{
+		if (y == pI) {
 			MatMap[y / 20 + 1][x / 20] = 6;
 			b = false;
 		}
 	}
-	void BlockMoveDown(int MatMap[30][40])
-	{
-		if (y < pY)
-		{
+	void BlockMoveDown(int MatMap[30][40]) {
+		if (y < pY) {
 			MatMap[pI / 20 + 1][x / 20] = 0;
 
 			if (pY - y <= 5)
@@ -1665,14 +1510,12 @@ public:
 				y += 5;
 		}
 
-		if (y == pY)
-		{
+		if (y == pY) {
 			MatMap[y / 20 + 1][x / 20] = 6;
 		}
 	}
 
-	static void Timer()
-	{
+	static void Timer() {
 		if (timer1 == 0)
 			timer1 = timeGetTime();
 
@@ -1686,8 +1529,7 @@ int BlockMoves::dt = 0;
 int BlockMoves::timer = 0;
 int BlockMoves::timer1 = 0;
 
-class FinalDoor
-{
+class FinalDoor {
 public:
 	int x, y;
 	int Cadr;
@@ -1703,8 +1545,7 @@ public:
 	int type;
 
 public:
-	FinalDoor(int _x, int _y, int _type) : x(_x), y(_y), Cadr(0), num(9), type(_type)
-	{
+	FinalDoor(int _x, int _y, int _type): x(_x), y(_y), Cadr(0), num(9), type(_type) {
 		ImageView = NULL;
 		Image[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
 		Image[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
@@ -1716,17 +1557,14 @@ public:
 
 		counter++;
 		//
-		if (type == 1)
-		{
+		if (type == 1) {
 			Image[0]->Rotate();
 			Image[1]->Rotate();
 		}
 	}
 
-	void ChangeCadr(int MatMap[30][40])
-	{
-		if (type == 0)
-		{
+	void ChangeCadr(int MatMap[30][40]) {
+		if (type == 0) {
 			if (Cadr < 1)
 				Cadr++;
 			else
@@ -1745,10 +1583,8 @@ public:
 				num = 9;
 		}
 	}
-	void Touch(int X, int Y, int MatMap[30][40], bool &rmb, int inv)
-	{
-		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height && rmb == true && inv == 2)
-		{
+	void Touch(int X, int Y, int MatMap[30][40], bool &rmb, int inv) {
+		if (X >= x && X <= x + ImageView->width && Y >= y && Y <= y + ImageView->height && rmb == true && inv == 2) {
 			ChangeCadr(MatMap);
 			rmb = false;
 		}
@@ -1760,8 +1596,7 @@ public:
 			nk = false;
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		p->Draw((x + Image[0]->width) - ImageView->width, y, ImageView->width, ImageView->height, ImageView);
 
 		//NeedKey
@@ -1771,8 +1606,7 @@ public:
 };
 int FinalDoor::counter = 0;
 
-class DrawRectangle
-{
+class DrawRectangle {
 public:
 	int x, y;
 	int w, h;
@@ -1783,8 +1617,7 @@ public:
 	int FillC;
 
 public:
-	DrawRectangle(int _x, int _y, int _w, int _h, int BorColor, int FillColor)
-	{
+	DrawRectangle(int _x, int _y, int _w, int _h, int BorColor, int FillColor) {
 		x = _x;
 		y = _y;
 		w = _w;
@@ -1799,10 +1632,8 @@ public:
 			for (int j = 0; j < w; ++j)
 				img[j + i * w] = FillColor;
 
-		for (int i = 0; i < h; ++i)
-		{
-			for (int j = 0; j < w; ++j)
-			{
+		for (int i = 0; i < h; ++i) {
+			for (int j = 0; j < w; ++j) {
 				if (i == 0 || i == h - 1)
 					img[j + i * w] = BorColor;
 
@@ -1812,8 +1643,7 @@ public:
 		}
 	}
 
-	void Draw(Param *p)
-	{
+	void Draw(Param *p) {
 		p->rectSize.left = x;
 		p->rectSize.top = y;
 		p->rectSize.right = p->rectSize.left + w;
@@ -1825,8 +1655,7 @@ public:
 	}
 
 private:
-	void DrawIntObject(D3DLOCKED_RECT &lockedRect)
-	{
+	void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
 		for (int i = 0; i < h; ++i)
 			for (int j = 0; j < w; ++j)
 				memcpy(reinterpret_cast<char *>(lockedRect.pBits) + x * 4 + j * 4 + i * lockedRect.Pitch + y * lockedRect.Pitch, reinterpret_cast<char *>(&img[j + i * w]), 4);
