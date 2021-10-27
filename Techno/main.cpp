@@ -37,8 +37,7 @@
 #define PM_EXIT 3
 
 //Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-class Sprite
-{
+class Sprite {
 public:
 	int x, y;
 	int width, height;
@@ -48,8 +47,7 @@ public:
 	char *name;
 
 public:
-	Sprite(char *fname) : img(NULL), x(0), y(0), TransparentColor(0), name(fname)
-	{
+	Sprite(char *fname) : img(NULL), x(0), y(0), TransparentColor(0), name(fname) {
 		std::ifstream is(fname, std::ios::binary);
 		is.seekg(18);
 		is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -62,8 +60,7 @@ public:
 
 		is.close();
 	}
-	Sprite(char *fname, int trColor) : img(NULL), x(0), y(0), TransparentColor(trColor), name(fname)
-	{
+	Sprite(char *fname, int trColor) : img(NULL), x(0), y(0), TransparentColor(trColor), name(fname) {
 		std::ifstream is(fname, std::ios::binary);
 		is.seekg(18);
 		is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -77,23 +74,20 @@ public:
 		is.close();
 	}
 
-	~Sprite()
-	{
+	~Sprite() {
 		if (img != NULL)
 			delete[] img;
 		img = NULL;
 	}
 
-	void DrawIntObject(D3DLOCKED_RECT &lockedRect)
-	{
+	void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
 		for (int i = 0; i < height; ++i)
 			for (int j = 0; j < width; ++j)
 				if (img[j + i * width] != TransparentColor)
 					memcpy(reinterpret_cast<char *>(lockedRect.pBits) + x * 4 + j * 4 + i * lockedRect.Pitch + y * lockedRect.Pitch, reinterpret_cast<char *>(&img[j + i * width]), 4);
 	}
 
-	void Rotate()
-	{
+	void Rotate() {
 		std::ifstream is(name, std::ios::binary);
 		is.seekg(18);
 		is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -109,10 +103,8 @@ public:
 
 		int j1 = width;
 
-		for (int i = 0; i < height; ++i)
-		{
-			for (int j = 0; j < width; ++j)
-			{
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < width; ++j) {
 				img[j + i * width] = im[j1 + i * width];
 
 				j1--;
@@ -122,8 +114,7 @@ public:
 		}
 	}
 
-	void cut(int xI, int yI, int wI, int hI)
-	{
+	void cut(int xI, int yI, int wI, int hI) {
 		int *im1 = new int[width * height * 32 / 8];
 		img = new int[wI * hI * 32 / 8];
 
@@ -149,38 +140,34 @@ public:
 		height = hI;
 	}
 
-	void RemplaceColor(int from, int to)
-	{
+	void RemplaceColor(int from, int to) {
 		for (int i = 0; i < height; ++i)
 			for (int j = 0; j < width; ++j)
 				if (img[j + i * width] == from)
 					img[j + i * width] = to;
 	}
 };
-class Param
-{
-public:
-	D3DLOCKED_RECT rectangle;
-	RECT rectSize;
-	IDirect3DSurface9 *backBuffer;
+class Param {
+	public:
+		D3DLOCKED_RECT rectangle;
+		RECT rectSize;
+		IDirect3DSurface9 *backBuffer;
 
-public:
-	Param()
-	{
-		backBuffer = NULL;
-	}
+	public:
+		Param() {
+			backBuffer = NULL;
+		}
 
-	void Draw(int x, int y, int w, int h, Sprite *Image)
-	{
-		rectSize.left = x;
-		rectSize.top = y;
-		rectSize.right = rectSize.left + w;
-		rectSize.bottom = rectSize.top + h;
+		void Draw(int x, int y, int w, int h, Sprite *Image) {
+			rectSize.left = x;
+			rectSize.top = y;
+			rectSize.right = rectSize.left + w;
+			rectSize.bottom = rectSize.top + h;
 
-		backBuffer->LockRect(&rectangle, &rectSize, 0);
-		Image->DrawIntObject(rectangle);
-		backBuffer->UnlockRect();
-	}
+			backBuffer->LockRect(&rectangle, &rectSize, 0);
+			Image->DrawIntObject(rectangle);
+			backBuffer->UnlockRect();
+		}
 };
 
 int w = 800;
@@ -224,8 +211,7 @@ Param *paramDraw;
 #include "Playing.h"
 #include "Create_map.h"
 
-void Draw()
-{
+void Draw() {
 	//MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	if (Menu == true)
 	{
@@ -247,8 +233,7 @@ void Draw()
 	//CREATE MAP-----------------------------------------------------------
 }
 
-void Initialisation()
-{
+void Initialisation() {
 	//Main menu+++
 	MainMenu = new Sprite("Images/main_menu.bmp");
 
@@ -333,8 +318,7 @@ void Initialisation()
 	PM[PM_EXIT]->show = false;
 }
 
-void InitialSys(HINSTANCE hInstance)
-{
+void InitialSys(HINSTANCE hInstance) {
 	paramDraw = new Param();
 
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);
@@ -363,13 +347,11 @@ void InitialSys(HINSTANCE hInstance)
 
 	videocard->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &paramDraw->backBuffer);
 }
-void MAINMENU()
-{
-	if (Menu == true)
-	{
+
+void MAINMENU() {
+	if (Menu == true) {
 		//Mouse move+++
-		for (int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			if (btnMain[i]->Touch(mX, mY) == true)
 				btnMain[i]->show = true;
 			else
@@ -378,21 +360,18 @@ void MAINMENU()
 		//Mouse move---
 
 		//Click+++
-		if (btnMain[PLAY]->Touch(X, Y) == true && lmb == true)
-		{
+		if (btnMain[PLAY]->Touch(X, Y) == true && lmb == true) {
 			Play = true;
 			Missions = true;
 			Menu = false;
 		}
 
-		if (btnMain[CREATE_MAP]->Touch(X, Y) == true && lmb == true)
-		{
+		if (btnMain[CREATE_MAP]->Touch(X, Y) == true && lmb == true) {
 			Create_map = true;
 			Menu = false;
 		}
 
-		if (btnMain[SETTINGS]->Touch(X, Y) == true && lmb == true)
-		{
+		if (btnMain[SETTINGS]->Touch(X, Y) == true && lmb == true) {
 			Menu = false;
 		}
 
@@ -406,8 +385,7 @@ void MAINMENU()
 
 LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow)
-{
+int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
 	Initialisation();
 
 	WNDCLASS wc;
@@ -434,24 +412,20 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
 	InitialSys(hInstance);
 
-	while (end)
-	{
+	while (end) {
 		keyboard->Acquire();
 
 		lmb = false;
 		rmb = false;
 
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			if (msg.message == WM_DESTROY)
 				break;
 
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			if (msg.message == WM_LBUTTONUP)
-			{
+			if (msg.message == WM_LBUTTONUP) {
 				X = msg.pt.x - left;
 				Y = msg.pt.y - top;
 
@@ -461,8 +435,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 				Chest::SetPosition(X, Y);
 			}
 
-			if (msg.message == WM_RBUTTONUP)
-			{
+			if (msg.message == WM_RBUTTONUP) {
 				X = msg.pt.x - left;
 				Y = msg.pt.y - top;
 
@@ -507,10 +480,8 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 	return 0;
 }
 
-LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
+LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
