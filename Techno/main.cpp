@@ -1,12 +1,23 @@
-﻿#include <d3d9.h>
+﻿// Direct3D 9 graphics 
+// https://docs.microsoft.com/en-us/windows/win32/api/_direct3d9/
+#include <d3d9.h>
+
+// dinput.h is a human interface device
+// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/
 #include <dinput.h>
+
+// windows API
+// https://en.wikipedia.org/wiki/Windows.h
 #include <windows.h>
+
+// Microsoft Graphics Device interface (GDI)
+// https://docs.microsoft.com/en-us/windows/win32/gdi/windows-gdi
+#include <mmsystem.h>
 
 #include <fstream>
 #include <iostream>
 #pragma comment(lib, "winmm.lib")
 #include <math.h>
-#include <mmsystem.h>
 #include <stdio.h>
 
 #include "resource.h"
