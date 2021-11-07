@@ -22,16 +22,16 @@ int dt;
 int Level = 1;
 
 bool stopB = false;
-bool isPaused = false; // isPaused
+bool isPaused = false; // stop: isPaused
 
-Button* PM[4]; // pauseMenuButtons: Continue, Save, Settings, Exit
+Button* pauseMenuButtons[4]; // PM: pauseMenuButtons: Continue, Save, Settings, Exit
 
 Sprite* map;
 Sprite* pause;
 Sprite* Menu_pause;
 
 // Objects in the game+++
-Hero* Personnage;
+Hero* player; // Personage: player
 Fire* f[10];
 Door* d[10];
 Book* b[10];
@@ -114,7 +114,7 @@ void DrawPlay() {
       chest[i]->Draw(paramDraw);
     }
 
-    Personnage->Draw(paramDraw);
+    player->Draw(paramDraw);
 
     for (int i = 0; i < Chest::counter; i++) {
       if (chest[i]->show == true) {
@@ -157,7 +157,7 @@ void DrawPlay() {
       paramDraw->Draw((w - Menu_pause->width) / 2, (h - Menu_pause->height) / 2,
                       Menu_pause->width, Menu_pause->height, Menu_pause);
 
-      for (int i = 0; i < 4; i++) PM[i]->Draw(paramDraw);
+      for (int i = 0; i < 4; i++) pauseMenuButtons[i]->Draw(paramDraw);
     }
     // Menu Pause---
 
@@ -262,8 +262,8 @@ void ReadScript() {
       int* cor = Read(pos[5], k, c);  //Выделение координат X и Y
 
       if (cor != NULL) {
-        Personnage->exitX = cor[0];
-        Personnage->exitY = cor[1];
+        player->exitX = cor[0];
+        player->exitY = cor[1];
       }
     }
     //Загрузка перехода на следующую миссию---
@@ -335,8 +335,8 @@ void ReadScript() {
 
     // Load player coordinates+++
     if (LM == false) {
-      Personnage->x = atoi(&c[0]);
-      Personnage->y = atoi(&c[4]);
+      player->x = atoi(&c[0]);
+      player->y = atoi(&c[4]);
     }
     // Load player coordinates+++
   }
@@ -359,16 +359,16 @@ void Mission() {
   // Exit---
 
   if (btnOfMissions[0]->Touch(X, Y) == true) {
-    Personnage = new Hero();
-    Personnage->x = 40;
-    Personnage->y = 40;
+    player = new Hero();
+    player->x = 40;
+    player->y = 40;
 
     ReadScript();
 
     map = new Sprite(MapBmp, 0xffffffff);
 
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) Personnage->MatMap[i][j] = MatMap[i][j];
+      for (int j = 0; j < 40; j++) player->MatMap[i][j] = MatMap[i][j];
 
     Missions = false;
   }
@@ -385,10 +385,10 @@ void InteractiveObjects() {
   // BONUS+++
   for (int i = 0; i < Bonus::counter; i++) {
     if (bons[i]->show == true &&
-        (bons[i]->Touch(Personnage->x, Personnage->y + Personnage->h - 1) ==
+        (bons[i]->Touch(player->x, player->y + player->h - 1) ==
              true ||
-         bons[i]->Touch(Personnage->x + Personnage->w,
-                        Personnage->y + Personnage->h - 1) == true)) {
+         bons[i]->Touch(player->x + player->w,
+                        player->y + player->h - 1) == true)) {
       score += 10;
 
       sc = new char[100];
@@ -540,7 +540,7 @@ void InteractiveObjects() {
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
-    if (bt[i]->Touch(Personnage->x, Personnage->y + Personnage->h - 1) == true)
+    if (bt[i]->Touch(player->x, player->y + player->h - 1) == true)
       BlockMoves::UP = true;
   }
   // ButtonON---
@@ -567,10 +567,10 @@ void InteractiveObjects() {
   for (int i = 0; i < Book::counter; i++)
     if (b[i]->state =
             'C' && b[i]->show == true &&
-            (b[i]->Touch(Personnage->x,
-                         Personnage->y + Personnage->Image->height) == true ||
-             b[i]->Touch(Personnage->x + Personnage->Image->width,
-                         Personnage->y + Personnage->Image->height) == true)) {
+            (b[i]->Touch(player->x,
+                         player->y + player->Image->height) == true ||
+             b[i]->Touch(player->x + player->Image->width,
+                         player->y + player->Image->height) == true)) {
       b[i]->state = 'O';
       b[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       b[i]->Image = b[i]->ImageBack;
@@ -584,15 +584,15 @@ void InteractiveObjects() {
   // CHEST+++
   if (buffer[DIK_O] & 0x80)
     for (int i = 0; i < Chest::counter; i++)
-      if (chest[i]->Touch(Personnage->x, Personnage->y + Personnage->h - 1) ==
+      if (chest[i]->Touch(player->x, player->y + player->h - 1) ==
               true ||
-          chest[i]->Touch(Personnage->x + Personnage->w,
-                          Personnage->y + Personnage->h - 1) == true)
+          chest[i]->Touch(player->x + player->w,
+                          player->y + player->h - 1) == true)
         chest[i]->show = true;
   // CHEST---
 }
 void HeroMoves() {
-  Personnage->ChargeMatMap(MatMap);
+  player->ChargeMatMap(MatMap);
 
   Hero::Timer();
   Hero::TimerG();
@@ -602,57 +602,57 @@ void HeroMoves() {
   if (buffer[DIK_P] & 0x80) vseA = 0;
 
   if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
-    Personnage->R = true;
-    Personnage->L = false;
+    player->R = true;
+    player->L = false;
   }
 
   if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80)) {
-    Personnage->L = true;
-    Personnage->R = false;
+    player->L = true;
+    player->R = false;
   }
 
   if (buffer[DIK_SPACE] & 0x80) {
-    int nx = Personnage->x / 20;
-    int nx1 = (Personnage->x + Personnage->w) / 20;
-    int ny = (Personnage->y + Personnage->h) / 20;
+    int nx = player->x / 20;
+    int nx1 = (player->x + player->w) / 20;
+    int ny = (player->y + player->h) / 20;
 
     if (MatMap[ny][nx] != 0 || MatMap[ny][nx1] != 0) {
-      Personnage->J = true;
-      Personnage->velocityJ = 15;
+      player->J = true;
+      player->velocityJ = 15;
     }
   }
 
   if ((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80)) {
-    Personnage->U = true;
-    Personnage->D = false;
+    player->U = true;
+    player->D = false;
   }
 
   if ((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80)) {
-    Personnage->D = true;
-    Personnage->U = false;
+    player->D = true;
+    player->U = false;
   }
 
-  Personnage->Jump();
+  player->Jump();
 
-  if (Hero::dtG > 20) Personnage->Gravitaton();
+  if (Hero::dtG > 20) player->Gravitaton();
 
   if (Hero::dt > 15) {
-    Personnage->MoveL();
-    Personnage->MoveR();
-    Personnage->UD('U');
-    Personnage->UD('D');
+    player->MoveL();
+    player->MoveR();
+    player->UD('U');
+    player->UD('D');
 
-    int nx = Personnage->x / 20;
-    int ny = (Personnage->y + Personnage->h) / 20;
+    int nx = player->x / 20;
+    int ny = (player->y + player->h) / 20;
 
     if (MatMap[ny][nx] == 3) {
-      Personnage->G = false;
+      player->G = false;
     } else
-      Personnage->G = true;
+      player->G = true;
   }
 }
 void NextLevel() {
-  if (Personnage->ChangeLevel() == true) {
+  if (player->ChangeLevel() == true) {
     Level++;
 
     for (int i = 0; i < 9; i++)
@@ -703,7 +703,7 @@ void NextLevel() {
     map = new Sprite(MapBmp, 0xffffffff);
 
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) Personnage->MatMap[i][j] = MatMap[i][j];
+      for (int j = 0; j < 40; j++) player->MatMap[i][j] = MatMap[i][j];
   }
 }
 // Play---
@@ -741,23 +741,23 @@ void menuPause() {
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
-  for (int j = 0; j < 4; j++) PM[j]->show = false;
+  for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
 
   for (int i = 0; i < 4; i++)
-    if (PM[i]->Touch(mX, mY) == true) 
-      PM[i]->show = true;
+    if (pauseMenuButtons[i]->Touch(mX, mY) == true) 
+      pauseMenuButtons[i]->show = true;
 
   isPaused = shouldContinuePause();
 
-  if (PM[PM_EXIT]->Touch(X, Y) == true) {
+  if (pauseMenuButtons[PM_EXIT]->Touch(X, Y) == true) {
     Play = false;
     Menu = true;
   }
 }
 
 bool shouldContinuePause() {
-  return PM[PM_CONTINUE]->Touch(X, Y) == false 
-  && PM[PM_SAVE]->Touch(X, Y) == false 
-  && PM[PM_SETTINGS]->Touch(X, Y) == false;
+  return pauseMenuButtons[PM_CONTINUE]->Touch(X, Y) == false 
+  && pauseMenuButtons[PM_SAVE]->Touch(X, Y) == false 
+  && pauseMenuButtons[PM_SETTINGS]->Touch(X, Y) == false;
 }
 // PLAYING---
