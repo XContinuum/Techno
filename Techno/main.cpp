@@ -59,8 +59,7 @@ class Sprite {
     char *name;
 
    public:
-    Sprite(char *fname)
-        : img(NULL), x(0), y(0), TransparentColor(0), name(fname) {
+    Sprite(char *fname): img(NULL), x(0), y(0), TransparentColor(0), name(fname) {
         std::ifstream is(fname, std::ios::binary);
         is.seekg(18);
         is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -69,13 +68,11 @@ class Sprite {
         img = new int[width * height * 32 / 8];
 
         for (int i = height - 1; i >= 0; --i)
-            is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8,
-                    width * 32 / 8);
+            is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8, width * 32 / 8);
 
         is.close();
     }
-    Sprite(char *fname, int trColor)
-        : img(NULL), x(0), y(0), TransparentColor(trColor), name(fname) {
+    Sprite(char *fname, int trColor): img(NULL), x(0), y(0), TransparentColor(trColor), name(fname) {
         std::ifstream is(fname, std::ios::binary);
         is.seekg(18);
         is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -84,8 +81,7 @@ class Sprite {
         img = new int[width * height * 32 / 8];
 
         for (int i = height - 1; i >= 0; --i)
-            is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8,
-                    width * 32 / 8);
+            is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8, width * 32 / 8);
 
         is.close();
     }
@@ -206,7 +202,7 @@ bool lmb = false;
 bool Menu = true;
 bool end = true;
 
-Sprite *MainMenu;
+Sprite *mainMenu;
 Button *btnMain[4];
 
 // Main menu----------------------
@@ -231,7 +227,7 @@ Param *paramDraw;
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (Menu == true) {
-        paramDraw->Draw(0, 0, w, h, MainMenu);
+        paramDraw->Draw(0, 0, w, h, mainMenu);
 
         for (int i = 0; i < 4; i++) btnMain[i]->Draw(paramDraw);
     }
@@ -246,9 +242,9 @@ void Draw() {
     // CREATE MAP-----------------------------------------------------------
 }
 
-void Initialisation() {
+void initialization() {
     // Main menu+++
-    MainMenu = new Sprite("Images/main_menu.bmp");
+    mainMenu = new Sprite("Images/main_menu.bmp");
 
     btnMain[PLAY] = new Button("Images/btn_Play.bmp");
     btnMain[PLAY]->x = 271;
@@ -364,7 +360,7 @@ void InitialSys(HINSTANCE hInstance) {
                              &paramDraw->backBuffer);
 }
 
-void MAINMENU() {
+void mainMenuInteractions() {
     if (Menu == true) {
         // Mouse move+++
         for (int i = 0; i < 4; i++) {
@@ -395,15 +391,14 @@ void MAINMENU() {
     }
 
     // Procedures+++++++++
-    PLAYING();
-    CREATING();
+    playLoop();
+    createMap();
 }
 
 LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                     LPSTR lCmdLine, int nCmdShow) {
-    Initialisation();
+int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
+    initialization();
 
     WNDCLASS wc;
     HICON hMyIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
@@ -421,8 +416,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     RegisterClass(&wc);
 
-    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, w, h, NULL, NULL,
-                        hInstance, NULL);
+    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, w, h, NULL, NULL, hInstance, NULL);
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
 
@@ -472,7 +466,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         dt = timer - timer1;
         // Timer---
 
-        MAINMENU();
+        mainMenuInteractions();
 
         if (btnMain[EXIT]->Touch(X, Y) == true && Menu == true) return 0;
 
@@ -492,8 +486,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     return 0;
 }
 
-LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam,
-                         LPARAM lParam) {
+LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
         case WM_DESTROY:
             PostQuitMessage(0);

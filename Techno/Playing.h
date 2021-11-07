@@ -22,9 +22,9 @@ int dt;
 int Level = 1;
 
 bool stopB = false;
-bool stop = false;
+bool isPaused = false; // isPaused
 
-Button* PM[4];
+Button* PM[4]; // pauseMenuButtons: Continue, Save, Settings, Exit
 
 Sprite* map;
 Sprite* pause;
@@ -152,7 +152,7 @@ void DrawPlay() {
     // Cursor---
 
     // Menu Pause+++
-    if (stop == true) {
+    if (isPaused == true) {
       paramDraw->Draw(0, 0, pause->width, pause->height, pause);
       paramDraw->Draw((w - Menu_pause->width) / 2, (h - Menu_pause->height) / 2,
                       Menu_pause->width, Menu_pause->height, Menu_pause);
@@ -708,52 +708,56 @@ void NextLevel() {
 }
 // Play---
 
-void PLAYING() {
-  if (Play == true) {
-    if (Missions == true)
-      Mission();
-    else {
-      NextLevel();
+void playLoop() {
+  if (Play == false) return;
+  if (Missions == true) {
+    Mission();
+    return;
+  }
+  NextLevel();
 
-      if (stopB == false && stop == false) {
-        InteractiveObjects();
-        HeroMoves();
+  if (stopB == false && isPaused == false) {
+    InteractiveObjects();
+    HeroMoves();
+  }
+
+  closeTheBook();
+  menuPause();
+}
+
+void closeTheBook() {
+  if (buffer[DIK_RETURN] & 0x80) { // Technical ??
+    for (int i = 0; i < Book::counter; i++) {
+      if (b[i]->state == 'O') {
+        b[i]->show = false;
+        b[i]->state = 'C';
+        stopB = false;
       }
-
-      // CLOSE THE BOOK++++
-      if (buffer[DIK_RETURN] & 0x80) {
-        for (int i = 0; i < Book::counter; i++) {
-          if (b[i]->state == 'O') {
-            b[i]->show = false;
-            b[i]->state = 'C';
-            stopB = false;
-          }
-        }
-      }
-      // CLOSE THE BOOK---
-
-      // MenuPause++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      if (buffer[DIK_ESCAPE] & 0x80) stop = true;
-
-      if (stop == true) {
-        for (int j = 0; j < 4; j++) PM[j]->show = false;
-
-        for (int i = 0; i < 4; i++)
-          if (PM[i]->Touch(mX, mY) == true) PM[i]->show = true;
-
-        if (PM[PM_CONTINUE]->Touch(X, Y) == true) stop = false;
-
-        if (PM[PM_SAVE]->Touch(X, Y) == true) stop = false;
-
-        if (PM[PM_SETTINGS]->Touch(X, Y) == true) stop = false;
-
-        if (PM[PM_EXIT]->Touch(X, Y) == true) {
-          Play = false;
-          Menu = true;
-        }
-      }
-      // MenuPause----------------------------------------------------
     }
   }
+}
+
+void menuPause() {
+  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true;
+  if (isPaused == false) return;
+
+  for (int j = 0; j < 4; j++) PM[j]->show = false;
+
+  for (int i = 0; i < 4; i++)
+    if (PM[i]->Touch(mX, mY) == true) 
+      PM[i]->show = true;
+
+  isPaused = shouldContinuePause();
+
+  if (PM[PM_EXIT]->Touch(X, Y) == true) {
+    Play = false;
+    Menu = true;
+  }
+}
+
+bool shouldContinuePause() {
+  return PM[PM_CONTINUE]->Touch(X, Y) == false 
+  && PM[PM_SAVE]->Touch(X, Y) == false 
+  && PM[PM_SETTINGS]->Touch(X, Y) == false;
 }
 // PLAYING---
