@@ -124,9 +124,9 @@ void DrawPlay() {
     }
     // Chest---
 
-    // Inventar+++
+    // Inventory+++
     Inv->Draw(paramDraw);
-    // Inventar---
+    // Inventory---
 
     // Book++++
     for (int i = 0; i < Book::counter; i++) {
@@ -180,13 +180,13 @@ void LoadMapp(char* c, int k, int z) {
       z++;
     }
 
-  //Загрузка дверей+++
+  // Load doors +++
   for (int i = 0; i < mH; i++)
     for (int j = 0; j < mW; j++) {
       if (MatMap[i][j] == 4 && MatMap[i - 1][j] != 4)
         d[Door::counter - 1] = new Door(j * 20, i * 20);
 
-      //Загрузка конечных дверей+++
+      // Load final doors +++
       if (j == 0)
         t = 1;
       else if (j == mW - 1)
@@ -194,7 +194,7 @@ void LoadMapp(char* c, int k, int z) {
 
       if (MatMap[i][j] == 8 && MatMap[i - 1][j] != 8)
         Fd[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
-      //Загрузка конечных дверей---
+      // Load final doors ---
 
       // Block moves+++
       if (MatMap[i][j] == 6) {
@@ -204,7 +204,7 @@ void LoadMapp(char* c, int k, int z) {
       }
       // Block moves---
     }
-  //Загрузка дверей---
+  // Load doors---
 }
 int* Read(int p1, int p2, char* c) {
   int* cor = NULL;
@@ -213,9 +213,9 @@ int* Read(int p1, int p2, char* c) {
   for (int i = p1; i < p2; i++) line[i - p1] = c[i];
 
   if (line[0] != 'N') {
-    int quantiteXY = (p2 - p1 + 2) / 4;  //количество координат
+    int quantiteXY = (p2 - p1 + 2) / 4;  // quantity of coordinates
 
-    int quantite = quantiteXY / 2;  //количество объектов
+    int quantite = quantiteXY / 2;  // quantity of objects
 
     cor = new int[quantiteXY];
 
@@ -233,14 +233,14 @@ int* Read(int p1, int p2, char* c) {
   return cor;
 }
 void ReadScript() {
-  //Чтение файла---
+  // Read file ---
   char* c = new char[mH * mW + 100];
   std::ifstream is(MapTxt);
 
   for (int i = 0; i < mH * mW + 100; i++) is >> c[i];
 
   is.close();
-  //Чтение файла+++
+  // Read file +++
 
   bool LM = false;
   int z = 0;
@@ -248,12 +248,12 @@ void ReadScript() {
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
   for (int k = 0; k < mH * mW + 100; k++) {
-    //Загрузка карты+++++++++++++++++++++
+    // Load map +++++++++++++++++++++
     if (LM == true) {
       LoadMapp(c, k, z);
       LM = false;
     }
-    //Загрузка карты--------------------------
+    // Load map --------------------------
 
     if (c[k] == '|' && z == 0) LM = true;
 
@@ -268,7 +268,7 @@ void ReadScript() {
     }
     //Загрузка перехода на следующую миссию---
 
-    //Загрузка кнопок---
+    // Load buttons ---
     if (c[k] == ':' && pos[4] != -1 && pos[5] == -1) {
       pos[5] = k + 1;
 
@@ -278,9 +278,9 @@ void ReadScript() {
         for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
           bt[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
     }
-    //Загрузка кнопок---
+    // Load buttons ---
 
-    //Загрузка сундуков---
+    // Load chests ---
     if (c[k] == ':' && pos[3] != -1 && pos[4] == -1) {
       pos[4] = k + 1;
 
@@ -293,9 +293,9 @@ void ReadScript() {
 
       pos[3] = 0;
     }
-    //Загрузка сундуков---
+    // Load chests ---
 
-    //Загрузка бонусов---
+    // Load bonuses ---
     if (c[k] == ':' && pos[2] != -1 && pos[3] == -1) {
       pos[3] = k + 1;
 
@@ -305,9 +305,9 @@ void ReadScript() {
         for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
           bons[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
     }
-    //Загрузка бонусов---
+    // Load bonuses ---
 
-    //Загрузка книг+++
+    // Load books +++
     if (c[k] == ':' && pos[1] != -1 && pos[2] == -1) {
       pos[2] = k + 1;
 
@@ -317,9 +317,9 @@ void ReadScript() {
         for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
           b[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
     }
-    //Загрузка книг---
+    // Load books ---
 
-    //Загрузка огня+++++++++++
+    // Load fire +++++++++++
     if (c[k] == ':' && pos[0] != -1 && pos[1] == -1) {
       pos[1] = k + 1;
 
@@ -331,14 +331,14 @@ void ReadScript() {
     }
 
     if (c[k] == ':') pos[0] = k + 1;
-    //Загрузка огня------------
+    // Load fire ------------
 
-    //Загрузка координат игрока+++
+    // Load player coordinates+++
     if (LM == false) {
       Personnage->x = atoi(&c[0]);
       Personnage->y = atoi(&c[4]);
     }
-    //Загрузка координат игрока+++
+    // Load player coordinates+++
   }
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(Level);
@@ -399,9 +399,9 @@ void InteractiveObjects() {
       bons[i]->show = false;
     }
   }
-  // BUNUS---
+  // BONUS---
 
-  // Inventar+++
+  // Inventory+++
   if (Inv->Touch(mX, mY) == true) {
     Inv->exp = true;
     Inv->mX = mX + 10;
@@ -738,7 +738,7 @@ void closeTheBook() {
 }
 
 void menuPause() {
-  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true;
+  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
   for (int j = 0; j < 4; j++) PM[j]->show = false;
