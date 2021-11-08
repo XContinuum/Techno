@@ -563,37 +563,41 @@ void showInventoryToolTip() {
   inventory->mY = mY;
 }
 void inventoryMoveEvents() {
-  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
-    if (Inventar::iLmb == true) {
-      if (inventory->move == false) {
-        inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-        if (inventory->check != -1) {
-          inventory->move = true;
-
-          for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
-
-          posObject = inventory->objects[inventory->check];
-          inventory->objects[inventory->check] = 0;
-        }
-
-      } else if (inventory->move == true) {
-        int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-        if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
-          inventory->objects[nt] = posObject;
-          inventory->ChangeImages();
-          posObject = 0;
-        }
-        for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
-        inventory->move = false;
-      }
-
-      Inventar::Xi = 0;
-      Inventar::Yi = 0;
-      Inventar::iLmb = false;
-    }
+  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == false) {
+    return;
   }
+
+  if (Inventar::iLmb == false) { 
+    return;
+  }
+  
+  if (inventory->move == false) {
+    inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+
+    if (inventory->check != -1) {
+      inventory->move = true;
+
+      for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
+
+      posObject = inventory->objects[inventory->check];
+      inventory->objects[inventory->check] = 0;
+    }
+
+  } else if (inventory->move == true) {
+    int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+
+    if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
+      inventory->objects[nt] = posObject;
+      inventory->ChangeImages();
+      posObject = 0;
+    }
+    for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
+    inventory->move = false;
+  }
+
+  Inventar::Xi = 0;
+  Inventar::Yi = 0;
+  Inventar::iLmb = false;
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
