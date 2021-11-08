@@ -37,7 +37,6 @@ BlockMoves* bm[5];
 ButtonON* bt[10];
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
-Button* lock;
 
 Inventar* inventory; // Inv: inventory
 

@@ -229,6 +229,7 @@ DrawRectangle* dr;
 int timer;
 int timer1;
 int dt;
+Button* lock;
 
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
