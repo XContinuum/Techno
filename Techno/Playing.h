@@ -361,6 +361,217 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 
 
+
+// ---------------------------------------------------------------------------------
+// playLoop function
+// ---------------------------------------------------------------------------------
+void playLoop() {
+  if (playMode == false) return;
+  if (missionMode == true) {
+    mission();
+    return;
+  }
+  nextLevel();
+
+  if (isBookMenuOpen == false && isPaused == false) {
+    interactiveObjects();
+    playerEvents();
+  }
+
+  closeTheBook();
+  menuPause();
+}
+void mission() {
+  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
+  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
+
+  // Exit+++
+  if (backButton->Touch(clickedX, clickedY) == true) {
+    missionMode = false;
+    playMode = false;
+    isInitialState = true;
+  }
+
+  backButton->show = backButton->Touch(mX, mY);
+  // Exit---
+
+  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
+    player = new Hero();
+    player->x = 40;
+    player->y = 40;
+
+    readScript(mapFilename);
+
+    missionMode = false;
+  }
+
+  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
+}
+void nextLevel() {
+  // Global: player, level, inventory, map, gameMap
+  // External: blocksInHeight, blocksInWidth
+  if (player->ChangeLevel() == false) return;
+
+  level++;
+
+  for (int i = 0; i < 9; i++)
+    if (inventory->objects[i] == 2) inventory->objects[i] = 0;
+
+  clearClassInformation();
+  resetEntities();
+  clearMap(); // this might be redundant, as we are loading the new map next
+  setNextMapFilepath(level);
+  readScript(mapFilename);
+}
+// Not sure what those values mean and why they should be reset
+void clearClassInformation() {
+  Fire::counter = 0;
+  Door::counter = 0;
+  Book::counter = 0;
+  Bonus::counter = 0;
+  //++++++
+  Chest::dt = 0;
+  Chest::timer = 0;
+  Chest::timer1 = 0;
+
+  Chest::counter = 0;
+  Chest::Xi = 0;
+  Chest::Yi = 0;
+
+  Chest::iLmb = false;
+  //------
+  BlockMoves::counter = 0;
+  ButtonON::counter = 0;
+  FinalDoor::counter = 0;
+}
+void resetEntities() {
+  for (int i = 0; i < 10; i++) {
+    fireEntity[i] = NULL;
+    doorEntity[i] = NULL;
+    bookEntity[i] = NULL;
+    bonusEntity[i] = NULL;
+    chest[i] = NULL;
+    movingStairBlocks[i] = NULL;
+    pressurePlate[i] = NULL;
+    finalDoor[i] = NULL;
+  }
+}
+void clearMap() {
+  // Global: gameMap
+  // External: blocksInHeight, blocksInWidth
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
+      gameMap[i][j] = 0;
+    }
+  }
+}
+void setNextMapFilepath(int level) {
+  mapBMPfilename = new char[100]; // global
+  mapFilename = new char[100]; // global
+
+  sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
+  sprintf(mapFilename, "Images/Data/map%d.txt", level);
+}
+void playerEvents() {
+  // Global: player, gameMap, buffer, inventory
+  // External: Hero class
+  player->ChargeMatMap(gameMap);
+
+  Hero::Timer();
+  Hero::TimerG();
+
+  if (buffer[DIK_N] & 0x80) inventory->AddObject(2);
+
+  if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
+    player->R = true;
+    player->L = false;
+  }
+
+  if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80)) {
+    player->L = true;
+    player->R = false;
+  }
+
+  if (buffer[DIK_SPACE] & 0x80) {
+    int nx = player->x / 20;
+    int nx1 = (player->x + player->w) / 20;
+    int ny = (player->y + player->h) / 20;
+
+    if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
+      player->J = true;
+      player->velocityJ = 15;
+    }
+  }
+
+  if ((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80)) {
+    player->U = true;
+    player->D = false;
+  }
+
+  if ((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80)) {
+    player->D = true;
+    player->U = false;
+  }
+
+  player->Jump();
+
+  if (Hero::dtG > 20) player->Gravitaton();
+
+  if (Hero::dt > 15) {
+    player->MoveL();
+    player->MoveR();
+    player->UD('U');
+    player->UD('D');
+
+    int nx = player->x / 20;
+    int ny = (player->y + player->h) / 20;
+
+    if (gameMap[ny][nx] == 3) {
+      player->G = false;
+    } else
+      player->G = true;
+  }
+}
+
+void closeTheBook() {
+  if (buffer[DIK_RETURN] & 0x80) { // Technical ??
+    for (int i = 0; i < Book::counter; i++) {
+      if (bookEntity[i]->state == 'O') {
+        bookEntity[i]->show = false;
+        bookEntity[i]->state = 'C';
+        isBookMenuOpen = false;
+      }
+    }
+  }
+}
+void menuPause() {
+  // Global: buffer, isPaused, pauseMenuButtons, playMode
+  // External: mX, mY, isInitialState
+  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
+  if (isPaused == false) return;
+
+  for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
+
+  for (int i = 0; i < 4; i++)
+    if (pauseMenuButtons[i]->Touch(mX, mY) == true) 
+      pauseMenuButtons[i]->show = true;
+
+  isPaused = shouldContinuePause();
+
+  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY) == true) {
+    playMode = false;
+    isInitialState = true;
+  }
+}
+bool shouldContinuePause() {
+  return pauseMenuButtons[PM_CONTINUE]->Touch(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SAVE]->Touch(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SETTINGS]->Touch(clickedX, clickedY) == false;
+}
+// ---------------------------------------------------------------------------------
+// playLoop {end}
+// ---------------------------------------------------------------------------------
+
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
@@ -603,219 +814,3 @@ void updateFrames() {
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
 // ---------------------------------------------------------------------------------
-
-void playerEvents() {
-  // Global: player, gameMap, buffer, inventory
-  // External: Hero class
-  player->ChargeMatMap(gameMap);
-
-  Hero::Timer();
-  Hero::TimerG();
-
-  if (buffer[DIK_N] & 0x80) inventory->AddObject(2);
-
-  if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
-    player->R = true;
-    player->L = false;
-  }
-
-  if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80)) {
-    player->L = true;
-    player->R = false;
-  }
-
-  if (buffer[DIK_SPACE] & 0x80) {
-    int nx = player->x / 20;
-    int nx1 = (player->x + player->w) / 20;
-    int ny = (player->y + player->h) / 20;
-
-    if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
-      player->J = true;
-      player->velocityJ = 15;
-    }
-  }
-
-  if ((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80)) {
-    player->U = true;
-    player->D = false;
-  }
-
-  if ((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80)) {
-    player->D = true;
-    player->U = false;
-  }
-
-  player->Jump();
-
-  if (Hero::dtG > 20) player->Gravitaton();
-
-  if (Hero::dt > 15) {
-    player->MoveL();
-    player->MoveR();
-    player->UD('U');
-    player->UD('D');
-
-    int nx = player->x / 20;
-    int ny = (player->y + player->h) / 20;
-
-    if (gameMap[ny][nx] == 3) {
-      player->G = false;
-    } else
-      player->G = true;
-  }
-}
-// Play---
-
-
-// ---------------------------------------------------------------------------------
-// playLoop function
-// ---------------------------------------------------------------------------------
-void playLoop() {
-  if (playMode == false) return;
-  if (missionMode == true) {
-    mission();
-    return;
-  }
-  nextLevel();
-
-  if (isBookMenuOpen == false && isPaused == false) {
-    interactiveObjects();
-    playerEvents();
-  }
-
-  closeTheBook();
-  menuPause();
-}
-void mission() {
-  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
-
-  // Exit+++
-  if (backButton->Touch(clickedX, clickedY) == true) {
-    missionMode = false;
-    playMode = false;
-    isInitialState = true;
-  }
-
-  backButton->show = backButton->Touch(mX, mY);
-  // Exit---
-
-  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
-    player = new Hero();
-    player->x = 40;
-    player->y = 40;
-
-    readScript(mapFilename);
-
-    missionMode = false;
-  }
-
-  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
-}
-void nextLevel() {
-  // Global: player, level, inventory, map, gameMap
-  // External: blocksInHeight, blocksInWidth
-  if (player->ChangeLevel() == false) return;
-
-  level++;
-
-  for (int i = 0; i < 9; i++)
-    if (inventory->objects[i] == 2) inventory->objects[i] = 0;
-
-  clearClassInformation();
-  resetEntities();
-  clearMap(); // this might be redundant, as we are loading the new map next
-  setNextMapFilepath(level);
-  readScript(mapFilename);
-}
-// Not sure what those values mean and why they should be reset
-void clearClassInformation() {
-  Fire::counter = 0;
-  Door::counter = 0;
-  Book::counter = 0;
-  Bonus::counter = 0;
-  //++++++
-  Chest::dt = 0;
-  Chest::timer = 0;
-  Chest::timer1 = 0;
-
-  Chest::counter = 0;
-  Chest::Xi = 0;
-  Chest::Yi = 0;
-
-  Chest::iLmb = false;
-  //------
-  BlockMoves::counter = 0;
-  ButtonON::counter = 0;
-  FinalDoor::counter = 0;
-}
-void resetEntities() {
-  for (int i = 0; i < 10; i++) {
-    fireEntity[i] = NULL;
-    doorEntity[i] = NULL;
-    bookEntity[i] = NULL;
-    bonusEntity[i] = NULL;
-    chest[i] = NULL;
-    movingStairBlocks[i] = NULL;
-    pressurePlate[i] = NULL;
-    finalDoor[i] = NULL;
-  }
-}
-void clearMap() {
-  // Global: gameMap
-  // External: blocksInHeight, blocksInWidth
-  for (int i = 0; i < blocksInHeight; i++) {
-    for (int j = 0; j < blocksInWidth; j++) {
-      gameMap[i][j] = 0;
-    }
-  }
-}
-void setNextMapFilepath(int level) {
-  mapBMPfilename = new char[100]; // global
-  mapFilename = new char[100]; // global
-
-  sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
-  sprintf(mapFilename, "Images/Data/map%d.txt", level);
-}
-// ---------------------------------------------------------------------------------
-// playLoop {end}
-// ---------------------------------------------------------------------------------
-
-void closeTheBook() {
-  if (buffer[DIK_RETURN] & 0x80) { // Technical ??
-    for (int i = 0; i < Book::counter; i++) {
-      if (bookEntity[i]->state == 'O') {
-        bookEntity[i]->show = false;
-        bookEntity[i]->state = 'C';
-        isBookMenuOpen = false;
-      }
-    }
-  }
-}
-
-void menuPause() {
-  // Global: buffer, isPaused, pauseMenuButtons, playMode
-  // External: mX, mY, isInitialState
-  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
-  if (isPaused == false) return;
-
-  for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
-
-  for (int i = 0; i < 4; i++)
-    if (pauseMenuButtons[i]->Touch(mX, mY) == true) 
-      pauseMenuButtons[i]->show = true;
-
-  isPaused = shouldContinuePause();
-
-  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY) == true) {
-    playMode = false;
-    isInitialState = true;
-  }
-}
-
-bool shouldContinuePause() {
-  return pauseMenuButtons[PM_CONTINUE]->Touch(clickedX, clickedY) == false 
-  && pauseMenuButtons[PM_SAVE]->Touch(clickedX, clickedY) == false 
-  && pauseMenuButtons[PM_SETTINGS]->Touch(clickedX, clickedY) == false;
-}
-// PLAYING---
