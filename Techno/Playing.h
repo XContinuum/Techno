@@ -61,14 +61,27 @@ int score = 0;
 
 // PLAYING+++
 void drawScene() {
-  // Global: missionMode, fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
-  // posObject, isPaused, scoreText
+  // Global: missionMode, isPaused, scoreText
   //
-  // External: paramDraw, mX, mY
+  // External: paramDraw
   if (missionMode == true) {
     drawMission();
     return;
   }
+  
+  drawEntities();
+
+  if (isPaused == true) {
+    drawPauseMenu();
+  }
+
+  scoreText->Draw(paramDraw);
+}
+
+void drawEntities() {
+  // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
+  // posObject
+  // External: paramDraw, mX, mY
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
@@ -143,14 +156,6 @@ void drawScene() {
     paramDraw->Draw(mX, mY, cur->width, cur->height, cur);
   }
   // Cursor---
-
-  // Menu Pause+++
-  if (isPaused == true) {
-    drawPauseMenu();
-  }
-  // Menu Pause---
-
-  scoreText->Draw(paramDraw);
 }
 
 void drawPauseMenu() {
