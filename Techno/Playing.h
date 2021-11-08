@@ -258,22 +258,16 @@ void readScript(char* filename) {
   // Global: mapFilename, player
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
-
   char* fileBuffer = readFile(filename, bufferSize);
-  int mapDeliminatorPos = 0;
-  int readingChunk = 0;
-  int prevColonIndex = 0;
 
   // Load player coordinates+++
   player->x = atoi(&fileBuffer[0]);
   player->y = atoi(&fileBuffer[4]);
   // Load player coordinates+++
 
+  int readingChunk = 0;
+  int prevColonIndex = 0;
   for (int index = 0; index < bufferSize; index++) {
-    if (fileBuffer[index] == '|') {
-      mapDeliminatorPos = index;
-    }
-
     if (fileBuffer[index] == ':') {
       int* coordinates = readCoordinates(prevColonIndex, index, fileBuffer);
 
@@ -287,12 +281,22 @@ void readScript(char* filename) {
     }
   }
 
+  int mapDeliminatorPos = findDelimiter(fileBuffer, bufferSize);
   loadMap(fileBuffer, mapDeliminatorPos);
   setMap();
 
   loadDoors();
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
+}
+int findDelimiter(char* fileBuffer, int bufferSize) {
+  for (int index = 0; index < bufferSize; index++) {
+    if (fileBuffer[index] == '|') {
+      return index;
+    }
+  }
+
+  return 0;
 }
 void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
   // Global: pressurePlate, chest, bonusEntity, fireEntity
@@ -439,7 +443,7 @@ void interactiveObjects() {
 
       if (!tmp) b = false;
     }
-    /// tmp b  A
+    /// tmp b  A = tmp & b
     /// T   T  T
     /// T   F  F
     /// F   T  F
