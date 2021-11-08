@@ -294,8 +294,6 @@ void readScript() {
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               pressurePlate[i] =
                   new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
-
-          prevColonIndex = index + 1;
           break;
 
         case 4:  // Load chests
@@ -304,8 +302,6 @@ void readScript() {
               chest[i] =
                   new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
                             coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
-
-          prevColonIndex = index + 1;
           break;
 
         case 3:  // Load bonuses
@@ -313,8 +309,6 @@ void readScript() {
             for (int i = 0; i < (index - prevColonIndex + 1) / 12; i++)
               bonusEntity[i] =
                   new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
-
-          prevColonIndex = index + 1;
           break;
 
         case 2:  // Load books
@@ -322,8 +316,6 @@ void readScript() {
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               bookEntity[i] =
                   new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
-
-          prevColonIndex = index + 1;
           break;
 
         case 1:  // Load fire
@@ -331,15 +323,12 @@ void readScript() {
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               fireEntity[i] =
                   new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
-
-          prevColonIndex = index + 1;
           break;
       }
 
-      prevColonIndex = index;
+      prevColonIndex = index + 1;
       readingChunk++;
     }
-    // Load fire ------------
   }
 
   loadMap(fileBuffer, mapDeliminatorPos);
