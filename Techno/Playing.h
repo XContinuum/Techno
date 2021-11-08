@@ -59,8 +59,10 @@ int score = 0;
 // isInitialState - 
 // -----
 
-// PLAYING+++
-void drawScene() {
+// ---------------------------------------------------------------------------------
+// drawScene function
+// ---------------------------------------------------------------------------------
+void drawScene() { // ★★★
   // Global: missionMode, isPaused, scoreText
   //
   // External: paramDraw
@@ -77,7 +79,24 @@ void drawScene() {
 
   scoreText->Draw(paramDraw);
 }
+void drawMission() {
+  // Global: missions, missionButtons, missionLock, backButton
+  // External: paramDraw, screenPixelWidth, screenPixelHeight
+  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
+  if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 11; j++) {
+      if (!(i == 0 && j == 0))
+        paramDraw->Draw(22 + j * 13 + j * missionLock->width,
+                        63 + i * 36 + i * missionLock->height, missionLock->width,
+                        missionLock->height, missionLock);
+    }
+  }
+
+  if (backButton->show == true) backButton->Draw(paramDraw);
+}
 void drawEntities() {
   // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
   // posObject
@@ -157,7 +176,6 @@ void drawEntities() {
   }
   // Cursor---
 }
-
 void drawPauseMenu() {
   // Global: pauseOverlay, pauseMenuSprite, pauseMenuButtons
   // External: paramDraw, screenPixelWidth, screenPixelHeight
@@ -171,39 +189,36 @@ void drawPauseMenu() {
     pauseMenuButtons[i]->Draw(paramDraw);
   }
 }
+// ---------------------------------------------------------------------------------
+// drawScene {end}
+// ---------------------------------------------------------------------------------
 
-void drawMission() {
-  // Global: missions, missionButtons, missionLock, backButton
-  // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
-  if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
+void mission() {
+  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
+  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
 
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 11; j++) {
-      if (!(i == 0 && j == 0))
-        paramDraw->Draw(22 + j * 13 + j * missionLock->width,
-                        63 + i * 36 + i * missionLock->height, missionLock->width,
-                        missionLock->height, missionLock);
-    }
+  // Exit+++
+  if (backButton->Touch(clickedX, clickedY) == true) {
+    missionMode = false;
+    playMode = false;
+    isInitialState = true;
   }
 
-  if (backButton->show == true) backButton->Draw(paramDraw);
-}
+  backButton->show = backButton->Touch(mX, mY);
+  // Exit---
 
-// Missions+++
-void loadMap(char* fileBuffer, int mapDeliminatorPos) {
-  // Global: gameMaps
-  // External: blocksInHeight, blocksInWidth,
-  for (int i = 0; i < blocksInHeight; i++) {
-    for (int j = 0; j < blocksInWidth; j++) {
-      char num = fileBuffer[mapDeliminatorPos + i * blocksInWidth + j];
+  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
+    player = new Hero();
+    player->x = 40;
+    player->y = 40;
 
-      if (num != '\0') {
-        gameMap[i][j] = atoi(&num);
-      }
-    }
+    readScript(mapFilename);
+
+    missionMode = false;
   }
+
+  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
 }
 
 // ---------------------------------------------------------------------------------
@@ -318,6 +333,19 @@ int findDelimiter(char* fileBuffer, int bufferSize) {
 
   return 0;
 }
+void loadMap(char* fileBuffer, int mapDeliminatorPos) {
+  // Global: gameMaps
+  // External: blocksInHeight, blocksInWidth,
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
+      char num = fileBuffer[mapDeliminatorPos + i * blocksInWidth + j];
+
+      if (num != '\0') {
+        gameMap[i][j] = atoi(&num);
+      }
+    }
+  }
+}
 void setMap() {
   map = new Sprite(mapBMPfilename, 0xffffffff);
 
@@ -359,32 +387,6 @@ void loadDoors() {
 // readScript {end}
 // ---------------------------------------------------------------------------------
 
-void mission() {
-  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
-
-  // Exit+++
-  if (backButton->Touch(clickedX, clickedY) == true) {
-    missionMode = false;
-    playMode = false;
-    isInitialState = true;
-  }
-
-  backButton->show = backButton->Touch(mX, mY);
-  // Exit---
-
-  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
-    player = new Hero();
-    player->x = 40;
-    player->y = 40;
-
-    readScript(mapFilename);
-
-    missionMode = false;
-  }
-
-  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
-}
 
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
