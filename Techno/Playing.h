@@ -29,7 +29,7 @@ Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 // Objects in the game+++
 Hero* player; // Personage: player
 Fire* fireEntity[10]; // f: fireEntity
-Door* d[10];
+Door* doorEntity[10]; // d: doorEntity
 Book* b[10];
 Bonus* bons[10];
 Chest* chest[10];
@@ -68,8 +68,8 @@ void drawScene() {
 
   // Door++++
   for (int i = 0; i < Door::counter; i++)
-    paramDraw->Draw(d[i]->x, d[i]->y, d[i]->ImageView->width,
-                    d[i]->ImageView->height, d[i]->ImageView);
+    paramDraw->Draw(doorEntity[i]->x, doorEntity[i]->y, doorEntity[i]->ImageView->width,
+                    doorEntity[i]->ImageView->height, doorEntity[i]->ImageView);
   // Door---
 
   // FinalDoor++++
@@ -185,7 +185,7 @@ void loadMap(char* c, int k, int z) {
   for (int i = 0; i < mH; i++)
     for (int j = 0; j < mW; j++) {
       if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
-        d[Door::counter - 1] = new Door(j * 20, i * 20);
+        doorEntity[Door::counter - 1] = new Door(j * 20, i * 20);
 
       // Load final doors +++
       if (j == 0)
@@ -328,7 +328,7 @@ void readScript() {
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
-          f[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
+          fireEntity[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
     }
 
     if (c[k] == ':') pos[0] = k + 1;
@@ -512,7 +512,7 @@ void interactiveObjects() {
   Fire::Timer();
 
   if (Fire::dt > 50) {
-    for (int i = 0; i < Fire::counter; i++) f[i]->ChangeCadr();
+    for (int i = 0; i < Fire::counter; i++) fireEntity[i]->ChangeCadr();
 
     Fire::timer1 = 0;
     Fire::dt = 0;
@@ -677,8 +677,8 @@ void nextLevel() {
     FinalDoor::counter = 0;
 
     for (int i = 0; i < 10; i++) {
-      f[i] = NULL;
-      d[i] = NULL;
+      fireEntity[i] = NULL;
+      doorEntity[i] = NULL;
       b[i] = NULL;
       bons[i] = NULL;
       chest[i] = NULL;
