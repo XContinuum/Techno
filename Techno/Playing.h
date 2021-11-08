@@ -236,7 +236,7 @@ void loadDoors() {
   }
 }
 
-int* Read(int p1, int p2, char* fileBuffer) {
+int* read(int p1, int p2, char* fileBuffer) {
   // No globals
   int len = p2 - p1;
   char* line = new char[len];
@@ -284,13 +284,13 @@ void readScript() {
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
   for (int k = 0; k < bufferSize; k++) {
-    if (fileBuffer[k] == '|' && z == 0) {
+    if (fileBuffer[k] == '|') {
       mapDeliminatorPos = k;
     }
 
     //Загрузка перехода на следующую миссию---
     if (fileBuffer[k] == ':' && pos[5] != -1) {
-      int* cor = Read(pos[5], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[5], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL) {
         player->exitX = cor[0];
@@ -303,7 +303,7 @@ void readScript() {
     if (fileBuffer[k] == ':' && pos[4] != -1 && pos[5] == -1) {
       pos[5] = k + 1;
 
-      int* cor = Read(pos[4], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[4], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
@@ -315,7 +315,7 @@ void readScript() {
     if (fileBuffer[k] == ':' && pos[3] != -1 && pos[4] == -1) {
       pos[4] = k + 1;
 
-      int* cor = Read(pos[3], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[3], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
@@ -330,7 +330,7 @@ void readScript() {
     if (fileBuffer[k] == ':' && pos[2] != -1 && pos[3] == -1) {
       pos[3] = k + 1;
 
-      int* cor = Read(pos[2], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[2], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
@@ -342,7 +342,7 @@ void readScript() {
     if (fileBuffer[k] == ':' && pos[1] != -1 && pos[2] == -1) {
       pos[2] = k + 1;
 
-      int* cor = Read(pos[1], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[1], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
@@ -354,7 +354,7 @@ void readScript() {
     if (fileBuffer[k] == ':' && pos[0] != -1 && pos[1] == -1) {
       pos[1] = k + 1;
 
-      int* cor = Read(pos[0], k, fileBuffer);  //Выделение координат X и Y
+      int* cor = read(pos[0], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
