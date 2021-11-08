@@ -28,7 +28,7 @@ Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 
 // Objects in the game+++
 Hero* player; // Personage: player
-Fire* f[10];
+Fire* fireEntity[10]; // f: fireEntity
 Door* d[10];
 Book* b[10];
 Bonus* bons[10];
@@ -62,8 +62,8 @@ void drawScene() {
 
   // Fire++++
   for (int i = 0; i < Fire::counter; i++)
-    paramDraw->Draw(f[i]->x, f[i]->y, f[i]->ImageView->width,
-                    f[i]->ImageView->height, f[i]->ImageView);
+    paramDraw->Draw(fireEntity[i]->x, fireEntity[i]->y, fireEntity[i]->ImageView->width,
+                    fireEntity[i]->ImageView->height, fireEntity[i]->ImageView);
   // Fire---
 
   // Door++++
