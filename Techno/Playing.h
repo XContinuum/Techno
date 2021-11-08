@@ -283,8 +283,6 @@ void readScript() {
   int readingChunk = 0;
   int prevColonIndex = 0;
 
-  int pos[6] = {-1, -1, -1, -1, -1, -1};
-
   for (int k = 0; k < bufferSize; k++) {
     if (fileBuffer[k] == '|') {
       mapDeliminatorPos = k;
@@ -292,7 +290,7 @@ void readScript() {
 
     //Загрузка перехода на следующую миссию---
     if (fileBuffer[k] == ':') {
-      if (readingChunk == 6) { // pos[5] != -1
+      if (readingChunk == 6) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL) {
@@ -303,9 +301,7 @@ void readScript() {
       //Загрузка перехода на следующую миссию---
 
       // Load buttons ---
-      if (readingChunk == 5) { // pos[4] != -1 && pos[5] == -1
-        // pos[5] = k + 1;
-
+      if (readingChunk == 5) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
@@ -317,9 +313,7 @@ void readScript() {
       // Load buttons ---
 
       // Load chests ---
-      if (readingChunk == 4) { // pos[3] != -1 && pos[4] == -1
-        // pos[4] = k + 1;
-
+      if (readingChunk == 4) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
@@ -327,15 +321,12 @@ void readScript() {
             chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], level,
                                  cor[i * 4 + 2], cor[i * 4 + 3]);
 
-        // pos[3] = 0;
         prevColonIndex = k + 1;
       }
       // Load chests ---
 
       // Load bonuses ---
-      if (readingChunk == 3) { // pos[2] != -1 && pos[3] == -1
-        // pos[3] = k + 1;
-
+      if (readingChunk == 3) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
@@ -347,9 +338,7 @@ void readScript() {
       // Load bonuses ---
 
       // Load books +++
-      if (readingChunk == 2) { // pos[1] != -1 && pos[2] == -1
-        // pos[2] = k + 1;
-
+      if (readingChunk == 2) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
@@ -361,9 +350,7 @@ void readScript() {
       // Load books ---
 
       // Load fire +++++++++++
-      if (readingChunk == 1) { // pos[0] != -1 && pos[1] == -1
-        // pos[1] = k + 1;
-
+      if (readingChunk == 1) {
         int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
@@ -373,7 +360,6 @@ void readScript() {
         prevColonIndex = k + 1;
       }
 
-      // pos[0] = k + 1;
       prevColonIndex = k;
       readingChunk++;
     }
