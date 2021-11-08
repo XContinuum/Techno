@@ -279,13 +279,13 @@ void initialization() {
     missions = new Sprite("Images/missions.bmp");
     pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
 
-    btnOfMissions[0] = new Button("Images/m1.bmp");
-    btnOfMissions[0]->x = 22;
-    btnOfMissions[0]->y = 63;
-    btnOfMissions[0]->show = false;
+    missionButtons[0] = new Button("Images/m1.bmp");
+    missionButtons[0]->x = 22;
+    missionButtons[0]->y = 63;
+    missionButtons[0]->show = false;
 
     pauseOverlay = new Sprite("Images/pause.bmp", 0xffffffff);
-    blocked = new Sprite("Images/blocked.bmp", 0xffffffff);
+    missionLock = new Sprite("Images/blocked.bmp", 0xffffffff);
 
     // Locker+++
     lock = new Button("Images/code.bmp", 0xffffffff);

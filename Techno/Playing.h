@@ -8,8 +8,8 @@ char* mapFilename = "Images/Data/map1.txt";
 char* mapBMPfilename = "Images/Data/map1.bmp";
 
 Sprite* missions;
-Button* btnOfMissions[1];
-Sprite* blocked;
+Button* missionButtons[1]; // btnOfMissions: missionButtons
+Sprite* missionLock; // blocked: missionLock
 Button* backButton; // Back: backButton
 // Missions---
 
@@ -156,14 +156,14 @@ void drawScene() {
 void drawMission() {
   paramDraw->Draw(0, 0, w, h, missions);
 
-  if (btnOfMissions[0]->show == true) btnOfMissions[0]->Draw(paramDraw);
+  if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 11; j++) {
       if (i != 0 || j != 0)
-        paramDraw->Draw(22 + j * 13 + j * blocked->width,
-                        63 + i * 36 + i * blocked->height, blocked->width,
-                        blocked->height, blocked);
+        paramDraw->Draw(22 + j * 13 + j * missionLock->width,
+                        63 + i * 36 + i * missionLock->height, missionLock->width,
+                        missionLock->height, missionLock);
     }
   }
 
@@ -363,7 +363,7 @@ void mission() {
     backButton->show = false;
   // Exit---
 
-  if (btnOfMissions[0]->Touch(X, Y) == true) {
+  if (missionButtons[0]->Touch(X, Y) == true) {
     player = new Hero();
     player->x = 40;
     player->y = 40;
@@ -378,10 +378,10 @@ void mission() {
     missionMode = false;
   }
 
-  if (btnOfMissions[0]->Touch(mX, mY) == true)
-    btnOfMissions[0]->show = true;
+  if (missionButtons[0]->Touch(mX, mY) == true)
+    missionButtons[0]->show = true;
   else
-    btnOfMissions[0]->show = false;
+    missionButtons[0]->show = false;
 }
 // Missions---
 
