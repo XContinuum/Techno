@@ -255,7 +255,7 @@ int* read(int begin, int end, char* fileBuffer) {
   return coordinates;
 }
 void readScript() {
-  // Global: mapFilename, player, pressurePlate, chest, bonusEntity, fireEntity
+  // Global: mapFilename, player
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
 
@@ -279,39 +279,7 @@ void readScript() {
 
       if (coordinates != NULL) {
         int coord_quantity = (index - prevColonIndex + 2) / 4;
-
-        switch (readingChunk) {
-          case 6: // Загрузка перехода на следующую миссию
-            player->exitX = coordinates[0];
-            player->exitY = coordinates[1];
-            break;
-
-          case 5: // Load buttons
-            for (int i = 0; i < coord_quantity/2; i++)
-              pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
-            break;
-
-          case 4: // Load chests
-            for (int i = 0; i < coord_quantity/4; i++)
-              chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
-                            coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
-            break;
-
-          case 3: // Load bonuses
-            for (int i = 0; i < coord_quantity/3; i++)
-              bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
-            break;
-
-          case 2: // Load books
-            for (int i = 0; i < coord_quantity/2; i++)
-              bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
-            break;
-
-          case 1: // Load fire
-            for (int i = 0; i < coord_quantity/2; i++)
-              fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
-            break;
-        }
+        createEntity(readingChunk, coordinates, coord_quantity);
       }
 
       prevColonIndex = index + 1;
@@ -323,6 +291,42 @@ void readScript() {
   loadDoors();
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
+}
+void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
+  // Global:  pressurePlate, chest, bonusEntity, fireEntity
+  switch (readingChunk) {
+    case 6:  // Загрузка перехода на следующую миссию
+      player->exitX = coordinates[0];
+      player->exitY = coordinates[1];
+      break;
+
+    case 5:  // Load buttons
+      for (int i = 0; i < coord_quantity / 2; i++)
+        pressurePlate[i] =
+            new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+
+    case 4:  // Load chests
+      for (int i = 0; i < coord_quantity / 4; i++)
+        chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
+                             coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
+      break;
+
+    case 3:  // Load bonuses
+      for (int i = 0; i < coord_quantity / 3; i++)
+        bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+
+    case 2:  // Load books
+      for (int i = 0; i < coord_quantity / 2; i++)
+        bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+
+    case 1:  // Load fire
+      for (int i = 0; i < coord_quantity / 2; i++)
+        fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+  }
 }
 void readFile(char* filename, int bufferSize) {
   char* fileBuffer = new char[bufferSize];
