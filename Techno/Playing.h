@@ -429,27 +429,7 @@ void interactiveObjects() {
   }
   // Chest---
 
-  // FIRE---
-  Fire::Timer();
-
-  if (Fire::dt > 50) {
-    for (int i = 0; i < Fire::counter; i++) fireEntity[i]->ChangeCadr();
-
-    Fire::timer1 = 0;
-    Fire::dt = 0;
-  }
-  // FIRE+++
-
-  // BONUS---
-  Bonus::Timer();
-
-  if (Bonus::dt > 50) {
-    for (int i = 0; i < Bonus::counter; i++) bonusEntity[i]->ChangeCadr();
-
-    Bonus::timer1 = 0;
-    Bonus::dt = 0;
-  }
-  // BONUS+++
+  updateFrames();
 
   // DOOR+++
   for (int i = 0; i < Door::counter; i++) doorEntity[i]->Touch(clickedX, clickedY, gameMap, lmb);
@@ -496,7 +476,7 @@ void interactiveObjects() {
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
       bookEntity[i]->x = (screenPixelWidth - bookEntity[i]->ImageBack->width) / 2;
       bookEntity[i]->y = (screenPixelHeight - bookEntity[i]->ImageBack->height) / 2;
-      
+
       inventory->AddObject(1);
       isBookMenuOpen = true;
     }
@@ -616,6 +596,29 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
   chest[i]->expO = chest[i]->Touch(mouseX, mouseY);
   chest[i]->mX1 = mouseX + 10;
   chest[i]->mY1 = mouseY;
+}
+void updateFrames() {
+  // FIRE---
+  Fire::Timer();
+
+  if (Fire::dt > 50) {
+    for (int i = 0; i < Fire::counter; i++) fireEntity[i]->ChangeCadr();
+
+    Fire::timer1 = 0;
+    Fire::dt = 0;
+  }
+  // FIRE+++
+
+  // BONUS---
+  Bonus::Timer();
+
+  if (Bonus::dt > 50) {
+    for (int i = 0; i < Bonus::counter; i++) bonusEntity[i]->ChangeCadr();
+
+    Bonus::timer1 = 0;
+    Bonus::dt = 0;
+  }
+  // BONUS+++
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
