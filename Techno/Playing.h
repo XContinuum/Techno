@@ -379,25 +379,15 @@ void setMap() {
 // Missions---
 
 // Play+++
+// ---------------------------------------------------------------------------------
+// interactiveObjects functions
+// ---------------------------------------------------------------------------------
 void interactiveObjects() {
-  // Global: bonusEntity, player, score, scoreText, inventory, posObject, chest, stateK, buffer, bookEntity, fireEntity, ...
+  // Global: player, inventory, posObject, chest, stateK, buffer, bookEntity, fireEntity, ...
   // External: Fire class, Bonus class, Inventar class, Chest class, Door class, FinalDoor class, ButtonON class, BlockMoves class, Book class, ...
 
   // BONUS+++
-  for (int i = 0; i < Bonus::counter; i++) {
-    bool bottomLeft = bonusEntity[i]->Touch(player->x, player->y + player->h - 1);
-    bool bottomRight = bonusEntity[i]->Touch(player->x + player->w, player->y + player->h - 1);
-
-    if (bonusEntity[i]->show && (bottomLeft || bottomRight)) {
-      score += 10;
-
-      char* sc = new char[100];
-      sprintf(sc, "score:%d", score);
-
-      scoreText->changeText(sc);
-      bonusEntity[i]->show = false;
-    }
-  }
+  didPlayerTouchBonus();
   // BONUS---
 
   // Inventory+++
@@ -584,6 +574,28 @@ void interactiveObjects() {
         chest[i]->show = true;
   // CHEST---
 }
+void didPlayerTouchBonus() {
+  // Checks if player intersected with bonus entity.
+  // if intersected, then increase score and hide bonus entity
+  for (int i = 0; i < Bonus::counter; i++) {
+    bool bottomLeft = bonusEntity[i]->Touch(player->x, player->y + player->h - 1);
+    bool bottomRight = bonusEntity[i]->Touch(player->x + player->w, player->y + player->h - 1);
+
+    if (bonusEntity[i]->show && (bottomLeft || bottomRight)) {
+      score += 10;
+
+      char* sc = new char[100];
+      sprintf(sc, "score:%d", score);
+
+      scoreText->changeText(sc);
+      bonusEntity[i]->show = false;
+    }
+  }
+}
+// ---------------------------------------------------------------------------------
+// interactiveObjects {end}
+// ---------------------------------------------------------------------------------
+
 void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Hero class
