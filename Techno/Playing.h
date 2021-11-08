@@ -63,7 +63,7 @@ int score = 0;
 // ---------------------------------------------------------------------------------
 // drawScene function
 // ---------------------------------------------------------------------------------
-void drawScene() { // ★★★
+void drawScene(int cursorX, int cursorY) { // ★★★
   // Global: missionMode, isPaused, scoreText
   //
   // External: paramDraw
@@ -72,7 +72,7 @@ void drawScene() { // ★★★
     return;
   }
   
-  drawEntities();
+  drawEntities(cursorX, cursorY);
 
   if (isPaused == true) {
     drawPauseMenu();
@@ -98,10 +98,10 @@ void drawMission() {
 
   if (backButton->show == true) backButton->Draw(paramDraw);
 }
-void drawEntities() {
+void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
   // posObject
-  // External: paramDraw, cursorX, cursorY
+  // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
