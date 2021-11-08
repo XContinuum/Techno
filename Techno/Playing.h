@@ -39,7 +39,7 @@ FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
 Button* lock;
 
-Inventar* Inv;
+Inventar* inventory; // Inv: inventory
 
 // Move Invent Chest+++
 int posObject = 0;
@@ -105,9 +105,7 @@ void drawScene() {
   }
   // Chest---
 
-  // Inventory+++
-  Inv->Draw(paramDraw);
-  // Inventory---
+  inventory->Draw(paramDraw);
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
@@ -410,40 +408,40 @@ void interactiveObjects() {
   // BONUS---
 
   // Inventory+++
-  if (Inv->Touch(mX, mY) == true) {
-    Inv->exp = true;
-    Inv->mX = mX + 10;
-    Inv->mY = mY;
+  if (inventory->Touch(mX, mY) == true) {
+    inventory->exp = true;
+    inventory->mX = mX + 10;
+    inventory->mY = mY;
   } else
-    Inv->exp = false;
+    inventory->exp = false;
 
-  if (Inv->Touch(X, Y) == true) Inv->show = true;
+  if (inventory->Touch(X, Y) == true) inventory->show = true;
 
   // Move objects+++
-  if (Inv->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
+  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
     if (Inventar::iLmb == true) {
-      if (Inv->move == false) {
-        Inv->check = Inv->TouchObject(Inventar::Xi, Inventar::Yi);
+      if (inventory->move == false) {
+        inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
-        if (Inv->check != -1) {
-          Inv->move = true;
+        if (inventory->check != -1) {
+          inventory->move = true;
 
           for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
 
-          posObject = Inv->objects[Inv->check];
-          Inv->objects[Inv->check] = 0;
+          posObject = inventory->objects[inventory->check];
+          inventory->objects[inventory->check] = 0;
         }
 
-      } else if (Inv->move == true) {
-        int nt = Inv->TouchObject(Inventar::Xi, Inventar::Yi);
+      } else if (inventory->move == true) {
+        int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
-        if (nt != -1 && Inv->check != nt && Inv->objects[nt] == 0) {
-          Inv->objects[nt] = posObject;
-          Inv->ChangeImages();
+        if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
+          inventory->objects[nt] = posObject;
+          inventory->ChangeImages();
           posObject = 0;
         }
         for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
-        Inv->move = false;
+        inventory->move = false;
       }
 
       Inventar::Xi = 0;
@@ -463,7 +461,7 @@ void interactiveObjects() {
 
           if (chest[i]->check != -1) {
             chest[i]->move = true;
-            Inv->move = true;
+            inventory->move = true;
             posObject = chest[i]->objects[chest[i]->check];
             chest[i]->objects[chest[i]->check] = 0;
           }
@@ -476,7 +474,7 @@ void interactiveObjects() {
             posObject = i;
           }
           chest[i]->move = false;
-          Inv->move = false;
+          inventory->move = false;
         }
 
         Chest::Xi = i;
@@ -489,10 +487,10 @@ void interactiveObjects() {
 
   //++++++
   if (stateK == 1) {
-    if (Inv->show == false)
-      Inv->show = true;
-    else if (Inv->show == true)
-      Inv->show = false;
+    if (inventory->show == false)
+      inventory->show = true;
+    else if (inventory->show == true)
+      inventory->show = false;
 
     stateK = 2;
   }
@@ -504,7 +502,7 @@ void interactiveObjects() {
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->OpenLock(Inv, lmb, X, Y, mX, mY);
+    chest[i]->OpenLock(inventory, lmb, X, Y, mX, mY);
 
     if (chest[i]->Touch(mX, mY) == true) {
       chest[i]->expO = true;
@@ -543,7 +541,7 @@ void interactiveObjects() {
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->Touch(X, Y, gameMap, lmb, Inv->objects[0]);
+    finalDoor[i]->Touch(X, Y, gameMap, lmb, inventory->objects[0]);
   // FinalDoor---
 
   // ButtonON+++
@@ -584,7 +582,7 @@ void interactiveObjects() {
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
       bookEntity[i]->x = (w - bookEntity[i]->ImageBack->width) / 2;
       bookEntity[i]->y = (h - bookEntity[i]->ImageBack->height) / 2;
-      Inv->AddObject(1);
+      inventory->AddObject(1);
       stopB = true;
     }
   // BOOKS---
@@ -605,7 +603,7 @@ void playerEvents() {
   Hero::Timer();
   Hero::TimerG();
 
-  if (buffer[DIK_N] & 0x80) Inv->AddObject(2);
+  if (buffer[DIK_N] & 0x80) inventory->AddObject(2);
 
   if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
     player->R = true;
@@ -662,7 +660,7 @@ void nextLevel() {
     level++;
 
     for (int i = 0; i < 9; i++)
-      if (Inv->objects[i] == 2) Inv->objects[i] = 0;
+      if (inventory->objects[i] == 2) inventory->objects[i] = 0;
 
     Fire::counter = 0;
     Door::counter = 0;

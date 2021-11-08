@@ -304,10 +304,10 @@ void initialization() {
     backButton->y = 554;
     backButton->show = false;
 
-    Inv = new Inventar();
-    Inv->x = 0;
-    Inv->y = 0;
-    Inv->show = false;
+    inventory = new Inventar();
+    inventory->x = 0;
+    inventory->y = 0;
+    inventory->show = false;
 
     // CREATE MAP+++
     Init_CreateMap();
