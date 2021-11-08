@@ -194,33 +194,6 @@ void drawPauseMenu() {
 // ---------------------------------------------------------------------------------
 
 
-void mission() {
-  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
-
-  // Exit+++
-  if (backButton->Touch(clickedX, clickedY) == true) {
-    missionMode = false;
-    playMode = false;
-    isInitialState = true;
-  }
-
-  backButton->show = backButton->Touch(mX, mY);
-  // Exit---
-
-  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
-    player = new Hero();
-    player->x = 40;
-    player->y = 40;
-
-    readScript(mapFilename);
-
-    missionMode = false;
-  }
-
-  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
-}
-
 // ---------------------------------------------------------------------------------
 // readScript function
 // ---------------------------------------------------------------------------------
@@ -691,6 +664,54 @@ void playerEvents() {
       player->G = true;
   }
 }
+// Play---
+
+
+// ---------------------------------------------------------------------------------
+// playLoop function
+// ---------------------------------------------------------------------------------
+void playLoop() {
+  if (playMode == false) return;
+  if (missionMode == true) {
+    mission();
+    return;
+  }
+  nextLevel();
+
+  if (isBookMenuOpen == false && isPaused == false) {
+    interactiveObjects();
+    playerEvents();
+  }
+
+  closeTheBook();
+  menuPause();
+}
+void mission() {
+  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
+  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
+
+  // Exit+++
+  if (backButton->Touch(clickedX, clickedY) == true) {
+    missionMode = false;
+    playMode = false;
+    isInitialState = true;
+  }
+
+  backButton->show = backButton->Touch(mX, mY);
+  // Exit---
+
+  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
+    player = new Hero();
+    player->x = 40;
+    player->y = 40;
+
+    readScript(mapFilename);
+
+    missionMode = false;
+  }
+
+  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
+}
 void nextLevel() {
   // Global: player, level, inventory, map, gameMap
   // External: blocksInHeight, blocksInWidth
@@ -707,17 +728,6 @@ void nextLevel() {
   setNextMapFilepath(level);
   readScript(mapFilename);
 }
-
-void clearMap() {
-  // Global: gameMap
-  // External: blocksInHeight, blocksInWidth
-  for (int i = 0; i < blocksInHeight; i++) {
-    for (int j = 0; j < blocksInWidth; j++) {
-      gameMap[i][j] = 0;
-    }
-  }
-}
-
 // Not sure what those values mean and why they should be reset
 void clearClassInformation() {
   Fire::counter = 0;
@@ -739,15 +749,6 @@ void clearClassInformation() {
   ButtonON::counter = 0;
   FinalDoor::counter = 0;
 }
-
-void setNextMapFilepath(int level) {
-  mapBMPfilename = new char[100]; // global
-  mapFilename = new char[100]; // global
-
-  sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
-  sprintf(mapFilename, "Images/Data/map%d.txt", level);
-}
-
 void resetEntities() {
   for (int i = 0; i < 10; i++) {
     fireEntity[i] = NULL;
@@ -760,24 +761,25 @@ void resetEntities() {
     finalDoor[i] = NULL;
   }
 }
-// Play---
-
-void playLoop() {
-  if (playMode == false) return;
-  if (missionMode == true) {
-    mission();
-    return;
+void clearMap() {
+  // Global: gameMap
+  // External: blocksInHeight, blocksInWidth
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
+      gameMap[i][j] = 0;
+    }
   }
-  nextLevel();
-
-  if (isBookMenuOpen == false && isPaused == false) {
-    interactiveObjects();
-    playerEvents();
-  }
-
-  closeTheBook();
-  menuPause();
 }
+void setNextMapFilepath(int level) {
+  mapBMPfilename = new char[100]; // global
+  mapFilename = new char[100]; // global
+
+  sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
+  sprintf(mapFilename, "Images/Data/map%d.txt", level);
+}
+// ---------------------------------------------------------------------------------
+// playLoop {end}
+// ---------------------------------------------------------------------------------
 
 void closeTheBook() {
   if (buffer[DIK_RETURN] & 0x80) { // Technical ??
