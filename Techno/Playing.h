@@ -573,23 +573,14 @@ void chestMoveEvents() {
     bool clickedChest = chest[i]->TouchInvChest(Chest::Xi, Chest::Yi);
 
     if (!(clickedChest && chest[i]->showC)) {
-      return;
+      continue;
     }
 
     if (!Chest::iLmb) {
-      return;
+      continue;
     }
-    
-    if (chest[i]->move == false) {
-      chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
 
-      if (chest[i]->check != -1) {
-        chest[i]->move = true;
-        inventory->move = true;
-        posObject = chest[i]->objects[chest[i]->check];
-        chest[i]->objects[chest[i]->check] = 0;
-      }
-    } else if (chest[i]->move == true) {
+    if (chest[i]->move == true) {
       int nt = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
 
       if (nt != -1 && chest[i]->check != nt && chest[i]->objects[nt] == i) {
@@ -599,6 +590,15 @@ void chestMoveEvents() {
       }
       chest[i]->move = false;
       inventory->move = false;
+    } else if (chest[i]->move == false) {
+      chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+
+      if (chest[i]->check != -1) {
+        chest[i]->move = true;
+        inventory->move = true;
+        posObject = chest[i]->objects[chest[i]->check];
+        chest[i]->objects[chest[i]->check] = 0;
+      }
     }
 
     Chest::Xi = i;
