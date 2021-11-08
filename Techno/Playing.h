@@ -51,7 +51,6 @@ int* memObjc;
 // Move Invent Chest---
 
 int stateK = 0;
-int vseA = 0;
 
 Text* scoreText; // txt: scoreText
 int score = 0;
@@ -604,8 +603,6 @@ void playerEvents() {
   Hero::TimerG();
 
   if (buffer[DIK_N] & 0x80) Inv->AddObject(2);
-
-  if (buffer[DIK_P] & 0x80) vseA = 0;
 
   if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
     player->R = true;
