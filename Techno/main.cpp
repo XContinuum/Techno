@@ -194,7 +194,7 @@ int blocksInHeight = 30; // mH: blocksInHeight
 int left = (1280 - screenPixelWidth) / 2;
 int top = (800 - screenPixelHeight) / 2;
 
-int X, Y;
+int clickedX, clickedY; // X, Y: clickedX, clickedY
 int mX, mY;
 bool lmb = false;
 
@@ -379,18 +379,18 @@ void mainMenuInteractions() {
         // Mouse move---
 
         // Click+++
-        if (btnMain[PLAY]->Touch(X, Y) == true && lmb == true) {
+        if (btnMain[PLAY]->Touch(clickedX, clickedY) == true && lmb == true) {
             playMode = true;
             Missions = true;
             isInitialState = false;
         }
 
-        if (btnMain[CREATE_MAP]->Touch(X, Y) == true && lmb == true) {
+        if (btnMain[CREATE_MAP]->Touch(clickedX, clickedY) == true && lmb == true) {
             Create_map = true;
             isInitialState = false;
         }
 
-        if (btnMain[SETTINGS]->Touch(X, Y) == true && lmb == true) {
+        if (btnMain[SETTINGS]->Touch(clickedX, clickedY) == true && lmb == true) {
             isInitialState = false;
         }
 
@@ -444,18 +444,18 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
             DispatchMessage(&msg);
 
             if (msg.message == WM_LBUTTONUP) {
-                X = msg.pt.x - left;
-                Y = msg.pt.y - top;
+                clickedX = msg.pt.x - left;
+                clickedY = msg.pt.y - top;
 
                 lmb = true;
 
-                Inventar::SetPosition(X, Y);
-                Chest::SetPosition(X, Y);
+                Inventar::SetPosition(clickedX, clickedY);
+                Chest::SetPosition(clickedX, clickedY);
             }
 
             if (msg.message == WM_RBUTTONUP) {
-                X = msg.pt.x - left;
-                Y = msg.pt.y - top;
+                clickedX = msg.pt.x - left;
+                clickedY = msg.pt.y - top;
 
                 rmb = true;
             }
@@ -475,7 +475,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
         mainMenuInteractions();
 
-        if (btnMain[EXIT]->Touch(X, Y) == true && isInitialState == true) return 0;
+        if (btnMain[EXIT]->Touch(clickedX, clickedY) == true && isInitialState == true) return 0;
 
         videocard->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255),
                          1.0f, 0);

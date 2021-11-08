@@ -347,7 +347,7 @@ void mission() {
   // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
 
   // Exit+++
-  if (backButton->Touch(X, Y) == true) {
+  if (backButton->Touch(clickedX, clickedY) == true) {
     missionMode = false;
     playMode = false;
     isInitialState = true;
@@ -356,7 +356,7 @@ void mission() {
   backButton->show = backButton->Touch(mX, mY);
   // Exit---
 
-  if (missionButtons[0]->Touch(X, Y) == true) {
+  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
     player = new Hero();
     player->x = 40;
     player->y = 40;
@@ -398,7 +398,7 @@ void interactiveObjects() {
   } else
     inventory->exp = false;
 
-  if (inventory->Touch(X, Y) == true) inventory->show = true;
+  if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
   // Move objects+++
   if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
@@ -482,7 +482,7 @@ void interactiveObjects() {
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->OpenLock(inventory, lmb, X, Y, mX, mY);
+    chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, mX, mY);
 
     if (chest[i]->Touch(mX, mY) == true) {
       chest[i]->expO = true;
@@ -516,12 +516,12 @@ void interactiveObjects() {
   // BONUS+++
 
   // DOOR+++
-  for (int i = 0; i < Door::counter; i++) doorEntity[i]->Touch(X, Y, gameMap, lmb);
+  for (int i = 0; i < Door::counter; i++) doorEntity[i]->Touch(clickedX, clickedY, gameMap, lmb);
   // DOOR---
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->Touch(X, Y, gameMap, lmb, inventory->objects[0]);
+    finalDoor[i]->Touch(clickedX, clickedY, gameMap, lmb, inventory->objects[0]);
   // FinalDoor---
 
   // ButtonON+++
@@ -770,15 +770,15 @@ void menuPause() {
 
   isPaused = shouldContinuePause();
 
-  if (pauseMenuButtons[PM_EXIT]->Touch(X, Y) == true) {
+  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY) == true) {
     playMode = false;
     isInitialState = true;
   }
 }
 
 bool shouldContinuePause() {
-  return pauseMenuButtons[PM_CONTINUE]->Touch(X, Y) == false 
-  && pauseMenuButtons[PM_SAVE]->Touch(X, Y) == false 
-  && pauseMenuButtons[PM_SETTINGS]->Touch(X, Y) == false;
+  return pauseMenuButtons[PM_CONTINUE]->Touch(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SAVE]->Touch(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SETTINGS]->Touch(clickedX, clickedY) == false;
 }
 // PLAYING---
