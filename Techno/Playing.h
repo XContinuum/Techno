@@ -1,5 +1,5 @@
 ﻿// Play++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-bool Play = false;
+bool playMode = false; // Play: playMode
 
 // Missions+++
 bool missionMode = false; // Missions: missionMode
@@ -354,7 +354,7 @@ void mission() {
   // Exit+++
   if (backButton->Touch(X, Y) == true) {
     missionMode = false;
-    Play = false;
+    playMode = false;
     Menu = true;
   }
 
@@ -487,10 +487,7 @@ void interactiveObjects() {
 
   //++++++
   if (stateK == 1) {
-    if (inventory->show == false)
-      inventory->show = true;
-    else if (inventory->show == true)
-      inventory->show = false;
+    inventory->show = !inventory->show;
 
     stateK = 2;
   }
@@ -713,7 +710,7 @@ void nextLevel() {
 // Play---
 
 void playLoop() {
-  if (Play == false) return;
+  if (playMode == false) return;
   if (missionMode == true) {
     mission();
     return;
@@ -754,7 +751,7 @@ void menuPause() {
   isPaused = shouldContinuePause();
 
   if (pauseMenuButtons[PM_EXIT]->Touch(X, Y) == true) {
-    Play = false;
+    playMode = false;
     Menu = true;
   }
 }

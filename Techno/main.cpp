@@ -240,7 +240,7 @@ void Draw() {
     // MAIN MENU-------------------------------------------------------
 
     // PLAY++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (Play == true) drawScene();
+    if (playMode == true) drawScene();
     // PLAY-----------------------------------------------------------
 
     // CREATE MAP+++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -379,7 +379,7 @@ void mainMenuInteractions() {
 
         // Click+++
         if (btnMain[PLAY]->Touch(X, Y) == true && lmb == true) {
-            Play = true;
+            playMode = true;
             Missions = true;
             Menu = false;
         }
