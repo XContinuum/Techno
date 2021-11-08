@@ -649,58 +649,73 @@ void playerEvents() {
   }
 }
 void nextLevel() {
-  if (player->ChangeLevel() == true) {
-    level++;
+  if (player->ChangeLevel() == false) return;
 
-    for (int i = 0; i < 9; i++)
-      if (inventory->objects[i] == 2) inventory->objects[i] = 0;
+  level++;
 
-    Fire::counter = 0;
-    Door::counter = 0;
-    Book::counter = 0;
-    Bonus::counter = 0;
-    //++++++
-    Chest::dt = 0;
-    Chest::timer = 0;
-    Chest::timer1 = 0;
+  for (int i = 0; i < 9; i++)
+    if (inventory->objects[i] == 2) inventory->objects[i] = 0;
 
-    Chest::counter = 0;
-    Chest::Xi = 0;
-    Chest::Yi = 0;
+  clearClassInformation();
+  resetEntities();
+  clearMap(); // this might be redundant, as we are loading the new map next
+  setNextMapFilepath(level);
+  readScript();
 
-    Chest::iLmb = false;
-    //------
-    BlockMoves::counter = 0;
-    ButtonON::counter = 0;
-    FinalDoor::counter = 0;
+  map = new Sprite(mapBMPfilename, 0xffffffff);
 
-    for (int i = 0; i < 10; i++) {
-      fireEntity[i] = NULL;
-      doorEntity[i] = NULL;
-      bookEntity[i] = NULL;
-      bonusEntity[i] = NULL;
-      chest[i] = NULL;
-      movingStairBlocks[i] = NULL;
-      pressurePlate[i] = NULL;
-      finalDoor[i] = NULL;
+  for (int i = 0; i < 30; i++)
+    for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
+}
+
+void clearMap() {
+  for (int i = 0; i < mH; i++) {
+    for (int j = 0; j < mW; j++) {
+      gameMap[i][j] = 0;
     }
+  }
+}
 
-    for (int i = 0; i < mH; i++)
-      for (int j = 0; j < mW; j++) gameMap[i][j] = 0;
+// Not sure what those values mean and why they should be reset
+void clearClassInformation() {
+  Fire::counter = 0;
+  Door::counter = 0;
+  Book::counter = 0;
+  Bonus::counter = 0;
+  //++++++
+  Chest::dt = 0;
+  Chest::timer = 0;
+  Chest::timer1 = 0;
 
-    mapBMPfilename = new char[100];
-    mapFilename = new char[100];
+  Chest::counter = 0;
+  Chest::Xi = 0;
+  Chest::Yi = 0;
 
-    int num;
-    num = sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
-    num = sprintf(mapFilename, "Images/Data/map%d.txt", level);
+  Chest::iLmb = false;
+  //------
+  BlockMoves::counter = 0;
+  ButtonON::counter = 0;
+  FinalDoor::counter = 0;
+}
 
-    readScript();
+void setNextMapFilepath(int level) {
+  mapBMPfilename = new char[100];
+  mapFilename = new char[100];
 
-    map = new Sprite(mapBMPfilename, 0xffffffff);
+  sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
+  sprintf(mapFilename, "Images/Data/map%d.txt", level);
+}
 
-    for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
+void resetEntities() {
+  for (int i = 0; i < 10; i++) {
+    fireEntity[i] = NULL;
+    doorEntity[i] = NULL;
+    bookEntity[i] = NULL;
+    bonusEntity[i] = NULL;
+    chest[i] = NULL;
+    movingStairBlocks[i] = NULL;
+    pressurePlate[i] = NULL;
+    finalDoor[i] = NULL;
   }
 }
 // Play---
