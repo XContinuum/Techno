@@ -30,7 +30,7 @@ Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 Hero* player; // Personage: player
 Fire* fireEntity[10]; // f: fireEntity
 Door* doorEntity[10]; // d: doorEntity
-Book* b[10];
+Book* bookEntity[10]; // b: bookEntity
 Bonus* bons[10];
 Chest* chest[10];
 BlockMoves* bm[5];
@@ -112,13 +112,13 @@ void drawScene() {
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
-    if (b[i]->show == true) {
-      if (b[i]->state == 'O')
+    if (bookEntity[i]->show == true) {
+      if (bookEntity[i]->state == 'O')
         paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                         pauseOverlay);
 
-      paramDraw->Draw(b[i]->x, b[i]->y, b[i]->Image->width, b[i]->Image->height,
-                      b[i]->Image);
+      paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y, bookEntity[i]->Image->width, bookEntity[i]->Image->height,
+                      bookEntity[i]->Image);
     }
   }
   // Book---
@@ -316,7 +316,7 @@ void readScript() {
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
-          b[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
+          bookEntity[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
     }
     // Load books ---
 
@@ -566,17 +566,17 @@ void interactiveObjects() {
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++)
-    if (b[i]->state =
-            'C' && b[i]->show == true &&
-            (b[i]->Touch(player->x,
+    if (bookEntity[i]->state =
+            'C' && bookEntity[i]->show == true &&
+            (bookEntity[i]->Touch(player->x,
                          player->y + player->Image->height) == true ||
-             b[i]->Touch(player->x + player->Image->width,
+             bookEntity[i]->Touch(player->x + player->Image->width,
                          player->y + player->Image->height) == true)) {
-      b[i]->state = 'O';
-      b[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
-      b[i]->Image = b[i]->ImageBack;
-      b[i]->x = (w - b[i]->ImageBack->width) / 2;
-      b[i]->y = (h - b[i]->ImageBack->height) / 2;
+      bookEntity[i]->state = 'O';
+      bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
+      bookEntity[i]->Image = bookEntity[i]->ImageBack;
+      bookEntity[i]->x = (w - bookEntity[i]->ImageBack->width) / 2;
+      bookEntity[i]->y = (h - bookEntity[i]->ImageBack->height) / 2;
       Inv->AddObject(1);
       stopB = true;
     }
@@ -679,7 +679,7 @@ void nextLevel() {
     for (int i = 0; i < 10; i++) {
       fireEntity[i] = NULL;
       doorEntity[i] = NULL;
-      b[i] = NULL;
+      bookEntity[i] = NULL;
       bons[i] = NULL;
       chest[i] = NULL;
       bm[i] = NULL;
@@ -727,9 +727,9 @@ void playLoop() {
 void closeTheBook() {
   if (buffer[DIK_RETURN] & 0x80) { // Technical ??
     for (int i = 0; i < Book::counter; i++) {
-      if (b[i]->state == 'O') {
-        b[i]->show = false;
-        b[i]->state = 'C';
+      if (bookEntity[i]->state == 'O') {
+        bookEntity[i]->show = false;
+        bookEntity[i]->state = 'C';
         stopB = false;
       }
     }
