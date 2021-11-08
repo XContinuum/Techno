@@ -209,8 +209,8 @@ void loadDoors() {
   // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
   int pi = 0;
   int t = 0;
-  // Load doors +++
-  for (int i = 0; i < blocksInHeight; i++)
+
+  for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
       if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
         doorEntity[Door::counter - 1] = new Door(j * 20, i * 20);
@@ -233,32 +233,34 @@ void loadDoors() {
       }
       // Block moves---
     }
-  // Load doors---
+  }
 }
 
-int* Read(int p1, int p2, char* c) {
+int* Read(int p1, int p2, char* fileBuffer) {
   // No globals
-  int* cor = NULL;
-  char* line = new char[p2 - p1];
+  int len = p2 - p1;
+  char* line = new char[len];
 
-  for (int i = p1; i < p2; i++) line[i - p1] = c[i];
+  for (int i = 0; i < len; i++) {
+    line[i] = fileBuffer[i + p1]; // copy substring from fileBuffer
+  }
 
-  if (line[0] != 'N') {
-    int quantiteXY = (p2 - p1 + 2) / 4;  // quantity of coordinates
+  if (line[0] == 'N') {
+    return NULL; // no info flag
+  }
 
-    int quantite = quantiteXY / 2;  // quantity of objects
+  int quantityXY = (len + 2) / 4;  // quantity of coordinates
+  int quantity = quantityXY / 2;  // quantity of objects
+  int* cor = new int[quantityXY];
 
-    cor = new int[quantiteXY];
+  for (int i = 0; i < quantityXY; i++) {
+    char a1, a2, a3;
 
-    for (int i = 0; i < quantiteXY; i++) {
-      char a1, a2, a3;
+    a1 = line[i * 4];
+    a2 = line[i * 4 + 1];
+    a3 = line[i * 4 + 2];
 
-      a1 = line[i * 4];
-      a2 = line[i * 4 + 1];
-      a3 = line[i * 4 + 2];
-
-      cor[i] = atoi(&a1) * 100 + atoi(&a2) * 10 + atoi(&a3);
-    }
+    cor[i] = atoi(&a1) * 100 + atoi(&a2) * 10 + atoi(&a3);
   }
 
   return cor;
