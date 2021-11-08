@@ -195,7 +195,7 @@ int left = (1280 - screenPixelWidth) / 2;
 int top = (800 - screenPixelHeight) / 2;
 
 int clickedX, clickedY; // X, Y: clickedX, clickedY
-int mX, mY;
+int cursorX, cursorY; // mX, mY: cursorX, cursorY
 bool lmb = false;
 
 // Main menu+++
@@ -371,7 +371,7 @@ void mainMenuInteractions() {
     if (isInitialState == true) {
         // Mouse move+++
         for (int i = 0; i < 4; i++) {
-            if (btnMain[i]->Touch(mX, mY) == true)
+            if (btnMain[i]->Touch(cursorX, cursorY) == true)
                 btnMain[i]->show = true;
             else
                 btnMain[i]->show = false;
@@ -460,8 +460,8 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
                 rmb = true;
             }
 
-            mX = msg.pt.x - left;
-            mY = msg.pt.y - top;
+            cursorX = msg.pt.x - left;
+            cursorY = msg.pt.y - top;
         }
 
         hr = keyboard->GetDeviceState(sizeof(buffer), buffer);

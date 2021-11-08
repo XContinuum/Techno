@@ -53,7 +53,8 @@ int score = 0;
 // Globals from main.cpp
 // -----
 // paramDraw - global buffer sprites are rendered to
-// mX, mY - 
+// cursorX, cursorY - current position of the cursor
+// clickedX, clickedY - last cursor position after right/left click
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
 // isInitialState - 
@@ -100,7 +101,7 @@ void drawMission() {
 void drawEntities() {
   // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
   // posObject
-  // External: paramDraw, mX, mY
+  // External: paramDraw, cursorX, cursorY
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
@@ -172,7 +173,7 @@ void drawEntities() {
 
     Sprite* cur = new Sprite(path, 0xffffffff);
 
-    paramDraw->Draw(mX, mY, cur->width, cur->height, cur);
+    paramDraw->Draw(cursorX, cursorY, cur->width, cur->height, cur);
   }
   // Cursor---
 }
@@ -365,7 +366,7 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 // playLoop function
 // ---------------------------------------------------------------------------------
-void playLoop() {
+void playLoop() { // ★★★
   if (playMode == false) return;
   if (missionMode == true) {
     mission();
@@ -383,7 +384,7 @@ void playLoop() {
 }
 void mission() {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
+  // External: isInitialState, cursorX, cursorY, blocksInHeight, blocksInWidth
 
   // Exit+++
   if (backButton->Touch(clickedX, clickedY) == true) {
@@ -392,7 +393,7 @@ void mission() {
     isInitialState = true;
   }
 
-  backButton->show = backButton->Touch(mX, mY);
+  backButton->show = backButton->Touch(cursorX, cursorY);
   // Exit---
 
   if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
@@ -405,7 +406,7 @@ void mission() {
     missionMode = false;
   }
 
-  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
+  missionButtons[0]->show = missionButtons[0]->Touch(cursorX, cursorY);
 }
 void nextLevel() {
   // Global: player, level, inventory, map, gameMap
@@ -546,14 +547,14 @@ void closeTheBook() {
 }
 void menuPause() {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
-  // External: mX, mY, isInitialState
+  // External: cursorX, cursorY, isInitialState
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
   for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
 
   for (int i = 0; i < 4; i++)
-    if (pauseMenuButtons[i]->Touch(mX, mY) == true) 
+    if (pauseMenuButtons[i]->Touch(cursorX, cursorY) == true) 
       pauseMenuButtons[i]->show = true;
 
   isPaused = shouldContinuePause();
@@ -580,7 +581,7 @@ void interactiveObjects() {
   // External: Chest class, ButtonON class, BlockMoves class, Book class
 
   didPlayerTouchBonus();
-  showInventoryToolTip(mX, mY);
+  showInventoryToolTip(cursorX, cursorY);
 
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
@@ -607,9 +608,9 @@ void interactiveObjects() {
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, mX, mY);
+    chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, cursorX, cursorY);
 
-    showChestToolTip(i, mX, mY);
+    showChestToolTip(i, cursorX, cursorY);
   }
   // Chest---
 
