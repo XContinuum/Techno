@@ -2,7 +2,7 @@
 bool Play = false;
 
 // Missions+++
-bool Missions = false;
+bool missionMode = false; // Missions: missionMode
 
 char* mapFilename = "Images/Data/map1.txt";
 char* mapBMPfilename = "Images/Data/map1.bmp";
@@ -63,7 +63,7 @@ DrawRectangle* dr;
 
 // PLAYING+++
 void drawScene() {
-  if (Missions == true) {
+  if (missionMode == true) {
     drawMission();
     return;
   }
@@ -357,7 +357,7 @@ void readScript() {
 void mission() {
   // Exit+++
   if (Back->Touch(X, Y) == true) {
-    Missions = false;
+    missionMode = false;
     Play = false;
     Menu = true;
   }
@@ -380,7 +380,7 @@ void mission() {
     for (int i = 0; i < 30; i++)
       for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
 
-    Missions = false;
+    missionMode = false;
   }
 
   if (btnOfMissions[0]->Touch(mX, mY) == true)
@@ -720,7 +720,7 @@ void nextLevel() {
 
 void playLoop() {
   if (Play == false) return;
-  if (Missions == true) {
+  if (missionMode == true) {
     mission();
     return;
   }
