@@ -52,7 +52,7 @@ int* memObjc;
 
 int stateK = 0;
 int vseA = 0;
-Text* txt;
+Text* scoreText; // txt: scoreText
 
 int score = 0;
 char* sc;
@@ -155,7 +155,7 @@ void drawScene() {
   }
   // Menu Pause---
 
-  txt->Draw(paramDraw);
+  scoreText->Draw(paramDraw);
 }
 
 void drawMission() {
@@ -405,7 +405,7 @@ void interactiveObjects() {
       int n = 0;
       n = sprintf(sc, "score:%d", score);
 
-      txt->changeText(sc);
+      scoreText->changeText(sc);
       bons[i]->show = false;
     }
   }
