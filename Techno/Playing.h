@@ -62,7 +62,7 @@ DrawRectangle* dr;
 // Play------------------------------------------------------
 
 // PLAYING+++
-void DrawPlay() {
+void drawScene() {
   if (Missions == true) {
     paramDraw->Draw(0, 0, w, h, missions);
 
@@ -166,7 +166,7 @@ void DrawPlay() {
 }
 
 // Missions+++
-void LoadMapp(char* c, int k, int z) {
+void loadMap(char* c, int k, int z) {
   char num;
   int pi = 0;
   int t = 0;
@@ -232,7 +232,7 @@ int* Read(int p1, int p2, char* c) {
 
   return cor;
 }
-void ReadScript() {
+void readScript() {
   // Read file ---
   char* c = new char[mH * mW + 100];
   std::ifstream is(MapTxt);
@@ -250,7 +250,7 @@ void ReadScript() {
   for (int k = 0; k < mH * mW + 100; k++) {
     // Load map +++++++++++++++++++++
     if (LM == true) {
-      LoadMapp(c, k, z);
+      loadMap(c, k, z);
       LM = false;
     }
     // Load map --------------------------
@@ -344,7 +344,7 @@ void ReadScript() {
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(Level);
 }
 
-void Mission() {
+void mission() {
   // Exit+++
   if (Back->Touch(X, Y) == true) {
     Missions = false;
@@ -363,7 +363,7 @@ void Mission() {
     player->x = 40;
     player->y = 40;
 
-    ReadScript();
+    readScript();
 
     map = new Sprite(MapBmp, 0xffffffff);
 
@@ -381,7 +381,7 @@ void Mission() {
 // Missions---
 
 // Play+++
-void InteractiveObjects() {
+void interactiveObjects() {
   // BONUS+++
   for (int i = 0; i < Bonus::counter; i++) {
     if (bons[i]->show == true &&
@@ -591,7 +591,7 @@ void InteractiveObjects() {
         chest[i]->show = true;
   // CHEST---
 }
-void HeroMoves() {
+void playerEvents() {
   player->ChargeMatMap(MatMap);
 
   Hero::Timer();
@@ -651,7 +651,7 @@ void HeroMoves() {
       player->G = true;
   }
 }
-void NextLevel() {
+void nextLevel() {
   if (player->ChangeLevel() == true) {
     Level++;
 
@@ -698,7 +698,7 @@ void NextLevel() {
     num = sprintf(MapBmp, "Images/Data/map%d.bmp", Level);
     num = sprintf(MapTxt, "Images/Data/map%d.txt", Level);
 
-    ReadScript();
+    readScript();
 
     map = new Sprite(MapBmp, 0xffffffff);
 
@@ -711,14 +711,14 @@ void NextLevel() {
 void playLoop() {
   if (Play == false) return;
   if (Missions == true) {
-    Mission();
+    mission();
     return;
   }
-  NextLevel();
+  nextLevel();
 
   if (stopB == false && isPaused == false) {
-    InteractiveObjects();
-    HeroMoves();
+    interactiveObjects();
+    playerEvents();
   }
 
   closeTheBook();
