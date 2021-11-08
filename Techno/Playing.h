@@ -241,8 +241,7 @@ int* read(int begin, int end, char* fileBuffer) {
   if (fileBuffer[0] == 'N')
     return NULL; // no info flag
 
-  int len = end - begin;
-  int quantity = (len + 2) / 4;  // quantity of coordinates
+  int quantity = (end - begin + 2) / 4;  // quantity of coordinates
   int* coordinates = new int[quantity];
 
   for (int i = 0; i < quantity; i++) {
@@ -276,42 +275,52 @@ void readScript() {
     }
 
     if (fileBuffer[index] == ':') {
-      int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
+      int* coordinates = read(prevColonIndex, index, fileBuffer);
 
       if (coordinates != NULL) {
         switch (readingChunk) {
-          case 6:  // Загрузка перехода на следующую миссию
+          case 6: // Загрузка перехода на следующую миссию
             player->exitX = coordinates[0];
             player->exitY = coordinates[1];
             break;
 
-          case 5:  // Load buttons
-            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+          case 5: // Load buttons
+            int coord_quantity = (index - prevColonIndex + 2) / 4;
+
+            for (int i = 0; i < coord_quantity/2; i++)
               pressurePlate[i] =
                   new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
             break;
 
-          case 4:  // Load chests
-            for (int i = 0; i < (index - prevColonIndex + 2) / 16; i++)
+          case 4: // Load chests
+            int coord_quantity = (index - prevColonIndex + 2) / 4;
+
+            for (int i = 0; i < coord_quantity/4; i++)
               chest[i] =
                   new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
                             coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
             break;
 
-          case 3:  // Load bonuses
-            for (int i = 0; i < (index - prevColonIndex + 1) / 12; i++)
+          case 3: // Load bonuses
+            int coord_quantity = (index - prevColonIndex + 2) / 4;
+
+            for (int i = 0; i < coord_quantity/3; i++)
               bonusEntity[i] =
                   new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
             break;
 
-          case 2:  // Load books
-            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+          case 2: // Load books
+            int coord_quantity = (index - prevColonIndex + 2) / 4;
+          
+            for (int i = 0; i < coord_quantity/2; i++)
               bookEntity[i] =
                   new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
             break;
 
-          case 1:  // Load fire
-            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+          case 1: // Load fire
+            int coord_quantity = (index - prevColonIndex + 2) / 4;
+          
+            for (int i = 0; i < coord_quantity/2; i++)
               fireEntity[i] =
                   new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
             break;
