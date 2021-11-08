@@ -396,37 +396,7 @@ void interactiveObjects() {
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
   // Move objects+++
-  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
-    if (Inventar::iLmb == true) {
-      if (inventory->move == false) {
-        inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-        if (inventory->check != -1) {
-          inventory->move = true;
-
-          for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
-
-          posObject = inventory->objects[inventory->check];
-          inventory->objects[inventory->check] = 0;
-        }
-
-      } else if (inventory->move == true) {
-        int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-        if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
-          inventory->objects[nt] = posObject;
-          inventory->ChangeImages();
-          posObject = 0;
-        }
-        for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
-        inventory->move = false;
-      }
-
-      Inventar::Xi = 0;
-      Inventar::Yi = 0;
-      Inventar::iLmb = false;
-    }
-  }
+  inventoryMoveEvents();
   // Move objects---
 
   // Move chest's objects+++
@@ -588,12 +558,42 @@ void didPlayerTouchBonus() {
   }
 }
 void showInventoryToolTip() {
-  if (inventory->Touch(mX, mY) == true) {
-    inventory->exp = true;
-    inventory->mX = mX + 10;
-    inventory->mY = mY;
-  } else
-    inventory->exp = false;
+  inventory->exp = inventory->Touch(mX, mY); // show or hide tool tip
+  inventory->mX = mX + 10;
+  inventory->mY = mY;
+}
+void inventoryMoveEvents() {
+  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == true) {
+    if (Inventar::iLmb == true) {
+      if (inventory->move == false) {
+        inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+
+        if (inventory->check != -1) {
+          inventory->move = true;
+
+          for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
+
+          posObject = inventory->objects[inventory->check];
+          inventory->objects[inventory->check] = 0;
+        }
+
+      } else if (inventory->move == true) {
+        int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+
+        if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
+          inventory->objects[nt] = posObject;
+          inventory->ChangeImages();
+          posObject = 0;
+        }
+        for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
+        inventory->move = false;
+      }
+
+      Inventar::Xi = 0;
+      Inventar::Yi = 0;
+      Inventar::iLmb = false;
+    }
+  }
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
