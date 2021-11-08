@@ -42,7 +42,6 @@ Inventar* inventory; // Inv: inventory
 
 // Move Invent Chest+++
 int posObject = 0;
-int* memObjc;
 // Move Invent Chest---
 
 int stateK = 0;
@@ -51,8 +50,21 @@ Text* scoreText; // txt: scoreText
 int score = 0;
 // Play------------------------------------------------------
 
+// Globals from main.cpp
+// -----
+// paramDraw - global buffer sprites are rendered to
+// mX, mY - 
+// blocksInHeight, blocksInWidth - 
+// screenPixelWidth, screenPixelHeight - 
+// Menu - 
+// -----
+
 // PLAYING+++
 void drawScene() {
+  // Global: missionMode, fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
+  // posObject, isPaused, scoreText
+  //
+  // External: paramDraw, mX, mY
   if (missionMode == true) {
     drawMission();
     return;
@@ -124,7 +136,7 @@ void drawScene() {
   // Cursor+++
   if (posObject != 0) {
     char* path = new char[20];
-    int num = sprintf(path, "Images/o%d.bmp", posObject);
+    sprintf(path, "Images/o%d.bmp", posObject);
 
     Sprite* cur = new Sprite(path, 0xffffffff);
 
@@ -142,6 +154,8 @@ void drawScene() {
 }
 
 void drawPauseMenu() {
+  // Global: pauseOverlay, pauseMenuSprite, pauseMenuButtons
+  // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                   pauseOverlay);
   paramDraw->Draw((screenPixelWidth - pauseMenuSprite->width) / 2,
@@ -154,6 +168,8 @@ void drawPauseMenu() {
 }
 
 void drawMission() {
+  // Global: missions, missionButtons, missionLock, backButton
+  // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
   if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
@@ -172,6 +188,8 @@ void drawMission() {
 
 // Missions+++
 void loadMap(char* c, int k, int z) {
+  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, bookEntity
+  // External: blocksInHeight, blocksInWidth,
   char num;
   int pi = 0;
   int t = 0;
@@ -212,6 +230,7 @@ void loadMap(char* c, int k, int z) {
   // Load doors---
 }
 int* Read(int p1, int p2, char* c) {
+  // No globals
   int* cor = NULL;
   char* line = new char[p2 - p1];
 
@@ -238,6 +257,9 @@ int* Read(int p1, int p2, char* c) {
   return cor;
 }
 void readScript() {
+  // Global: mapFilename, player, pressurePlate, chest, bonusEntity, fireEntity
+  // External: blocksInHeight, blocksInWidth
+
   // Read file ---
   char* c = new char[blocksInHeight * blocksInWidth + 100];
   std::ifstream is(mapFilename);
@@ -350,6 +372,9 @@ void readScript() {
 }
 
 void mission() {
+  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
+  // External: Menu, mX, mY
+
   // Exit+++
   if (backButton->Touch(X, Y) == true) {
     missionMode = false;
@@ -387,6 +412,9 @@ void mission() {
 
 // Play+++
 void interactiveObjects() {
+  // Global: bonusEntity, player, score, scoreText, inventory, posObject, chest, stateK, buffer, bookEntity, fireEntity, ...
+  // External: Fire class, Bonus class, Inventar class, Chest class, Door class, FinalDoor class, ButtonON class, BlockMoves class, Book class, ...
+
   // BONUS+++
   for (int i = 0; i < Bonus::counter; i++) {
     if (bonusEntity[i]->show == true &&
@@ -397,8 +425,7 @@ void interactiveObjects() {
       score += 10;
 
       char* sc = new char[100];
-      int n = 0;
-      n = sprintf(sc, "score:%d", score);
+      sprintf(sc, "score:%d", score);
 
       scoreText->changeText(sc);
       bonusEntity[i]->show = false;
@@ -532,7 +559,7 @@ void interactiveObjects() {
   // BONUS+++
 
   // DOOR+++
-  for (int i = 0; i < Door::counter; i++) d[i]->Touch(X, Y, gameMap, lmb);
+  for (int i = 0; i < Door::counter; i++) doorEntity[i]->Touch(X, Y, gameMap, lmb);
   // DOOR---
 
   // FinalDoor+++
@@ -591,6 +618,8 @@ void interactiveObjects() {
   // CHEST---
 }
 void playerEvents() {
+  // Global: player, gameMap, buffer, inventory
+  // External: Hero class
   player->ChargeMatMap(gameMap);
 
   Hero::Timer();
@@ -649,6 +678,8 @@ void playerEvents() {
   }
 }
 void nextLevel() {
+  // Global: player, level, inventory, map, gameMap
+  // External: blocksInHeight, blocksInWidth
   if (player->ChangeLevel() == false) return;
 
   level++;
@@ -669,6 +700,8 @@ void nextLevel() {
 }
 
 void clearMap() {
+  // Global: gameMap
+  // External: blocksInHeight, blocksInWidth
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
       gameMap[i][j] = 0;
@@ -750,6 +783,8 @@ void closeTheBook() {
 }
 
 void menuPause() {
+  // Global: buffer, isPaused, pauseMenuButtons, playMode
+  // External: mX, mY, Menu
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
