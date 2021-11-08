@@ -17,7 +17,7 @@ Button* backButton; // Back: backButton
 int gameMap[30][40]; // MatMap: gameMap
 int level = 1;
 
-bool stopB = false;
+bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused
 
 Button* pauseMenuButtons[4]; // PM: pauseMenuButtons: Continue, Save, Settings, Exit
@@ -568,19 +568,16 @@ void interactiveObjects() {
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++)
-    if (bookEntity[i]->state =
-            'C' && bookEntity[i]->show == true &&
-            (bookEntity[i]->Touch(player->x,
-                         player->y + player->Image->height) == true ||
-             bookEntity[i]->Touch(player->x + player->Image->width,
-                         player->y + player->Image->height) == true)) {
+    if (bookEntity[i]->state = 'C' && bookEntity[i]->show == true &&
+            (bookEntity[i]->Touch(player->x, player->y + player->Image->height) == true ||
+             bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height) == true)) {
       bookEntity[i]->state = 'O';
       bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
       bookEntity[i]->x = (w - bookEntity[i]->ImageBack->width) / 2;
       bookEntity[i]->y = (h - bookEntity[i]->ImageBack->height) / 2;
       inventory->AddObject(1);
-      stopB = true;
+      isBookMenuOpen = true;
     }
   // BOOKS---
 
@@ -717,7 +714,7 @@ void playLoop() {
   }
   nextLevel();
 
-  if (stopB == false && isPaused == false) {
+  if (isBookMenuOpen == false && isPaused == false) {
     interactiveObjects();
     playerEvents();
   }
@@ -732,7 +729,7 @@ void closeTheBook() {
       if (bookEntity[i]->state == 'O') {
         bookEntity[i]->show = false;
         bookEntity[i]->state = 'C';
-        stopB = false;
+        isBookMenuOpen = false;
       }
     }
   }
