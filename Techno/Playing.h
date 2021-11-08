@@ -60,35 +60,34 @@ void drawScene() {
   }
   paramDraw->Draw(0, 0, w, h, map);
 
-  // Fire++++
-  for (int i = 0; i < Fire::counter; i++)
-    paramDraw->Draw(fireEntity[i]->x, fireEntity[i]->y, fireEntity[i]->ImageView->width,
+  for (int i = 0; i < Fire::counter; i++) {
+    paramDraw->Draw(fireEntity[i]->x, fireEntity[i]->y,
+                    fireEntity[i]->ImageView->width,
                     fireEntity[i]->ImageView->height, fireEntity[i]->ImageView);
-  // Fire---
+  }
 
-  // Door++++
-  for (int i = 0; i < Door::counter; i++)
-    paramDraw->Draw(doorEntity[i]->x, doorEntity[i]->y, doorEntity[i]->ImageView->width,
+  for (int i = 0; i < Door::counter; i++) {
+    paramDraw->Draw(doorEntity[i]->x, doorEntity[i]->y,
+                    doorEntity[i]->ImageView->width,
                     doorEntity[i]->ImageView->height, doorEntity[i]->ImageView);
-  // Door---
+  }
 
-  // FinalDoor++++
-  for (int i = 0; i < FinalDoor::counter; i++) finalDoor[i]->Draw(paramDraw);
-  // FinalDoor---
+  for (int i = 0; i < FinalDoor::counter; i++) {
+    finalDoor[i]->Draw(paramDraw);
+  }
 
-  // Bonus++++
   for (int i = 0; i < Bonus::counter; i++) {
     if (bonusEntity[i]->show == true)
-      paramDraw->Draw(bonusEntity[i]->x, bonusEntity[i]->y, bonusEntity[i]->ImageView->width,
-                      bonusEntity[i]->ImageView->height, bonusEntity[i]->ImageView);
+      paramDraw->Draw(bonusEntity[i]->x, bonusEntity[i]->y,
+                      bonusEntity[i]->ImageView->width,
+                      bonusEntity[i]->ImageView->height,
+                      bonusEntity[i]->ImageView);
   }
-  // Bonus---
 
-  // BlockMoves++++
-  for (int i = 0; i < BlockMoves::counter; i++)
+  for (int i = 0; i < BlockMoves::counter; i++) {
     paramDraw->Draw(bm[i]->x, bm[i]->y, bm[i]->Image->width,
                     bm[i]->Image->height, bm[i]->Image);
-  // BlockMoves---
+  }
 
   // Chest++++
   for (int i = 0; i < Chest::counter; i++) {
@@ -113,11 +112,13 @@ void drawScene() {
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
     if (bookEntity[i]->show == true) {
-      if (bookEntity[i]->state == 'O')
+      if (bookEntity[i]->state == 'O') {
         paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                         pauseOverlay);
+      }
 
-      paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y, bookEntity[i]->Image->width, bookEntity[i]->Image->height,
+      paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y,
+                      bookEntity[i]->Image->width, bookEntity[i]->Image->height,
                       bookEntity[i]->Image);
     }
   }
@@ -136,17 +137,23 @@ void drawScene() {
 
   // Menu Pause+++
   if (isPaused == true) {
-    paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
-                    pauseOverlay);
-    paramDraw->Draw((w - pauseMenuSprite->width) / 2,
-                    (h - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
-                    pauseMenuSprite->height, pauseMenuSprite);
-
-    for (int i = 0; i < 4; i++) pauseMenuButtons[i]->Draw(paramDraw);
+    drawPauseMenu();
   }
   // Menu Pause---
 
   scoreText->Draw(paramDraw);
+}
+
+void drawPauseMenu() {
+  paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                  pauseOverlay);
+  paramDraw->Draw((w - pauseMenuSprite->width) / 2,
+                  (h - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
+                  pauseMenuSprite->height, pauseMenuSprite);
+
+  for (int i = 0; i < 4; i++) {
+    pauseMenuButtons[i]->Draw(paramDraw);
+  }
 }
 
 void drawMission() {
