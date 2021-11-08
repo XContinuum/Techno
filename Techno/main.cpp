@@ -224,6 +224,8 @@ Param *paramDraw;
 #include "Create_map.h"
 #include "Playing.h"
 
+DrawRectangle* dr;
+
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (Menu == true) {

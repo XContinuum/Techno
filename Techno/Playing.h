@@ -52,13 +52,9 @@ int* memObjc;
 
 int stateK = 0;
 int vseA = 0;
+
 Text* scoreText; // txt: scoreText
-
 int score = 0;
-char* sc;
-
-DrawRectangle* dr;
-
 // Play------------------------------------------------------
 
 // PLAYING+++
@@ -401,7 +397,7 @@ void interactiveObjects() {
                         player->y + player->h - 1) == true)) {
       score += 10;
 
-      sc = new char[100];
+      char* sc = new char[100];
       int n = 0;
       n = sprintf(sc, "score:%d", score);
 
