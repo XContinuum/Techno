@@ -56,7 +56,7 @@ int score = 0;
 // mX, mY - 
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
-// Menu - 
+// isInitialState - 
 // -----
 
 // PLAYING+++
@@ -373,13 +373,13 @@ void readScript() {
 
 void mission() {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: Menu, mX, mY
+  // External: isInitialState, mX, mY
 
   // Exit+++
   if (backButton->Touch(X, Y) == true) {
     missionMode = false;
     playMode = false;
-    Menu = true;
+    isInitialState = true;
   }
 
   if (backButton->Touch(mX, mY) == true)
@@ -784,7 +784,7 @@ void closeTheBook() {
 
 void menuPause() {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
-  // External: mX, mY, Menu
+  // External: mX, mY, isInitialState
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
@@ -798,7 +798,7 @@ void menuPause() {
 
   if (pauseMenuButtons[PM_EXIT]->Touch(X, Y) == true) {
     playMode = false;
-    Menu = true;
+    isInitialState = true;
   }
 }
 

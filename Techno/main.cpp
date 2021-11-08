@@ -199,7 +199,7 @@ int mX, mY;
 bool lmb = false;
 
 // Main menu+++
-bool Menu = true;
+bool isInitialState = true; // Menu: isInitialState
 bool end = true;
 
 Sprite *mainMenu;
@@ -233,7 +233,7 @@ Button* lock;
 
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (Menu == true) {
+    if (isInitialState == true) {
         paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
         for (int i = 0; i < 4; i++) btnMain[i]->Draw(paramDraw);
@@ -368,7 +368,7 @@ void InitialSys(HINSTANCE hInstance) {
 }
 
 void mainMenuInteractions() {
-    if (Menu == true) {
+    if (isInitialState == true) {
         // Mouse move+++
         for (int i = 0; i < 4; i++) {
             if (btnMain[i]->Touch(mX, mY) == true)
@@ -382,16 +382,16 @@ void mainMenuInteractions() {
         if (btnMain[PLAY]->Touch(X, Y) == true && lmb == true) {
             playMode = true;
             Missions = true;
-            Menu = false;
+            isInitialState = false;
         }
 
         if (btnMain[CREATE_MAP]->Touch(X, Y) == true && lmb == true) {
             Create_map = true;
-            Menu = false;
+            isInitialState = false;
         }
 
         if (btnMain[SETTINGS]->Touch(X, Y) == true && lmb == true) {
-            Menu = false;
+            isInitialState = false;
         }
 
         // Click---
@@ -475,7 +475,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
         mainMenuInteractions();
 
-        if (btnMain[EXIT]->Touch(X, Y) == true && Menu == true) return 0;
+        if (btnMain[EXIT]->Touch(X, Y) == true && isInitialState == true) return 0;
 
         videocard->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255),
                          1.0f, 0);
