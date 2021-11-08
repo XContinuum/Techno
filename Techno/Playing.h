@@ -258,12 +258,9 @@ int* read(int begin, int end, char* fileBuffer) {
 void readScript() {
   // Global: mapFilename, player, pressurePlate, chest, bonusEntity, fireEntity
   // External: blocksInHeight, blocksInWidth
-
-  // Read file ---
   int bufferSize = blocksInHeight * blocksInWidth + 100;
-  char* fileBuffer = readFile(mapFilename, bufferSize);
-  // Read file +++
 
+  char* fileBuffer = readFile(mapFilename, bufferSize);
   int mapDeliminatorPos = 0;
   int readingChunk = 0;
   int prevColonIndex = 0;
@@ -281,49 +278,44 @@ void readScript() {
     if (fileBuffer[index] == ':') {
       int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
 
-      switch (readingChunk) {
-        case 6:  // Загрузка перехода на следующую миссию
-          if (coordinates != NULL) {
+      if (coordinates != NULL) {
+        switch (readingChunk) {
+          case 6:  // Загрузка перехода на следующую миссию
             player->exitX = coordinates[0];
             player->exitY = coordinates[1];
-          }
-          break;
+            break;
 
-        case 5:  // Load buttons
-          if (coordinates != NULL)
+          case 5:  // Load buttons
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               pressurePlate[i] =
                   new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
-          break;
+            break;
 
-        case 4:  // Load chests
-          if (coordinates != NULL)
+          case 4:  // Load chests
             for (int i = 0; i < (index - prevColonIndex + 2) / 16; i++)
               chest[i] =
                   new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
                             coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
-          break;
+            break;
 
-        case 3:  // Load bonuses
-          if (coordinates != NULL)
+          case 3:  // Load bonuses
             for (int i = 0; i < (index - prevColonIndex + 1) / 12; i++)
               bonusEntity[i] =
                   new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
-          break;
+            break;
 
-        case 2:  // Load books
-          if (coordinates != NULL)
+          case 2:  // Load books
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               bookEntity[i] =
                   new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
-          break;
+            break;
 
-        case 1:  // Load fire
-          if (coordinates != NULL)
+          case 1:  // Load fire
             for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
               fireEntity[i] =
                   new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
-          break;
+            break;
+        }
       }
 
       prevColonIndex = index + 1;
