@@ -183,16 +183,16 @@ class Param {
     }
 };
 
-int w = 800;
-int h = 600;
+int screenPixelWidth = 800; // w: screenPixelWidth
+int screenPixelHeight = 600; // h: screenPixelHeight
 
 #include "class.h"
 
 int blocksInWidth = 40; // mW: blocksInWidth
 int blocksInHeight = 30; // mH: blocksInHeight
 
-int left = (1280 - w) / 2;
-int top = (800 - h) / 2;
+int left = (1280 - screenPixelWidth) / 2;
+int top = (800 - screenPixelHeight) / 2;
 
 int X, Y;
 int mX, mY;
@@ -234,7 +234,7 @@ Button* lock;
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (Menu == true) {
-        paramDraw->Draw(0, 0, w, h, mainMenu);
+        paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
         for (int i = 0; i < 4; i++) btnMain[i]->Draw(paramDraw);
     }
@@ -294,8 +294,8 @@ void initialization() {
 
     // Locker+++
     lock = new Button("Images/code.bmp", 0xffffffff);
-    lock->x = (w - lock->w) / 2;
-    lock->y = (h - lock->h) / 2;
+    lock->x = (screenPixelWidth - lock->w) / 2;
+    lock->y = (screenPixelHeight - lock->h) / 2;
     lock->show = true;
 
     // Locker---
@@ -314,23 +314,23 @@ void initialization() {
     Init_CreateMap();
 
     PM[PM_CONTINUE] = new Button("Images/pm_continue.bmp");
-    PM[PM_CONTINUE]->x = (w - pauseMenuSprite->width) / 2 + 79;
-    PM[PM_CONTINUE]->y = (h - pauseMenuSprite->height) / 2 + 55;
+    PM[PM_CONTINUE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_CONTINUE]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 55;
     PM[PM_CONTINUE]->show = false;
 
     PM[PM_SAVE] = new Button("Images/pm_save.bmp");
-    PM[PM_SAVE]->x = (w - pauseMenuSprite->width) / 2 + 79;
-    PM[PM_SAVE]->y = (h - pauseMenuSprite->height) / 2 + 101;
+    PM[PM_SAVE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_SAVE]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 101;
     PM[PM_SAVE]->show = false;
 
     PM[PM_SETTINGS] = new Button("Images/pm_settings.bmp");
-    PM[PM_SETTINGS]->x = (w - pauseMenuSprite->width) / 2 + 79;
-    PM[PM_SETTINGS]->y = (h - pauseMenuSprite->height) / 2 + 149;
+    PM[PM_SETTINGS]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_SETTINGS]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 149;
     PM[PM_SETTINGS]->show = false;
 
     PM[PM_EXIT] = new Button("Images/pm_exit.bmp");
-    PM[PM_EXIT]->x = (w - pauseMenuSprite->width) / 2 + 79;
-    PM[PM_EXIT]->y = (h - pauseMenuSprite->height) / 2 + 200;
+    PM[PM_EXIT]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_EXIT]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 200;
     PM[PM_EXIT]->show = false;
 }
 
@@ -341,8 +341,8 @@ void InitialSys(HINSTANCE hInstance) {
 
     ZeroMemory(&pp, sizeof(pp));
 
-    pp.BackBufferWidth = w;
-    pp.BackBufferHeight = h;
+    pp.BackBufferWidth = screenPixelWidth;
+    pp.BackBufferHeight = screenPixelHeight;
     pp.BackBufferFormat = D3DFMT_X8R8G8B8;
     pp.BackBufferCount = 1;
     pp.MultiSampleType = D3DMULTISAMPLE_NONE;
@@ -423,7 +423,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
     RegisterClass(&wc);
 
-    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, w, h, NULL, NULL, hInstance, NULL);
+    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, screenPixelWidth, screenPixelHeight, NULL, NULL, hInstance, NULL);
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
 

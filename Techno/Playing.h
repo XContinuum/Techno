@@ -57,7 +57,7 @@ void drawScene() {
     drawMission();
     return;
   }
-  paramDraw->Draw(0, 0, w, h, map);
+  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
     paramDraw->Draw(fireEntity[i]->x, fireEntity[i]->y,
@@ -144,8 +144,8 @@ void drawScene() {
 void drawPauseMenu() {
   paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                   pauseOverlay);
-  paramDraw->Draw((w - pauseMenuSprite->width) / 2,
-                  (h - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
+  paramDraw->Draw((screenPixelWidth - pauseMenuSprite->width) / 2,
+                  (screenPixelHeight - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
                   pauseMenuSprite->height, pauseMenuSprite);
 
   for (int i = 0; i < 4; i++) {
@@ -154,7 +154,7 @@ void drawPauseMenu() {
 }
 
 void drawMission() {
-  paramDraw->Draw(0, 0, w, h, missions);
+  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
   if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
 
@@ -573,8 +573,8 @@ void interactiveObjects() {
       bookEntity[i]->state = 'O';
       bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
-      bookEntity[i]->x = (w - bookEntity[i]->ImageBack->width) / 2;
-      bookEntity[i]->y = (h - bookEntity[i]->ImageBack->height) / 2;
+      bookEntity[i]->x = (screenPixelWidth - bookEntity[i]->ImageBack->width) / 2;
+      bookEntity[i]->y = (screenPixelHeight - bookEntity[i]->ImageBack->height) / 2;
       inventory->AddObject(1);
       isBookMenuOpen = true;
     }
