@@ -193,7 +193,7 @@ void drawMission() {
 
 // Missions+++
 void loadMap(char* fileBuffer, int mapDeliminatorPos) {
-  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, bookEntity
+  // Global: gameMaps
   // External: blocksInHeight, blocksInWidth,
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
@@ -204,7 +204,9 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
       }
     }
   }
-
+}
+void loadDoors() {
+  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
   int pi = 0;
   int t = 0;
   // Load doors +++
@@ -233,6 +235,7 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
     }
   // Load doors---
 }
+
 int* Read(int p1, int p2, char* c) {
   // No globals
   int* cor = NULL;
@@ -366,6 +369,7 @@ void readScript() {
   }
 
   loadMap(fileBuffer, mapDeliminatorPos);
+  loadDoors();
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
