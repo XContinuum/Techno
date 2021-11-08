@@ -293,7 +293,7 @@ void initialization() {
     missionLock = new Sprite("Images/blocked.bmp", 0xffffffff);
 
     // Locker+++
-    lock = new Button("Images/code.bmp", 0xffffffff);
+    lock = new Button("Images/chest/code.bmp", 0xffffffff);
     lock->x = (screenPixelWidth - lock->w) / 2;
     lock->y = (screenPixelHeight - lock->h) / 2;
     lock->show = true;

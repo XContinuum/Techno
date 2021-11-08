@@ -581,7 +581,7 @@ void inventoryMoveEvents() {
     }
     for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
     inventory->move = false;
-  } else if (inventory->move == false) {
+  } else {
     inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
     if (inventory->check != -1) {

@@ -1127,12 +1127,12 @@ class Chest {
           showC(false),
           move(false),
           check(0) {
-        Image[0] = new Sprite("Images/chest1.bmp");
-        Image[1] = new Sprite("Images/chest2.bmp");
-        code = new Sprite("Images/code.bmp");
-        OpenExp = new Sprite("Images/OpenChest.bmp", 0xffffffff);
-        Content = new Sprite("Images/InvChest.bmp", 0xffffffff);
-        OkOpen = new Sprite("Images/OpenTrue.bmp", 0xffffffff);
+        Image[0] = new Sprite("Images/chest/chest1.bmp");
+        Image[1] = new Sprite("Images/chest/chest2.bmp");
+        code = new Sprite("Images/chest/code.bmp");
+        OpenExp = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
+        Content = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
+        OkOpen = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
         ImageView = Image[0];
 
         counter++;
@@ -1154,7 +1154,7 @@ class Chest {
         InitButtons();
     }
     void InitButtons() {
-        lock = new Button("Images/code.bmp", 0xffffffff);
+        lock = new Button("Images/chest/code.bmp", 0xffffffff);
         lock->x = (w - lock->w) / 2;
         lock->y = (h - lock->h) / 2;
         lock->show = true;
