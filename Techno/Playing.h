@@ -373,7 +373,7 @@ void readScript() {
 
 void mission() {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, mX, mY
+  // External: isInitialState, mX, mY, blocksInHeight, blocksInWidth
 
   // Exit+++
   if (backButton->Touch(X, Y) == true) {
@@ -382,10 +382,7 @@ void mission() {
     isInitialState = true;
   }
 
-  if (backButton->Touch(mX, mY) == true)
-    backButton->show = true;
-  else
-    backButton->show = false;
+  backButton->show = backButton->Touch(mX, mY);
   // Exit---
 
   if (missionButtons[0]->Touch(X, Y) == true) {
@@ -397,16 +394,13 @@ void mission() {
 
     map = new Sprite(mapBMPfilename, 0xffffffff);
 
-    for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
+    for (int i = 0; i < blocksInHeight; i++)
+      for (int j = 0; j < blocksInWidth; j++) player->MatMap[i][j] = gameMap[i][j];
 
     missionMode = false;
   }
 
-  if (missionButtons[0]->Touch(mX, mY) == true)
-    missionButtons[0]->show = true;
-  else
-    missionButtons[0]->show = false;
+  missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
 }
 // Missions---
 
