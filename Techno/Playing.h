@@ -181,7 +181,7 @@ void drawMission() {
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 11; j++) {
-      if (i != 0 || j != 0)
+      if (!(i == 0 && j == 0))
         paramDraw->Draw(22 + j * 13 + j * missionLock->width,
                         63 + i * 36 + i * missionLock->height, missionLock->width,
                         missionLock->height, missionLock);
@@ -236,7 +236,7 @@ void loadDoors() {
   }
 }
 
-int* read(int begin, int end, char* fileBuffer) {
+int* readCoordinates(int begin, int end, char* fileBuffer) {
   // No globals
   if (fileBuffer[0] == 'N')
     return NULL; // no info flag
@@ -254,12 +254,12 @@ int* read(int begin, int end, char* fileBuffer) {
 
   return coordinates;
 }
-void readScript() {
+void readScript(char* filename) {
   // Global: mapFilename, player
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
 
-  char* fileBuffer = readFile(mapFilename, bufferSize);
+  char* fileBuffer = readFile(filename, bufferSize);
   int mapDeliminatorPos = 0;
   int readingChunk = 0;
   int prevColonIndex = 0;
@@ -275,7 +275,7 @@ void readScript() {
     }
 
     if (fileBuffer[index] == ':') {
-      int* coordinates = read(prevColonIndex, index, fileBuffer);
+      int* coordinates = readCoordinates(prevColonIndex, index, fileBuffer);
 
       if (coordinates != NULL) {
         int coord_quantity = (index - prevColonIndex + 2) / 4;
@@ -295,7 +295,7 @@ void readScript() {
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
 void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
-  // Global:  pressurePlate, chest, bonusEntity, fireEntity
+  // Global: pressurePlate, chest, bonusEntity, fireEntity
   switch (readingChunk) {
     case 1:
       for (int i = 0; i < coord_quantity / 2; i++)
@@ -361,7 +361,7 @@ void mission() {
     player->x = 40;
     player->y = 40;
 
-    readScript();
+    readScript(mapFilename);
 
     missionMode = false;
   }
@@ -385,11 +385,10 @@ void interactiveObjects() {
 
   // BONUS+++
   for (int i = 0; i < Bonus::counter; i++) {
-    if (bonusEntity[i]->show == true &&
-        (bonusEntity[i]->Touch(player->x, player->y + player->h - 1) ==
-             true ||
-         bonusEntity[i]->Touch(player->x + player->w,
-                        player->y + player->h - 1) == true)) {
+    bool bottomLeft = bonusEntity[i]->Touch(player->x, player->y + player->h - 1);
+    bool bottomRight = bonusEntity[i]->Touch(player->x + player->w, player->y + player->h - 1);
+
+    if (bonusEntity[i]->show && (bottomLeft || bottomRight)) {
       score += 10;
 
       char* sc = new char[100];
@@ -659,7 +658,7 @@ void nextLevel() {
   resetEntities();
   clearMap(); // this might be redundant, as we are loading the new map next
   setNextMapFilepath(level);
-  readScript();
+  readScript(mapFilename);
 }
 
 void clearMap() {
