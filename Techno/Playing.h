@@ -203,14 +203,9 @@ void readScript(char* filename) {
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
   char* fileBuffer = readFile(filename, bufferSize);
-
-  // Load player coordinates+++
-  player->x = atoi(&fileBuffer[0]);
-  player->y = atoi(&fileBuffer[4]);
-  // Load player coordinates+++
-
   int readingChunk = 0;
   int prevColonIndex = 0;
+
   for (int index = 0; index < bufferSize; index++) {
     if (fileBuffer[index] == ':') {
       int* coordinates = readCoordinates(prevColonIndex, index, fileBuffer);
@@ -266,6 +261,11 @@ int* readCoordinates(int begin, int end, char* fileBuffer) {
 void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
   // Global: pressurePlate, chest, bonusEntity, fireEntity
   switch (readingChunk) {
+    case 0: // Load player coordinates
+      player->x = coordinates[0];
+      player->y = coordinates[1];
+      break;
+    
     case 1:
       for (int i = 0; i < coord_quantity / 2; i++)
         fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
