@@ -570,8 +570,18 @@ void inventoryMoveEvents() {
   if (Inventar::iLmb == false) { 
     return;
   }
-  
-  if (inventory->move == false) {
+
+  if (inventory->move == true) {
+    int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+
+    if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
+      inventory->objects[nt] = posObject;
+      inventory->ChangeImages();
+      posObject = 0;
+    }
+    for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
+    inventory->move = false;
+  } else if (inventory->move == false) {
     inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
     if (inventory->check != -1) {
@@ -582,17 +592,6 @@ void inventoryMoveEvents() {
       posObject = inventory->objects[inventory->check];
       inventory->objects[inventory->check] = 0;
     }
-
-  } else if (inventory->move == true) {
-    int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-    if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
-      inventory->objects[nt] = posObject;
-      inventory->ChangeImages();
-      posObject = 0;
-    }
-    for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
-    inventory->move = false;
   }
 
   Inventar::Xi = 0;
