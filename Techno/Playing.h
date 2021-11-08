@@ -35,7 +35,7 @@ Bonus* bonusEntity[10]; // bons: bonusEntity
 Chest* chest[10];
 BlockMoves* bm[5];
 ButtonON* bt[10];
-FinalDoor* Fd[10];
+FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
 Button* lock;
 
@@ -73,7 +73,7 @@ void drawScene() {
   // Door---
 
   // FinalDoor++++
-  for (int i = 0; i < FinalDoor::counter; i++) Fd[i]->Draw(paramDraw);
+  for (int i = 0; i < FinalDoor::counter; i++) finalDoor[i]->Draw(paramDraw);
   // FinalDoor---
 
   // Bonus++++
@@ -194,7 +194,7 @@ void loadMap(char* c, int k, int z) {
         t = 0;
 
       if (gameMap[i][j] == 8 && gameMap[i - 1][j] != 8)
-        Fd[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
+        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
       // Load final doors ---
 
       // Block moves+++
@@ -536,7 +536,7 @@ void interactiveObjects() {
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    Fd[i]->Touch(X, Y, gameMap, lmb, Inv->objects[0]);
+    finalDoor[i]->Touch(X, Y, gameMap, lmb, Inv->objects[0]);
   // FinalDoor---
 
   // ButtonON+++
@@ -684,7 +684,7 @@ void nextLevel() {
       chest[i] = NULL;
       bm[i] = NULL;
       bt[i] = NULL;
-      Fd[i] = NULL;
+      finalDoor[i] = NULL;
     }
 
     for (int i = 0; i < mH; i++)
