@@ -250,20 +250,17 @@ int* read(int p1, int p2, char* fileBuffer) {
   }
 
   int quantityXY = (len + 2) / 4;  // quantity of coordinates
-  int quantity = quantityXY / 2;  // quantity of objects
-  int* cor = new int[quantityXY];
+  int* coordinates = new int[quantityXY];
 
   for (int i = 0; i < quantityXY; i++) {
-    char a1, a2, a3;
+    char a1 = line[i * 4];
+    char a2 = line[i * 4 + 1];
+    char a3 = line[i * 4 + 2];
 
-    a1 = line[i * 4];
-    a2 = line[i * 4 + 1];
-    a3 = line[i * 4 + 2];
-
-    cor[i] = atoi(&a1) * 100 + atoi(&a2) * 10 + atoi(&a3);
+    coordinates[i] = atoi(&a1) * 100 + atoi(&a2) * 10 + atoi(&a3);
   }
 
-  return cor;
+  return coordinates;
 }
 void readScript() {
   // Global: mapFilename, player, pressurePlate, chest, bonusEntity, fireEntity
@@ -277,6 +274,11 @@ void readScript() {
   int mapDeliminatorPos = 0;
   int readingChunk = 0;
   int prevColonIndex = 0;
+
+  // Load player coordinates+++
+  player->x = atoi(&fileBuffer[0]);
+  player->y = atoi(&fileBuffer[4]);
+  // Load player coordinates+++
 
   for (int index = 0; index < bufferSize; index++) {
     if (fileBuffer[index] == '|') {
@@ -359,11 +361,6 @@ void readScript() {
       readingChunk++;
     }
     // Load fire ------------
-
-    // Load player coordinates+++
-    player->x = atoi(&fileBuffer[0]);
-    player->y = atoi(&fileBuffer[4]);
-    // Load player coordinates+++
   }
 
   loadMap(fileBuffer, mapDeliminatorPos);
