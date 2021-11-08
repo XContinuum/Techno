@@ -33,7 +33,7 @@ Door* doorEntity[10]; // d: doorEntity
 Book* bookEntity[10]; // b: bookEntity
 Bonus* bonusEntity[10]; // bons: bonusEntity
 Chest* chest[10];
-BlockMoves* bm[5];
+BlockMoves* movingStairBlocks[5]; // bm: movingStairBlocks
 ButtonON* bt[10];
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
@@ -84,8 +84,8 @@ void drawScene() {
   }
 
   for (int i = 0; i < BlockMoves::counter; i++) {
-    paramDraw->Draw(bm[i]->x, bm[i]->y, bm[i]->Image->width,
-                    bm[i]->Image->height, bm[i]->Image);
+    paramDraw->Draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->Image->width,
+                    movingStairBlocks[i]->Image->height, movingStairBlocks[i]->Image);
   }
 
   // Chest++++
@@ -205,7 +205,7 @@ void loadMap(char* c, int k, int z) {
       if (gameMap[i][j] == 6) {
         if (BlockMoves::counter == 0) pi = (i - 1) * 20;
 
-        bm[BlockMoves::counter - 1] = new BlockMoves(j * 20, i * 20, pi);
+        movingStairBlocks[BlockMoves::counter - 1] = new BlockMoves(j * 20, i * 20, pi);
       }
       // Block moves---
     }
@@ -553,7 +553,7 @@ void interactiveObjects() {
   if (BlockMoves::dt > 5 && BlockMoves::UP == true) {
     bool b = true;
 
-    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveUp(gameMap, b);
+    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveUp(gameMap, b);
 
     if (b == true) BlockMoves::timer1 = 0;
   }
@@ -561,7 +561,7 @@ void interactiveObjects() {
   if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
 
   if (BlockMoves::dt > 5 && BlockMoves::UP == false) {
-    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveDown(gameMap);
+    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap);
   }
   // Block Moves---
 
@@ -680,7 +680,7 @@ void nextLevel() {
       bookEntity[i] = NULL;
       bonusEntity[i] = NULL;
       chest[i] = NULL;
-      bm[i] = NULL;
+      movingStairBlocks[i] = NULL;
       bt[i] = NULL;
       finalDoor[i] = NULL;
     }
