@@ -383,7 +383,7 @@ void setMap() {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects() {
-  // Global: player, inventory, posObject, chest, stateK, buffer, bookEntity, fireEntity, ...
+  // Global: player, inventory, chest, stateK, buffer, bookEntity, fireEntity, ...
   // External: Fire class, Bonus class, Inventar class, Chest class, Door class, FinalDoor class, ButtonON class, BlockMoves class, Book class, ...
 
   // BONUS+++
@@ -419,12 +419,7 @@ void interactiveObjects() {
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, mX, mY);
 
-    if (chest[i]->Touch(mX, mY) == true) {
-      chest[i]->expO = true;
-      chest[i]->mX1 = mX + 10;
-      chest[i]->mY1 = mY;
-    } else
-      chest[i]->expO = false;
+    showChestToolTip(i);
   }
   // Chest---
 
@@ -605,6 +600,14 @@ void chestMoveEvents() {
     Chest::Yi = i;
     Chest::iLmb = false;
   }
+}
+void showChestToolTip(int i) {
+  if (chest[i]->Touch(mX, mY) == true) {
+    chest[i]->expO = true;
+    chest[i]->mX1 = mX + 10;
+    chest[i]->mY1 = mY;
+  } else
+    chest[i]->expO = false;
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
