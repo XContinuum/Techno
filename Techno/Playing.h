@@ -386,7 +386,7 @@ void interactiveObjects() {
   // External: Chest class, ButtonON class, BlockMoves class, Book class
 
   didPlayerTouchBonus();
-  showInventoryToolTip();
+  showInventoryToolTip(mX, mY);
 
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
@@ -494,10 +494,10 @@ void didPlayerTouchBonus() {
     }
   }
 }
-void showInventoryToolTip() {
-  inventory->exp = inventory->Touch(mX, mY); // show or hide tool tip
-  inventory->mX = mX + 10;
-  inventory->mY = mY;
+void showInventoryToolTip(int mouseX, int mouseY) {
+  inventory->exp = inventory->Touch(mouseX, mouseY); // show or hide tool tip
+  inventory->mX = mouseX + 10;
+  inventory->mY = mouseY;
 }
 void inventoryMoveEvents() {
   if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == false) {
@@ -539,15 +539,11 @@ void chestMoveEvents() {
   for (int i = 0; i < Chest::counter; i++) {
     bool clickedChest = chest[i]->TouchInvChest(Chest::Xi, Chest::Yi);
 
-    if (!(clickedChest && chest[i]->showC)) {
+    if (!(clickedChest && chest[i]->showC && Chest::iLmb)) {
       continue;
     }
 
-    if (!Chest::iLmb) {
-      continue;
-    }
-
-    if (chest[i]->move == true) {
+    if (chest[i]->move) {
       int nt = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
 
       if (nt != -1 && chest[i]->check != nt && chest[i]->objects[nt] == i) {
@@ -557,7 +553,7 @@ void chestMoveEvents() {
       }
       chest[i]->move = false;
       inventory->move = false;
-    } else if (chest[i]->move == false) {
+    } else {
       chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
 
       if (chest[i]->check != -1) {
