@@ -280,6 +280,8 @@ void readScript() {
   // Read file +++
 
   int mapDeliminatorPos = 0;
+  int readingChunk = 0;
+  int prevColonIndex = 0;
 
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
@@ -290,8 +292,8 @@ void readScript() {
 
     //Загрузка перехода на следующую миссию---
     if (fileBuffer[k] == ':') {
-      if (pos[5] != -1) {
-        int* cor = read(pos[5], k, fileBuffer);  //Выделение координат X и Y
+      if (readingChunk == 6) { // pos[5] != -1
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL) {
           player->exitX = cor[0];
@@ -301,68 +303,79 @@ void readScript() {
       //Загрузка перехода на следующую миссию---
 
       // Load buttons ---
-      if (pos[4] != -1 && pos[5] == -1) {
-        pos[5] = k + 1;
+      if (readingChunk == 5) { // pos[4] != -1 && pos[5] == -1
+        // pos[5] = k + 1;
 
-        int* cor = read(pos[4], k, fileBuffer);  //Выделение координат X и Y
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
-          for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
+          for (int i = 0; i < (k - prevColonIndex + 2) / 8; i++)
             pressurePlate[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
+
+        prevColonIndex = k + 1;
       }
       // Load buttons ---
 
       // Load chests ---
-      if (pos[3] != -1 && pos[4] == -1) {
-        pos[4] = k + 1;
+      if (readingChunk == 4) { // pos[3] != -1 && pos[4] == -1
+        // pos[4] = k + 1;
 
-        int* cor = read(pos[3], k, fileBuffer);  //Выделение координат X и Y
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
-          for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
+          for (int i = 0; i < (k - prevColonIndex + 2) / 16; i++)
             chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], level,
                                  cor[i * 4 + 2], cor[i * 4 + 3]);
 
-        pos[3] = 0;
+        // pos[3] = 0;
+        prevColonIndex = k + 1;
       }
       // Load chests ---
 
       // Load bonuses ---
-      if (pos[2] != -1 && pos[3] == -1) {
-        pos[3] = k + 1;
+      if (readingChunk == 3) { // pos[2] != -1 && pos[3] == -1
+        // pos[3] = k + 1;
 
-        int* cor = read(pos[2], k, fileBuffer);  //Выделение координат X и Y
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
-          for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
+          for (int i = 0; i < (k - prevColonIndex + 1) / 12; i++)
             bonusEntity[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
+
+        prevColonIndex = k + 1;
       }
       // Load bonuses ---
 
       // Load books +++
-      if (pos[1] != -1 && pos[2] == -1) {
-        pos[2] = k + 1;
+      if (readingChunk == 2) { // pos[1] != -1 && pos[2] == -1
+        // pos[2] = k + 1;
 
-        int* cor = read(pos[1], k, fileBuffer);  //Выделение координат X и Y
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
-          for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
+          for (int i = 0; i < (k - prevColonIndex + 2) / 8; i++)
             bookEntity[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
+        
+        prevColonIndex = k + 1;
       }
       // Load books ---
 
       // Load fire +++++++++++
-      if (pos[0] != -1 && pos[1] == -1) {
-        pos[1] = k + 1;
+      if (readingChunk == 1) { // pos[0] != -1 && pos[1] == -1
+        // pos[1] = k + 1;
 
-        int* cor = read(pos[0], k, fileBuffer);  //Выделение координат X и Y
+        int* cor = read(prevColonIndex, k, fileBuffer);  //Выделение координат X и Y
 
         if (cor != NULL)
-          for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
+          for (int i = 0; i < (k - prevColonIndex + 2) / 8; i++)
             fireEntity[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
+
+        prevColonIndex = k + 1;
       }
 
-      pos[0] = k + 1;
+      // pos[0] = k + 1;
+      prevColonIndex = k;
+      readingChunk++;
     }
     // Load fire ------------
 
