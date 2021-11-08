@@ -266,10 +266,11 @@ void readScript() {
   // External: blocksInHeight, blocksInWidth
 
   // Read file ---
-  char* c = new char[blocksInHeight * blocksInWidth + 100];
+  int bufferSize = blocksInHeight * blocksInWidth + 100;
+  char* fileBuffer = new char[bufferSize];
   std::ifstream is(mapFilename);
 
-  for (int i = 0; i < blocksInHeight * blocksInWidth + 100; i++) is >> c[i];
+  for (int i = 0; i < bufferSize; i++) is >> fileBuffer[i];
 
   is.close();
   // Read file +++
@@ -279,19 +280,19 @@ void readScript() {
 
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
-  for (int k = 0; k < blocksInHeight * blocksInWidth + 100; k++) {
+  for (int k = 0; k < bufferSize; k++) {
     // Load map +++++++++++++++++++++
     if (LM == true) {
-      loadMap(c, k, z);
+      loadMap(fileBuffer, k, z);
       LM = false;
     }
     // Load map --------------------------
 
-    if (c[k] == '|' && z == 0) LM = true;
+    if (fileBuffer[k] == '|' && z == 0) LM = true;
 
     //Загрузка перехода на следующую миссию---
-    if (c[k] == ':' && pos[5] != -1) {
-      int* cor = Read(pos[5], k, c);  //Выделение координат X и Y
+    if (fileBuffer[k] == ':' && pos[5] != -1) {
+      int* cor = Read(pos[5], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL) {
         player->exitX = cor[0];
@@ -301,10 +302,10 @@ void readScript() {
     //Загрузка перехода на следующую миссию---
 
     // Load buttons ---
-    if (c[k] == ':' && pos[4] != -1 && pos[5] == -1) {
+    if (fileBuffer[k] == ':' && pos[4] != -1 && pos[5] == -1) {
       pos[5] = k + 1;
 
-      int* cor = Read(pos[4], k, c);  //Выделение координат X и Y
+      int* cor = Read(pos[4], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
@@ -313,10 +314,10 @@ void readScript() {
     // Load buttons ---
 
     // Load chests ---
-    if (c[k] == ':' && pos[3] != -1 && pos[4] == -1) {
+    if (fileBuffer[k] == ':' && pos[3] != -1 && pos[4] == -1) {
       pos[4] = k + 1;
 
-      int* cor = Read(pos[3], k, c);  //Выделение координат X и Y
+      int* cor = Read(pos[3], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
@@ -328,10 +329,10 @@ void readScript() {
     // Load chests ---
 
     // Load bonuses ---
-    if (c[k] == ':' && pos[2] != -1 && pos[3] == -1) {
+    if (fileBuffer[k] == ':' && pos[2] != -1 && pos[3] == -1) {
       pos[3] = k + 1;
 
-      int* cor = Read(pos[2], k, c);  //Выделение координат X и Y
+      int* cor = Read(pos[2], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
@@ -340,10 +341,10 @@ void readScript() {
     // Load bonuses ---
 
     // Load books +++
-    if (c[k] == ':' && pos[1] != -1 && pos[2] == -1) {
+    if (fileBuffer[k] == ':' && pos[1] != -1 && pos[2] == -1) {
       pos[2] = k + 1;
 
-      int* cor = Read(pos[1], k, c);  //Выделение координат X и Y
+      int* cor = Read(pos[1], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
@@ -352,23 +353,23 @@ void readScript() {
     // Load books ---
 
     // Load fire +++++++++++
-    if (c[k] == ':' && pos[0] != -1 && pos[1] == -1) {
+    if (fileBuffer[k] == ':' && pos[0] != -1 && pos[1] == -1) {
       pos[1] = k + 1;
 
-      int* cor = Read(pos[0], k, c);  //Выделение координат X и Y
+      int* cor = Read(pos[0], k, fileBuffer);  //Выделение координат X и Y
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
           fireEntity[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
     }
 
-    if (c[k] == ':') pos[0] = k + 1;
+    if (fileBuffer[k] == ':') pos[0] = k + 1;
     // Load fire ------------
 
     // Load player coordinates+++
     if (LM == false) {
-      player->x = atoi(&c[0]);
-      player->y = atoi(&c[4]);
+      player->x = atoi(&fileBuffer[0]);
+      player->y = atoi(&fileBuffer[4]);
     }
     // Load player coordinates+++
   }
