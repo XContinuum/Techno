@@ -434,7 +434,16 @@ void interactiveObjects() {
   if (BlockMoves::dt > 5 && BlockMoves::UP == true) {
     bool b = true;
 
-    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveUp(gameMap, b);
+    for (int i = 0; i < BlockMoves::counter; i++) {
+      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap);
+
+      if (!tmp) b = false;
+    }
+    /// tmp b  A
+    /// T   T  T
+    /// T   F  F
+    /// F   T  F
+    /// F   F  F
 
     if (b == true) BlockMoves::timer1 = 0;
   }

@@ -663,7 +663,7 @@ class Hero {
     }
 
     static void Timer() {
-        if (timer1 == 0) timer1 = timeGetTime();
+        if (timer1 == 0) timer1 = timeGetTime(); // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
 
         timer = timeGetTime();
         dt = timer - timer1;
@@ -1499,7 +1499,7 @@ class BlockMoves {
         counter++;
     }
 
-    void BlockMoveUp(int MatMap[30][40], bool &b) {
+    bool BlockMoveUp(int MatMap[30][40]) {
         if (y > pI) {
             MatMap[pY / 20 + 1][pX / 20] = 0;
 
@@ -1511,8 +1511,10 @@ class BlockMoves {
 
         if (y == pI) {
             MatMap[y / 20 + 1][x / 20] = 6;
-            b = false;
+            return false;
         }
+
+        return true;
     }
     void BlockMoveDown(int MatMap[30][40]) {
         if (y < pY) {
