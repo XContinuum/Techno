@@ -271,12 +271,7 @@ void readScript() {
 
   // Read file ---
   int bufferSize = blocksInHeight * blocksInWidth + 100;
-  char* fileBuffer = new char[bufferSize];
-  std::ifstream is(mapFilename);
-
-  for (int i = 0; i < bufferSize; i++) is >> fileBuffer[i];
-
-  is.close();
+  char* fileBuffer = readFile(mapFilename, bufferSize);
   // Read file +++
 
   int mapDeliminatorPos = 0;
@@ -375,6 +370,18 @@ void readScript() {
   loadDoors();
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
+}
+void readFile(char* filename, int bufferSize) {
+  char* fileBuffer = new char[bufferSize];
+  std::ifstream is(filename);
+
+  for (int i = 0; i < bufferSize; i++) {
+    is >> fileBuffer[i];
+  }
+
+  is.close();
+
+  return fileBuffer;
 }
 
 void mission() {
