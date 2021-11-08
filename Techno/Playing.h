@@ -279,75 +279,61 @@ void readScript() {
     }
 
     if (fileBuffer[index] == ':') {
-      //Загрузка перехода на следующую миссию---
-      if (readingChunk == 6) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
+      int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
 
-        if (coordinates != NULL) {
-          player->exitX = coordinates[0];
-          player->exitY = coordinates[1];
-        }
-      }
-      //Загрузка перехода на следующую миссию---
+      switch (readingChunk) {
+        case 6:  // Загрузка перехода на следующую миссию
+          if (coordinates != NULL) {
+            player->exitX = coordinates[0];
+            player->exitY = coordinates[1];
+          }
+          break;
 
-      // Load buttons ---
-      if (readingChunk == 5) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
+        case 5:  // Load buttons
+          if (coordinates != NULL)
+            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+              pressurePlate[i] =
+                  new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
 
-        if (coordinates != NULL)
-          for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
-            pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
+          prevColonIndex = index + 1;
+          break;
 
-        prevColonIndex = index + 1;
-      }
-      // Load buttons ---
+        case 4:  // Load chests
+          if (coordinates != NULL)
+            for (int i = 0; i < (index - prevColonIndex + 2) / 16; i++)
+              chest[i] =
+                  new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
+                            coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
 
-      // Load chests ---
-      if (readingChunk == 4) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
+          prevColonIndex = index + 1;
+          break;
 
-        if (coordinates != NULL)
-          for (int i = 0; i < (index - prevColonIndex + 2) / 16; i++)
-            chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
-                                 coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
+        case 3:  // Load bonuses
+          if (coordinates != NULL)
+            for (int i = 0; i < (index - prevColonIndex + 1) / 12; i++)
+              bonusEntity[i] =
+                  new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
 
-        prevColonIndex = index + 1;
-      }
-      // Load chests ---
+          prevColonIndex = index + 1;
+          break;
 
-      // Load bonuses ---
-      if (readingChunk == 3) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
+        case 2:  // Load books
+          if (coordinates != NULL)
+            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+              bookEntity[i] =
+                  new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
 
-        if (coordinates != NULL)
-          for (int i = 0; i < (index - prevColonIndex + 1) / 12; i++)
-            bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
+          prevColonIndex = index + 1;
+          break;
 
-        prevColonIndex = index + 1;
-      }
-      // Load bonuses ---
+        case 1:  // Load fire
+          if (coordinates != NULL)
+            for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
+              fireEntity[i] =
+                  new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
 
-      // Load books +++
-      if (readingChunk == 2) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
-
-        if (coordinates != NULL)
-          for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
-            bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
-        
-        prevColonIndex = index + 1;
-      }
-      // Load books ---
-
-      // Load fire +++++++++++
-      if (readingChunk == 1) {
-        int* coordinates = read(prevColonIndex, index, fileBuffer);  //Выделение координат X и Y
-
-        if (coordinates != NULL)
-          for (int i = 0; i < (index - prevColonIndex + 2) / 8; i++)
-            fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
-
-        prevColonIndex = index + 1;
+          prevColonIndex = index + 1;
+          break;
       }
 
       prevColonIndex = index;
