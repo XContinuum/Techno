@@ -226,6 +226,10 @@ Param *paramDraw;
 
 DrawRectangle* dr;
 
+int timer;
+int timer1;
+int dt;
+
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (Menu == true) {

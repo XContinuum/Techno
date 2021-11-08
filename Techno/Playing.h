@@ -15,10 +15,6 @@ Button* backButton; // Back: backButton
 
 // Game+++
 int gameMap[30][40]; // MatMap: gameMap
-
-int timer;
-int timer1;
-int dt;
 int level = 1;
 
 bool stopB = false;
