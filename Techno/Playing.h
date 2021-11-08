@@ -378,19 +378,14 @@ void setMap() {
 }
 // Missions---
 
-// Play+++
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects() {
-  // Global: player, inventory, chest, stateK, buffer, bookEntity, fireEntity, ...
-  // External: Fire class, Bonus class, Inventar class, Chest class, Door class, FinalDoor class, ButtonON class, BlockMoves class, Book class, ...
+  // Global: player, inventory, chest, stateK, buffer, bookEntity, ...
+  // External: Chest class, ButtonON class, BlockMoves class, Book class
 
-  // BONUS+++
   didPlayerTouchBonus();
-  // BONUS---
-
-  // Inventory+++
   showInventoryToolTip();
 
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
@@ -401,13 +396,8 @@ void interactiveObjects() {
   // F        T       T
   // F        F       F
 
-  // Move objects+++
   inventoryMoveEvents();
-  // Move objects---
-
-  // Move chest's objects+++
   chestMoveEvents();
-  // Move chest's objects---
 
   //++++++
   if (stateK == 1) {
@@ -430,15 +420,6 @@ void interactiveObjects() {
   // Chest---
 
   updateFrames();
-
-  // DOOR+++
-  for (int i = 0; i < Door::counter; i++) doorEntity[i]->Touch(clickedX, clickedY, gameMap, lmb);
-  // DOOR---
-
-  // FinalDoor+++
-  for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->Touch(clickedX, clickedY, gameMap, lmb, inventory->objects[0]);
-  // FinalDoor---
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
@@ -619,6 +600,17 @@ void updateFrames() {
     Bonus::dt = 0;
   }
   // BONUS+++
+
+  // DOOR+++
+  for (int i = 0; i < Door::counter; i++)
+    doorEntity[i]->Touch(clickedX, clickedY, gameMap, lmb);
+  // DOOR---
+
+  // FinalDoor+++
+  for (int i = 0; i < FinalDoor::counter; i++)
+    finalDoor[i]->Touch(clickedX, clickedY, gameMap, lmb,
+                        inventory->objects[0]);
+  // FinalDoor---
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
