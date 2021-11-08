@@ -275,14 +275,14 @@ void initialization() {
     // Rectangle---
 
     missions = new Sprite("Images/missions.bmp");
-    Menu_pause = new Sprite("Images/Pause_menu.bmp");
+    pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
 
     btnOfMissions[0] = new Button("Images/m1.bmp");
     btnOfMissions[0]->x = 22;
     btnOfMissions[0]->y = 63;
     btnOfMissions[0]->show = false;
 
-    pause = new Sprite("Images/pause.bmp", 0xffffffff);
+    pauseOverlay = new Sprite("Images/pause.bmp", 0xffffffff);
     blocked = new Sprite("Images/blocked.bmp", 0xffffffff);
 
     // Locker+++
@@ -307,23 +307,23 @@ void initialization() {
     Init_CreateMap();
 
     PM[PM_CONTINUE] = new Button("Images/pm_continue.bmp");
-    PM[PM_CONTINUE]->x = (w - Menu_pause->width) / 2 + 79;
-    PM[PM_CONTINUE]->y = (h - Menu_pause->height) / 2 + 55;
+    PM[PM_CONTINUE]->x = (w - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_CONTINUE]->y = (h - pauseMenuSprite->height) / 2 + 55;
     PM[PM_CONTINUE]->show = false;
 
     PM[PM_SAVE] = new Button("Images/pm_save.bmp");
-    PM[PM_SAVE]->x = (w - Menu_pause->width) / 2 + 79;
-    PM[PM_SAVE]->y = (h - Menu_pause->height) / 2 + 101;
+    PM[PM_SAVE]->x = (w - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_SAVE]->y = (h - pauseMenuSprite->height) / 2 + 101;
     PM[PM_SAVE]->show = false;
 
     PM[PM_SETTINGS] = new Button("Images/pm_settings.bmp");
-    PM[PM_SETTINGS]->x = (w - Menu_pause->width) / 2 + 79;
-    PM[PM_SETTINGS]->y = (h - Menu_pause->height) / 2 + 149;
+    PM[PM_SETTINGS]->x = (w - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_SETTINGS]->y = (h - pauseMenuSprite->height) / 2 + 149;
     PM[PM_SETTINGS]->show = false;
 
     PM[PM_EXIT] = new Button("Images/pm_exit.bmp");
-    PM[PM_EXIT]->x = (w - Menu_pause->width) / 2 + 79;
-    PM[PM_EXIT]->y = (h - Menu_pause->height) / 2 + 200;
+    PM[PM_EXIT]->x = (w - pauseMenuSprite->width) / 2 + 79;
+    PM[PM_EXIT]->y = (h - pauseMenuSprite->height) / 2 + 200;
     PM[PM_EXIT]->show = false;
 }
 

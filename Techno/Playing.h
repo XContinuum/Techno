@@ -4,8 +4,8 @@ bool Play = false;
 // Missions+++
 bool Missions = false;
 
-char* MapTxt = "Images/Data/map1.txt";
-char* MapBmp = "Images/Data/map1.bmp";
+char* mapFilename = "Images/Data/map1.txt";
+char* mapBMPfilename = "Images/Data/map1.bmp";
 
 Sprite* missions;
 Button* btnOfMissions[1];
@@ -14,12 +14,12 @@ Button* Back;
 // Missions---
 
 // Game+++
-int MatMap[30][40];
+int gameMap[30][40]; // MatMap: gameMap
 
 int timer;
 int timer1;
 int dt;
-int Level = 1;
+int level = 1;
 
 bool stopB = false;
 bool isPaused = false; // stop: isPaused
@@ -27,8 +27,8 @@ bool isPaused = false; // stop: isPaused
 Button* pauseMenuButtons[4]; // PM: pauseMenuButtons: Continue, Save, Settings, Exit
 
 Sprite* map;
-Sprite* pause;
-Sprite* Menu_pause;
+Sprite* pauseOverlay; // pause: pauseOverlay
+Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 
 // Objects in the game+++
 Hero* player; // Personage: player
@@ -118,7 +118,7 @@ void drawScene() {
 
     for (int i = 0; i < Chest::counter; i++) {
       if (chest[i]->show == true) {
-        paramDraw->Draw(0, 0, pause->width, pause->height, pause);
+        paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
         chest[i]->DrawC(paramDraw);
       }
     }
@@ -132,7 +132,7 @@ void drawScene() {
     for (int i = 0; i < Book::counter; i++) {
       if (b[i]->show == true) {
         if (b[i]->state == 'O')
-          paramDraw->Draw(0, 0, pause->width, pause->height, pause);
+          paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
 
         paramDraw->Draw(b[i]->x, b[i]->y, b[i]->Image->width,
                         b[i]->Image->height, b[i]->Image);
@@ -153,9 +153,9 @@ void drawScene() {
 
     // Menu Pause+++
     if (isPaused == true) {
-      paramDraw->Draw(0, 0, pause->width, pause->height, pause);
-      paramDraw->Draw((w - Menu_pause->width) / 2, (h - Menu_pause->height) / 2,
-                      Menu_pause->width, Menu_pause->height, Menu_pause);
+      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
+      paramDraw->Draw((w - pauseMenuSprite->width) / 2, (h - pauseMenuSprite->height) / 2,
+                      pauseMenuSprite->width, pauseMenuSprite->height, pauseMenuSprite);
 
       for (int i = 0; i < 4; i++) pauseMenuButtons[i]->Draw(paramDraw);
     }
@@ -175,7 +175,7 @@ void loadMap(char* c, int k, int z) {
     for (int j = 0; j < mW; j++) {
       num = c[k + z];
 
-      if (num != '\0') MatMap[i][j] = atoi(&num);
+      if (num != '\0') gameMap[i][j] = atoi(&num);
 
       z++;
     }
@@ -183,7 +183,7 @@ void loadMap(char* c, int k, int z) {
   // Load doors +++
   for (int i = 0; i < mH; i++)
     for (int j = 0; j < mW; j++) {
-      if (MatMap[i][j] == 4 && MatMap[i - 1][j] != 4)
+      if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
         d[Door::counter - 1] = new Door(j * 20, i * 20);
 
       // Load final doors +++
@@ -192,12 +192,12 @@ void loadMap(char* c, int k, int z) {
       else if (j == mW - 1)
         t = 0;
 
-      if (MatMap[i][j] == 8 && MatMap[i - 1][j] != 8)
+      if (gameMap[i][j] == 8 && gameMap[i - 1][j] != 8)
         Fd[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
       // Load final doors ---
 
       // Block moves+++
-      if (MatMap[i][j] == 6) {
+      if (gameMap[i][j] == 6) {
         if (BlockMoves::counter == 0) pi = (i - 1) * 20;
 
         bm[BlockMoves::counter - 1] = new BlockMoves(j * 20, i * 20, pi);
@@ -235,7 +235,7 @@ int* Read(int p1, int p2, char* c) {
 void readScript() {
   // Read file ---
   char* c = new char[mH * mW + 100];
-  std::ifstream is(MapTxt);
+  std::ifstream is(mapFilename);
 
   for (int i = 0; i < mH * mW + 100; i++) is >> c[i];
 
@@ -288,7 +288,7 @@ void readScript() {
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
-          chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], Level,
+          chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], level,
                                cor[i * 4 + 2], cor[i * 4 + 3]);
 
       pos[3] = 0;
@@ -341,7 +341,7 @@ void readScript() {
     // Load player coordinates+++
   }
 
-  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(Level);
+  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
 
 void mission() {
@@ -365,10 +365,10 @@ void mission() {
 
     readScript();
 
-    map = new Sprite(MapBmp, 0xffffffff);
+    map = new Sprite(mapBMPfilename, 0xffffffff);
 
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) player->MatMap[i][j] = MatMap[i][j];
+      for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
 
     Missions = false;
   }
@@ -530,12 +530,12 @@ void interactiveObjects() {
   // BONUS+++
 
   // DOOR+++
-  for (int i = 0; i < Door::counter; i++) d[i]->Touch(X, Y, MatMap, lmb);
+  for (int i = 0; i < Door::counter; i++) d[i]->Touch(X, Y, gameMap, lmb);
   // DOOR---
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    Fd[i]->Touch(X, Y, MatMap, lmb, Inv->objects[0]);
+    Fd[i]->Touch(X, Y, gameMap, lmb, Inv->objects[0]);
   // FinalDoor---
 
   // ButtonON+++
@@ -551,7 +551,7 @@ void interactiveObjects() {
   if (BlockMoves::dt > 5 && BlockMoves::UP == true) {
     bool b = true;
 
-    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveUp(MatMap, b);
+    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveUp(gameMap, b);
 
     if (b == true) BlockMoves::timer1 = 0;
   }
@@ -559,7 +559,7 @@ void interactiveObjects() {
   if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
 
   if (BlockMoves::dt > 5 && BlockMoves::UP == false) {
-    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveDown(MatMap);
+    for (int i = 0; i < BlockMoves::counter; i++) bm[i]->BlockMoveDown(gameMap);
   }
   // Block Moves---
 
@@ -592,7 +592,7 @@ void interactiveObjects() {
   // CHEST---
 }
 void playerEvents() {
-  player->ChargeMatMap(MatMap);
+  player->ChargeMatMap(gameMap);
 
   Hero::Timer();
   Hero::TimerG();
@@ -616,7 +616,7 @@ void playerEvents() {
     int nx1 = (player->x + player->w) / 20;
     int ny = (player->y + player->h) / 20;
 
-    if (MatMap[ny][nx] != 0 || MatMap[ny][nx1] != 0) {
+    if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
       player->J = true;
       player->velocityJ = 15;
     }
@@ -645,7 +645,7 @@ void playerEvents() {
     int nx = player->x / 20;
     int ny = (player->y + player->h) / 20;
 
-    if (MatMap[ny][nx] == 3) {
+    if (gameMap[ny][nx] == 3) {
       player->G = false;
     } else
       player->G = true;
@@ -653,7 +653,7 @@ void playerEvents() {
 }
 void nextLevel() {
   if (player->ChangeLevel() == true) {
-    Level++;
+    level++;
 
     for (int i = 0; i < 9; i++)
       if (Inv->objects[i] == 2) Inv->objects[i] = 0;
@@ -689,21 +689,21 @@ void nextLevel() {
     }
 
     for (int i = 0; i < mH; i++)
-      for (int j = 0; j < mW; j++) MatMap[i][j] = 0;
+      for (int j = 0; j < mW; j++) gameMap[i][j] = 0;
 
-    MapBmp = new char[100];
-    MapTxt = new char[100];
+    mapBMPfilename = new char[100];
+    mapFilename = new char[100];
 
     int num;
-    num = sprintf(MapBmp, "Images/Data/map%d.bmp", Level);
-    num = sprintf(MapTxt, "Images/Data/map%d.txt", Level);
+    num = sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
+    num = sprintf(mapFilename, "Images/Data/map%d.txt", level);
 
     readScript();
 
-    map = new Sprite(MapBmp, 0xffffffff);
+    map = new Sprite(mapBMPfilename, 0xffffffff);
 
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) player->MatMap[i][j] = MatMap[i][j];
+      for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
   }
 }
 // Play---
