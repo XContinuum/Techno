@@ -398,7 +398,7 @@ void mainMenuInteractions() {
     }
 
     // Procedures+++++++++
-    playLoop();
+    playLoop(cursorX, cursorY);
     createMap();
 }
 

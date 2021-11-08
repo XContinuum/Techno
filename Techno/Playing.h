@@ -366,25 +366,26 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 // playLoop function
 // ---------------------------------------------------------------------------------
-void playLoop() { // ★★★
+void playLoop(int cursorX, int cursorY) { // ★★★
+  // Global: playMode, missionMode,isBookMenuOpen, isPaused
   if (playMode == false) return;
   if (missionMode == true) {
-    mission();
+    mission(cursorX, cursorY);
     return;
   }
   nextLevel();
 
   if (isBookMenuOpen == false && isPaused == false) {
-    interactiveObjects();
+    interactiveObjects(cursorX, cursorY);
     playerEvents();
   }
 
   closeTheBook();
-  menuPause();
+  menuPause(cursorX, cursorY);
 }
-void mission() {
+void mission(int cursorX, int cursorY) {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, cursorX, cursorY, blocksInHeight, blocksInWidth
+  // External: isInitialState, clickedX, clickedY
 
   // Exit+++
   if (backButton->Touch(clickedX, clickedY) == true) {
@@ -409,8 +410,8 @@ void mission() {
   missionButtons[0]->show = missionButtons[0]->Touch(cursorX, cursorY);
 }
 void nextLevel() {
-  // Global: player, level, inventory, map, gameMap
-  // External: blocksInHeight, blocksInWidth
+  // Global: player, level, inventory, mapFilename
+  // External: 
   if (player->ChangeLevel() == false) return;
 
   level++;
@@ -545,9 +546,9 @@ void closeTheBook() {
     }
   }
 }
-void menuPause() {
+void menuPause(int cursorX, int cursorY) {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
-  // External: cursorX, cursorY, isInitialState
+  // External:  clickedX, clickedY, isInitialState
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (isPaused == false) return;
 
@@ -576,7 +577,7 @@ bool shouldContinuePause() {
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
-void interactiveObjects() {
+void interactiveObjects(int cursorX, int cursorY) {
   // Global: player, inventory, chest, stateK, buffer, bookEntity, ...
   // External: Chest class, ButtonON class, BlockMoves class, Book class
 
