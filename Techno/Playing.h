@@ -64,105 +64,115 @@ DrawRectangle* dr;
 // PLAYING+++
 void drawScene() {
   if (Missions == true) {
-    paramDraw->Draw(0, 0, w, h, missions);
-
-    if (btnOfMissions[0]->show == true) btnOfMissions[0]->Draw(paramDraw);
-
-    for (int i = 0; i < 4; i++)
-      for (int j = 0; j < 11; j++)
-        if (i != 0 || j != 0)
-          paramDraw->Draw(22 + j * 13 + j * blocked->width,
-                          63 + i * 36 + i * blocked->height, blocked->width,
-                          blocked->height, blocked);
-
-    if (Back->show == true) Back->Draw(paramDraw);
-  } else {
-    paramDraw->Draw(0, 0, w, h, map);
-
-    // Fire++++
-    for (int i = 0; i < Fire::counter; i++)
-      paramDraw->Draw(f[i]->x, f[i]->y, f[i]->ImageView->width,
-                      f[i]->ImageView->height, f[i]->ImageView);
-    // Fire---
-
-    // Door++++
-    for (int i = 0; i < Door::counter; i++)
-      paramDraw->Draw(d[i]->x, d[i]->y, d[i]->ImageView->width,
-                      d[i]->ImageView->height, d[i]->ImageView);
-    // Door---
-
-    // FinalDoor++++
-    for (int i = 0; i < FinalDoor::counter; i++) Fd[i]->Draw(paramDraw);
-    // FinalDoor---
-
-    // Bonus++++
-    for (int i = 0; i < Bonus::counter; i++) {
-      if (bons[i]->show == true)
-        paramDraw->Draw(bons[i]->x, bons[i]->y, bons[i]->ImageView->width,
-                        bons[i]->ImageView->height, bons[i]->ImageView);
-    }
-    // Bonus---
-
-    // BlockMoves++++
-    for (int i = 0; i < BlockMoves::counter; i++)
-      paramDraw->Draw(bm[i]->x, bm[i]->y, bm[i]->Image->width,
-                      bm[i]->Image->height, bm[i]->Image);
-    // BlockMoves---
-
-    // Chest++++
-    for (int i = 0; i < Chest::counter; i++) {
-      chest[i]->Draw(paramDraw);
-    }
-
-    player->Draw(paramDraw);
-
-    for (int i = 0; i < Chest::counter; i++) {
-      if (chest[i]->show == true) {
-        paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
-        chest[i]->DrawC(paramDraw);
-      }
-    }
-    // Chest---
-
-    // Inventory+++
-    Inv->Draw(paramDraw);
-    // Inventory---
-
-    // Book++++
-    for (int i = 0; i < Book::counter; i++) {
-      if (b[i]->show == true) {
-        if (b[i]->state == 'O')
-          paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
-
-        paramDraw->Draw(b[i]->x, b[i]->y, b[i]->Image->width,
-                        b[i]->Image->height, b[i]->Image);
-      }
-    }
-    // Book---
-
-    // Cursor+++
-    if (posObject != 0) {
-      char* path = new char[20];
-      int num = sprintf(path, "Images/o%d.bmp", posObject);
-
-      Sprite* cur = new Sprite(path, 0xffffffff);
-
-      paramDraw->Draw(mX, mY, cur->width, cur->height, cur);
-    }
-    // Cursor---
-
-    // Menu Pause+++
-    if (isPaused == true) {
-      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
-      paramDraw->Draw((w - pauseMenuSprite->width) / 2, (h - pauseMenuSprite->height) / 2,
-                      pauseMenuSprite->width, pauseMenuSprite->height, pauseMenuSprite);
-
-      for (int i = 0; i < 4; i++) pauseMenuButtons[i]->Draw(paramDraw);
-    }
-    // Menu Pause---
-
-    txt->Draw(paramDraw);
+    drawMission();
+    return;
   }
+  paramDraw->Draw(0, 0, w, h, map);
+
+  // Fire++++
+  for (int i = 0; i < Fire::counter; i++)
+    paramDraw->Draw(f[i]->x, f[i]->y, f[i]->ImageView->width,
+                    f[i]->ImageView->height, f[i]->ImageView);
+  // Fire---
+
+  // Door++++
+  for (int i = 0; i < Door::counter; i++)
+    paramDraw->Draw(d[i]->x, d[i]->y, d[i]->ImageView->width,
+                    d[i]->ImageView->height, d[i]->ImageView);
+  // Door---
+
+  // FinalDoor++++
+  for (int i = 0; i < FinalDoor::counter; i++) Fd[i]->Draw(paramDraw);
+  // FinalDoor---
+
+  // Bonus++++
+  for (int i = 0; i < Bonus::counter; i++) {
+    if (bons[i]->show == true)
+      paramDraw->Draw(bons[i]->x, bons[i]->y, bons[i]->ImageView->width,
+                      bons[i]->ImageView->height, bons[i]->ImageView);
+  }
+  // Bonus---
+
+  // BlockMoves++++
+  for (int i = 0; i < BlockMoves::counter; i++)
+    paramDraw->Draw(bm[i]->x, bm[i]->y, bm[i]->Image->width,
+                    bm[i]->Image->height, bm[i]->Image);
+  // BlockMoves---
+
+  // Chest++++
+  for (int i = 0; i < Chest::counter; i++) {
+    chest[i]->Draw(paramDraw);
+  }
+
+  player->Draw(paramDraw);
+
+  for (int i = 0; i < Chest::counter; i++) {
+    if (chest[i]->show == true) {
+      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                      pauseOverlay);
+      chest[i]->DrawC(paramDraw);
+    }
+  }
+  // Chest---
+
+  // Inventory+++
+  Inv->Draw(paramDraw);
+  // Inventory---
+
+  // Book++++
+  for (int i = 0; i < Book::counter; i++) {
+    if (b[i]->show == true) {
+      if (b[i]->state == 'O')
+        paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                        pauseOverlay);
+
+      paramDraw->Draw(b[i]->x, b[i]->y, b[i]->Image->width, b[i]->Image->height,
+                      b[i]->Image);
+    }
+  }
+  // Book---
+
+  // Cursor+++
+  if (posObject != 0) {
+    char* path = new char[20];
+    int num = sprintf(path, "Images/o%d.bmp", posObject);
+
+    Sprite* cur = new Sprite(path, 0xffffffff);
+
+    paramDraw->Draw(mX, mY, cur->width, cur->height, cur);
+  }
+  // Cursor---
+
+  // Menu Pause+++
+  if (isPaused == true) {
+    paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                    pauseOverlay);
+    paramDraw->Draw((w - pauseMenuSprite->width) / 2,
+                    (h - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
+                    pauseMenuSprite->height, pauseMenuSprite);
+
+    for (int i = 0; i < 4; i++) pauseMenuButtons[i]->Draw(paramDraw);
+  }
+  // Menu Pause---
+
+  txt->Draw(paramDraw);
+}
+
+void drawMission() {
+  paramDraw->Draw(0, 0, w, h, missions);
+
+  if (btnOfMissions[0]->show == true) btnOfMissions[0]->Draw(paramDraw);
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 11; j++) {
+      if (i != 0 || j != 0)
+        paramDraw->Draw(22 + j * 13 + j * blocked->width,
+                        63 + i * 36 + i * blocked->height, blocked->width,
+                        blocked->height, blocked);
+    }
+  }
+
+  if (Back->show == true) Back->Draw(paramDraw);
 }
 
 // Missions+++
