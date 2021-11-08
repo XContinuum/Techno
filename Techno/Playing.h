@@ -34,7 +34,7 @@ Book* bookEntity[10]; // b: bookEntity
 Bonus* bonusEntity[10]; // bons: bonusEntity
 Chest* chest[10];
 BlockMoves* movingStairBlocks[5]; // bm: movingStairBlocks
-ButtonON* bt[10];
+ButtonON* pressurePlate[10]; // bt: pressurePlate
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
 
@@ -281,7 +281,7 @@ void readScript() {
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
-          bt[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
+          pressurePlate[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
     }
     // Load buttons ---
 
@@ -542,7 +542,7 @@ void interactiveObjects() {
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
-    if (bt[i]->Touch(player->x, player->y + player->h - 1) == true)
+    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1) == true)
       BlockMoves::UP = true;
   }
   // ButtonON---
@@ -681,7 +681,7 @@ void nextLevel() {
       bonusEntity[i] = NULL;
       chest[i] = NULL;
       movingStairBlocks[i] = NULL;
-      bt[i] = NULL;
+      pressurePlate[i] = NULL;
       finalDoor[i] = NULL;
     }
 
