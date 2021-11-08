@@ -395,6 +395,12 @@ void interactiveObjects() {
 
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
+  // clicked showing result = clicked || showing 
+  // T        T       T
+  // T        F       T 
+  // F        T       T
+  // F        F       F
+
   // Move objects+++
   inventoryMoveEvents();
   // Move objects---
@@ -495,13 +501,15 @@ void interactiveObjects() {
   // BOOKS---
 
   // CHEST+++
-  if (buffer[DIK_O] & 0x80)
-    for (int i = 0; i < Chest::counter; i++)
-      if (chest[i]->Touch(player->x, player->y + player->h - 1) ==
-              true ||
-          chest[i]->Touch(player->x + player->w,
-                          player->y + player->h - 1) == true)
+  if (buffer[DIK_O] & 0x80) {
+    for (int i = 0; i < Chest::counter; i++) {
+      bool bottomLeft = chest[i]->Touch(player->x, player->y + player->h - 1);
+      bool bottomRight = chest[i]->Touch(player->x + player->w, player->y + player->h - 1);
+
+      if (bottomLeft || bottomRight)
         chest[i]->show = true;
+    }
+  }
   // CHEST---
 }
 void didPlayerTouchBonus() {
