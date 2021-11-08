@@ -391,16 +391,20 @@ void mission() {
     player->y = 40;
 
     readScript();
-
-    map = new Sprite(mapBMPfilename, 0xffffffff);
-
-    for (int i = 0; i < blocksInHeight; i++)
-      for (int j = 0; j < blocksInWidth; j++) player->MatMap[i][j] = gameMap[i][j];
+    setMap();
 
     missionMode = false;
   }
 
   missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
+}
+
+void setMap() {
+  map = new Sprite(mapBMPfilename, 0xffffffff);
+
+  for (int i = 0; i < blocksInHeight; i++)
+    for (int j = 0; j < blocksInWidth; j++)
+      player->MatMap[i][j] = gameMap[i][j];
 }
 // Missions---
 
@@ -686,11 +690,7 @@ void nextLevel() {
   clearMap(); // this might be redundant, as we are loading the new map next
   setNextMapFilepath(level);
   readScript();
-
-  map = new Sprite(mapBMPfilename, 0xffffffff);
-
-  for (int i = 0; i < blocksInHeight; i++)
-    for (int j = 0; j < blocksInWidth; j++) player->MatMap[i][j] = gameMap[i][j];
+  setMap();
 }
 
 void clearMap() {
