@@ -400,37 +400,7 @@ void interactiveObjects() {
   // Move objects---
 
   // Move chest's objects+++
-  for (int i = 0; i < Chest::counter; i++) {
-    if (chest[i]->TouchInvChest(Chest::Xi, Chest::Yi) == true &&
-        chest[i]->showC == true) {
-      if (Chest::iLmb == true) {
-        if (chest[i]->move == false) {
-          chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
-
-          if (chest[i]->check != -1) {
-            chest[i]->move = true;
-            inventory->move = true;
-            posObject = chest[i]->objects[chest[i]->check];
-            chest[i]->objects[chest[i]->check] = 0;
-          }
-        } else if (chest[i]->move == true) {
-          int nt = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
-
-          if (nt != -1 && chest[i]->check != nt && chest[i]->objects[nt] == i) {
-            chest[i]->objects[nt] = posObject;
-            chest[i]->ChangeImages();
-            posObject = i;
-          }
-          chest[i]->move = false;
-          inventory->move = false;
-        }
-
-        Chest::Xi = i;
-        Chest::Yi = i;
-        Chest::iLmb = false;
-      }
-    }
-  }
+  chestMoveEvents();
   // Move chest's objects---
 
   //++++++
@@ -597,6 +567,39 @@ void inventoryMoveEvents() {
   Inventar::Xi = 0;
   Inventar::Yi = 0;
   Inventar::iLmb = false;
+}
+void chestMoveEvents() {
+  for (int i = 0; i < Chest::counter; i++) {
+    if (chest[i]->TouchInvChest(Chest::Xi, Chest::Yi) == true &&
+        chest[i]->showC == true) {
+      if (Chest::iLmb == true) {
+        if (chest[i]->move == false) {
+          chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+
+          if (chest[i]->check != -1) {
+            chest[i]->move = true;
+            inventory->move = true;
+            posObject = chest[i]->objects[chest[i]->check];
+            chest[i]->objects[chest[i]->check] = 0;
+          }
+        } else if (chest[i]->move == true) {
+          int nt = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+
+          if (nt != -1 && chest[i]->check != nt && chest[i]->objects[nt] == i) {
+            chest[i]->objects[nt] = posObject;
+            chest[i]->ChangeImages();
+            posObject = i;
+          }
+          chest[i]->move = false;
+          inventory->move = false;
+        }
+
+        Chest::Xi = i;
+        Chest::Yi = i;
+        Chest::iLmb = false;
+      }
+    }
+  }
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
