@@ -31,7 +31,7 @@ Hero* player; // Personage: player
 Fire* fireEntity[10]; // f: fireEntity
 Door* doorEntity[10]; // d: doorEntity
 Book* bookEntity[10]; // b: bookEntity
-Bonus* bons[10];
+Bonus* bonusEntity[10]; // bons: bonusEntity
 Chest* chest[10];
 BlockMoves* bm[5];
 ButtonON* bt[10];
@@ -78,9 +78,9 @@ void drawScene() {
 
   // Bonus++++
   for (int i = 0; i < Bonus::counter; i++) {
-    if (bons[i]->show == true)
-      paramDraw->Draw(bons[i]->x, bons[i]->y, bons[i]->ImageView->width,
-                      bons[i]->ImageView->height, bons[i]->ImageView);
+    if (bonusEntity[i]->show == true)
+      paramDraw->Draw(bonusEntity[i]->x, bonusEntity[i]->y, bonusEntity[i]->ImageView->width,
+                      bonusEntity[i]->ImageView->height, bonusEntity[i]->ImageView);
   }
   // Bonus---
 
@@ -304,7 +304,7 @@ void readScript() {
 
       if (cor != NULL)
         for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
-          bons[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
+          bonusEntity[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
     }
     // Load bonuses ---
 
@@ -385,10 +385,10 @@ void mission() {
 void interactiveObjects() {
   // BONUS+++
   for (int i = 0; i < Bonus::counter; i++) {
-    if (bons[i]->show == true &&
-        (bons[i]->Touch(player->x, player->y + player->h - 1) ==
+    if (bonusEntity[i]->show == true &&
+        (bonusEntity[i]->Touch(player->x, player->y + player->h - 1) ==
              true ||
-         bons[i]->Touch(player->x + player->w,
+         bonusEntity[i]->Touch(player->x + player->w,
                         player->y + player->h - 1) == true)) {
       score += 10;
 
@@ -397,7 +397,7 @@ void interactiveObjects() {
       n = sprintf(sc, "score:%d", score);
 
       scoreText->changeText(sc);
-      bons[i]->show = false;
+      bonusEntity[i]->show = false;
     }
   }
   // BONUS---
@@ -523,7 +523,7 @@ void interactiveObjects() {
   Bonus::Timer();
 
   if (Bonus::dt > 50) {
-    for (int i = 0; i < Bonus::counter; i++) bons[i]->ChangeCadr();
+    for (int i = 0; i < Bonus::counter; i++) bonusEntity[i]->ChangeCadr();
 
     Bonus::timer1 = 0;
     Bonus::dt = 0;
@@ -680,7 +680,7 @@ void nextLevel() {
       fireEntity[i] = NULL;
       doorEntity[i] = NULL;
       bookEntity[i] = NULL;
-      bons[i] = NULL;
+      bonusEntity[i] = NULL;
       chest[i] = NULL;
       bm[i] = NULL;
       bt[i] = NULL;
