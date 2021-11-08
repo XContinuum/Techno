@@ -391,12 +391,7 @@ void interactiveObjects() {
   // BONUS---
 
   // Inventory+++
-  if (inventory->Touch(mX, mY) == true) {
-    inventory->exp = true;
-    inventory->mX = mX + 10;
-    inventory->mY = mY;
-  } else
-    inventory->exp = false;
+  showInventoryToolTip();
 
   if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
 
@@ -591,6 +586,14 @@ void didPlayerTouchBonus() {
       bonusEntity[i]->show = false;
     }
   }
+}
+void showInventoryToolTip() {
+  if (inventory->Touch(mX, mY) == true) {
+    inventory->exp = true;
+    inventory->mX = mX + 10;
+    inventory->mY = mY;
+  } else
+    inventory->exp = false;
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
