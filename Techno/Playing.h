@@ -419,7 +419,7 @@ void interactiveObjects() {
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, mX, mY);
 
-    showChestToolTip(i);
+    showChestToolTip(i, mX, mY);
   }
   // Chest---
 
@@ -601,13 +601,10 @@ void chestMoveEvents() {
     Chest::iLmb = false;
   }
 }
-void showChestToolTip(int i) {
-  if (chest[i]->Touch(mX, mY) == true) {
-    chest[i]->expO = true;
-    chest[i]->mX1 = mX + 10;
-    chest[i]->mY1 = mY;
-  } else
-    chest[i]->expO = false;
+void showChestToolTip(int i, int mouseX, int mouseY) {
+  chest[i]->expO = chest[i]->Touch(mouseX, mouseY);
+  chest[i]->mX1 = mouseX + 10;
+  chest[i]->mY1 = mouseY;
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
