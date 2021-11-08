@@ -192,22 +192,21 @@ void drawMission() {
 }
 
 // Missions+++
-void loadMap(char* c, int k, int z) {
+void loadMap(char* fileBuffer, int mapDeliminatorPos) {
   // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, bookEntity
   // External: blocksInHeight, blocksInWidth,
-  char num;
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
+      char num = fileBuffer[mapDeliminatorPos + i * blocksInWidth + j];
+
+      if (num != '\0') {
+        gameMap[i][j] = atoi(&num);
+      }
+    }
+  }
+
   int pi = 0;
   int t = 0;
-
-  for (int i = 0; i < blocksInHeight; i++)
-    for (int j = 0; j < blocksInWidth; j++) {
-      num = c[k + z];
-
-      if (num != '\0') gameMap[i][j] = atoi(&num);
-
-      z++;
-    }
-
   // Load doors +++
   for (int i = 0; i < blocksInHeight; i++)
     for (int j = 0; j < blocksInWidth; j++) {
@@ -275,20 +274,14 @@ void readScript() {
   is.close();
   // Read file +++
 
-  bool LM = false;
-  int z = 0;
+  int mapDeliminatorPos = 0;
 
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
   for (int k = 0; k < bufferSize; k++) {
-    // Load map +++++++++++++++++++++
-    if (LM == true) {
-      loadMap(fileBuffer, k, z);
-      LM = false;
+    if (fileBuffer[k] == '|' && z == 0) {
+      mapDeliminatorPos = k;
     }
-    // Load map --------------------------
-
-    if (fileBuffer[k] == '|' && z == 0) LM = true;
 
     //Загрузка перехода на следующую миссию---
     if (fileBuffer[k] == ':' && pos[5] != -1) {
@@ -367,12 +360,12 @@ void readScript() {
     // Load fire ------------
 
     // Load player coordinates+++
-    if (LM == false) {
-      player->x = atoi(&fileBuffer[0]);
-      player->y = atoi(&fileBuffer[4]);
-    }
+    player->x = atoi(&fileBuffer[0]);
+    player->y = atoi(&fileBuffer[4]);
     // Load player coordinates+++
   }
+
+  loadMap(fileBuffer, mapDeliminatorPos);
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
