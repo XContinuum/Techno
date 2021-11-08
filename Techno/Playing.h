@@ -289,79 +289,81 @@ void readScript() {
     }
 
     //Загрузка перехода на следующую миссию---
-    if (fileBuffer[k] == ':' && pos[5] != -1) {
-      int* cor = read(pos[5], k, fileBuffer);  //Выделение координат X и Y
+    if (fileBuffer[k] == ':') {
+      if (pos[5] != -1) {
+        int* cor = read(pos[5], k, fileBuffer);  //Выделение координат X и Y
 
-      if (cor != NULL) {
-        player->exitX = cor[0];
-        player->exitY = cor[1];
+        if (cor != NULL) {
+          player->exitX = cor[0];
+          player->exitY = cor[1];
+        }
       }
+      //Загрузка перехода на следующую миссию---
+
+      // Load buttons ---
+      if (pos[4] != -1 && pos[5] == -1) {
+        pos[5] = k + 1;
+
+        int* cor = read(pos[4], k, fileBuffer);  //Выделение координат X и Y
+
+        if (cor != NULL)
+          for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
+            pressurePlate[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
+      }
+      // Load buttons ---
+
+      // Load chests ---
+      if (pos[3] != -1 && pos[4] == -1) {
+        pos[4] = k + 1;
+
+        int* cor = read(pos[3], k, fileBuffer);  //Выделение координат X и Y
+
+        if (cor != NULL)
+          for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
+            chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], level,
+                                 cor[i * 4 + 2], cor[i * 4 + 3]);
+
+        pos[3] = 0;
+      }
+      // Load chests ---
+
+      // Load bonuses ---
+      if (pos[2] != -1 && pos[3] == -1) {
+        pos[3] = k + 1;
+
+        int* cor = read(pos[2], k, fileBuffer);  //Выделение координат X и Y
+
+        if (cor != NULL)
+          for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
+            bonusEntity[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
+      }
+      // Load bonuses ---
+
+      // Load books +++
+      if (pos[1] != -1 && pos[2] == -1) {
+        pos[2] = k + 1;
+
+        int* cor = read(pos[1], k, fileBuffer);  //Выделение координат X и Y
+
+        if (cor != NULL)
+          for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
+            bookEntity[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
+      }
+      // Load books ---
+
+      // Load fire +++++++++++
+      if (pos[0] != -1 && pos[1] == -1) {
+        pos[1] = k + 1;
+
+        int* cor = read(pos[0], k, fileBuffer);  //Выделение координат X и Y
+
+        if (cor != NULL)
+          for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
+            fireEntity[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
+      }
+
+      pos[0] = k + 1;
     }
-    //Загрузка перехода на следующую миссию---
-
-    // Load buttons ---
-    if (fileBuffer[k] == ':' && pos[4] != -1 && pos[5] == -1) {
-      pos[5] = k + 1;
-
-      int* cor = read(pos[4], k, fileBuffer);  //Выделение координат X и Y
-
-      if (cor != NULL)
-        for (int i = 0; i < (k - pos[4] + 2) / 8; i++)
-          pressurePlate[i] = new ButtonON(cor[i * 2], cor[i * 2 + 1]);
-    }
-    // Load buttons ---
-
-    // Load chests ---
-    if (fileBuffer[k] == ':' && pos[3] != -1 && pos[4] == -1) {
-      pos[4] = k + 1;
-
-      int* cor = read(pos[3], k, fileBuffer);  //Выделение координат X и Y
-
-      if (cor != NULL)
-        for (int i = 0; i < (k - pos[3] + 2) / 16; i++)
-          chest[i] = new Chest(cor[i * 4], cor[i * 4 + 1], level,
-                               cor[i * 4 + 2], cor[i * 4 + 3]);
-
-      pos[3] = 0;
-    }
-    // Load chests ---
-
-    // Load bonuses ---
-    if (fileBuffer[k] == ':' && pos[2] != -1 && pos[3] == -1) {
-      pos[3] = k + 1;
-
-      int* cor = read(pos[2], k, fileBuffer);  //Выделение координат X и Y
-
-      if (cor != NULL)
-        for (int i = 0; i < (k - pos[2] + 1) / 12; i++)
-          bonusEntity[i] = new Bonus(cor[i * 2], cor[i * 2 + 1]);
-    }
-    // Load bonuses ---
-
-    // Load books +++
-    if (fileBuffer[k] == ':' && pos[1] != -1 && pos[2] == -1) {
-      pos[2] = k + 1;
-
-      int* cor = read(pos[1], k, fileBuffer);  //Выделение координат X и Y
-
-      if (cor != NULL)
-        for (int i = 0; i < (k - pos[1] + 2) / 8; i++)
-          bookEntity[i] = new Book(cor[i * 2], cor[i * 2 + 1]);
-    }
-    // Load books ---
-
-    // Load fire +++++++++++
-    if (fileBuffer[k] == ':' && pos[0] != -1 && pos[1] == -1) {
-      pos[1] = k + 1;
-
-      int* cor = read(pos[0], k, fileBuffer);  //Выделение координат X и Y
-
-      if (cor != NULL)
-        for (int i = 0; i < (k - pos[0] + 2) / 8; i++)
-          fireEntity[i] = new Fire(cor[i * 2], cor[i * 2 + 1]);
-    }
-
-    if (fileBuffer[k] == ':') pos[0] = k + 1;
     // Load fire ------------
 
     // Load player coordinates+++
