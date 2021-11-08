@@ -486,18 +486,21 @@ void interactiveObjects() {
   // Block Moves---
 
   // BOOKS+++
-  for (int i = 0; i < Book::counter; i++)
-    if (bookEntity[i]->state = 'C' && bookEntity[i]->show == true &&
-            (bookEntity[i]->Touch(player->x, player->y + player->Image->height) == true ||
-             bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height) == true)) {
+  for (int i = 0; i < Book::counter; i++) {
+    bool bottomLeft = bookEntity[i]->Touch(player->x, player->y + player->Image->height);
+    bool bottomRight = bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
+
+    if (bookEntity[i]->state = 'C' && bookEntity[i]->show == true && (bottomLeft || bottomRight)) {
       bookEntity[i]->state = 'O';
       bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
       bookEntity[i]->x = (screenPixelWidth - bookEntity[i]->ImageBack->width) / 2;
       bookEntity[i]->y = (screenPixelHeight - bookEntity[i]->ImageBack->height) / 2;
+      
       inventory->AddObject(1);
       isBookMenuOpen = true;
     }
+  }
   // BOOKS---
 
   // CHEST+++
