@@ -293,10 +293,10 @@ void initialization() {
 
     // Locker---
 
-    Back = new Button("Images/back.bmp", 0xffffffff);
-    Back->x = 15;
-    Back->y = 554;
-    Back->show = false;
+    backButton = new Button("Images/back.bmp", 0xffffffff);
+    backButton->x = 15;
+    backButton->y = 554;
+    backButton->show = false;
 
     Inv = new Inventar();
     Inv->x = 0;

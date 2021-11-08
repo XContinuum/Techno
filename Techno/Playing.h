@@ -10,7 +10,7 @@ char* mapBMPfilename = "Images/Data/map1.bmp";
 Sprite* missions;
 Button* btnOfMissions[1];
 Sprite* blocked;
-Button* Back;
+Button* backButton; // Back: backButton
 // Missions---
 
 // Game+++
@@ -172,7 +172,7 @@ void drawMission() {
     }
   }
 
-  if (Back->show == true) Back->Draw(paramDraw);
+  if (backButton->show == true) backButton->Draw(paramDraw);
 }
 
 // Missions+++
@@ -356,16 +356,16 @@ void readScript() {
 
 void mission() {
   // Exit+++
-  if (Back->Touch(X, Y) == true) {
+  if (backButton->Touch(X, Y) == true) {
     missionMode = false;
     Play = false;
     Menu = true;
   }
 
-  if (Back->Touch(mX, mY) == true)
-    Back->show = true;
+  if (backButton->Touch(mX, mY) == true)
+    backButton->show = true;
   else
-    Back->show = false;
+    backButton->show = false;
   // Exit---
 
   if (btnOfMissions[0]->Touch(X, Y) == true) {
