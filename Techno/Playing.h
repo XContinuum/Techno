@@ -53,13 +53,15 @@ int score = 0;
 // Globals from main.cpp
 // -----
 // paramDraw - global buffer sprites are rendered to
-// cursorX, cursorY - current position of the cursor
 // clickedX, clickedY - last cursor position after right/left click
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
 // isInitialState - 
 // -----
 
+// Dependency injected
+// -----
+// cursorX, cursorY - current position of the cursor
 // ---------------------------------------------------------------------------------
 // drawScene function
 // ---------------------------------------------------------------------------------
@@ -67,14 +69,14 @@ void drawScene(int cursorX, int cursorY) { // ★★★
   // Global: missionMode, isPaused, scoreText
   //
   // External: paramDraw
-  if (missionMode == true) {
+  if (missionMode) {
     drawMission();
     return;
   }
   
   drawEntities(cursorX, cursorY);
 
-  if (isPaused == true) {
+  if (isPaused) {
     drawPauseMenu();
   }
 
@@ -85,7 +87,7 @@ void drawMission() {
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
-  if (missionButtons[0]->show == true) missionButtons[0]->Draw(paramDraw);
+  if (missionButtons[0]->show) missionButtons[0]->Draw(paramDraw);
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 11; j++) {
@@ -96,7 +98,7 @@ void drawMission() {
     }
   }
 
-  if (backButton->show == true) backButton->Draw(paramDraw);
+  if (backButton->show) backButton->Draw(paramDraw);
 }
 void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
@@ -121,7 +123,7 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < Bonus::counter; i++) {
-    if (bonusEntity[i]->show == true)
+    if (bonusEntity[i]->show)
       paramDraw->Draw(bonusEntity[i]->x, bonusEntity[i]->y,
                       bonusEntity[i]->ImageView->width,
                       bonusEntity[i]->ImageView->height,
@@ -141,7 +143,7 @@ void drawEntities(int cursorX, int cursorY) {
   player->Draw(paramDraw);
 
   for (int i = 0; i < Chest::counter; i++) {
-    if (chest[i]->show == true) {
+    if (chest[i]->show) {
       paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                       pauseOverlay);
       chest[i]->DrawC(paramDraw);
@@ -153,7 +155,7 @@ void drawEntities(int cursorX, int cursorY) {
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
-    if (bookEntity[i]->show == true) {
+    if (bookEntity[i]->show) {
       if (bookEntity[i]->state == 'O') {
         paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                         pauseOverlay);
@@ -369,7 +371,7 @@ void loadDoors() {
 void playLoop(int cursorX, int cursorY) { // ★★★
   // Global: playMode, missionMode,isBookMenuOpen, isPaused
   if (playMode == false) return;
-  if (missionMode == true) {
+  if (missionMode) {
     mission(cursorX, cursorY);
     return;
   }
@@ -388,7 +390,7 @@ void mission(int cursorX, int cursorY) {
   // External: isInitialState, clickedX, clickedY
 
   // Exit+++
-  if (backButton->Touch(clickedX, clickedY) == true) {
+  if (backButton->Touch(clickedX, clickedY)) {
     missionMode = false;
     playMode = false;
     isInitialState = true;
@@ -397,7 +399,7 @@ void mission(int cursorX, int cursorY) {
   backButton->show = backButton->Touch(cursorX, cursorY);
   // Exit---
 
-  if (missionButtons[0]->Touch(clickedX, clickedY) == true) {
+  if (missionButtons[0]->Touch(clickedX, clickedY)) {
     player = new Hero();
     player->x = 40;
     player->y = 40;
@@ -528,10 +530,7 @@ void playerEvents() {
     int nx = player->x / 20;
     int ny = (player->y + player->h) / 20;
 
-    if (gameMap[ny][nx] == 3) {
-      player->G = false;
-    } else
-      player->G = true;
+    player->G = !(gameMap[ny][nx] == 3);
   }
 }
 
@@ -555,12 +554,12 @@ void menuPause(int cursorX, int cursorY) {
   for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
 
   for (int i = 0; i < 4; i++)
-    if (pauseMenuButtons[i]->Touch(cursorX, cursorY) == true) 
+    if (pauseMenuButtons[i]->Touch(cursorX, cursorY)) 
       pauseMenuButtons[i]->show = true;
 
   isPaused = shouldContinuePause();
 
-  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY) == true) {
+  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY)) {
     playMode = false;
     isInitialState = true;
   }
@@ -584,7 +583,7 @@ void interactiveObjects(int cursorX, int cursorY) {
   didPlayerTouchBonus();
   showInventoryToolTip(cursorX, cursorY);
 
-  if (inventory->Touch(clickedX, clickedY) == true) inventory->show = true;
+  if (inventory->Touch(clickedX, clickedY)) inventory->show = true;
 
   // clicked showing result = clicked || showing 
   // T        T       T
@@ -619,7 +618,7 @@ void interactiveObjects(int cursorX, int cursorY) {
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
-    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1) == true)
+    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1))
       BlockMoves::UP = true;
   }
   // ButtonON---
@@ -627,7 +626,7 @@ void interactiveObjects(int cursorX, int cursorY) {
   // Block Moves+++
   BlockMoves::Timer();
 
-  if (BlockMoves::dt > 5 && BlockMoves::UP == true) {
+  if (BlockMoves::dt > 5 && BlockMoves::UP) {
     bool b = true;
 
     for (int i = 0; i < BlockMoves::counter; i++) {
@@ -641,7 +640,7 @@ void interactiveObjects(int cursorX, int cursorY) {
     /// F   T  F
     /// F   F  F
 
-    if (b == true) BlockMoves::timer1 = 0;
+    if (b) BlockMoves::timer1 = 0;
   }
 
   if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
@@ -656,7 +655,7 @@ void interactiveObjects(int cursorX, int cursorY) {
     bool bottomLeft = bookEntity[i]->Touch(player->x, player->y + player->Image->height);
     bool bottomRight = bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
 
-    if (bookEntity[i]->state = 'C' && bookEntity[i]->show == true && (bottomLeft || bottomRight)) {
+    if (bookEntity[i]->state = 'C' && bookEntity[i]->show && (bottomLeft || bottomRight)) {
       bookEntity[i]->state = 'O';
       bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
@@ -713,7 +712,7 @@ void inventoryMoveEvents() {
     return;
   }
 
-  if (inventory->move == true) {
+  if (inventory->move) {
     int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
     if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
