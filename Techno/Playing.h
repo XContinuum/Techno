@@ -176,8 +176,8 @@ void loadMap(char* c, int k, int z) {
   int pi = 0;
   int t = 0;
 
-  for (int i = 0; i < mH; i++)
-    for (int j = 0; j < mW; j++) {
+  for (int i = 0; i < blocksInHeight; i++)
+    for (int j = 0; j < blocksInWidth; j++) {
       num = c[k + z];
 
       if (num != '\0') gameMap[i][j] = atoi(&num);
@@ -186,15 +186,15 @@ void loadMap(char* c, int k, int z) {
     }
 
   // Load doors +++
-  for (int i = 0; i < mH; i++)
-    for (int j = 0; j < mW; j++) {
+  for (int i = 0; i < blocksInHeight; i++)
+    for (int j = 0; j < blocksInWidth; j++) {
       if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
         doorEntity[Door::counter - 1] = new Door(j * 20, i * 20);
 
       // Load final doors +++
       if (j == 0)
         t = 1;
-      else if (j == mW - 1)
+      else if (j == blocksInWidth - 1)
         t = 0;
 
       if (gameMap[i][j] == 8 && gameMap[i - 1][j] != 8)
@@ -239,10 +239,10 @@ int* Read(int p1, int p2, char* c) {
 }
 void readScript() {
   // Read file ---
-  char* c = new char[mH * mW + 100];
+  char* c = new char[blocksInHeight * blocksInWidth + 100];
   std::ifstream is(mapFilename);
 
-  for (int i = 0; i < mH * mW + 100; i++) is >> c[i];
+  for (int i = 0; i < blocksInHeight * blocksInWidth + 100; i++) is >> c[i];
 
   is.close();
   // Read file +++
@@ -252,7 +252,7 @@ void readScript() {
 
   int pos[6] = {-1, -1, -1, -1, -1, -1};
 
-  for (int k = 0; k < mH * mW + 100; k++) {
+  for (int k = 0; k < blocksInHeight * blocksInWidth + 100; k++) {
     // Load map +++++++++++++++++++++
     if (LM == true) {
       loadMap(c, k, z);
@@ -664,13 +664,13 @@ void nextLevel() {
 
   map = new Sprite(mapBMPfilename, 0xffffffff);
 
-  for (int i = 0; i < 30; i++)
-    for (int j = 0; j < 40; j++) player->MatMap[i][j] = gameMap[i][j];
+  for (int i = 0; i < blocksInHeight; i++)
+    for (int j = 0; j < blocksInWidth; j++) player->MatMap[i][j] = gameMap[i][j];
 }
 
 void clearMap() {
-  for (int i = 0; i < mH; i++) {
-    for (int j = 0; j < mW; j++) {
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
       gameMap[i][j] = 0;
     }
   }
@@ -699,8 +699,8 @@ void clearClassInformation() {
 }
 
 void setNextMapFilepath(int level) {
-  mapBMPfilename = new char[100];
-  mapFilename = new char[100];
+  mapBMPfilename = new char[100]; // global
+  mapFilename = new char[100]; // global
 
   sprintf(mapBMPfilename, "Images/Data/map%d.bmp", level);
   sprintf(mapFilename, "Images/Data/map%d.txt", level);

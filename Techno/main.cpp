@@ -188,8 +188,8 @@ int h = 600;
 
 #include "class.h"
 
-int mW = 40;
-int mH = 30;
+int blocksInWidth = 40; // mW: blocksInWidth
+int blocksInHeight = 30; // mH: blocksInHeight
 
 int left = (1280 - w) / 2;
 int top = (800 - h) / 2;
