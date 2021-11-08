@@ -205,55 +205,10 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
     }
   }
 }
-void loadDoors() {
-  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
-  int pi = 0;
-  int t = 0;
 
-  for (int i = 0; i < blocksInHeight; i++) {
-    for (int j = 0; j < blocksInWidth; j++) {
-      if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
-        doorEntity[Door::counter - 1] = new Door(j * 20, i * 20);
-
-      // Load final doors +++
-      if (j == 0)
-        t = 1;
-      else if (j == blocksInWidth - 1)
-        t = 0;
-
-      if (gameMap[i][j] == 8 && gameMap[i - 1][j] != 8)
-        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
-      // Load final doors ---
-
-      // Block moves+++
-      if (gameMap[i][j] == 6) {
-        if (BlockMoves::counter == 0) pi = (i - 1) * 20;
-
-        movingStairBlocks[BlockMoves::counter - 1] = new BlockMoves(j * 20, i * 20, pi);
-      }
-      // Block moves---
-    }
-  }
-}
-
-int* readCoordinates(int begin, int end, char* fileBuffer) {
-  // No globals
-  if (fileBuffer[0] == 'N')
-    return NULL; // no info flag
-
-  int quantity = (end - begin + 2) / 4;  // quantity of coordinates
-  int* coordinates = new int[quantity];
-
-  for (int i = 0; i < quantity; i++) {
-    int a1 = fileBuffer[begin + i * 4] - '0';
-    int a2 = fileBuffer[begin + i * 4 + 1] - '0';
-    int a3 = fileBuffer[begin + i * 4 + 2] - '0';
-
-    coordinates[i] = a1 * 100 + a2 * 10 + a3;
-  }
-
-  return coordinates;
-}
+// ---------------------------------------------------------------------------------
+// readScript function
+// ---------------------------------------------------------------------------------
 void readScript(char* filename) {
   // Global: mapFilename, player
   // External: blocksInHeight, blocksInWidth
@@ -289,14 +244,35 @@ void readScript(char* filename) {
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
-int findDelimiter(char* fileBuffer, int bufferSize) {
-  for (int index = 0; index < bufferSize; index++) {
-    if (fileBuffer[index] == '|') {
-      return index;
-    }
+void readFile(char* filename, int bufferSize) {
+  char* fileBuffer = new char[bufferSize];
+  std::ifstream is(filename);
+
+  for (int i = 0; i < bufferSize; i++) {
+    is >> fileBuffer[i];
   }
 
-  return 0;
+  is.close();
+
+  return fileBuffer;
+}
+int* readCoordinates(int begin, int end, char* fileBuffer) {
+  // No globals
+  if (fileBuffer[0] == 'N')
+    return NULL; // no info flag
+
+  int quantity = (end - begin + 2) / 4;  // quantity of coordinates
+  int* coordinates = new int[quantity];
+
+  for (int i = 0; i < quantity; i++) {
+    int a1 = fileBuffer[begin + i * 4] - '0';
+    int a2 = fileBuffer[begin + i * 4 + 1] - '0';
+    int a3 = fileBuffer[begin + i * 4 + 2] - '0';
+
+    coordinates[i] = a1 * 100 + a2 * 10 + a3;
+  }
+
+  return coordinates;
 }
 void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
   // Global: pressurePlate, chest, bonusEntity, fireEntity
@@ -333,18 +309,55 @@ void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
       break;
   }
 }
-void readFile(char* filename, int bufferSize) {
-  char* fileBuffer = new char[bufferSize];
-  std::ifstream is(filename);
-
-  for (int i = 0; i < bufferSize; i++) {
-    is >> fileBuffer[i];
+int findDelimiter(char* fileBuffer, int bufferSize) {
+  for (int index = 0; index < bufferSize; index++) {
+    if (fileBuffer[index] == '|') {
+      return index;
+    }
   }
 
-  is.close();
-
-  return fileBuffer;
+  return 0;
 }
+void setMap() {
+  map = new Sprite(mapBMPfilename, 0xffffffff);
+
+  for (int i = 0; i < blocksInHeight; i++)
+    for (int j = 0; j < blocksInWidth; j++)
+      player->MatMap[i][j] = gameMap[i][j];
+}
+void loadDoors() {
+  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
+  int pi = 0;
+  int t = 0;
+
+  for (int i = 0; i < blocksInHeight; i++) {
+    for (int j = 0; j < blocksInWidth; j++) {
+      if (gameMap[i][j] == 4 && gameMap[i - 1][j] != 4)
+        doorEntity[Door::counter - 1] = new Door(j * 20, i * 20);
+
+      // Load final doors +++
+      if (j == 0)
+        t = 1;
+      else if (j == blocksInWidth - 1)
+        t = 0;
+
+      if (gameMap[i][j] == 8 && gameMap[i - 1][j] != 8)
+        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * 20, i * 20, t);
+      // Load final doors ---
+
+      // Block moves+++
+      if (gameMap[i][j] == 6) {
+        if (BlockMoves::counter == 0) pi = (i - 1) * 20;
+
+        movingStairBlocks[BlockMoves::counter - 1] = new BlockMoves(j * 20, i * 20, pi);
+      }
+      // Block moves---
+    }
+  }
+}
+// ---------------------------------------------------------------------------------
+// readScript {end}
+// ---------------------------------------------------------------------------------
 
 void mission() {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
@@ -372,15 +385,6 @@ void mission() {
 
   missionButtons[0]->show = missionButtons[0]->Touch(mX, mY);
 }
-
-void setMap() {
-  map = new Sprite(mapBMPfilename, 0xffffffff);
-
-  for (int i = 0; i < blocksInHeight; i++)
-    for (int j = 0; j < blocksInWidth; j++)
-      player->MatMap[i][j] = gameMap[i][j];
-}
-// Missions---
 
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
