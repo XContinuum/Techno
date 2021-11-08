@@ -288,6 +288,8 @@ void readScript() {
   }
 
   loadMap(fileBuffer, mapDeliminatorPos);
+  setMap();
+
   loadDoors();
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
@@ -360,7 +362,6 @@ void mission() {
     player->y = 40;
 
     readScript();
-    setMap();
 
     missionMode = false;
   }
@@ -659,7 +660,6 @@ void nextLevel() {
   clearMap(); // this might be redundant, as we are loading the new map next
   setNextMapFilepath(level);
   readScript();
-  setMap();
 }
 
 void clearMap() {
