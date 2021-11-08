@@ -295,36 +295,35 @@ void readScript() {
 void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
   // Global:  pressurePlate, chest, bonusEntity, fireEntity
   switch (readingChunk) {
-    case 6:  // Загрузка перехода на следующую миссию
-      player->exitX = coordinates[0];
-      player->exitY = coordinates[1];
-      break;
-
-    case 5:  // Load buttons
+    case 1:
       for (int i = 0; i < coord_quantity / 2; i++)
-        pressurePlate[i] =
-            new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
+        fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
-    case 4:  // Load chests
+    case 2:
+      for (int i = 0; i < coord_quantity / 2; i++)
+        bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+
+    case 3:
+      for (int i = 0; i < coord_quantity / 3; i++) // TODO: this should be 2 and not 3
+        bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
+      break;
+
+    case 4:
       for (int i = 0; i < coord_quantity / 4; i++)
         chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
                              coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
       break;
 
-    case 3:  // Load bonuses
-      for (int i = 0; i < coord_quantity / 3; i++)
-        bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
+    case 5: 
+      for (int i = 0; i < coord_quantity / 2; i++)
+        pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
-    case 2:  // Load books
-      for (int i = 0; i < coord_quantity / 2; i++)
-        bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
-      break;
-
-    case 1:  // Load fire
-      for (int i = 0; i < coord_quantity / 2; i++)
-        fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
+    case 6: // Загрузка перехода на следующую миссию
+      player->exitX = coordinates[0];
+      player->exitY = coordinates[1];
       break;
   }
 }
