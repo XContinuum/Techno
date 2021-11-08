@@ -1163,17 +1163,17 @@ class Chest {
         ar->x = lock->x + 145;
         ar->y = lock->y + 149;
 
-        locker = new Button("Images/locker.bmp", 0xffffffff);
+        locker = new Button("Images/chest/locker.bmp", 0xffffffff);
         locker->x = (w - lock->w) / 2 + 99;
         locker->y = (h - lock->h) / 2 + 107;
         locker->show = true;
 
-        LockerLight = new Button("Images/lockerL.bmp", 0xffffffff);
+        LockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
         LockerLight->x = locker->x;
         LockerLight->y = locker->y;
         LockerLight->show = false;
 
-        lOK = new Button("Images/lOK.bmp", 0xffffffff);
+        lOK = new Button("Images/chest/lOK.bmp", 0xffffffff);
         lOK->x = lock->x + 156;
         lOK->y = lock->y + 161;
         lOK->show = false;
