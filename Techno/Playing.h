@@ -236,25 +236,19 @@ void loadDoors() {
   }
 }
 
-int* read(int p1, int p2, char* fileBuffer) {
+int* read(int begin, int end, char* fileBuffer) {
   // No globals
   if (fileBuffer[0] == 'N')
     return NULL; // no info flag
 
-  int len = p2 - p1;
-  char* line = new char[len];
+  int len = end - begin;
+  int quantity = (len + 2) / 4;  // quantity of coordinates
+  int* coordinates = new int[quantity];
 
-  for (int i = 0; i < len; i++) {
-    line[i] = fileBuffer[i + p1]; // copy substring from fileBuffer
-  }
-  
-  int quantityXY = (len + 2) / 4;  // quantity of coordinates
-  int* coordinates = new int[quantityXY];
-
-  for (int i = 0; i < quantityXY; i++) {
-    int a1 = line[i * 4] - '0';
-    int a2 = line[i * 4 + 1] - '0';
-    int a3 = line[i * 4 + 2] - '0';
+  for (int i = 0; i < quantity; i++) {
+    int a1 = fileBuffer[begin + i * 4] - '0';
+    int a2 = fileBuffer[begin + i * 4 + 1] - '0';
+    int a3 = fileBuffer[begin + i * 4 + 2] - '0';
 
     coordinates[i] = a1 * 100 + a2 * 10 + a3;
   }
