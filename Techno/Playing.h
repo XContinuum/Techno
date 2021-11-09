@@ -733,20 +733,18 @@ void inventoryMoveEvents() {
       inventory->ChangeImages();
       posObject = 0;
     }
-    for (int i = 0; i < Chest::counter; i++) chest[i]->move = false;
     inventory->move = false;
   } else {
     inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
 
     if (inventory->check != -1) {
       inventory->move = true;
-
-      for (int i = 0; i < Chest::counter; i++) chest[i]->move = true;
-
       posObject = inventory->objects[inventory->check];
       inventory->objects[inventory->check] = 0;
     }
   }
+
+  for (int i = 0; i < Chest::counter; i++) chest[i]->move = !inventory->move;
 
   Inventar::Xi = 0;
   Inventar::Yi = 0;
