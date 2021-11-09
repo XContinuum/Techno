@@ -353,6 +353,9 @@ void loadDoors() {
   int MOVING_BLOCK_ID = 6;
   int blockSize = 20;
 
+  // moving block
+  int movingBlockCount = 0;
+
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
       if (gameMap[i][j] == DOOR_ID && gameMap[i - 1][j] != DOOR_ID)
@@ -361,7 +364,7 @@ void loadDoors() {
       // Load final doors +++
       if (j == 0)
         type = 1;
-      else if (j == blocksInWidth - 1)
+      if (j == blocksInWidth - 1)
         type = 0;
 
       if (gameMap[i][j] == FINAL_DOOR_ID && gameMap[i - 1][j] != FINAL_DOOR_ID)
@@ -370,9 +373,11 @@ void loadDoors() {
 
       // Block moves+++
       if (gameMap[i][j] == MOVING_BLOCK_ID) {
-        if (BlockMoves::counter == 0) pi = (i - 1) * blockSize;
+        if (movingBlockCount == 0) pi = (i - 1) * blockSize;
 
-        movingStairBlocks[BlockMoves::counter - 1] = new BlockMoves(j * blockSize, i * blockSize, pi);
+        movingStairBlocks[movingBlockCount] = new BlockMoves(j * blockSize, i * blockSize, pi);
+
+        movingBlockCount++;
       }
       // Block moves---
     }
