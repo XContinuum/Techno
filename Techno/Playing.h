@@ -50,8 +50,6 @@ Inventar* inventory; // Inv: inventory
 int selectedObjectId = 0; // posObject: selectedObjectId
 // Move Invent Chest---
 
-int stateK = 0;
-
 Text* scoreText; // txt: scoreText
 int score = 0;
 
@@ -612,7 +610,7 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: player, inventory, chest, stateK, buffer, bookEntity, ...
+  // Global: player, inventory, chest, buffer, bookEntity, ...
   // External: Chest class, ButtonON class, BlockMoves class, Book class
 
   didPlayerTouchBonus();
@@ -630,16 +628,9 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   chestMoveEvents();
 
   //++++++
-  if (stateK == 1) {
-    inventory->show = !inventory->show;
-
-    stateK = 2;
-  }
-
   Keyboard key = keyboardMapping(buffer);
-  if (key = KEY_E && stateK == 0) stateK = 1;
-
-  if (stateK == 2) stateK = 0;
+  
+  if (key == KEY_E) inventory->show = !inventory->show;
   //-----
 
   // Chest+++
@@ -705,7 +696,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // BOOKS---
 
   // CHEST+++
-  Keyboard key = keyboardMapping(buffer);
   if (key == KEY_O) {
     for (int i = 0; i < Chest::counter; i++) {
       bool bottomLeft = chest[i]->Touch(player->x, player->y + player->h - 1);
