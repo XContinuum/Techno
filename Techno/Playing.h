@@ -527,11 +527,11 @@ void playerEvents() {
       break;
 
     case KEY_SPACE:
-      int nx = player->x / blockSize;
-      int nx1 = (player->x + player->w) / blockSize;
-      int ny = (player->y + player->h) / blockSize;
+      int leftPlayerSide = player->x / blockSize;
+      int rightPlayerSide = (player->x + player->w) / blockSize;
+      int bottom = (player->y + player->h) / blockSize;
 
-      if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
+      if (!(gameMap[bottom][leftPlayerSide] == 0 && gameMap[bottom][rightPlayerSide] == 0)) {
         player->J = true;
         player->velocityJ = 15;
       }
