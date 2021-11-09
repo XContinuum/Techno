@@ -370,14 +370,14 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 void playLoop(int cursorX, int cursorY) { // ★★★
   // Global: playMode, missionMode,isBookMenuOpen, isPaused
-  if (playMode == false) return;
+  if (!playMode) return;
   if (missionMode) {
     mission(cursorX, cursorY);
     return;
   }
   nextLevel();
 
-  if (isBookMenuOpen == false && isPaused == false) {
+  if (!isBookMenuOpen && !isPaused) {
     interactiveObjects(cursorX, cursorY);
     playerEvents();
   }
@@ -414,7 +414,7 @@ void mission(int cursorX, int cursorY) {
 void nextLevel() {
   // Global: player, level, inventory, mapFilename
   // External: 
-  if (player->ChangeLevel() == false) return;
+  if (!player->ChangeLevel()) return;
 
   level++;
 
@@ -549,7 +549,7 @@ void menuPause(int cursorX, int cursorY) {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
   // External:  clickedX, clickedY, isInitialState
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
-  if (isPaused == false) return;
+  if (!isPaused) return;
 
   for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
 
@@ -645,7 +645,7 @@ void interactiveObjects(int cursorX, int cursorY) {
 
   if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
 
-  if (BlockMoves::dt > 5 && BlockMoves::UP == false) {
+  if (BlockMoves::dt > 5 && !BlockMoves::UP) {
     for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap);
   }
   // Block Moves---
@@ -704,11 +704,11 @@ void showInventoryToolTip(int mouseX, int mouseY) {
   inventory->mY = mouseY;
 }
 void inventoryMoveEvents() {
-  if (inventory->TouchInvShow(Inventar::Xi, Inventar::Yi) == false) {
+  if (!inventory->TouchInvShow(Inventar::Xi, Inventar::Yi)) {
     return;
   }
 
-  if (Inventar::iLmb == false) { 
+  if (!Inventar::iLmb) { 
     return;
   }
 
