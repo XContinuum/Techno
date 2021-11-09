@@ -16,6 +16,8 @@ Button* backButton; // Back: backButton
 int gameMap[30][40]; // MatMap: gameMap
 int level = 1;
 int blockSize = 20;
+int AIR_ID = 0;
+int LADDER_ID = 3;
 
 bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused
@@ -531,7 +533,7 @@ void playerEvents() {
       int rightPlayerSide = (player->x + player->w) / blockSize;
       int bottom = (player->y + player->h) / blockSize;
 
-      if (!(gameMap[bottom][leftPlayerSide] == 0 && gameMap[bottom][rightPlayerSide] == 0)) {
+      if (!(gameMap[bottom][leftPlayerSide] == AIR_ID && gameMap[bottom][rightPlayerSide] == AIR_ID)) {
         player->J = true;
         player->velocityJ = 15;
       }
@@ -560,10 +562,10 @@ void playerEvents() {
     player->UD('U');
     player->UD('D');
 
-    int nx = player->x / blockSize;
-    int ny = (player->y + player->h) / blockSize;
+    int leftPlayerSide = player->x / blockSize;
+    int bottom = (player->y + player->h) / blockSize;
 
-    player->G = !(gameMap[ny][nx] == 3);
+    player->G = !(gameMap[bottom][leftPlayerSide] == LADDER_ID);
   }
 }
 
