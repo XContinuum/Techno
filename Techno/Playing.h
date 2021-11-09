@@ -51,7 +51,6 @@ int score = 0;
 // Globals from main.cpp
 // -----
 // paramDraw - global buffer sprites are rendered to
-// clickedX, clickedY - last cursor position after right/left click
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
 // isInitialState - 
@@ -59,6 +58,7 @@ int score = 0;
 
 // Dependency injected
 // -----
+// clickedX, clickedY - last cursor position after right/left click
 // cursorX, cursorY - current position of the cursor
 // ---------------------------------------------------------------------------------
 // drawScene function
@@ -89,10 +89,13 @@ void drawMission() {
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 11; j++) {
-      if (!(i == 0 && j == 0))
-        paramDraw->Draw(22 + j * 13 + j * missionLock->width,
-                        63 + i * 36 + i * missionLock->height, missionLock->width,
-                        missionLock->height, missionLock);
+      if (i == 0 && j == 0) continue;
+
+      int x = 22 + j * 13 + j * missionLock->width;
+      int y = 63 + i * 36 + i * missionLock->height;
+
+      paramDraw->Draw(x, y, missionLock->width, missionLock->height,
+                      missionLock);
     }
   }
 
@@ -292,7 +295,7 @@ void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
         pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
-    case 6: // Загрузка перехода на следующую миссию
+    case 6: // Next mission position
       player->exitX = coordinates[0];
       player->exitY = coordinates[1];
       break;
