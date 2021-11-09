@@ -564,11 +564,9 @@ void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
   if (key == KEY_ESCAPE) isPaused = true;
   if (!isPaused) return;
 
-  for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
-
-  for (int i = 0; i < 4; i++)
-    if (pauseMenuButtons[i]->Touch(cursorX, cursorY)) 
-      pauseMenuButtons[i]->show = true;
+  for (int i = 0; i < 4; i++) {
+    pauseMenuButtons[i]->show = pauseMenuButtons[i]->Touch(cursorX, cursorY);
+  }
 
   isPaused = shouldContinuePause(clickedX, clickedY);
 
@@ -766,11 +764,11 @@ void chestMoveEvents() {
 
     if (chest[i]->move) {
       if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->objects[selectedChestCell] == i) {
-        chest[i]->objects[nt] = posObject;
+        chest[i]->objects[selectedChestCell] = posObject;
         chest[i]->ChangeImages();
         posObject = i;
       }
-      
+
       chest[i]->move = false;
       inventory->move = false;
     } else {
