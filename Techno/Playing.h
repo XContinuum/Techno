@@ -253,20 +253,23 @@ void readFile(char* filename, int bufferSize) {
 
   return fileBuffer;
 }
-int* readCoordinates(int begin, int end, char* fileBuffer) {
+int* readCoordinates(int begin, int end, char* fileBuffer) { // pure function
   // No globals
   if (fileBuffer[0] == 'N')
     return NULL; // no info flag
 
   int quantity = (end - begin + 2) / 4;  // quantity of coordinates
   int* coordinates = new int[quantity];
+  int charsPerNumber = 3; // 3 characters left for number, then comma
 
   for (int i = 0; i < quantity; i++) {
-    int a1 = fileBuffer[begin + i * 4] - '0';
-    int a2 = fileBuffer[begin + i * 4 + 1] - '0';
-    int a3 = fileBuffer[begin + i * 4 + 2] - '0';
+    int offset = begin + i * (charsPerNumber + 1);
 
-    coordinates[i] = a1 * 100 + a2 * 10 + a3;
+    int firstDigit = fileBuffer[offset] - '0'; // convert to int
+    int secondDigit = fileBuffer[offset + 1] - '0';
+    int thirdDigit = fileBuffer[offset + 2] - '0';
+
+    coordinates[i] = firstDigit * 100 + secondDigit * 10 + thirdDigit;
   }
 
   return coordinates;
