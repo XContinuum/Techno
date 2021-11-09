@@ -1,5 +1,4 @@
-﻿// Play++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-bool playMode = false; // Play: playMode
+﻿bool playMode = false; // Play: playMode
 
 // Missions+++
 bool missionMode = false; // Missions: missionMode
@@ -48,7 +47,6 @@ int stateK = 0;
 
 Text* scoreText; // txt: scoreText
 int score = 0;
-// Play------------------------------------------------------
 
 // Globals from main.cpp
 // -----
@@ -368,26 +366,26 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 // playLoop function
 // ---------------------------------------------------------------------------------
-void playLoop(int cursorX, int cursorY) { // ★★★
+void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★★
   // Global: playMode, missionMode,isBookMenuOpen, isPaused
   if (!playMode) return;
   if (missionMode) {
-    mission(cursorX, cursorY);
+    mission(cursorX, cursorY, clickedX, clickedY);
     return;
   }
   nextLevel();
 
   if (!isBookMenuOpen && !isPaused) {
-    interactiveObjects(cursorX, cursorY);
+    interactiveObjects(cursorX, cursorY, clickedX, clickedY);
     playerEvents();
   }
 
   closeTheBook();
-  menuPause(cursorX, cursorY);
+  menuPause(cursorX, cursorY, clickedX, clickedY);
 }
-void mission(int cursorX, int cursorY) {
+void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
-  // External: isInitialState, clickedX, clickedY
+  // External: isInitialState
 
   // Exit+++
   if (backButton->Touch(clickedX, clickedY)) {
@@ -545,9 +543,9 @@ void closeTheBook() {
     }
   }
 }
-void menuPause(int cursorX, int cursorY) {
+void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
-  // External:  clickedX, clickedY, isInitialState
+  // External: isInitialState
   if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
   if (!isPaused) return;
 
@@ -557,14 +555,14 @@ void menuPause(int cursorX, int cursorY) {
     if (pauseMenuButtons[i]->Touch(cursorX, cursorY)) 
       pauseMenuButtons[i]->show = true;
 
-  isPaused = shouldContinuePause();
+  isPaused = shouldContinuePause(clickedX, clickedY);
 
   if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY)) {
     playMode = false;
     isInitialState = true;
   }
 }
-bool shouldContinuePause() {
+bool shouldContinuePause(int clickedX, int clickedY) {
   return pauseMenuButtons[PM_CONTINUE]->Touch(clickedX, clickedY) == false 
   && pauseMenuButtons[PM_SAVE]->Touch(clickedX, clickedY) == false 
   && pauseMenuButtons[PM_SETTINGS]->Touch(clickedX, clickedY) == false;
@@ -576,7 +574,7 @@ bool shouldContinuePause() {
 // ---------------------------------------------------------------------------------
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
-void interactiveObjects(int cursorX, int cursorY) {
+void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: player, inventory, chest, stateK, buffer, bookEntity, ...
   // External: Chest class, ButtonON class, BlockMoves class, Book class
 
@@ -614,7 +612,7 @@ void interactiveObjects(int cursorX, int cursorY) {
   }
   // Chest---
 
-  updateFrames();
+  updateFrames(clickedX, clickedY);
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
@@ -778,7 +776,7 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
   chest[i]->mX1 = mouseX + 10;
   chest[i]->mY1 = mouseY;
 }
-void updateFrames() {
+void updateFrames(int clickedX, int clickedY) {
   // FIRE---
   Fire::Timer();
 

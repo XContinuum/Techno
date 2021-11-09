@@ -381,7 +381,7 @@ void mainMenuInteractions() {
         // Click+++
         if (btnMain[PLAY]->Touch(clickedX, clickedY) == true && lmb == true) {
             playMode = true;
-            Missions = true;
+            missionMode = true;
             isInitialState = false;
         }
 
@@ -398,7 +398,7 @@ void mainMenuInteractions() {
     }
 
     // Procedures+++++++++
-    playLoop(cursorX, cursorY);
+    playLoop(cursorX, cursorY, clickedX, clickedY);
     createMap();
 }
 
