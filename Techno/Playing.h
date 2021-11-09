@@ -15,6 +15,7 @@ Button* backButton; // Back: backButton
 // Game+++
 int gameMap[30][40]; // MatMap: gameMap
 int level = 1;
+int blockSize = 20;
 
 bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused
@@ -344,11 +345,10 @@ void setMap() {
       player->MatMap[i][j] = gameMap[i][j];
 }
 void loadDoors() {
-  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
+  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, blockSize
   int DOOR_ID = 4;
   int FINAL_DOOR_ID = 8;
   int MOVING_BLOCK_ID = 6;
-  int blockSize = 20;
 
   // moving block
   int movingBlockCount = 0;
@@ -527,9 +527,9 @@ void playerEvents() {
       break;
 
     case KEY_SPACE:
-      int nx = player->x / 20;
-      int nx1 = (player->x + player->w) / 20;
-      int ny = (player->y + player->h) / 20;
+      int nx = player->x / blockSize;
+      int nx1 = (player->x + player->w) / blockSize;
+      int ny = (player->y + player->h) / blockSize;
 
       if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
         player->J = true;
@@ -552,7 +552,7 @@ void playerEvents() {
 
   player->Jump();
 
-  if (Hero::dtG > 20) player->Gravitaton();
+  if (Hero::dtG > blockSize) player->Gravitaton();
 
   if (Hero::dt > 15) {
     player->MoveL();
@@ -560,8 +560,8 @@ void playerEvents() {
     player->UD('U');
     player->UD('D');
 
-    int nx = player->x / 20;
-    int ny = (player->y + player->h) / 20;
+    int nx = player->x / blockSize;
+    int ny = (player->y + player->h) / blockSize;
 
     player->G = !(gameMap[ny][nx] == 3);
   }
