@@ -16,8 +16,12 @@ Button* backButton; // Back: backButton
 int gameMap[30][40]; // MatMap: gameMap
 int level = 1;
 int blockSize = 20;
+
 int AIR_ID = 0;
 int LADDER_ID = 3;
+int MOVING_BLOCK_ID = 6;
+int DOOR_ID = 4;
+int FINAL_DOOR_ID = 8;
 
 bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused
@@ -348,10 +352,6 @@ void setMap() {
 }
 void loadDoors() {
   // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, blockSize
-  int DOOR_ID = 4;
-  int FINAL_DOOR_ID = 8;
-  int MOVING_BLOCK_ID = 6;
-
   // moving block
   int movingBlockCount = 0;
 
