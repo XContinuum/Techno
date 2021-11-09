@@ -725,22 +725,22 @@ void inventoryMoveEvents() {
     return;
   }
 
+  int inventoryCell = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+  
   if (inventory->move) {
-    int nt = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
-
-    if (nt != -1 && inventory->check != nt && inventory->objects[nt] == 0) {
-      inventory->objects[nt] = posObject;
+    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == 0) {
+      inventory->objects[inventoryCell] = posObject;
       inventory->ChangeImages();
       posObject = 0;
     }
     inventory->move = false;
   } else {
-    inventory->check = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+    inventory->check = inventoryCell;
 
-    if (inventory->check != -1) {
+    if (inventoryCell != -1) {
       inventory->move = true;
-      posObject = inventory->objects[inventory->check];
-      inventory->objects[inventory->check] = 0;
+      posObject = inventory->objects[inventoryCell];
+      inventory->objects[inventoryCell] = 0;
     }
   }
 
