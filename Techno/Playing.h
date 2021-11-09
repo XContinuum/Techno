@@ -813,3 +813,41 @@ void updateFrames(int clickedX, int clickedY) {
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
 // ---------------------------------------------------------------------------------
+
+enum Keyboard {
+  KEY_A,
+  KEY_E,
+  KEY_D,
+  KEY_H,
+  KEY_N,
+  KEY_O,
+  KEY_S,
+  KEY_W,
+  KEY_SPACE,
+  KEY_UP,
+  KEY_DOWN,
+  KEY_LEFT,
+  KEY_RIGHT,
+  KEY_RETURN,
+  KEY_ESCAPE
+};
+
+Keyboard keyboardMapping(char* buffer) {
+  if (buffer[DIK_A] & 0x80) return Keyboard::KEY_A;
+  if (buffer[DIK_E] & 0x80) return Keyboard::KEY_E;
+  if (buffer[DIK_D] & 0x80) return Keyboard::KEY_D;
+  if (buffer[DIK_H] & 0x80) return Keyboard::KEY_H;
+  if (buffer[DIK_N] & 0x80) return Keyboard::KEY_N;
+  if (buffer[DIK_O] & 0x80) return Keyboard::KEY_O;
+  if (buffer[DIK_S] & 0x80) return Keyboard::KEY_S;
+  if (buffer[DIK_W] & 0x80) return Keyboard::KEY_W;
+
+  if (buffer[DIK_SPACE] & 0x80) return Keyboard::KEY_SPACE;
+  if (buffer[DIK_UP] & 0x80) return Keyboard::KEY_UP;
+  if (buffer[DIK_DOWN] & 0x80) return Keyboard::KEY_DOWN;
+  if (buffer[DIK_LEFT] & 0x80) return Keyboard::KEY_LEFT;
+  if (buffer[DIK_RIGHT] & 0x80) return Keyboard::KEY_RIGHT;
+
+  if (buffer[DIK_RETURN] & 0x80) return Keyboard::KEY_RETURN;
+  if (buffer[DIK_ESCAPE] & 0x80) return Keyboard::KEY_ESCAPE;
+}
