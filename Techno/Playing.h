@@ -40,7 +40,7 @@ FinalDoor* finalDoor[10]; // Fd: finalDoor
 Inventar* inventory; // Inv: inventory
 
 // Move Invent Chest+++
-int posObject = 0;
+int selectedObjectId = 0; // posObject: selectedObjectId
 // Move Invent Chest---
 
 int stateK = 0;
@@ -113,7 +113,7 @@ void drawMission() {
 }
 void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
-  // posObject
+  // selectedObjectId
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
@@ -180,9 +180,9 @@ void drawEntities(int cursorX, int cursorY) {
   // Book---
 
   // Cursor+++
-  if (posObject != 0) {
+  if (selectedObjectId != 0) {
     char* path = new char[20];
-    sprintf(path, "Images/o%d.bmp", posObject);
+    sprintf(path, "Images/o%d.bmp", selectedObjectId);
 
     Sprite* cursorIcon = new Sprite(path, 0xffffffff);
 
@@ -739,9 +739,9 @@ void inventoryMoveEvents() {
   
   if (inventory->move) {
     if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == 0) {
-      inventory->objects[inventoryCell] = posObject;
+      inventory->objects[inventoryCell] = selectedObjectId;
       inventory->ChangeImages();
-      posObject = 0;
+      selectedObjectId = 0;
     }
     inventory->move = false;
   } else {
@@ -749,7 +749,7 @@ void inventoryMoveEvents() {
 
     if (inventoryCell != -1) {
       inventory->move = true;
-      posObject = inventory->objects[inventoryCell];
+      selectedObjectId = inventory->objects[inventoryCell];
       inventory->objects[inventoryCell] = 0;
     }
   }
@@ -772,9 +772,9 @@ void chestMoveEvents() {
 
     if (chest[i]->move) {
       if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->objects[selectedChestCell] == i) {
-        chest[i]->objects[selectedChestCell] = posObject;
+        chest[i]->objects[selectedChestCell] = selectedObjectId;
         chest[i]->ChangeImages();
-        posObject = i;
+        selectedObjectId = i;
       }
 
       chest[i]->move = false;
@@ -785,7 +785,7 @@ void chestMoveEvents() {
       if (selectedChestCell != -1) {
         chest[i]->move = true;
         inventory->move = true;
-        posObject = chest[i]->objects[selectedChestCell];
+        selectedObjectId = chest[i]->objects[selectedChestCell];
         chest[i]->objects[selectedChestCell] = 0;
       }
     }
