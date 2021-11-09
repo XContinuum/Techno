@@ -27,7 +27,7 @@ Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 
 // Objects in the game+++
 Hero* player; // Personage: player
-Fire* fireEntity[10]; // f: fireEntity
+Fire* fireEntity[10]; // f: fireEntity - TODO: change array data structure to list (so we dont need to store the length)
 Door* doorEntity[10]; // d: doorEntity
 Book* bookEntity[10]; // b: bookEntity
 Bonus* bonusEntity[10]; // bons: bonusEntity
@@ -345,8 +345,6 @@ void setMap() {
 }
 void loadDoors() {
   // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
-  int pi = 0;
-
   int DOOR_ID = 4;
   int FINAL_DOOR_ID = 8;
   int MOVING_BLOCK_ID = 6;
@@ -361,7 +359,7 @@ void loadDoors() {
         case DOOR_ID: // Load door
           if (gameMap[i - 1][j] == DOOR_ID) continue;
           
-          doorEntity[Door::counter - 1] = new Door(j * blockSize, i * blockSize);
+          doorEntity[Door::counter - 1] = new Door(j * blockSize, i * blockSize); 
           break;
 
         case FINAL_DOOR_ID: // Load final doors
@@ -373,6 +371,7 @@ void loadDoors() {
           break;
 
         case MOVING_BLOCK_ID: // Load moving blocks
+          int pi = 0;
           if (movingBlockCount == 0) pi = (i - 1) * blockSize;
 
           movingStairBlocks[movingBlockCount] = new BlockMoves(j * blockSize, i * blockSize, pi);
