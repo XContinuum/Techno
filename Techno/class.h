@@ -974,9 +974,9 @@ class Inventar {
         mX = 0;
         mY = 0;
 
-        Image = new Sprite("Images/Inventar.bmp", 0xffffffff);
-        Open = new Sprite("Images/InventarOpen.bmp", 0xffffffff);
-        InventarExp = new Sprite("Images/InventarExp.bmp", 0xffffffff);
+        Image = new Sprite("Images/inventar/Inventar.bmp", 0xffffffff);
+        Open = new Sprite("Images/inventar/InventarOpen.bmp", 0xffffffff);
+        InventarExp = new Sprite("Images/inventar/InventarExp.bmp", 0xffffffff);
 
         for (int i = 0; i < 9; i++) objects[i] = 0;
 
