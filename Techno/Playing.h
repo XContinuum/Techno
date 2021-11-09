@@ -346,7 +346,7 @@ void setMap() {
 void loadDoors() {
   // Global: gameMap, doorEntity, finalDoor, movingStairBlocks
   int pi = 0;
-  int t = 0;
+  int type = 0;
 
   int DOOR_ID = 4;
   int FINAL_DOOR_ID = 8;
@@ -360,12 +360,12 @@ void loadDoors() {
 
       // Load final doors +++
       if (j == 0)
-        t = 1;
+        type = 1;
       else if (j == blocksInWidth - 1)
-        t = 0;
+        type = 0;
 
       if (gameMap[i][j] == FINAL_DOOR_ID && gameMap[i - 1][j] != FINAL_DOOR_ID)
-        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, t);
+        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, type);
       // Load final doors ---
 
       // Block moves+++

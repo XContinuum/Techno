@@ -101,6 +101,7 @@ class Sprite {
                            reinterpret_cast<char *>(&img[j + i * width]), 4);
     }
 
+    // Flips around Y axis
     void Rotate() {
         std::ifstream is(name, std::ios::binary);
         is.seekg(18);
