@@ -358,28 +358,30 @@ void loadDoors() {
 
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
-      if (gameMap[i][j] == DOOR_ID && gameMap[i - 1][j] != DOOR_ID)
-        doorEntity[Door::counter - 1] = new Door(j * blockSize, i * blockSize);
+      switch (gameMap[i][j]) {
+        case DOOR_ID: // Load door
+          if (gameMap[i - 1][j] == DOOR_ID) continue;
+          
+          doorEntity[Door::counter - 1] = new Door(j * blockSize, i * blockSize);
+          break;
 
-      // Load final doors +++
-      if (j == 0)
-        type = 1;
-      if (j == blocksInWidth - 1)
-        type = 0;
+        case FINAL_DOOR_ID: // Load final doors
+          if (gameMap[i - 1][j] == FINAL_DOOR_ID) continue;
 
-      if (gameMap[i][j] == FINAL_DOOR_ID && gameMap[i - 1][j] != FINAL_DOOR_ID)
-        finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, type);
-      // Load final doors ---
+          if (j == 0) type = 1;
+          if (j == blocksInWidth - 1) type = 0;
 
-      // Block moves+++
-      if (gameMap[i][j] == MOVING_BLOCK_ID) {
-        if (movingBlockCount == 0) pi = (i - 1) * blockSize;
+          finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, type);
+          break;
 
-        movingStairBlocks[movingBlockCount] = new BlockMoves(j * blockSize, i * blockSize, pi);
+        case MOVING_BLOCK_ID: // Load moving blocks
+          if (movingBlockCount == 0) pi = (i - 1) * blockSize;
 
-        movingBlockCount++;
+          movingStairBlocks[movingBlockCount] = new BlockMoves(j * blockSize, i * blockSize, pi);
+
+          movingBlockCount++;
+          break;
       }
-      // Block moves---
     }
   }
 }
