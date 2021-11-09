@@ -482,37 +482,47 @@ void playerEvents() {
   Hero::Timer();
   Hero::TimerG();
 
-  if (buffer[DIK_N] & 0x80) inventory->AddObject(2);
+  Keyboard key = keyboardMapping(buffer);
 
-  if ((buffer[DIK_RIGHT] & 0x80) || (buffer[DIK_D] & 0x80)) {
-    player->R = true;
-    player->L = false;
-  }
+  switch (key) {
+    case KEY_N:
+      inventory->AddObject(2);
+      break;
 
-  if ((buffer[DIK_LEFT] & 0x80) || (buffer[DIK_A] & 0x80)) {
-    player->L = true;
-    player->R = false;
-  }
+    case KEY_RIGHT:
+    case KEY_D:
+      player->R = true;
+      player->L = false;
+      break;
 
-  if (buffer[DIK_SPACE] & 0x80) {
-    int nx = player->x / 20;
-    int nx1 = (player->x + player->w) / 20;
-    int ny = (player->y + player->h) / 20;
+    case KEY_LEFT:
+    case KEY_A:
+      player->L = true;
+      player->R = false;
+      break;
 
-    if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
-      player->J = true;
-      player->velocityJ = 15;
-    }
-  }
+    case KEY_SPACE:
+      int nx = player->x / 20;
+      int nx1 = (player->x + player->w) / 20;
+      int ny = (player->y + player->h) / 20;
 
-  if ((buffer[DIK_UP] & 0x80) || (buffer[DIK_W] & 0x80)) {
-    player->U = true;
-    player->D = false;
-  }
+      if (gameMap[ny][nx] != 0 || gameMap[ny][nx1] != 0) {
+        player->J = true;
+        player->velocityJ = 15;
+      }
+      break;
+    
+    case KEY_UP:
+    case KEY_W:
+      player->U = true;
+      player->D = false;
+      break;
 
-  if ((buffer[DIK_DOWN] & 0x80) || (buffer[DIK_S] & 0x80)) {
-    player->D = true;
-    player->U = false;
+    case KEY_DOWN:
+    case KEY_S:
+      player->D = true;
+      player->U = false;
+      break;
   }
 
   player->Jump();
