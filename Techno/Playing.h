@@ -543,20 +543,22 @@ void playerEvents() {
 }
 
 void closeTheBook() {
-  if (buffer[DIK_RETURN] & 0x80) { // Technical ??
-    for (int i = 0; i < Book::counter; i++) {
-      if (bookEntity[i]->state == 'O') {
-        bookEntity[i]->show = false;
-        bookEntity[i]->state = 'C';
-        isBookMenuOpen = false;
-      }
+  Keyboard key = keyboardMapping(buffer);
+  if (key != KEY_RETURN) return;
+
+  for (int i = 0; i < Book::counter; i++) {
+    if (bookEntity[i]->state == 'O') {
+      bookEntity[i]->show = false;
+      bookEntity[i]->state = 'C';
+      isBookMenuOpen = false;
     }
   }
 }
 void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
   // External: isInitialState
-  if (buffer[DIK_ESCAPE] & 0x80) isPaused = true; // Technical ??
+  Keyboard key = keyboardMapping(buffer);
+  if (key == KEY_ESCAPE) isPaused = true;
   if (!isPaused) return;
 
   for (int j = 0; j < 4; j++) pauseMenuButtons[j]->show = false;
@@ -609,7 +611,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     stateK = 2;
   }
 
-  if (buffer[DIK_E] & 0x80 && stateK == 0) stateK = 1;
+  Keyboard key = keyboardMapping(buffer);
+  if (key = KEY_E && stateK == 0) stateK = 1;
 
   if (stateK == 2) stateK = 0;
   //-----
@@ -677,7 +680,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // BOOKS---
 
   // CHEST+++
-  if (buffer[DIK_O] & 0x80) {
+  Keyboard key = keyboardMapping(buffer);
+  if (key == KEY_O) {
     for (int i = 0; i < Chest::counter; i++) {
       bool bottomLeft = chest[i]->Touch(player->x, player->y + player->h - 1);
       bool bottomRight = chest[i]->Touch(player->x + player->w, player->y + player->h - 1);
