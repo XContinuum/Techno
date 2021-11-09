@@ -762,24 +762,25 @@ void chestMoveEvents() {
       continue;
     }
 
-    if (chest[i]->move) {
-      int nt = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+    int selectedChestCell = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
 
-      if (nt != -1 && chest[i]->check != nt && chest[i]->objects[nt] == i) {
+    if (chest[i]->move) {
+      if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->objects[selectedChestCell] == i) {
         chest[i]->objects[nt] = posObject;
         chest[i]->ChangeImages();
         posObject = i;
       }
+      
       chest[i]->move = false;
       inventory->move = false;
     } else {
-      chest[i]->check = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+      chest[i]->check = selectedChestCell;
 
-      if (chest[i]->check != -1) {
+      if (selectedChestCell != -1) {
         chest[i]->move = true;
         inventory->move = true;
-        posObject = chest[i]->objects[chest[i]->check];
-        chest[i]->objects[chest[i]->check] = 0;
+        posObject = chest[i]->objects[selectedChestCell];
+        chest[i]->objects[selectedChestCell] = 0;
       }
     }
 

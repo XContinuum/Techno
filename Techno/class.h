@@ -1183,20 +1183,29 @@ class Chest {
     }
 
     int TouchObject(int X, int Y) {
-        int x1 = 71 + (w - code->width) / 2, x2 = 305 + (w - code->width) / 2;
-        int y1 = 109 + (h - code->height) / 2,
-            y2 = 283 + (h - code->height) / 2;
+        // This data is pulled from "Images/chest/InvChest.bmp"
+        int inventoryChestLeft= 71; 
+        int inventoryChestTop = 109;
+        int inventoryChestRight = 305;
+        int inventoryChestBottom = 283;
+        int inventorySquareDim = 25; // size of a single cell
+        int spaceBetweenCells = 5;
 
-        int zn = -1;
-        int blockX = (X - x1) / (25 + 5);
-        int blockY = (Y - y1) / (25 + 5);
+        int x1 = inventoryChestLeft + (w - code->width) / 2; 
+        int x2 = inventoryChestRight + (w - code->width) / 2;
+        int y1 = inventoryChestTop + (h - code->height) / 2;
+        int y2 = inventoryChestBottom + (h - code->height) / 2;
 
-        if (X >= x1 && X <= x2 && Y >= y1 && Y <= y2) {
-            if (X - x1 - blockX * (25 + 5) <= 25)
-                if (Y - y1 - blockY * (25 + 5) <= 25) zn = blockY * 8 + blockX;
+        int blockX = (X - x1) / (inventorySquareDim + spaceBetweenCells);
+        int blockY = (Y - y1) / (inventorySquareDim + spaceBetweenCells);
+        bool isWithinInventory = X >= x1 && X <= x2 && Y >= y1 && Y <= y2;
+
+        if (isWithinInventory) {
+            if (X - x1 - blockX * (inventorySquareDim + spaceBetweenCells) <= inventorySquareDim)
+                if (Y - y1 - blockY * (inventorySquareDim + spaceBetweenCells) <= inventorySquareDim) return blockY * 8 + blockX;
         }
 
-        return zn;
+        return -1;
     }
     bool TouchInvChest(int X, int Y) {
         bool t = false;
