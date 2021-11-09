@@ -1032,16 +1032,21 @@ class Inventar {
         return t;
     }
     int TouchObject(int X, int Y) {
-        int x1 = 17, x2 = 297;
-        int y1 = 7, y2 = 31;
+        // "Images/inventar/InventarOpen.bmp"
+        int x1 = 17;
+        int x2 = 297;
+        int y1 = 7;
+        int y2 = 31;
+        int cellSize = 25;
+        int cellSpace = 7;
 
-        int zn = -1;
-        int block = (X - x1) / (25 + 7);
+        int block = (X - x1) / (cellSize + cellSpace);
+        bool isWithinInventory = X >= x1 && X <= x2 && Y >= y1 && Y <= y2;
+        bool isWithinCell = X - x1 - block * (cellSize + cellSpace) <= cellSize;
+        
+        if (isWithinInventory && isWithinCell) return block;
 
-        if (X >= x1 && X <= x2 && Y >= y1 && Y <= y2)
-            if (X - x1 - block * (25 + 7) <= 25) zn = block;
-
-        return zn;
+        return -1;
     }
 
     static void SetPosition(int X, int Y) {
