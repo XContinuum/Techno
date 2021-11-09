@@ -134,11 +134,11 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < Bonus::counter; i++) {
-    if (bonusEntity[i]->show)
-      paramDraw->Draw(bonusEntity[i]->x, bonusEntity[i]->y,
-                      bonusEntity[i]->ImageView->width,
-                      bonusEntity[i]->ImageView->height,
-                      bonusEntity[i]->ImageView);
+    if (!bonusEntity[i]->show) continue;
+
+    paramDraw->Draw(
+        bonusEntity[i]->x, bonusEntity[i]->y, bonusEntity[i]->ImageView->width,
+        bonusEntity[i]->ImageView->height, bonusEntity[i]->ImageView);
   }
 
   for (int i = 0; i < BlockMoves::counter; i++) {
@@ -154,11 +154,11 @@ void drawEntities(int cursorX, int cursorY) {
   player->Draw(paramDraw);
 
   for (int i = 0; i < Chest::counter; i++) {
-    if (chest[i]->show) {
-      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
-                      pauseOverlay);
-      chest[i]->DrawC(paramDraw);
-    }
+    if (!chest[i]->show) continue;
+
+    paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                    pauseOverlay);
+    chest[i]->DrawC(paramDraw);
   }
   // Chest---
 
@@ -166,16 +166,16 @@ void drawEntities(int cursorX, int cursorY) {
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
-    if (bookEntity[i]->show) {
-      if (bookEntity[i]->state == 'O') {
-        paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
-                        pauseOverlay);
-      }
+    if (!bookEntity[i]->show) continue;
 
-      paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y,
-                      bookEntity[i]->Image->width, bookEntity[i]->Image->height,
-                      bookEntity[i]->Image);
+    if (bookEntity[i]->state == 'O') {
+      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+                      pauseOverlay);
     }
+
+    paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y,
+                    bookEntity[i]->Image->width, bookEntity[i]->Image->height,
+                    bookEntity[i]->Image);
   }
   // Book---
 
@@ -184,9 +184,9 @@ void drawEntities(int cursorX, int cursorY) {
     char* path = new char[20];
     sprintf(path, "Images/o%d.bmp", posObject);
 
-    Sprite* cur = new Sprite(path, 0xffffffff);
+    Sprite* cursorIcon = new Sprite(path, 0xffffffff);
 
-    paramDraw->Draw(cursorX, cursorY, cur->width, cur->height, cur);
+    paramDraw->Draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
   }
   // Cursor---
 }
