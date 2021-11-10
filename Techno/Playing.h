@@ -23,6 +23,11 @@ int MOVING_BLOCK_ID = 6;
 int DOOR_ID = 4;
 int FINAL_DOOR_ID = 8;
 
+// Inventory objects
+int INV_EMPTY_CELL = 0;
+int INV_BOOK = 1; // Images/o1.bmp
+int INV_KEY = 2; // Images/o2.bmp
+
 bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused
 
@@ -47,7 +52,7 @@ FinalDoor* finalDoor[10]; // Fd: finalDoor
 Inventar* inventory; // Inv: inventory
 
 // Move Invent Chest+++
-int selectedObjectId = 0; // posObject: selectedObjectId
+int selectedObjectId = INV_EMPTY_CELL; // posObject: selectedObjectId
 // Move Invent Chest---
 
 Text* scoreText; // txt: scoreText
@@ -185,7 +190,7 @@ void drawEntities(int cursorX, int cursorY) {
   // Book---
 
   // Cursor+++
-  if (selectedObjectId != 0) {
+  if (selectedObjectId != INV_EMPTY_CELL) {
     char* path = new char[20];
     sprintf(path, "Images/o%d.bmp", selectedObjectId);
 
@@ -443,7 +448,7 @@ void loadNextLevel() { // nextLevel: loadNextLevel
   level++;
 
   for (int i = 0; i < 9; i++)
-    if (inventory->objects[i] == 2) inventory->objects[i] = 0;
+    if (inventory->objects[i] == INV_KEY) inventory->objects[i] = INV_EMPTY_CELL;
 
   clearClassInformation();
   resetEntities();
@@ -743,10 +748,10 @@ void inventoryMoveEvents() {
   int inventoryCell = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
   
   if (inventory->move) {
-    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == 0) {
+    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == INV_EMPTY_CELL) {
       inventory->objects[inventoryCell] = selectedObjectId;
       inventory->ChangeImages();
-      selectedObjectId = 0;
+      selectedObjectId = INV_EMPTY_CELL;
     }
     inventory->move = false;
   } else {
@@ -755,7 +760,7 @@ void inventoryMoveEvents() {
     if (inventoryCell != -1) {
       inventory->move = true;
       selectedObjectId = inventory->objects[inventoryCell];
-      inventory->objects[inventoryCell] = 0;
+      inventory->objects[inventoryCell] = INV_EMPTY_CELL;
     }
   }
 
@@ -791,7 +796,7 @@ void chestMoveEvents() {
         chest[i]->move = true;
         inventory->move = true;
         selectedObjectId = chest[i]->objects[selectedChestCell];
-        chest[i]->objects[selectedChestCell] = 0;
+        chest[i]->objects[selectedChestCell] = INV_EMPTY_CELL;
       }
     }
 
