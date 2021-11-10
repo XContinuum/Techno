@@ -616,8 +616,9 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: player, inventory, chest, buffer, bookEntity, ...
-  // External: Chest class, Book class
+  // Global: inventory, chest, player, buffer, bookEntity, isBookMenuOpen, 
+  // External: lmb, screenPixelWidth, screenPixelHeight
+  // Class: Chest class, Book class
 
   didPlayerTouchBonus();
   showInventoryToolTip(cursorX, cursorY);
@@ -776,6 +777,10 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
   chest[i]->mY1 = mouseY;
 }
 void updateFrames(int clickedX, int clickedY) {
+  // Global: fireEntity, bonusEntity, doorEntity, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
+  // External: lmb
+  // Classes: Fire, Bonus, Door, FinalDoor, ButtonON, BlockMoves
+
   // FIRE---
   Fire::Timer();
 
