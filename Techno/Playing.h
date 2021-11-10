@@ -203,10 +203,12 @@ void drawEntities(int cursorX, int cursorY) {
 void drawPauseMenu() {
   // Global: pauseOverlay, pauseMenuSprite, pauseMenuButtons
   // External: paramDraw, screenPixelWidth, screenPixelHeight
+  int leftCentered = (screenPixelWidth - pauseMenuSprite->width) / 2;
+  int topCentered = (screenPixelHeight - pauseMenuSprite->height) / 2;
+  
   paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                   pauseOverlay);
-  paramDraw->Draw((screenPixelWidth - pauseMenuSprite->width) / 2,
-                  (screenPixelHeight - pauseMenuSprite->height) / 2, pauseMenuSprite->width,
+  paramDraw->Draw(leftCentered, topCentered, pauseMenuSprite->width,
                   pauseMenuSprite->height, pauseMenuSprite);
 
   for (int i = 0; i < 4; i++) {
