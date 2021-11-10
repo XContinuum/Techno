@@ -617,7 +617,7 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: player, inventory, chest, buffer, bookEntity, ...
-  // External: Chest class, ButtonON class, BlockMoves class, Book class
+  // External: Chest class, Book class
 
   didPlayerTouchBonus();
   showInventoryToolTip(cursorX, cursorY);
@@ -648,40 +648,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Chest---
 
   updateFrames(clickedX, clickedY);
-
-  // ButtonON+++
-  for (int i = 0; i < ButtonON::counter; i++) {
-    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1))
-      BlockMoves::UP = true;
-  }
-  // ButtonON---
-
-  // Block Moves+++
-  BlockMoves::Timer();
-
-  if (BlockMoves::dt > 5 && BlockMoves::UP) {
-    bool b = true;
-
-    for (int i = 0; i < BlockMoves::counter; i++) {
-      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap);
-
-      if (!tmp) b = false;
-    }
-    /// tmp b  A = tmp & b
-    /// T   T  T
-    /// T   F  F
-    /// F   T  F
-    /// F   F  F
-
-    if (b) BlockMoves::timer1 = 0;
-  }
-
-  if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
-
-  if (BlockMoves::dt > 5 && !BlockMoves::UP) {
-    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap);
-  }
-  // Block Moves---
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++) {
@@ -842,6 +808,40 @@ void updateFrames(int clickedX, int clickedY) {
     finalDoor[i]->Touch(clickedX, clickedY, gameMap, lmb,
                         inventory->objects[0]);
   // FinalDoor---
+
+  // ButtonON+++
+  for (int i = 0; i < ButtonON::counter; i++) {
+    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1))
+      BlockMoves::UP = true;
+  }
+  // ButtonON---
+
+  // Block Moves+++
+  BlockMoves::Timer();
+
+  if (BlockMoves::dt > 5 && BlockMoves::UP) {
+    bool b = true;
+
+    for (int i = 0; i < BlockMoves::counter; i++) {
+      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap);
+
+      if (!tmp) b = false;
+    }
+    /// tmp b  A = tmp & b
+    /// T   T  T
+    /// T   F  F
+    /// F   T  F
+    /// F   F  F
+
+    if (b) BlockMoves::timer1 = 0;
+  }
+
+  if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
+
+  if (BlockMoves::dt > 5 && !BlockMoves::UP) {
+    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap);
+  }
+  // Block Moves---
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
