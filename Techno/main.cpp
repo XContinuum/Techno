@@ -197,7 +197,7 @@ int top = (800 - screenPixelHeight) / 2;
 
 int clickedX, clickedY; // X, Y: clickedX, clickedY
 int cursorX, cursorY; // mX, mY: cursorX, cursorY
-bool lmb = false;
+bool didClickLeftButton = false; // lmb: didClickLeftButton
 
 // Main menu+++
 bool isInitialState = true; // Menu: isInitialState
@@ -380,18 +380,18 @@ void mainMenuInteractions() {
         // Mouse move---
 
         // Click+++
-        if (btnMain[PLAY]->Touch(clickedX, clickedY) == true && lmb == true) {
+        if (btnMain[PLAY]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
             playMode = true;
             missionMode = true;
             isInitialState = false;
         }
 
-        if (btnMain[CREATE_MAP]->Touch(clickedX, clickedY) == true && lmb == true) {
+        if (btnMain[CREATE_MAP]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
             Create_map = true;
             isInitialState = false;
         }
 
-        if (btnMain[SETTINGS]->Touch(clickedX, clickedY) == true && lmb == true) {
+        if (btnMain[SETTINGS]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
             isInitialState = false;
         }
 
@@ -435,7 +435,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
     while (end) {
         keyboard->Acquire();
 
-        lmb = false;
+        didClickLeftButton = false;
         rmb = false;
 
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -448,7 +448,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
                 clickedX = msg.pt.x - left;
                 clickedY = msg.pt.y - top;
 
-                lmb = true;
+                didClickLeftButton = true;
 
                 Inventar::SetPosition(clickedX, clickedY);
                 Chest::SetPosition(clickedX, clickedY);

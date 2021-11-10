@@ -617,7 +617,7 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: inventory, chest, player, buffer, bookEntity, isBookMenuOpen, 
-  // External: lmb, screenPixelWidth, screenPixelHeight
+  // External: didClickLeftButton, screenPixelWidth, screenPixelHeight
   // Class: Chest class, Book class
 
   didPlayerTouchBonus();
@@ -642,7 +642,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->OpenLock(inventory, lmb, clickedX, clickedY, cursorX, cursorY);
+    chest[i]->OpenLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY);
 
     showChestToolTip(i, cursorX, cursorY);
   }
@@ -778,7 +778,7 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
 }
 void updateFrames(int clickedX, int clickedY) {
   // Global: fireEntity, bonusEntity, doorEntity, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
-  // External: lmb
+  // External: didClickLeftButton
   // Classes: Fire, Bonus, Door, FinalDoor, ButtonON, BlockMoves
 
   // FIRE---
@@ -805,12 +805,12 @@ void updateFrames(int clickedX, int clickedY) {
 
   // DOOR+++
   for (int i = 0; i < Door::counter; i++)
-    doorEntity[i]->Touch(clickedX, clickedY, gameMap, lmb);
+    doorEntity[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton);
   // DOOR---
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->Touch(clickedX, clickedY, gameMap, lmb,
+    finalDoor[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton,
                         inventory->objects[0]);
   // FinalDoor---
 
