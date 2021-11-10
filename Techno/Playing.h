@@ -228,6 +228,16 @@ void readScript(char* filename) {
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
   char* fileBuffer = readFile(filename, bufferSize);
+
+  readEntities(fileBuffer, bufferSize);
+  int mapDeliminatorPos = findDelimiter(fileBuffer, bufferSize);
+  loadMap(fileBuffer, mapDeliminatorPos);
+  setMap();
+  loadDoors();
+
+  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
+}
+void readEntities(char* fileBuffer, int bufferSize) {
   int readingChunk = 0;
   int prevColonIndex = 0;
 
@@ -244,14 +254,6 @@ void readScript(char* filename) {
       readingChunk++;
     }
   }
-
-  int mapDeliminatorPos = findDelimiter(fileBuffer, bufferSize);
-  loadMap(fileBuffer, mapDeliminatorPos);
-  setMap();
-
-  loadDoors();
-
-  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
 }
 void readFile(char* filename, int bufferSize) {
   char* fileBuffer = new char[bufferSize];
