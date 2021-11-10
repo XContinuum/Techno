@@ -168,7 +168,7 @@ void drawEntities(int cursorX, int cursorY) {
 
     paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                     pauseOverlay);
-    chest[i]->DrawC(paramDraw);
+    chest[i]->DrawC(paramDraw); // does not mutate parameter
   }
   // Chest---
 
@@ -235,7 +235,7 @@ void readScript(char* filename) {
   setMap();
   loadDoors();
 
-  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level);
+  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level); // does not mutate parameter
 }
 void readEntities(char* fileBuffer, int bufferSize) {
   int readingChunk = 0;
@@ -512,7 +512,7 @@ void setNextMapFilepath(int level) {
 void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Hero class
-  player->ChargeMatMap(gameMap);
+  player->ChargeMatMap(gameMap); // does not mutate parameter
 
   Hero::Timer();
   Hero::TimerG();
@@ -646,7 +646,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->OpenLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY);
+    chest[i]->OpenLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
 
     showChestToolTip(i, cursorX, cursorY);
   }
@@ -701,7 +701,7 @@ void didPlayerTouchBonus() {
       char* sc = new char[100];
       sprintf(sc, "score:%d", score);
 
-      scoreText->changeText(sc);
+      scoreText->changeText(sc); // does not mutate parameter
       bonusEntity[i]->show = false;
     }
   }
@@ -832,7 +832,7 @@ void updateFrames(int clickedX, int clickedY) {
     bool b = true;
 
     for (int i = 0; i < BlockMoves::counter; i++) {
-      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap);
+      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap); // mutates parameter
 
       if (!tmp) b = false;
     }
@@ -848,7 +848,7 @@ void updateFrames(int clickedX, int clickedY) {
   if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
 
   if (BlockMoves::dt > 5 && !BlockMoves::UP) {
-    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap);
+    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap); // mutates parameter
   }
   // Block Moves---
 }
