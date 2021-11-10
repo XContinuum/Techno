@@ -198,6 +198,7 @@ int top = (800 - screenPixelHeight) / 2;
 int clickedX, clickedY; // X, Y: clickedX, clickedY
 int cursorX, cursorY; // mX, mY: cursorX, cursorY
 bool didClickLeftButton = false; // lmb: didClickLeftButton
+bool rmb = false;
 
 // Main menu+++
 bool isInitialState = true; // Menu: isInitialState
