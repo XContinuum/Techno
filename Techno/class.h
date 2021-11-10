@@ -712,14 +712,31 @@ class Fire {
 
         counter++;
     }
-    void ChangeCadr() {
+    void ChangeCadr() { // ChangeCadr: updateFrame
+        // TODO: convert to modulo operator
+        // CountCadr = (CountCadr + 1) % 3;
         if (CountCadr < 2)
             CountCadr++;
         else
             CountCadr = 0;
 
         ImageView = Image[CountCadr];
+        //
+        // if (shouldUpdate()) { // TODO:
+        //     frame = (frame + 1) % 3;
+        //     currentSprite = fireSprite[frame];
+        // }
     }
+    // bool shouldUpdate() { // TODO:
+    //   if (startTime == NULL) startTime = timeGetTime();
+    //   int timeSinceLastFrame = timeGetTime() - startTime;
+
+    //   if (timeSinceLastFrame > 50) {
+    //     startTime = timeGetTime();
+    //   }
+    //   return timeSinceLastFrame > 50;
+    // }
+
     static void Timer() {
         if (timer1 == 0) timer1 = timeGetTime();
 

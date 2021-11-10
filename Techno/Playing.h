@@ -573,7 +573,7 @@ void playerEvents() {
     int leftPlayerSide = player->x / blockSize;
     int bottom = (player->y + player->h) / blockSize;
 
-    player->G = !(gameMap[bottom][leftPlayerSide] == LADDER_ID);
+    player->G = gameMap[bottom][leftPlayerSide] != LADDER_ID;
   }
 }
 
@@ -788,7 +788,7 @@ void updateFrames(int clickedX, int clickedY) {
   // FIRE---
   Fire::Timer();
 
-  if (Fire::dt > 50) {
+  if (Fire::dt > 50) { // update frame every 50ms
     for (int i = 0; i < Fire::counter; i++) fireEntity[i]->ChangeCadr();
 
     Fire::timer1 = 0;
