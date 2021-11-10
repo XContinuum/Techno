@@ -685,10 +685,12 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++) {
+    if (!(bookEntity[i]->state = 'C' && bookEntity[i]->show)) continue;
+
     bool bottomLeft = bookEntity[i]->Touch(player->x, player->y + player->Image->height);
     bool bottomRight = bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
 
-    if (bookEntity[i]->state = 'C' && bookEntity[i]->show && (bottomLeft || bottomRight)) {
+    if (bottomLeft || bottomRight) {
       bookEntity[i]->state = 'O';
       bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
       bookEntity[i]->Image = bookEntity[i]->ImageBack;
@@ -717,10 +719,12 @@ void didPlayerTouchBonus() {
   // Checks if player intersected with bonus entity.
   // if intersected, then increase score and hide bonus entity
   for (int i = 0; i < Bonus::counter; i++) {
+    if (!bonusEntity[i]->show) continue;
+
     bool bottomLeft = bonusEntity[i]->Touch(player->x, player->y + player->h - 1);
     bool bottomRight = bonusEntity[i]->Touch(player->x + player->w, player->y + player->h - 1);
 
-    if (bonusEntity[i]->show && (bottomLeft || bottomRight)) {
+    if (bottomLeft || bottomRight) {
       score += 10;
 
       char* sc = new char[100];
@@ -737,13 +741,8 @@ void showInventoryToolTip(int mouseX, int mouseY) {
   inventory->mY = mouseY;
 }
 void inventoryMoveEvents() {
-  if (!inventory->TouchInvShow(Inventar::Xi, Inventar::Yi)) {
-    return;
-  }
-
-  if (!Inventar::iLmb) { 
-    return;
-  }
+  if (!inventory->TouchInvShow(Inventar::Xi, Inventar::Yi)) return;
+  if (!Inventar::iLmb) return;
 
   int inventoryCell = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
   
