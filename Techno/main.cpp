@@ -198,7 +198,7 @@ int top = (800 - screenPixelHeight) / 2;
 int clickedX, clickedY; // X, Y: clickedX, clickedY
 int cursorX, cursorY; // mX, mY: cursorX, cursorY
 bool didClickLeftButton = false; // lmb: didClickLeftButton
-bool rmb = false;
+bool didClickRightButton = false; // rmb: didClickRightButton
 
 // Main menu+++
 bool isInitialState = true; // Menu: isInitialState
@@ -437,7 +437,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
         keyboard->Acquire();
 
         didClickLeftButton = false;
-        rmb = false;
+        didClickRightButton = false;
 
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_DESTROY) break;
@@ -459,7 +459,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
                 clickedX = msg.pt.x - left;
                 clickedY = msg.pt.y - top;
 
-                rmb = true;
+                didClickRightButton = true;
             }
 
             cursorX = msg.pt.x - left;
