@@ -279,7 +279,7 @@ int* readCoordinates(int begin, int end, char* fileBuffer) { // pure function
 
   return coordinates;
 }
-void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
+void createEntity(int readingChunk, int* coordinates, int coordQuantity) {
   // Global: pressurePlate, chest, bonusEntity, fireEntity
   switch (readingChunk) {
     case 0: // Load player coordinates
@@ -288,28 +288,28 @@ void createEntity(int readingChunk, int* coordinates, int coord_quantity) {
       break;
     
     case 1:
-      for (int i = 0; i < coord_quantity / 2; i++)
+      for (int i = 0; i < coordQuantity / 2; i++)
         fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 2:
-      for (int i = 0; i < coord_quantity / 2; i++)
+      for (int i = 0; i < coordQuantity / 2; i++)
         bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 3:
-      for (int i = 0; i < coord_quantity / 3; i++) // TODO: this should be 2 and not 3
+      for (int i = 0; i < coordQuantity / 3; i++) // TODO: this should be 2 and not 3
         bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 4:
-      for (int i = 0; i < coord_quantity / 4; i++)
+      for (int i = 0; i < coordQuantity / 4; i++)
         chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
                              coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
       break;
 
     case 5: 
-      for (int i = 0; i < coord_quantity / 2; i++)
+      for (int i = 0; i < coordQuantity / 2; i++)
         pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
@@ -398,7 +398,10 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
     mission(cursorX, cursorY, clickedX, clickedY);
     return;
   }
-  nextLevel();
+
+  if (player->ChangeLevel()) {  // TODO: rename didReachExitDoor
+    loadNextLevel();
+  }
 
   if (!isBookMenuOpen && !isPaused) {
     interactiveObjects(cursorX, cursorY, clickedX, clickedY);
@@ -423,7 +426,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Exit---
 
   if (missionButtons[0]->Touch(clickedX, clickedY)) {
-    player = new Hero();
+    player = new Hero(); // TODO: pass x & y into Hero
     player->x = 40;
     player->y = 40;
 
@@ -434,11 +437,9 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   missionButtons[0]->show = missionButtons[0]->Touch(cursorX, cursorY);
 }
-void nextLevel() {
+void loadNextLevel() { // nextLevel: loadNextLevel
   // Global: player, level, inventory, mapFilename
   // External: 
-  if (!player->ChangeLevel()) return;
-
   level++;
 
   for (int i = 0; i < 9; i++)
@@ -846,7 +847,6 @@ enum Keyboard {
   KEY_A,
   KEY_E,
   KEY_D,
-  KEY_H,
   KEY_N,
   KEY_O,
   KEY_S,
@@ -864,7 +864,6 @@ Keyboard keyboardMapping(char* buffer) {
   if (buffer[DIK_A] & 0x80) return Keyboard::KEY_A;
   if (buffer[DIK_E] & 0x80) return Keyboard::KEY_E;
   if (buffer[DIK_D] & 0x80) return Keyboard::KEY_D;
-  if (buffer[DIK_H] & 0x80) return Keyboard::KEY_H;
   if (buffer[DIK_N] & 0x80) return Keyboard::KEY_N;
   if (buffer[DIK_O] & 0x80) return Keyboard::KEY_O;
   if (buffer[DIK_S] & 0x80) return Keyboard::KEY_S;
