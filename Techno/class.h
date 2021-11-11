@@ -1329,7 +1329,9 @@ class ButtonON {
   static int counter;
 
  public:
-  ButtonON(int _x, int _y) : x(_x), y(_y) {
+  ButtonON(int x, int y) {
+    this->x = x;
+    this->y = y;
     Image = new Sprite("Images/buttonON.bmp");
 
     counter++;
@@ -1356,16 +1358,20 @@ class BlockMoves {
   static int timer1;
 
  public:
-  BlockMoves(int _x, int _y, int _pI)
-      : x(_x), y(_y - 1), pX(_x), pY(_y - 1), pI(_pI - 1) {
+  BlockMoves(int x, int y, int pi) {
+    this->x = x;
+    this->y = y - 1;
+    this->pX = x;
+    this->pY = y - 1;
+    this->pI = pi - 1;
     Image = new Sprite("Images/blockM.bmp");
 
     counter++;
   }
 
-  bool BlockMoveUp(int MatMap[30][40]) {
+  bool BlockMoveUp(int gameMap[30][40]) {
     if (y > pI) {
-      MatMap[pY / 20 + 1][pX / 20] = 0;
+      gameMap[pY / 20 + 1][pX / 20] = 0;
 
       if (y - pI <= 5)
         y -= (y - pI);
@@ -1374,15 +1380,15 @@ class BlockMoves {
     }
 
     if (y == pI) {
-      MatMap[y / 20 + 1][x / 20] = 6;
+      gameMap[y / 20 + 1][x / 20] = 6;
       return false;
     }
 
     return true;
   }
-  void BlockMoveDown(int MatMap[30][40]) {
+  void BlockMoveDown(int gameMap[30][40]) {
     if (y < pY) {
-      MatMap[pI / 20 + 1][x / 20] = 0;
+      gameMap[pI / 20 + 1][x / 20] = 0;
 
       if (pY - y <= 5)
         y += (pY - y);
@@ -1391,7 +1397,7 @@ class BlockMoves {
     }
 
     if (y == pY) {
-      MatMap[y / 20 + 1][x / 20] = 6;
+      gameMap[y / 20 + 1][x / 20] = 6;
     }
   }
 
@@ -1413,7 +1419,7 @@ class FinalDoor {
   int x, y;
   int Cadr;
   int num;
-  bool needsKey;  // Need key
+  bool needsKey;  // nk: Need key
 
   Sprite *ImageView;
   Sprite *Image[2];
@@ -1453,12 +1459,12 @@ class FinalDoor {
             ImageView->height, ImageView);
 
     // NeedKey
-    if (nk == true)
+    if (needsKey)
       p->draw((w - NeedKey->width) / 2, (h - NeedKey->height) / 2,
               NeedKey->width, NeedKey->height, NeedKey);
   }
 
-  void updateFrame(int MatMap[30][40]) {  // ChangeCadr: updateFrame
+  void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
     if (type == 0) {
       if (Cadr < 1)
         Cadr++;
@@ -1467,10 +1473,10 @@ class FinalDoor {
 
       ImageView = Image[Cadr];
 
-      MatMap[y / 20][x / 20] = num;
-      MatMap[y / 20 + 1][x / 20] = num;
-      MatMap[y / 20 + 2][x / 20] = num;
-      MatMap[y / 20 + 3][x / 20] = num;
+      gameMap[y / 20][x / 20] = num;
+      gameMap[y / 20 + 1][x / 20] = num;
+      gameMap[y / 20 + 2][x / 20] = num;
+      gameMap[y / 20 + 3][x / 20] = num;
 
       if (num == 9)
         num = 8;
