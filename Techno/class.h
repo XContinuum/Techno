@@ -1527,7 +1527,7 @@ class FinalDoor {
   int x, y;
   int Cadr;
   int num;
-  bool nk;  // Need key
+  bool needsKey;  // Need key
 
   Sprite *ImageView;
   Sprite *Image[2];
@@ -1557,19 +1557,9 @@ class FinalDoor {
     }
   }
 
-  bool contains(int X, int Y) { // Touch: contains
-    return X >= x && X <= x + ImageView->width && Y >= y &&
-        Y <= y + ImageView->height;
-  }
-
-  void updateNeedKey() {
-    if (X >= x && X <= x + ImageView->width && Y >= y &&
-        Y <= y + ImageView->height && rmb == true && inv != 2)
-      nk = true;
-
-    if ((X < x || X > x + ImageView->width) &&
-        (Y < y || Y > y + ImageView->height))
-      nk = false;
+  bool contains(int x, int y) {  // Touch: contains
+    return x >= this->x && x <= this->x + ImageView->width && y >= this->y &&
+           y <= this->y + ImageView->height;
   }
 
   void draw(Param *p) {
