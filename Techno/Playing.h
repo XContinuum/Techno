@@ -88,7 +88,7 @@ void drawScene(int cursorX, int cursorY) { // ★★★
     drawPauseMenu();
   }
 
-  scoreText->Draw(paramDraw);
+  scoreText->draw(paramDraw);
 }
 void drawMission() {
   // Global: missions, missionButtons, missionLock, backButton

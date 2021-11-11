@@ -233,7 +233,7 @@ class Text {
     addColor(addC);
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     int n = 0;
     int distance = 0;
 
@@ -251,7 +251,7 @@ class Text {
     }
   }
 
-  void Draw(Param *p, int *pos, int s) {
+  void draw(Param *p, int *pos, int s) {
     int n = 0;
     int distance = 0;
     Sprite *temp;
@@ -1422,11 +1422,11 @@ class Chest {
     pos[0] = sd;
     pos[1] = sd + 1;
 
-    codeView->Draw(p, pos, 2);
+    codeView->draw(p, pos, 2);
     //+++
     LockerLight->Draw(p);
     lOK->Draw(p);
-    txt->Draw(p);
+    txt->draw(p);
 
     if (showC == true) {
       p->draw((w - code->width) / 2, (h - code->height) / 2, Content->width,
