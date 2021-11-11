@@ -28,7 +28,7 @@ class Button {
     h = Image->height;
   }
 
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + w && Y >= y && Y <= y + h) t = true;
@@ -1314,7 +1314,7 @@ class Chest {
   //+++
   void OpenLock(Inventar *Inv, bool &lmb, int X, int Y, int mX, int mY) {
     if (show == true) {
-      if (lock->Touch(X, Y) == false && lmb == true &&
+      if (lock->contains(X, Y) == false && lmb == true &&
           Inv->TouchInvShow(X, Y) == false)
         show = false;
 
@@ -1323,7 +1323,7 @@ class Chest {
       int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) +
                       (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
 
-      if (lOK->Touch(X, Y) == true && lmb == true) {
+      if (lOK->contains(X, Y) == true && lmb == true) {
         lOK->show = true;
 
         if (sd < 2)
@@ -1335,10 +1335,10 @@ class Chest {
       } else
         lOK->show = false;
 
-      if (LockerLight->Touch(mX, mY) == true && dist > 55 && dist < 88) {
+      if (LockerLight->contains(mX, mY) == true && dist > 55 && dist < 88) {
         LockerLight->show = true;
 
-        if (locker->Touch(X, Y) == true && lmb == true) {
+        if (locker->contains(X, Y) == true && lmb == true) {
           // Calculate angle+++
           double xn = locker->w / 2;
           double yn = locker->h / 2;

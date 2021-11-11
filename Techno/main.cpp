@@ -373,7 +373,7 @@ void mainMenuInteractions() {
     if (isInitialState == true) {
         // Mouse move+++
         for (int i = 0; i < 4; i++) {
-            if (btnMain[i]->Touch(cursorX, cursorY) == true)
+            if (btnMain[i]->contains(cursorX, cursorY) == true)
                 btnMain[i]->show = true;
             else
                 btnMain[i]->show = false;
@@ -381,18 +381,18 @@ void mainMenuInteractions() {
         // Mouse move---
 
         // Click+++
-        if (btnMain[PLAY]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
+        if (btnMain[PLAY]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
             playMode = true;
             missionMode = true;
             isInitialState = false;
         }
 
-        if (btnMain[CREATE_MAP]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
+        if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
             Create_map = true;
             isInitialState = false;
         }
 
-        if (btnMain[SETTINGS]->Touch(clickedX, clickedY) == true && didClickLeftButton == true) {
+        if (btnMain[SETTINGS]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
             isInitialState = false;
         }
 

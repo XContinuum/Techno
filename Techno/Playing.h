@@ -425,16 +425,16 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
   // External: isInitialState
 
   // Exit+++
-  if (backButton->Touch(clickedX, clickedY)) {
+  if (backButton->contains(clickedX, clickedY)) {
     missionMode = false;
     playMode = false;
     isInitialState = true;
   }
 
-  backButton->show = backButton->Touch(cursorX, cursorY);
+  backButton->show = backButton->contains(cursorX, cursorY);
   // Exit---
 
-  if (missionButtons[0]->Touch(clickedX, clickedY)) {
+  if (missionButtons[0]->contains(clickedX, clickedY)) {
     player = new Hero(); // TODO: pass x & y into Hero
     player->x = 40;
     player->y = 40;
@@ -444,7 +444,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
     missionMode = false;
   }
 
-  missionButtons[0]->show = missionButtons[0]->Touch(cursorX, cursorY);
+  missionButtons[0]->show = missionButtons[0]->contains(cursorX, cursorY);
 }
 void loadNextLevel() { // nextLevel: loadNextLevel
   // Global: player, level, inventory, mapFilename
@@ -597,20 +597,20 @@ void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
   if (!isPaused) return;
 
   for (int i = 0; i < 4; i++) {
-    pauseMenuButtons[i]->show = pauseMenuButtons[i]->Touch(cursorX, cursorY);
+    pauseMenuButtons[i]->show = pauseMenuButtons[i]->contains(cursorX, cursorY);
   }
 
   isPaused = shouldContinuePause(clickedX, clickedY);
 
-  if (pauseMenuButtons[PM_EXIT]->Touch(clickedX, clickedY)) {
+  if (pauseMenuButtons[PM_EXIT]->contains(clickedX, clickedY)) {
     playMode = false;
     isInitialState = true;
   }
 }
 bool shouldContinuePause(int clickedX, int clickedY) {
-  return pauseMenuButtons[PM_CONTINUE]->Touch(clickedX, clickedY) == false 
-  && pauseMenuButtons[PM_SAVE]->Touch(clickedX, clickedY) == false 
-  && pauseMenuButtons[PM_SETTINGS]->Touch(clickedX, clickedY) == false;
+  return pauseMenuButtons[PM_CONTINUE]->contains(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SAVE]->contains(clickedX, clickedY) == false 
+  && pauseMenuButtons[PM_SETTINGS]->contains(clickedX, clickedY) == false;
 }
 // ---------------------------------------------------------------------------------
 // playLoop {end}
