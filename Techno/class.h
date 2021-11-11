@@ -692,7 +692,7 @@ class Fire {
    public:
     int x, y;
     int frame;
-    Sprite *ImageView;
+    Sprite *currentSprite;
     Sprite *Image[3];
 
     static int counter;
@@ -702,13 +702,13 @@ class Fire {
 
    public:
     Fire(int _x, int _y) : x(_x), y(_y), frame(0) {
-        ImageView = NULL;
+        currentSprite = NULL;
 
         Image[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
         Image[1] = new Sprite("Images/fire2.bmp", 0xffffffff);
         Image[2] = new Sprite("Images/fire3.bmp", 0xffffffff);
 
-        ImageView = Image[0];
+        currentSprite = Image[0];
 
         counter++;
     }
@@ -720,7 +720,7 @@ class Fire {
         else
             frame = 0;
 
-        ImageView = Image[frame];
+        currentSprite = Image[frame];
         //
         // if (shouldUpdate()) { // TODO:
         //     frame = (frame + 1) % 3;
