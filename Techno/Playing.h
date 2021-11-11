@@ -39,10 +39,10 @@ Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 
 // Objects in the game+++
 Hero* player; // Personage: player
-Fire* fireEntity[10]; // f: fireEntity - TODO: change array data structure to list (so we dont need to store the length)
-Door* doorEntity[10]; // d: doorEntity
-Book* bookEntity[10]; // b: bookEntity
-Bonus* bonusEntity[10]; // bons: bonusEntity
+Fire* fireEntities[10]; // f: fireEntities - TODO: change array data structure to list (so we dont need to store the length)
+Door* doorEntities[10]; // d: doorEntities
+Book* bookEntities[10]; // b: bookEntities
+Bonus* bonusEntities[10]; // bons: bonusEntities
 Chest* chest[10];
 BlockMoves* movingStairBlocks[5]; // bm: movingStairBlocks
 ButtonON* pressurePlate[10]; // bt: pressurePlate
@@ -122,21 +122,21 @@ void drawMission() {
   if (backButton->show) backButton->Draw(paramDraw);
 }
 void drawEntities(int cursorX, int cursorY) {
-  // Global: fireEntity, doorEntity, bonusEntity, movingStairBlocks, chest, player, inventory, bookEntity, pauseOverlay
+  // Global: fireEntities, doorEntities, bonusEntities, movingStairBlocks, chest, player, inventory, bookEntities, pauseOverlay
   // selectedObjectId
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
-    paramDraw->Draw(fireEntity[i]->x, fireEntity[i]->y,
-                    fireEntity[i]->ImageView->width,
-                    fireEntity[i]->ImageView->height, fireEntity[i]->ImageView);
+    paramDraw->Draw(fireEntities[i]->x, fireEntities[i]->y,
+                    fireEntities[i]->ImageView->width,
+                    fireEntities[i]->ImageView->height, fireEntities[i]->ImageView);
   }
 
   for (int i = 0; i < Door::counter; i++) {
-    paramDraw->Draw(doorEntity[i]->x, doorEntity[i]->y,
-                    doorEntity[i]->ImageView->width,
-                    doorEntity[i]->ImageView->height, doorEntity[i]->ImageView);
+    paramDraw->Draw(doorEntities[i]->x, doorEntities[i]->y,
+                    doorEntities[i]->ImageView->width,
+                    doorEntities[i]->ImageView->height, doorEntities[i]->ImageView);
   }
 
   for (int i = 0; i < FinalDoor::counter; i++) {
@@ -144,11 +144,11 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < Bonus::counter; i++) {
-    if (!bonusEntity[i]->show) continue;
+    if (!bonusEntities[i]->show) continue;
 
     paramDraw->Draw(
-        bonusEntity[i]->x, bonusEntity[i]->y, bonusEntity[i]->ImageView->width,
-        bonusEntity[i]->ImageView->height, bonusEntity[i]->ImageView);
+        bonusEntities[i]->x, bonusEntities[i]->y, bonusEntities[i]->ImageView->width,
+        bonusEntities[i]->ImageView->height, bonusEntities[i]->ImageView);
   }
 
   for (int i = 0; i < BlockMoves::counter; i++) {
@@ -176,16 +176,16 @@ void drawEntities(int cursorX, int cursorY) {
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
-    if (!bookEntity[i]->show) continue;
+    if (!bookEntities[i]->show) continue;
 
-    if (bookEntity[i]->state == 'O') {
+    if (bookEntities[i]->state == 'O') {
       paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                       pauseOverlay);
     }
 
-    paramDraw->Draw(bookEntity[i]->x, bookEntity[i]->y,
-                    bookEntity[i]->Image->width, bookEntity[i]->Image->height,
-                    bookEntity[i]->Image);
+    paramDraw->Draw(bookEntities[i]->x, bookEntities[i]->y,
+                    bookEntities[i]->Image->width, bookEntities[i]->Image->height,
+                    bookEntities[i]->Image);
   }
   // Book---
 
@@ -289,7 +289,7 @@ int* readCoordinates(int begin, int end, char* fileBuffer) { // pure function
   return coordinates;
 }
 void createEntity(int readingChunk, int* coordinates, int coordQuantity) {
-  // Global: pressurePlate, chest, bonusEntity, fireEntity
+  // Global: pressurePlate, chest, bonusEntities, fireEntities
   switch (readingChunk) {
     case 0: // Load player coordinates
       player->x = coordinates[0];
@@ -298,17 +298,17 @@ void createEntity(int readingChunk, int* coordinates, int coordQuantity) {
     
     case 1:
       for (int i = 0; i < coordQuantity / 2; i++)
-        fireEntity[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
+        fireEntities[i] = new Fire(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 2:
       for (int i = 0; i < coordQuantity / 2; i++)
-        bookEntity[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
+        bookEntities[i] = new Book(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 3:
       for (int i = 0; i < coordQuantity / 3; i++) // TODO: this should be 2 and not 3
-        bonusEntity[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
+        bonusEntities[i] = new Bonus(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 4:
@@ -358,7 +358,7 @@ void setMap() {
       player->MatMap[i][j] = gameMap[i][j];
 }
 void loadDoors() {
-  // Global: gameMap, doorEntity, finalDoor, movingStairBlocks, blockSize
+  // Global: gameMap, doorEntities, finalDoor, movingStairBlocks, blockSize
   // moving block
   int movingBlockCount = 0;
 
@@ -368,7 +368,7 @@ void loadDoors() {
         case DOOR_ID: // Load door
           if (gameMap[i - 1][j] == DOOR_ID) continue;
           
-          doorEntity[Door::counter - 1] = new Door(j * blockSize, i * blockSize); 
+          doorEntities[Door::counter - 1] = new Door(j * blockSize, i * blockSize); 
           break;
 
         case FINAL_DOOR_ID: // Load final doors
@@ -483,10 +483,10 @@ void clearClassInformation() {
 }
 void resetEntities() {
   for (int i = 0; i < 10; i++) {
-    fireEntity[i] = NULL;
-    doorEntity[i] = NULL;
-    bookEntity[i] = NULL;
-    bonusEntity[i] = NULL;
+    fireEntities[i] = NULL;
+    doorEntities[i] = NULL;
+    bookEntities[i] = NULL;
+    bonusEntities[i] = NULL;
     chest[i] = NULL;
     movingStairBlocks[i] = NULL;
     pressurePlate[i] = NULL;
@@ -582,9 +582,9 @@ void closeTheBook() {
   if (key != KEY_RETURN) return;
 
   for (int i = 0; i < Book::counter; i++) {
-    if (bookEntity[i]->state == 'O') {
-      bookEntity[i]->show = false;
-      bookEntity[i]->state = 'C';
+    if (bookEntities[i]->state == 'O') {
+      bookEntities[i]->show = false;
+      bookEntities[i]->state = 'C';
       isBookMenuOpen = false;
     }
   }
@@ -620,7 +620,7 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: inventory, chest, player, buffer, bookEntity, isBookMenuOpen, 
+  // Global: inventory, chest, player, buffer, bookEntities, isBookMenuOpen, 
   // External: didClickLeftButton, screenPixelWidth, screenPixelHeight
   // Class: Chest class, Book class
 
@@ -656,17 +656,17 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++) {
-    if (!(bookEntity[i]->state = 'C' && bookEntity[i]->show)) continue;
+    if (!(bookEntities[i]->state = 'C' && bookEntities[i]->show)) continue;
 
-    bool bottomLeft = bookEntity[i]->Touch(player->x, player->y + player->Image->height);
-    bool bottomRight = bookEntity[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
+    bool bottomLeft = bookEntities[i]->Touch(player->x, player->y + player->Image->height);
+    bool bottomRight = bookEntities[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
 
     if (bottomLeft || bottomRight) {
-      bookEntity[i]->state = 'O';
-      bookEntity[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
-      bookEntity[i]->Image = bookEntity[i]->ImageBack;
-      bookEntity[i]->x = (screenPixelWidth - bookEntity[i]->ImageBack->width) / 2;
-      bookEntity[i]->y = (screenPixelHeight - bookEntity[i]->ImageBack->height) / 2;
+      bookEntities[i]->state = 'O';
+      bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
+      bookEntities[i]->Image = bookEntities[i]->ImageBack;
+      bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;
+      bookEntities[i]->y = (screenPixelHeight - bookEntities[i]->ImageBack->height) / 2;
 
       inventory->AddObject(1);
       isBookMenuOpen = true;
@@ -690,10 +690,10 @@ void didPlayerTouchBonus() {
   // Checks if player intersected with bonus entity.
   // if intersected, then increase score and hide bonus entity
   for (int i = 0; i < Bonus::counter; i++) {
-    if (!bonusEntity[i]->show) continue;
+    if (!bonusEntities[i]->show) continue;
 
-    bool bottomLeft = bonusEntity[i]->Touch(player->x, player->y + player->h - 1);
-    bool bottomRight = bonusEntity[i]->Touch(player->x + player->w, player->y + player->h - 1);
+    bool bottomLeft = bonusEntities[i]->Touch(player->x, player->y + player->h - 1);
+    bool bottomRight = bonusEntities[i]->Touch(player->x + player->w, player->y + player->h - 1);
 
     if (bottomLeft || bottomRight) {
       score += 10;
@@ -702,7 +702,7 @@ void didPlayerTouchBonus() {
       sprintf(sc, "score:%d", score);
 
       scoreText->changeText(sc); // does not mutate parameter
-      bonusEntity[i]->show = false;
+      bonusEntities[i]->show = false;
     }
   }
 }
@@ -781,7 +781,7 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
   chest[i]->mY1 = mouseY;
 }
 void updateFrames(int clickedX, int clickedY) {
-  // Global: fireEntity, bonusEntity, doorEntity, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
+  // Global: fireEntities, bonusEntities, doorEntities, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
   // External: didClickLeftButton
   // Classes: Fire, Bonus, Door, FinalDoor, ButtonON, BlockMoves
 
@@ -789,7 +789,7 @@ void updateFrames(int clickedX, int clickedY) {
   Fire::Timer();
 
   if (Fire::dt > 50) { // update frame every 50ms
-    for (int i = 0; i < Fire::counter; i++) fireEntity[i]->ChangeCadr();
+    for (int i = 0; i < Fire::counter; i++) fireEntities[i]->ChangeCadr();
 
     Fire::timer1 = 0;
     Fire::dt = 0;
@@ -800,7 +800,7 @@ void updateFrames(int clickedX, int clickedY) {
   Bonus::Timer();
 
   if (Bonus::dt > 50) {
-    for (int i = 0; i < Bonus::counter; i++) bonusEntity[i]->ChangeCadr();
+    for (int i = 0; i < Bonus::counter; i++) bonusEntities[i]->ChangeCadr();
 
     Bonus::timer1 = 0;
     Bonus::dt = 0;
@@ -809,7 +809,7 @@ void updateFrames(int clickedX, int clickedY) {
 
   // DOOR+++
   for (int i = 0; i < Door::counter; i++)
-    doorEntity[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton);
+    doorEntities[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton);
   // DOOR---
 
   // FinalDoor+++
