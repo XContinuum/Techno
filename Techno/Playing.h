@@ -408,7 +408,7 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
     return;
   }
 
-  if (player->ChangeLevel()) {  // TODO: rename didReachExitDoor
+  if (player->didReachExitDoor()) {
     loadNextLevel();
   }
 

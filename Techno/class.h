@@ -435,6 +435,7 @@ class Player { // Hero: Player
   int velocity;
   int accel;
   int accelJ;
+  const int step = 7;
 
  public:
   Player()
@@ -481,11 +482,10 @@ class Player { // Hero: Player
     if (!R) return;
     R = false;
 
-    int step = 7;
     int followingColumn = (x + w + step) / blockSize;
     int playerRow1 = y / blockSize;
-    int playerRow2 = y / blockSize + 1;
-    int playerRow3 = y / blockSize + 2;
+    int playerRow2 = playerRow1 + 1;
+    int playerRow3 = playerRow1 + 2;
 
     if (isPassThroughBlock(playerRow1, followingColumn) && 
         isPassThroughBlock(playerRow2, followingColumn) &&
@@ -500,13 +500,13 @@ class Player { // Hero: Player
     if (!L) return;
     L = false;
 
-    int step = 7;
     int previousColumn = (x - step) / blockSize;
     int playerRow1 = y / blockSize;
-    int playerRow2 = y / blockSize + 1;
-    int playerRow3 = y / blockSize + 2;
+    int playerRow2 = playerRow1 + 1;
+    int playerRow3 = playerRow1 + 2;
 
-    if (isPassThroughBlock(playerRow1, previousColumn) && isPassThroughBlock(playerRow2, previousColumn) &&
+    if (isPassThroughBlock(playerRow1, previousColumn) && 
+        isPassThroughBlock(playerRow2, previousColumn) &&
         isPassThroughBlock(playerRow3, previousColumn)) {
       updateFrame('L');
       x -= step;
@@ -543,26 +543,29 @@ class Player { // Hero: Player
     if (gameMap[ny][nx] == AIR_ID && velocityJ >= 0) {
       y -= velocityJ;
       timerG1 = 0;
-    } else {
-      velocityJ = 0;
-      timerG1 = 0;
-      J = false;
+      return;
     }
+
+    velocityJ = 0;
+    timerG1 = 0;
+    J = false;
   }
   void moveUpLadder() {  // UD: moveUpLadder()
     if (!U) return;
     U = false;
 
     int nx = x / blockSize;
-    int ny = y / blockSize;
+    int playerTopRow = y / blockSize;
+    int playerBottomRow = (y + h) / blockSize;
 
-    if (gameMap[ny][nx] == LADDER_ID) {
+    if (gameMap[playerTopRow][nx] == LADDER_ID) {
       updateFrame('U');
       y -= 5;
     }
 
-    if (gameMap[ny][nx] == AIR_ID && gameMap[(y + h) / blockSize][nx] == LADDER_ID &&
-        gameMap[ny + 1][nx] == LADDER_ID)
+    if (gameMap[playerTopRow][nx] == AIR_ID && 
+        gameMap[playerBottomRow][nx] == LADDER_ID &&
+        gameMap[playerTopRow + 1][nx] == LADDER_ID)
       y = (y / blockSize + 1) * blockSize - h;
 
     timer1 = 0;
@@ -584,16 +587,17 @@ class Player { // Hero: Player
   }
 
   void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
-  bool ChangeLevel() {
-    bool c = false;
 
-    if (x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5) c = true;
+  bool didReachExitDoor() {  // ChangeLevel: didReachExitDoor
+    if (x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5)
+      return true;
 
-    if (x + currentFrame->width >= exitX && x + currentFrame->width <= exitX + 5 &&
+    if (x + currentFrame->width >= exitX &&
+        x + currentFrame->width <= exitX + 5 && 
         y >= exitY && y <= exitY + 5)
-      c = true;
+      return true;
 
-    return c;
+    return false;
   }
 
   static void Timer() {
