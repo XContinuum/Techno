@@ -1332,7 +1332,7 @@ class PressurePlate { // ButtonON: PressurePlate
   PressurePlate(int x, int y) {
     this->x = x;
     this->y = y;
-    Image = new Sprite("Images/buttonON.bmp");
+    Image = new Sprite("Images/pressure_plate.bmp");
 
     counter++;
   }
