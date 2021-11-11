@@ -945,7 +945,7 @@ class Chest {
   int x, y;
   int mX1, mY1; // mX1, mY1
   int check; // check:
-  int objects[6 * 8]; // objects: items
+  int items[6 * 8]; // objects: items
 
   bool expO; // expO:
   bool show; // show:
@@ -1008,9 +1008,9 @@ class Chest {
 
     BOk = false;
     //----
-    for (int i = 0; i < 6 * 8; i++) objects[i] = 0;
+    for (int i = 0; i < 6 * 8; i++) items[i] = 0;
 
-    objects[0] = 2;
+    items[0] = 2;
 
     ChangeImages();
     //+++
@@ -1079,8 +1079,8 @@ class Chest {
     int num;
 
     for (int i = 0; i < 6 * 8; i++) {
-      if (objects[i] != 0) {
-        num = sprintf(path, "Images/o%d.bmp", objects[i]);
+      if (items[i] != 0) {
+        num = sprintf(path, "Images/o%d.bmp", items[i]);
 
         ImObjects[i] = new Sprite(path, 0xffffffff);
       }
@@ -1227,7 +1227,7 @@ class Chest {
       int iy = 0;
 
       for (int i = 0; i < 6 * 8; i++) {
-        if (objects[i] != 0)
+        if (items[i] != 0)
           p->draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
                   (h - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
                   ImObjects[i]->width, ImObjects[i]->height, ImObjects[i]);
