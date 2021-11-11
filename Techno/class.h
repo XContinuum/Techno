@@ -1417,35 +1417,36 @@ int BlockMoves::timer1 = 0;
 class FinalDoor {
  public:
   int x, y;
-  int Cadr;
   int num;
-  bool needsKey;  // nk: Need key
+  bool needsKey = false;  // nk: Need key
 
   Sprite *ImageView;
-  Sprite *Image[2];
   Sprite *NeedKey;
 
   static int counter;
 
   int type;
 
+ private:
+  Sprite *assets[2]; // Image: assets
+  int frame = 0; // Cadr: frame
+
  public:
   FinalDoor(int _x, int _y, int _type)
-      : x(_x), y(_y), Cadr(0), num(9), type(_type) {
+      : x(_x), y(_y), num(9), type(_type) {
     ImageView = NULL;
-    Image[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
-    Image[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
+    assets[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
+    assets[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
 
-    ImageView = Image[0];
+    ImageView = assets[0];
 
     NeedKey = new Sprite("Images/NeedKey.bmp", 0xffffffff);
-    nk = false;
 
     counter++;
     //
     if (type == 1) {
-      Image[0]->flipHorizontally();
-      Image[1]->flipHorizontally();
+      assets[0]->flipHorizontally();
+      assets[1]->flipHorizontally();
     }
   }
 
@@ -1455,7 +1456,7 @@ class FinalDoor {
   }
 
   void draw(Param *p) {
-    p->draw((x + Image[0]->width) - ImageView->width, y, ImageView->width,
+    p->draw((x + assets[0]->width) - ImageView->width, y, ImageView->width,
             ImageView->height, ImageView);
 
     // NeedKey
@@ -1465,24 +1466,20 @@ class FinalDoor {
   }
 
   void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
-    if (type == 0) {
-      if (Cadr < 1)
-        Cadr++;
-      else
-        Cadr = 0;
+    if (type != 0) return;
+    frame = (frame + 1) % 2;
 
-      ImageView = Image[Cadr];
+    ImageView = assets[frame];
 
-      gameMap[y / 20][x / 20] = num;
-      gameMap[y / 20 + 1][x / 20] = num;
-      gameMap[y / 20 + 2][x / 20] = num;
-      gameMap[y / 20 + 3][x / 20] = num;
+    gameMap[y / 20][x / 20] = num;
+    gameMap[y / 20 + 1][x / 20] = num;
+    gameMap[y / 20 + 2][x / 20] = num;
+    gameMap[y / 20 + 3][x / 20] = num;
 
-      if (num == 9)
-        num = 8;
-      else
-        num = 9;
-    }
+    if (num == 9)
+      num = 8;
+    else
+      num = 9;
   }
 };
 int FinalDoor::counter = 0;
