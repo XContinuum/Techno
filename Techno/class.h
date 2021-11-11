@@ -28,12 +28,8 @@ class Button {
     h = Image->height;
   }
 
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + w && Y >= y && Y <= y + h) t = true;
-
-    return t;
+  bool contains(int x, int y) { // Touch: contains
+    return x >= this->x && x <= this->x + w && y >= this->y && y <= this->y + h;
   }
 
   void draw(Param *p) {
