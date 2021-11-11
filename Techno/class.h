@@ -946,7 +946,7 @@ class Inventory { // Inventar: Inventory
 
   Sprite *Image;
   Sprite *Open;
-  Sprite *InventarExp;
+  Sprite *toolTip; // InventarExp: toolTip
   Sprite *ImObjects[9];
 
  public:
@@ -958,7 +958,7 @@ class Inventory { // Inventar: Inventory
 
     Image = new Sprite("Images/inventar/Inventar.bmp", 0xffffffff);
     Open = new Sprite("Images/inventar/InventarOpen.bmp", 0xffffffff);
-    InventarExp = new Sprite("Images/inventar/InventarExp.bmp", 0xffffffff);
+    toolTip = new Sprite("Images/inventar/InventarExp.bmp", 0xffffffff);
 
     for (int i = 0; i < 9; i++) objects[i] = 0;
 
@@ -990,7 +990,7 @@ class Inventory { // Inventar: Inventory
     }
 
     if (exp == true)
-      p->draw(mX, mY, InventarExp->width, InventarExp->height, InventarExp);
+      p->draw(mX, mY, toolTip->width, toolTip->height, toolTip);
   }
   void ChangeImages() {
     char *path = new char[30];
