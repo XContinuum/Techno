@@ -709,8 +709,8 @@ class Book {
   Book(int x, int y) {
     this->x = x;
     this->y = y;
-    assets[0] = new Sprite("Images/book.bmp"); // closed book
-    assets[1] = new Sprite("Images/book1.bmp", 0xffffffff); // open book
+    assets[0] = new Sprite("Images/closed_book.bmp");
+    assets[1] = new Sprite("Images/open_book.bmp", 0xffffffff);
     
     bookAsset = assets[0];
     counter++;
