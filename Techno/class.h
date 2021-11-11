@@ -691,7 +691,7 @@ int Hero::timerG1 = 0;
 class Fire {
    public:
     int x, y;
-    int CountCadr;
+    int frame;
     Sprite *ImageView;
     Sprite *Image[3];
 
@@ -701,7 +701,7 @@ class Fire {
     static int timer1;
 
    public:
-    Fire(int _x, int _y) : x(_x), y(_y), CountCadr(0) {
+    Fire(int _x, int _y) : x(_x), y(_y), frame(0) {
         ImageView = NULL;
 
         Image[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
@@ -715,12 +715,12 @@ class Fire {
     void updateFrame() { // ChangeCadr: updateFrame
         // TODO: convert to modulo operator
         // CountCadr = (CountCadr + 1) % 3;
-        if (CountCadr < 2)
-            CountCadr++;
+        if (frame < 2)
+            frame++;
         else
-            CountCadr = 0;
+            frame = 0;
 
-        ImageView = Image[CountCadr];
+        ImageView = Image[frame];
         //
         // if (shouldUpdate()) { // TODO:
         //     frame = (frame + 1) % 3;
