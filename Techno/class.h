@@ -712,7 +712,7 @@ class Fire {
 
         counter++;
     }
-    void ChangeCadr() { // ChangeCadr: updateFrame
+    void updateFrame() { // ChangeCadr: updateFrame
         // TODO: convert to modulo operator
         // CountCadr = (CountCadr + 1) % 3;
         if (CountCadr < 2)

@@ -789,7 +789,7 @@ void updateFrames(int clickedX, int clickedY) {
   Fire::Timer();
 
   if (Fire::dt > 50) { // update frame every 50ms
-    for (int i = 0; i < Fire::counter; i++) fireEntities[i]->ChangeCadr();
+    for (int i = 0; i < Fire::counter; i++) fireEntities[i]->updateFrame();
 
     Fire::timer1 = 0;
     Fire::dt = 0;
