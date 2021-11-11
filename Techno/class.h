@@ -1591,30 +1591,10 @@ class FinalDoor {
     }
   }
 
-  void ChangeCadr(int MatMap[30][40]) {
-    if (type == 0) {
-      if (Cadr < 1)
-        Cadr++;
-      else
-        Cadr = 0;
-
-      ImageView = Image[Cadr];
-
-      MatMap[y / 20][x / 20] = num;
-      MatMap[y / 20 + 1][x / 20] = num;
-      MatMap[y / 20 + 2][x / 20] = num;
-      MatMap[y / 20 + 3][x / 20] = num;
-
-      if (num == 9)
-        num = 8;
-      else
-        num = 9;
-    }
-  }
   void Touch(int X, int Y, int MatMap[30][40], bool &rmb, int inv) {
     if (X >= x && X <= x + ImageView->width && Y >= y &&
         Y <= y + ImageView->height && rmb == true && inv == 2) {
-      ChangeCadr(MatMap);
+      updateFrame(MatMap);
       rmb = false;
     }
 
@@ -1635,6 +1615,28 @@ class FinalDoor {
     if (nk == true)
       p->Draw((w - NeedKey->width) / 2, (h - NeedKey->height) / 2,
               NeedKey->width, NeedKey->height, NeedKey);
+  }
+
+ private:
+  void updateFrame(int MatMap[30][40]) {  // ChangeCadr: updateFrame
+    if (type == 0) {
+      if (Cadr < 1)
+        Cadr++;
+      else
+        Cadr = 0;
+
+      ImageView = Image[Cadr];
+
+      MatMap[y / 20][x / 20] = num;
+      MatMap[y / 20 + 1][x / 20] = num;
+      MatMap[y / 20 + 2][x / 20] = num;
+      MatMap[y / 20 + 3][x / 20] = num;
+
+      if (num == 9)
+        num = 8;
+      else
+        num = 9;
+    }
   }
 };
 int FinalDoor::counter = 0;
