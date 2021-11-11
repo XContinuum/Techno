@@ -521,7 +521,7 @@ void playerEvents() {
 
   switch (key) {
     case KEY_N:
-      inventory->AddObject(2);
+      inventory->addItem(INV_KEY);
       break;
 
     case KEY_RIGHT:
@@ -668,7 +668,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
       bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;
       bookEntities[i]->y = (screenPixelHeight - bookEntities[i]->ImageBack->height) / 2;
 
-      inventory->AddObject(1);
+      inventory->addItem(INV_BOOK);
       isBookMenuOpen = true;
     }
   }
@@ -707,15 +707,15 @@ void didPlayerTouchBonus() {
   }
 }
 void inventoryMoveEvents() {
-  if (!inventory->TouchInvShow(Inventory::Xi, Inventory::Yi)) return;
+  if (!inventory->containsInOpenInventory(Inventory::Xi, Inventory::Yi)) return;
   if (!Inventory::iLmb) return;
 
-  int inventoryCell = inventory->TouchObject(Inventory::Xi, Inventory::Yi);
+  int inventoryCell = inventory->touchedCellIndex(Inventory::Xi, Inventory::Yi);
   
   if (inventory->move) {
     if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == INV_EMPTY_CELL) {
       inventory->objects[inventoryCell] = selectedObjectId;
-      inventory->ChangeImages();
+      inventory->updateCellSprites();
       selectedObjectId = INV_EMPTY_CELL;
     }
     inventory->move = false;

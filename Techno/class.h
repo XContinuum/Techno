@@ -933,7 +933,6 @@ class Inventory { // Inventar: Inventory
   int objects[9]; // cells
 
   int x, y;
-  int mX, mY;
   int move;
   int check;
 
@@ -948,6 +947,7 @@ class Inventory { // Inventar: Inventory
   Sprite *toolTip; // InventarExp: toolTip
   Sprite *inventorySprite; // Image: inventorySprite
   Sprite *openInventory; // Open: openInventory
+  
   Sprite *ImObjects[9];
 
  public:
@@ -961,7 +961,7 @@ class Inventory { // Inventar: Inventory
 
     for (int i = 0; i < 9; i++) objects[i] = INV_EMPTY_CELL;
 
-    ChangeImages();
+    updateCellSprites();
   }
 
   void draw(Param *p, int cursorX, int cursorY) {
@@ -991,7 +991,7 @@ class Inventory { // Inventar: Inventory
     if (showTooltip)
       p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
-  void ChangeImages() {
+  void updateCellSprites() { // ChangeImages: updateCellSprites
     char *path = new char[30];
     int num;
 
@@ -1006,7 +1006,7 @@ class Inventory { // Inventar: Inventory
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + inventorySprite->width && y >= this->y && y <= this->y + inventorySprite->height;
   }
-  int TouchObject(int X, int Y) {
+  int touchedCellIndex(int X, int Y) { // TouchObject: touchedCellIndex
     // "Images/inventory/inventory_open.bmp"
     int x1 = 17;
     int x2 = 297;
@@ -1030,18 +1030,21 @@ class Inventory { // Inventar: Inventory
     iLmb = true;
   }
 
-  bool TouchInvShow(int x, int y) {
+  bool containsInOpenInventory(int x, int y) { // TouchInvShow: containsInOpenInventory
     return x >= this->x && x <= this->x + openInventory->width && y >= this->y && y <= this->y + openInventory->height;
   }
 
-  void AddObject(int num) {
+  void addItem(int num) { // AddObject: addItem
+    if (num == INV_EMPTY_CELL) return;
+
     for (int i = 0; i < 9; i++) {
-      if (num != INV_EMPTY_CELL && objects[i] == INV_EMPTY_CELL) {
-        objects[i] = num;
-        ChangeImages();
-        break;
-      }
+      if (objects[i] != INV_EMPTY_CELL) continue;
+      
+      objects[i] = num;
+      break;
     }
+    
+    updateCellSprites();
   }
 };
 bool Inventory::iLmb = false;
@@ -1280,7 +1283,7 @@ class Chest {
   void OpenLock(Inventory *Inv, bool &lmb, int X, int Y, int mX, int mY) {
     if (show == true) {
       if (lock->contains(X, Y) == false && lmb == true &&
-          Inv->TouchInvShow(X, Y) == false)
+          Inv->containsInOpenInventory(X, Y) == false)
         show = false;
 
       int mmx = mX - locker->x;
