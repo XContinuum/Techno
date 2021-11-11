@@ -1141,96 +1141,95 @@ class Chest {
                    (h - code->height) / 2 + 68);
   }
   //+++
-  void OpenLock(Inventory *Inv, bool &lmb, int X, int Y, int mX, int mY) {
-    if (show == true) {
-      if (lock->contains(X, Y) == false && lmb == true &&
-          Inv->containsInOpenInventory(X, Y) == false)
-        show = false;
+  void openLock(Inventory *Inv, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
+    if (!show) return;
 
-      int mmx = mX - locker->x;
-      int mmy = mY - locker->y;
-      int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) +
-                      (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
+    if (lmb && !lock->contains(X, Y) && !Inv->containsInOpenInventory(X, Y))
+      show = false;
 
-      if (lOK->contains(X, Y) == true && lmb == true) {
-        lOK->show = true;
+    int mmx = mX - locker->x;
+    int mmy = mY - locker->y;
+    int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) +
+                    (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
 
-        if (sd < 2)
-          sd++;
+    if (lOK->contains(X, Y) == true && lmb == true) {
+      lOK->show = true;
+
+      if (sd < 2)
+        sd++;
+      else
+        sd = 0;
+
+      lmb = false;
+    } else
+      lOK->show = false;
+
+    if (LockerLight->contains(mX, mY) == true && dist > 55 && dist < 88) {
+      LockerLight->show = true;
+
+      if (locker->contains(X, Y) == true && lmb == true) {
+        // Calculate angle+++
+        double xn = locker->w / 2;
+        double yn = locker->h / 2;
+
+        double x1 = 0;
+        double y1 = locker->h / 2;
+
+        double xm = (X - locker->x) - xn;
+        double ym = yn - (Y - locker->y);
+
+        double a2 = sqrt(xm * xm + ym * ym);
+
+        double angle1 = acos(ym / a2);
+        double angle2 = (angle1 * 180) / 3.14;
+
+        if (X - locker->x < xn) angle2 = 360 - angle2;
+
+        int angle = angle2 / 9;
+
+        cd[sd] = angle;
+        combinaison = cd[0] * 10000 + cd[1] * 100 + cd[2];
+        // Calculate angle---
+
+        // Show angle+++
+        ar->num = angle;
+
+        //Показ комбинации на экран+++
+        char *showText = new char[100];
+        int ran = 0;
+
+        if (cd[0] < 10)
+          ran = sprintf(showText, "0%d 0%d 0%d", cd[0], cd[1], cd[2]);
         else
-          sd = 0;
+          // ran=sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
+
+          codeView->changeText(showText);
+        //Показ комбинации на экран---
+        // Show angle---
 
         lmb = false;
-      } else
-        lOK->show = false;
-
-      if (LockerLight->contains(mX, mY) == true && dist > 55 && dist < 88) {
-        LockerLight->show = true;
-
-        if (locker->contains(X, Y) == true && lmb == true) {
-          // Calculate angle+++
-          double xn = locker->w / 2;
-          double yn = locker->h / 2;
-
-          double x1 = 0;
-          double y1 = locker->h / 2;
-
-          double xm = (X - locker->x) - xn;
-          double ym = yn - (Y - locker->y);
-
-          double a2 = sqrt(xm * xm + ym * ym);
-
-          double angle1 = acos(ym / a2);
-          double angle2 = (angle1 * 180) / 3.14;
-
-          if (X - locker->x < xn) angle2 = 360 - angle2;
-
-          int angle = angle2 / 9;
-
-          cd[sd] = angle;
-          combinaison = cd[0] * 10000 + cd[1] * 100 + cd[2];
-          // Calculate angle---
-
-          // Show angle+++
-          ar->num = angle;
-
-          //Показ комбинации на экран+++
-          char *showText = new char[100];
-          int ran = 0;
-
-          if (cd[0] < 10)
-            ran = sprintf(showText, "0%d 0%d 0%d", cd[0], cd[1], cd[2]);
-          else
-            // ran=sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
-
-            codeView->changeText(showText);
-          //Показ комбинации на экран---
-          // Show angle---
-
-          lmb = false;
-        }
-      } else {
-        LockerLight->show = false;
       }
-
-      // Open++++
-      if (combinaison == Answer && sd == 0) BOk = true;
-
-      if (BOk == true) {
-        Timer();
-
-        if (dt > 2000) {
-          showC = true;
-          BOk = false;
-          combinaison = 0;
-
-          dt = 0;
-          timer = 0;
-          timer1 = 0;
-        }
-      }
-      // Open----
+    } else {
+      LockerLight->show = false;
     }
+
+    // Open++++
+    if (combinaison == Answer && sd == 0) BOk = true;
+
+    if (BOk == true) {
+      Timer();
+
+      if (dt > 2000) {
+        showC = true;
+        BOk = false;
+        combinaison = 0;
+
+        dt = 0;
+        timer = 0;
+        timer1 = 0;
+      }
+    }
+    // Open----
   }
   //++++
   void draw(Param *p) {
