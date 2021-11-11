@@ -179,7 +179,7 @@ void drawEntities(int cursorX, int cursorY) {
   for (int i = 0; i < Book::counter; i++) {
     if (!bookEntities[i]->show) continue;
 
-    if (bookEntities[i]->state == 'O') {
+    if (bookEntities[i]->isOpen) {
       paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                       pauseOverlay);
     }
@@ -580,9 +580,9 @@ void closeTheBook() {
   if (key != KEY_RETURN) return;
 
   for (int i = 0; i < Book::counter; i++) {
-    if (bookEntities[i]->state == 'O') {
+    if (bookEntities[i]->isOpen) {
       bookEntities[i]->show = false;
-      bookEntities[i]->state = 'C';
+      bookEntities[i]->isOpen = false;
       isBookMenuOpen = false;
     }
   }
@@ -654,13 +654,13 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   // BOOKS+++
   for (int i = 0; i < Book::counter; i++) {
-    if (!(bookEntities[i]->state = 'C' && bookEntities[i]->show)) continue;
+    if (!(!bookEntities[i]->isOpen && bookEntities[i]->show)) continue;
 
     bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->currentFrame->height);
     bool bottomRight = bookEntities[i]->contains(player->x + player->currentFrame->width, player->y + player->currentFrame->height);
 
     if (bottomLeft || bottomRight) {
-      bookEntities[i]->state = 'O'; // open state
+      bookEntities[i]->isOpen = true;
       bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff); // open book
       bookEntities[i]->bookAsset = bookEntities[i]->ImageBack;
       bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;

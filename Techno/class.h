@@ -697,7 +697,7 @@ class Book {
  public:
   int x, y;
   bool show = true;
-  char state = 'C'; // closed state
+  bool isOpen = false; // state: isOpen
 
   Sprite *bookAsset; // Image: bookAsset
   Sprite *ImageBack;
