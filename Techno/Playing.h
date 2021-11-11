@@ -799,8 +799,12 @@ void updateFrames(int clickedX, int clickedY) {
   // BONUS+++
 
   // DOOR+++
-  for (int i = 0; i < Door::counter; i++)
-    doorEntities[i]->contains(clickedX, clickedY, gameMap, didClickLeftButton);
+  for (int i = 0; i < Door::counter; i++) {
+    if (didClickRightButton && doorEntities[i]->contains(clickedX, clickedY)) {
+      updateFrame(gameMap);
+      didClickRightButton = false;
+    }
+  }
   // DOOR---
 
   // FinalDoor+++

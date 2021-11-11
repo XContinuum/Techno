@@ -750,12 +750,8 @@ class Door {
     counter++;
   }
 
-  void contains(int X, int Y, int MatMap[30][40], bool &rmb) { // Touch: contains
-    if (X >= x && X <= x + ImageView->width && Y >= y &&
-        Y <= y + ImageView->height && rmb == true) {
-      updateFrame(MatMap);
-      rmb = false;
-    }
+  bool contains(int x, int y) {  // Touch: contains
+    return x >= this->x && x <= this->x + ImageView->width && y >= this->y && y <= this->y + ImageView->height;
   }
 
  private:
