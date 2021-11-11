@@ -939,10 +939,6 @@ class Inventory { // Inventar: Inventory
   bool show;
   bool showTooltip; // exp: showTooltip
 
-  static bool iLmb;
-  static int Xi;
-  static int Yi;
-
  private:
   Sprite *toolTip; // InventarExp: toolTip
   Sprite *inventorySprite; // Image: inventorySprite
@@ -977,7 +973,7 @@ class Inventory { // Inventar: Inventory
       p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
       for (int i = 0; i < 9; i++) {
-        if (objects[i] != 0) {
+        if (objects[i] != INV_EMPTY_CELL) {
           int l = 17 + i * 7 + i * 25;
 
           if (i == 0) l = 17 + i * 7 + i * 25 - 7;
@@ -996,7 +992,7 @@ class Inventory { // Inventar: Inventory
     int num;
 
     for (int i = 0; i < 9; i++) {
-      if (objects[i] != 0) {
+      if (objects[i] != INV_EMPTY_CELL) {
         num = sprintf(path, "Images/o%d.bmp", objects[i]);
 
         ImObjects[i] = new Sprite(path, 0xffffffff);
@@ -1024,12 +1020,6 @@ class Inventory { // Inventar: Inventory
     return -1;
   }
 
-  static void SetPosition(int X, int Y) {
-    Xi = X;
-    Yi = Y;
-    iLmb = true;
-  }
-
   bool containsInOpenInventory(int x, int y) { // TouchInvShow: containsInOpenInventory
     return x >= this->x && x <= this->x + openInventory->width && y >= this->y && y <= this->y + openInventory->height;
   }
@@ -1043,13 +1033,10 @@ class Inventory { // Inventar: Inventory
       objects[i] = num;
       break;
     }
-    
+
     updateCellSprites();
   }
 };
-bool Inventory::iLmb = false;
-int Inventory::Xi = 0;
-int Inventory::Yi = 0;
 
 class Chest {
  public:

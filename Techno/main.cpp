@@ -451,7 +451,6 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
                 didClickLeftButton = true;
 
-                Inventory::SetPosition(clickedX, clickedY);
                 Chest::SetPosition(clickedX, clickedY);
             }
 

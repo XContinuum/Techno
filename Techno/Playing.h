@@ -635,7 +635,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // F        T       T
   // F        F       F
 
-  inventoryMoveEvents();
+  inventoryMoveEvents(clickedX, clickeY);
   chestMoveEvents();
 
   //++++++
@@ -706,11 +706,11 @@ void didPlayerTouchBonus() {
     }
   }
 }
-void inventoryMoveEvents() {
-  if (!inventory->containsInOpenInventory(Inventory::Xi, Inventory::Yi)) return;
-  if (!Inventory::iLmb) return;
+void inventoryMoveEvents(int clickedX, int clickedY) {
+  if (!didClickLeftButton) return;
+  if (!inventory->containsInOpenInventory(clickedX, clickedY) return;
 
-  int inventoryCell = inventory->touchedCellIndex(Inventory::Xi, Inventory::Yi);
+  int inventoryCell = inventory->touchedCellIndex(clickedX, clickedY);
   
   if (inventory->move) {
     if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == INV_EMPTY_CELL) {
@@ -730,10 +730,6 @@ void inventoryMoveEvents() {
   }
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->move = !inventory->move;
-
-  Inventory::Xi = 0;
-  Inventory::Yi = 0;
-  Inventory::iLmb = false;
 }
 void chestMoveEvents() {
   for (int i = 0; i < Chest::counter; i++) {
