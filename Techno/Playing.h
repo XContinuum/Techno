@@ -93,7 +93,7 @@ void drawScene(int cursorX, int cursorY) { // ★★★
 void drawMission() {
   // Global: missions, missionButtons, missionLock, backButton
   // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
+  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
   if (missionButtons[0]->show) missionButtons[0]->Draw(paramDraw);
 
@@ -114,7 +114,7 @@ void drawMission() {
       int x = missionsTableX + j * (missionLock->width + horizontalSpace);
       int y = missionsTableY + i * (missionLock->height + verticalSpace);
 
-      paramDraw->Draw(x, y, missionLock->width, missionLock->height,
+      paramDraw->draw(x, y, missionLock->width, missionLock->height,
                       missionLock);
     }
   }
@@ -125,16 +125,16 @@ void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntities, doorEntities, bonusEntities, movingStairBlocks, chest, player, inventory, bookEntities, pauseOverlay
   // selectedObjectId
   // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, map);
+  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
-    paramDraw->Draw(fireEntities[i]->x, fireEntities[i]->y,
+    paramDraw->draw(fireEntities[i]->x, fireEntities[i]->y,
                     fireEntities[i]->currentSprite->width,
                     fireEntities[i]->currentSprite->height, fireEntities[i]->currentSprite);
   }
 
   for (int i = 0; i < Door::counter; i++) {
-    paramDraw->Draw(doorEntities[i]->x, doorEntities[i]->y,
+    paramDraw->draw(doorEntities[i]->x, doorEntities[i]->y,
                     doorEntities[i]->ImageView->width,
                     doorEntities[i]->ImageView->height, doorEntities[i]->ImageView);
   }
@@ -146,13 +146,13 @@ void drawEntities(int cursorX, int cursorY) {
   for (int i = 0; i < Bonus::counter; i++) {
     if (!bonusEntities[i]->show) continue;
 
-    paramDraw->Draw(
+    paramDraw->draw(
         bonusEntities[i]->x, bonusEntities[i]->y, bonusEntities[i]->currentFrame->width,
         bonusEntities[i]->currentFrame->height, bonusEntities[i]->currentFrame);
   }
 
   for (int i = 0; i < BlockMoves::counter; i++) {
-    paramDraw->Draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->Image->width,
+    paramDraw->draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->Image->width,
                     movingStairBlocks[i]->Image->height, movingStairBlocks[i]->Image);
   }
 
@@ -166,7 +166,7 @@ void drawEntities(int cursorX, int cursorY) {
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->show) continue;
 
-    paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+    paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                     pauseOverlay);
     chest[i]->DrawC(paramDraw); // does not mutate parameter
   }
@@ -179,11 +179,11 @@ void drawEntities(int cursorX, int cursorY) {
     if (!bookEntities[i]->show) continue;
 
     if (bookEntities[i]->state == 'O') {
-      paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+      paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                       pauseOverlay);
     }
 
-    paramDraw->Draw(bookEntities[i]->x, bookEntities[i]->y,
+    paramDraw->draw(bookEntities[i]->x, bookEntities[i]->y,
                     bookEntities[i]->Image->width, bookEntities[i]->Image->height,
                     bookEntities[i]->Image);
   }
@@ -196,7 +196,7 @@ void drawEntities(int cursorX, int cursorY) {
 
     Sprite* cursorIcon = new Sprite(path, 0xffffffff);
 
-    paramDraw->Draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
+    paramDraw->draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
   }
   // Cursor---
 }
@@ -206,9 +206,9 @@ void drawPauseMenu() {
   int leftCentered = (screenPixelWidth - pauseMenuSprite->width) / 2;
   int topCentered = (screenPixelHeight - pauseMenuSprite->height) / 2;
   
-  paramDraw->Draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+  paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                   pauseOverlay);
-  paramDraw->Draw(leftCentered, topCentered, pauseMenuSprite->width,
+  paramDraw->draw(leftCentered, topCentered, pauseMenuSprite->width,
                   pauseMenuSprite->height, pauseMenuSprite);
 
   for (int i = 0; i < 4; i++) {

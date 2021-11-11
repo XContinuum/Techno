@@ -37,7 +37,7 @@ class Button {
   }
 
   void Draw(Param *p) {
-    if (show == true) p->Draw(x, y, w, h, Image);
+    if (show == true) p->draw(x, y, w, h, Image);
   }
 };
 
@@ -246,7 +246,7 @@ class Text {
 
       if (szLetters[i] == 'N') distance = 5;
 
-      p->Draw(x + i * letters[i]->width - distance * i, y, letters[n]->width,
+      p->draw(x + i * letters[i]->width - distance * i, y, letters[n]->width,
               letters[n]->height, letters[n]);
     }
   }
@@ -271,7 +271,7 @@ class Text {
 
       if (szLetters[i] == 'N') distance = 5;
 
-      p->Draw(x + i * temp->width - distance * i, y, temp->width, temp->height,
+      p->draw(x + i * temp->width - distance * i, y, temp->width, temp->height,
               temp);
     }
   }
@@ -648,7 +648,7 @@ class Hero {
     w = Image->width;
     h = Image->height;
   }
-  void Draw(Param *p) { p->Draw(x, y, Image->width, Image->height, Image); }
+  void Draw(Param *p) { p->draw(x, y, Image->width, Image->height, Image); }
   bool ChangeLevel() {
     bool c = false;
 
@@ -942,7 +942,7 @@ class Arrow {
   void Draw(Param *p) {
     Image = Images[num];
 
-    p->Draw(x, y, Image->width, Image->height, Image);
+    p->draw(x, y, Image->width, Image->height, Image);
   }
 };
 
@@ -984,16 +984,16 @@ class Inventar {
   }
 
   void Draw(Param *p) {
-    p->Draw(x, y, Image->width, Image->height, Image);
+    p->draw(x, y, Image->width, Image->height, Image);
 
     // 0---
     if (objects[0] != 0)
-      p->Draw(17 + 0 * 7 + 0 * 25 - 7, 7, ImObjects[0]->width,
+      p->draw(17 + 0 * 7 + 0 * 25 - 7, 7, ImObjects[0]->width,
               ImObjects[0]->height, ImObjects[0]);
     // 0+++
 
     if (show == true) {
-      p->Draw(x, y, Open->width, Open->height, Open);
+      p->draw(x, y, Open->width, Open->height, Open);
 
       for (int i = 0; i < 9; i++) {
         if (objects[i] != 0) {
@@ -1001,14 +1001,14 @@ class Inventar {
 
           if (i == 0) l = 17 + i * 7 + i * 25 - 7;
 
-          p->Draw(l, 7, ImObjects[i]->width, ImObjects[i]->height,
+          p->draw(l, 7, ImObjects[i]->width, ImObjects[i]->height,
                   ImObjects[i]);
         }
       }
     }
 
     if (exp == true)
-      p->Draw(mX, mY, InventarExp->width, InventarExp->height, InventarExp);
+      p->draw(mX, mY, InventarExp->width, InventarExp->height, InventarExp);
   }
   void ChangeImages() {
     char *path = new char[30];
@@ -1405,10 +1405,10 @@ class Chest {
   }
   //++++
   void Draw(Param *p) {
-    p->Draw(x, y, ImageView->width, ImageView->height, ImageView);
+    p->draw(x, y, ImageView->width, ImageView->height, ImageView);
 
     if (expO == true)
-      p->Draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
+      p->draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
   }
   void DrawC(Param *p) {
     lock->Draw(p);
@@ -1429,7 +1429,7 @@ class Chest {
     txt->Draw(p);
 
     if (showC == true) {
-      p->Draw((w - code->width) / 2, (h - code->height) / 2, Content->width,
+      p->draw((w - code->width) / 2, (h - code->height) / 2, Content->width,
               Content->height, Content);
 
       int ix = 0;
@@ -1437,7 +1437,7 @@ class Chest {
 
       for (int i = 0; i < 6 * 8; i++) {
         if (objects[i] != 0)
-          p->Draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
+          p->draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
                   (h - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
                   ImObjects[i]->width, ImObjects[i]->height, ImObjects[i]);
 
@@ -1451,7 +1451,7 @@ class Chest {
     }
 
     if (BOk == true)
-      p->Draw((w - lock->w) / 2 + 99 + 2, (h - lock->h) / 2 + 107,
+      p->draw((w - lock->w) / 2 + 99 + 2, (h - lock->h) / 2 + 107,
               OkOpen->width, OkOpen->height, OkOpen);
   }
 };
@@ -1608,12 +1608,12 @@ class FinalDoor {
   }
 
   void Draw(Param *p) {
-    p->Draw((x + Image[0]->width) - ImageView->width, y, ImageView->width,
+    p->draw((x + Image[0]->width) - ImageView->width, y, ImageView->width,
             ImageView->height, ImageView);
 
     // NeedKey
     if (nk == true)
-      p->Draw((w - NeedKey->width) / 2, (h - NeedKey->height) / 2,
+      p->draw((w - NeedKey->width) / 2, (h - NeedKey->height) / 2,
               NeedKey->width, NeedKey->height, NeedKey);
   }
 

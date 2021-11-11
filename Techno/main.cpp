@@ -172,7 +172,7 @@ class Param {
    public:
     Param() { backBuffer = NULL; }
 
-    void Draw(int x, int y, int w, int h, Sprite *Image) {
+    void draw(int x, int y, int w, int h, Sprite *Image) { // Draw: draw
         rectSize.left = x;
         rectSize.top = y;
         rectSize.right = rectSize.left + w;
@@ -236,7 +236,7 @@ Button* lock;
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
     if (isInitialState == true) {
-        paramDraw->Draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
+        paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
         for (int i = 0; i < 4; i++) btnMain[i]->Draw(paramDraw);
     }
