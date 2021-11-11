@@ -582,8 +582,9 @@ void closeTheBook() {
   for (int i = 0; i < Book::counter; i++) {
     if (bookEntities[i]->isOpen) {
       bookEntities[i]->show = false;
-      bookEntities[i]->isOpen = false;
       isBookMenuOpen = false;
+      
+      bookEntities[i]->closeBook();
     }
   }
 }
@@ -660,11 +661,14 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     bool bottomRight = bookEntities[i]->contains(player->x + player->currentFrame->width, player->y + player->currentFrame->height);
 
     if (bottomLeft || bottomRight) {
-      bookEntities[i]->isOpen = true;
-      bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff); // open book
-      bookEntities[i]->bookAsset = bookEntities[i]->ImageBack;
-      bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;
-      bookEntities[i]->y = (screenPixelHeight - bookEntities[i]->ImageBack->height) / 2;
+      // bookEntities[i]->isOpen = true;
+      // bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff); // open book
+      // bookEntities[i]->bookAsset = bookEntities[i]->ImageBack;
+
+      // bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;
+      // bookEntities[i]->y = (screenPixelHeight - bookEntities[i]->ImageBack->height) / 2;
+
+      bookEntities[i]->closeBook();
 
       inventory->addItem(INV_BOOK);
       isBookMenuOpen = true;

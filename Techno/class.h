@@ -700,20 +700,34 @@ class Book {
   bool isOpen = false; // state: isOpen
 
   Sprite *bookAsset; // Image: bookAsset
-  Sprite *ImageBack;
-
   static int counter;
+
+ private:
+    Sprite *assets[2];
 
  public:
   Book(int x, int y) {
     this->x = x;
     this->y = y;
-    ImageBack = NULL;
-    bookAsset = new Sprite("Images/book.bmp"); // closed book
+    assets[0] = new Sprite("Images/book.bmp"); // closed book
+    assets[1] = new Sprite("Images/book1.bmp", 0xffffffff); // open book
     
+    bookAsset = assets[0];
     counter++;
   }
 
+  void closeBook() {
+    bookAsset = assets[0];
+    isOpen = false;
+  }
+  void openBook() {
+    bookAsset = assets[1];
+    isOpen = true;
+
+    // center book
+    x = (screenPixelWidth - bookAsset->width) / 2;
+    y = (screenPixelHeight - bookAsset->height) / 2;
+  }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + bookAsset->width && y >= this->y && this->y <= y + bookAsset->height;
   }
