@@ -943,46 +943,48 @@ class Inventory { // Inventar: Inventory
 class Chest {
  public:
   int x, y;
-  int Cadr;
-  int mX1, mY1;
-  int Answer;
-  int check;
-  int objects[6 * 8];
-  int sd;
-  int cd[3];
-  int combinaison;
+  int Cadr; // Cadr
+  int mX1, mY1; // mX1, mY1
+  int Answer; // Answer:
+  int check; // check:
+  int objects[6 * 8]; // objects: 
 
-  bool expO;
-  bool show;
-  bool showC;
-  bool move;
-  bool BOk;
+  bool expO; // expO:
+  bool show; // show:
+  bool showC; // showC:
+  bool move; // move:
+  bool BOk; // BOk:
 
-  static bool iLmb;
-  static int counter;
-  static int Xi;
-  static int Yi;
-  static int dt;
-  static int timer;
-  static int timer1;
+  static bool iLmb; // iLmb:
+  static int counter; // counter:
+  static int Xi; // Xi:
+  static int Yi; // Yi:
+  static int dt; // dt:
+  static int timer; // timer:
+  static int timer1; // timer1:
 
-  char *question;
+  char *question; // question:
 
-  Sprite *ImageView;
-  Sprite *ImObjects[6 * 8];
-  Sprite *Image[2];
-  Sprite *code;
-  Sprite *OpenExp;
-  Sprite *Content;
-  Sprite *OkOpen;
-  Text *txt;
-  Text *codeView;
-  Button *lock;
-  Button *locker;
-  Button *LockerLight;
-  Button *lOK;
+  Sprite *ImageView; // ImageView:
+  Sprite *ImObjects[6 * 8]; // ImObjects:
+  Sprite *Image[2]; // Image:
+  Sprite *code; // code:
+  Sprite *OpenExp; // OpenExp:
+  Sprite *Content; // Content:
+  Sprite *OkOpen; // OkOpen:
+  Text *txt; // txt:
+  Text *codeView; // codeView:
+  Button *lock; // lock:
+  Button *locker; // locker:
+  Button *LockerLight; // LockerLight:
+  Button *lOK; // lOK:
 
-  Arrow *ar;
+  Arrow *ar; // ar:
+
+ private:
+  int combination = 0; // combinaison: combination
+  int cd[3]; // cd:
+  int sd; // sd:
 
  public:
   Chest(int _x, int _y, int Level, int ans1, int ans2)
@@ -1015,8 +1017,6 @@ class Chest {
     //+++
     sd = 0;
     for (int i = 0; i < 3; i++) cd[i] = 0;
-
-    combinaison = 0;
 
     initializeButtons();
   }
@@ -1163,7 +1163,7 @@ class Chest {
       if (lmb && locker->contains(X, Y)) {
         int angle = calculateAngle(X, Y);
         cd[sd] = angle;
-        combinaison = cd[0] * 10000 + cd[1] * 100 + cd[2];
+        combination = cd[0] * 10000 + cd[1] * 100 + cd[2];
 
         // Show angle+++
         ar->num = angle;
@@ -1178,7 +1178,7 @@ class Chest {
     }
 
     // Open++++
-    if (combinaison == Answer && sd == 0) BOk = true;
+    if (combination == Answer && sd == 0) BOk = true;
 
     if (BOk == true) {
       Timer();
@@ -1186,7 +1186,7 @@ class Chest {
       if (dt > 2000) {
         showC = true;
         BOk = false;
-        combinaison = 0;
+        combination = 0;
 
         dt = 0;
         timer = 0;
