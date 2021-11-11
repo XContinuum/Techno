@@ -493,68 +493,68 @@ class Player { // Hero: Player
   void MoveR() {
     int step = 7;
 
-    if (R == true) {
-      int nx = (x + w + step) / 20;
-      int ny = y / 20;
-      int ny1 = y / 20 + 1;
-      int ny2 = y / 20 + 2;
+    if (!R) return;
+    R = false;
 
-      if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
-          gameMap[ny][nx] == 9) {
-        if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
-            gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
-          if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
-              gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
-            ChangeImage('R');
-            x += step;
-            timer1 = 0;
-          }
+    int nx = (x + w + step) / 20;
+    int ny = y / 20;
+    int ny1 = y / 20 + 1;
+    int ny2 = y / 20 + 2;
+
+    if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
+        gameMap[ny][nx] == 9) {
+      if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
+          gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
+        if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
+            gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
+          updateFrame('R');
+          x += step;
+          timer1 = 0;
         }
       }
-      R = false;
     }
   }
 
   void MoveL() {
     int step = 7;
 
-    if (L == true) {
-      int nx = (x - step) / 20;
-      int ny = y / 20;
-      int ny1 = y / 20 + 1;
-      int ny2 = y / 20 + 2;
+    if (!L) return;
+    L = false;
 
-      if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
-          gameMap[ny][nx] == 9) {
-        if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
-            gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
-          if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
-              gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
-            ChangeImage('L');
-            x -= step;
-            timer1 = 0;
-          }
+    int nx = (x - step) / 20;
+    int ny = y / 20;
+    int ny1 = y / 20 + 1;
+    int ny2 = y / 20 + 2;
+
+    if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
+        gameMap[ny][nx] == 9) {
+      if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
+          gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
+        if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
+            gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
+          updateFrame('L');
+          x -= step;
+          timer1 = 0;
         }
       }
-      L = false;
     }
   }
   void Gravitaton() {
-    if (J == false && G == true) {
-      if (velocity <= 20) velocity += accel;
+    if (J || !G) return;
 
-      int nx = x / 20;
-      int nx1 = (x + w) / 20;
-      int ny = (y + h + velocity) / 20;
+    if (velocity <= 20) velocity += accel;
 
-      if (gameMap[ny][nx] == 0 && gameMap[ny][nx1] == 0) {
-        y += velocity;
-        timerG1 = 0;
-      } else if (gameMap[ny][nx] != 0) {
-        y = ny * 20 - h;
+    int nx = x / 20;
+    int nx1 = (x + w) / 20;
+    int ny = (y + h + velocity) / 20;
 
-        velocity = 0;
-      }
+    if (gameMap[ny][nx] == 0 && gameMap[ny][nx1] == 0) {
+      y += velocity;
+      timerG1 = 0;
+    } else if (gameMap[ny][nx] != 0) {
+      y = ny * 20 - h;
+
+      velocity = 0;
     }
   }
   void Jump() {
@@ -583,7 +583,7 @@ class Player { // Hero: Player
           int ny = y / 20;
 
           if (gameMap[ny][nx] == 3) {
-            ChangeImage('U');
+            updateFrame('U');
             y -= 5;
           }
 
@@ -602,7 +602,7 @@ class Player { // Hero: Player
           int ny = (y + h + 5) / 20;
 
           if (gameMap[ny][nx] == 3) {
-            ChangeImage('U');
+            updateFrame('U');
             y += 5;
           }
 
@@ -613,27 +613,6 @@ class Player { // Hero: Player
     }
   }
 
-  void ChangeImage(char d) {
-    switch (d) {
-      case 'L':
-        leftWalkFrame = (leftWalkFrame + 1) % 4;
-        currentFrame = ImageL[leftWalkFrame];
-        break;
-
-      case 'R':
-        rightWalkFrame = (rightWalkFrame + 1) % 4;
-        currentFrame = ImageR[rightWalkFrame];
-        break;
-
-      case 'U':
-        climbFrame = (climbFrame + 1) % 3;
-        currentFrame = ImageUD[climbFrame];
-        break;
-    }
-
-    w = currentFrame->width;
-    h = currentFrame->height;
-  }
   void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
   bool ChangeLevel() {
     bool c = false;
@@ -666,6 +645,29 @@ class Player { // Hero: Player
     for (int i = 0; i < 30; i++)
       for (int j = 0; j < 40; j++) gameMap[i][j] = MatMap1[i][j];
   }
+
+  private:
+   void updateFrame(char d) { // ChangeImage: updateFrame
+     switch (d) {
+       case 'L':
+         leftWalkFrame = (leftWalkFrame + 1) % 4;
+         currentFrame = ImageL[leftWalkFrame];
+         break;
+
+       case 'R':
+         rightWalkFrame = (rightWalkFrame + 1) % 4;
+         currentFrame = ImageR[rightWalkFrame];
+         break;
+
+       case 'U':
+         climbFrame = (climbFrame + 1) % 3;
+         currentFrame = ImageUD[climbFrame];
+         break;
+     }
+
+     w = currentFrame->width;
+     h = currentFrame->height;
+   }
 };
 int Player::dt = 0;
 int Player::timer = 0;
