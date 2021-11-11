@@ -406,7 +406,7 @@ class Player { // Hero: Player
   int exitX;
   int exitY;
 
-  Sprite *Image; // Image: currentFrame
+  Sprite *currentFrame; // Image: currentFrame
 
   int gameMap[30][40]; // MatMap: gameMap
 
@@ -448,7 +448,7 @@ class Player { // Hero: Player
         U(false),
         D(false),
         G(true) {
-    Image = NULL;
+    currentFrame = NULL;
 
     rightWalkFrame = 0;
     leftWalkFrame = 0;
@@ -484,10 +484,10 @@ class Player { // Hero: Player
     for (int i = 0; i < 5; i++) {
       if (i != 4) ImageJL[i]->flipHorizontally();
     }
-    Image = ImageR[0];
+    currentFrame = ImageR[0];
 
-    w = Image->width;
-    h = Image->height;
+    w = currentFrame->width;
+    h = currentFrame->height;
   }
 
   void MoveR() {
@@ -617,30 +617,30 @@ class Player { // Hero: Player
     switch (d) {
       case 'L':
         leftWalkFrame = (leftWalkFrame + 1) % 4;
-        Image = ImageL[leftWalkFrame];
+        currentFrame = ImageL[leftWalkFrame];
         break;
 
       case 'R':
         rightWalkFrame = (rightWalkFrame + 1) % 4;
-        Image = ImageR[rightWalkFrame];
+        currentFrame = ImageR[rightWalkFrame];
         break;
 
       case 'U':
         climbFrame = (climbFrame + 1) % 3;
-        Image = ImageUD[climbFrame];
+        currentFrame = ImageUD[climbFrame];
         break;
     }
 
-    w = Image->width;
-    h = Image->height;
+    w = currentFrame->width;
+    h = currentFrame->height;
   }
-  void draw(Param *p) { p->draw(x, y, Image->width, Image->height, Image); }
+  void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
   bool ChangeLevel() {
     bool c = false;
 
     if (x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5) c = true;
 
-    if (x + Image->width >= exitX && x + Image->width <= exitX + 5 &&
+    if (x + currentFrame->width >= exitX && x + currentFrame->width <= exitX + 5 &&
         y >= exitY && y <= exitY + 5)
       c = true;
 

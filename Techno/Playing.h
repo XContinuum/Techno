@@ -658,8 +658,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < Book::counter; i++) {
     if (!(bookEntities[i]->state = 'C' && bookEntities[i]->show)) continue;
 
-    bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->Image->height);
-    bool bottomRight = bookEntities[i]->contains(player->x + player->Image->width, player->y + player->Image->height);
+    bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->currentFrame->height);
+    bool bottomRight = bookEntities[i]->contains(player->x + player->currentFrame->width, player->y + player->currentFrame->height);
 
     if (bottomLeft || bottomRight) {
       bookEntities[i]->state = 'O';
