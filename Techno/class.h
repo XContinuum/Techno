@@ -419,7 +419,7 @@ class Player { // Hero: Player
   static int timerG1;
 
   bool L, R, J, U, D, G;
-  int velocityJ;
+  int jumpVelocity; // velocityJ: jumpVelocity
 
  private:
   int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
@@ -433,8 +433,7 @@ class Player { // Hero: Player
 
   // Gravity
   int velocity;
-  int accel;
-  int accelJ;
+  const int acceleration = 3; // accel: acceleration
   const int step = 7;
 
  public:
@@ -445,9 +444,7 @@ class Player { // Hero: Player
         R(false),
         J(false),
         velocity(0),
-        accel(3),
-        velocityJ(0),
-        accelJ(3),
+        jumpVelocity(0),
         U(false),
         D(false),
         G(true) {
@@ -516,18 +513,19 @@ class Player { // Hero: Player
   void gravity() { // Gravitaton: gravity
     if (J || !G) return;
 
-    if (velocity <= 20) velocity += accel;
+    if (velocity <= 20) velocity += acceleration;
 
     int nx = x / blockSize;
     int nx1 = (x + w) / blockSize;
     int ny = (y + h + velocity) / blockSize;
 
-    if (gameMap[ny][nx] == AIR_ID && gameMap[ny][nx1] == AIR_ID) {
-      y += velocity;
-      timerG1 = 0;
-    } else if (gameMap[ny][nx] != AIR_ID) {
+    if (gameMap[ny][nx] == AIR_ID) {
+      if (gameMap[ny][nx1] == AIR_ID) {
+        y += velocity;
+        timerG1 = 0;
+      }
+    } else {
       y = ny * blockSize - h;
-
       velocity = 0;
     }
   }
@@ -535,18 +533,18 @@ class Player { // Hero: Player
     if (!J) return;
     if (dtG <= 20) return;
 
-    velocityJ -= accel;
+    jumpVelocity -= acceleration;
 
     int nx = x / blockSize;
-    int ny = (y - velocityJ) / blockSize;
+    int ny = (y - jumpVelocity) / blockSize;
 
-    if (gameMap[ny][nx] == AIR_ID && velocityJ >= 0) {
-      y -= velocityJ;
+    if (gameMap[ny][nx] == AIR_ID && jumpVelocity >= 0) {
+      y -= jumpVelocity;
       timerG1 = 0;
       return;
     }
 
-    velocityJ = 0;
+    jumpVelocity = 0;
     timerG1 = 0;
     J = false;
   }

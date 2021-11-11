@@ -543,7 +543,7 @@ void playerEvents() {
 
       if (!(gameMap[bottom][leftPlayerSide] == AIR_ID && gameMap[bottom][rightPlayerSide] == AIR_ID)) {
         player->J = true;
-        player->velocityJ = 15;
+        player->jumpVelocity = 15;
       }
       break;
     
