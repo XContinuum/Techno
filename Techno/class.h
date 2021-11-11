@@ -410,10 +410,6 @@ class Player { // Hero: Player
 
   int gameMap[30][40]; // MatMap: gameMap
 
-  static int dtG;
-  static int timerG;
-  static int timerG1;
-
   bool isMovingLeft, isMovingRight, isJumping; // L, R, J
   bool isClimbingUp, isClimbingDown, canFall; // U, D, G
 
@@ -435,6 +431,7 @@ class Player { // Hero: Player
   const int step = 7;
 
   int startTime;
+  int verticalStartTime;
 
  public:
   Player() : x(0), y(0), velocity(0), jumpVelocity(0) {
@@ -515,7 +512,6 @@ class Player { // Hero: Player
     if (gameMap[ny][nx] == AIR_ID) {
       if (gameMap[ny][nx1] == AIR_ID) {
         y += velocity;
-        timerG1 = 0;
       }
     } else {
       y = ny * blockSize - h;
@@ -532,12 +528,10 @@ class Player { // Hero: Player
 
     if (gameMap[ny][nx] == AIR_ID && jumpVelocity >= 0) {
       y -= jumpVelocity;
-      timerG1 = 0;
       return;
     }
 
     jumpVelocity = 0;
-    timerG1 = 0;
     isJumping = false;
   }
   void moveUpLadder() {  // UD: moveUpLadder()
@@ -586,13 +580,6 @@ class Player { // Hero: Player
     return false;
   }
 
-  static void TimerG() {
-    if (timerG1 == 0) timerG1 = timeGetTime();
-
-    timerG = timeGetTime();
-    dtG = timerG - timerG1;
-  }
-
   void duplicateMap(int gameMap[30][40]) {  // ChargeMatMap: duplicateMap
     for (int i = 0; i < 30; i++)
       for (int j = 0; j < 40; j++) {
@@ -609,6 +596,17 @@ class Player { // Hero: Player
       startTime = timeGetTime();
     }
     return timeSinceLastFrame > 15;
+  }
+
+  bool shouldUpdateVerticalPosition() {
+    // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
+    if (verticalStartTime == NULL) verticalStartTime = timeGetTime();
+    int timeSinceLastFrame = timeGetTime() - verticalStartTime;
+
+    if (timeSinceLastFrame > 20) {
+      verticalStartTime = timeGetTime();
+    }
+    return timeSinceLastFrame > 20;
   }
 
   private:
@@ -646,9 +644,6 @@ class Player { // Hero: Player
      return path;
    }
 };
-int Player::dtG = 0;
-int Player::timerG = 0;
-int Player::timerG1 = 0;
 
 class Fire {
  public:

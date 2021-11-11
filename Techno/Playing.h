@@ -513,9 +513,6 @@ void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Player class
   player->duplicateMap(gameMap); // does not mutate parameter
-
-  Player::TimerG();
-
   Keyboard key = keyboardMapping(buffer);
 
   switch (key) {
@@ -559,8 +556,7 @@ void playerEvents() {
       break;
   }
 
-
-  if (Player::dtG > 20) {
+  if (player->shouldUpdateVerticalPosition()) {
     player->jump();
     player->gravity();
   }
