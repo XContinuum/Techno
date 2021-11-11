@@ -368,7 +368,7 @@ class Text {
     for (int k = 0; k < 77; k++) {
       letters[k] = new Sprite("Images/Text.bmp", 0xffffffff);
       letters[k]->cut(w * j, h * i, w, h);
-      letters[k]->RemplaceColor(0xFF000000, color);
+      letters[k]->replaceColor(0xFF000000, color);
 
       j++;
 
@@ -386,7 +386,7 @@ class Text {
     for (int k = 0; k < 77; k++) {
       lettersColor[k] = new Sprite("Images/Text.bmp", 0xffffffff);
       lettersColor[k]->cut(w * j, h * i, w, h);
-      lettersColor[k]->RemplaceColor(0xFF000000, color);
+      lettersColor[k]->replaceColor(0xFF000000, color);
 
       j++;
 

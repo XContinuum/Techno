@@ -157,7 +157,7 @@ class Sprite {
         height = hI;
     }
 
-    void RemplaceColor(int from, int to) {
+    void replaceColor(int from, int to) { // RemplaceColor
         for (int i = 0; i < height; ++i)
             for (int j = 0; j < width; ++j)
                 if (img[j + i * width] == from) img[j + i * width] = to;
