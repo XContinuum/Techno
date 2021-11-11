@@ -799,13 +799,8 @@ class Book {
     counter++;
   }
 
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + Image->width && Y >= y && y <= Y + Image->height)
-      t = true;
-
-    return t;
+  bool contains(int x, int y) { // Touch: contains
+    return x >= this->x && x <= this->x + Image->width && y >= this->y && this->y <= y + Image->height;
   }
 };
 int Book::counter = 0;
@@ -850,14 +845,9 @@ class Bonus {
     currentFrame = Image[frame];
   }
 
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + currentFrame->width && Y >= y &&
-        Y <= y + currentFrame->height)
-      t = true;
-
-    return t;
+  bool contains(int x, int y) {  // Touch: contains
+    return x >= this->x && x <= this->x + currentFrame->width && y >= this->y &&
+           y <= this->y + currentFrame->height;
   }
 
  private:
@@ -1014,13 +1004,8 @@ class Inventar {
       }
     }
   }
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
-      t = true;
-
-    return t;
+  bool contains(int x, int y) { // Touch: contains
+    return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
   }
   int TouchObject(int X, int Y) {
     // "Images/inventar/InventarOpen.bmp"
@@ -1216,14 +1201,8 @@ class Chest {
 
     return t;
   }
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + ImageView->width && Y >= y &&
-        Y <= y + ImageView->height)
-      t = true;
-
-    return t;
+  bool contains(int x, int y) { // Touch: contains
+    return x >= this->x && x <= this->x + ImageView->width && y >= this->y && y <= this->y + ImageView->height;
   }
 
   static void SetPosition(int X, int Y) {
@@ -1470,13 +1449,8 @@ class ButtonON {
     counter++;
   }
 
-  bool contains(int X, int Y) { // Touch: contains
-    bool t = false;
-
-    if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
-      t = true;
-
-    return t;
+  bool contains(int x, int y) { // Touch: contains
+    return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
   }
 };
 int ButtonON::counter = 0;
