@@ -753,7 +753,16 @@ class Door {
         counter++;
     }
 
-    void ChangeCadr(int MatMap[30][40]) {
+    void Touch(int X, int Y, int MatMap[30][40], bool &rmb) {
+        if (X >= x && X <= x + ImageView->width && Y >= y &&
+            Y <= y + ImageView->height && rmb == true) {
+            updateFrame(MatMap);
+            rmb = false;
+        }
+    }
+
+    private:
+    void updateFrame(int MatMap[30][40]) { // ChangeCadr
         if (Cadr < 1)
             Cadr++;
         else
@@ -770,13 +779,6 @@ class Door {
             num = 4;
         else
             num = 5;
-    }
-    void Touch(int X, int Y, int MatMap[30][40], bool &rmb) {
-        if (X >= x && X <= x + ImageView->width && Y >= y &&
-            Y <= y + ImageView->height && rmb == true) {
-            ChangeCadr(MatMap);
-            rmb = false;
-        }
     }
 };
 int Door::counter = 0;
