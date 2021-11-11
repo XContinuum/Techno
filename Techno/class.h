@@ -417,7 +417,7 @@ class Player { // Hero: Player
 
   Sprite *Image;
 
-  int MatMap[30][40];
+  int gameMap[30][40]; // MatMap: gameMap
 
   static int dt;
   static int timer;
@@ -452,32 +452,32 @@ class Player { // Hero: Player
         G(true) {
     Image = NULL;
 
-    ImageR[0] = new Sprite("Images/heroR1.bmp", 0xffffffff);
-    ImageR[1] = new Sprite("Images/heroR2.bmp", 0xffffffff);
-    ImageR[2] = new Sprite("Images/heroR3.bmp", 0xffffffff);
-    ImageR[3] = new Sprite("Images/heroR4.bmp", 0xffffffff);
-    ImageR[4] = new Sprite("Images/heroR5.bmp", 0xffffffff);
+    ImageR[0] = new Sprite("Images/hero/heroR1.bmp", 0xffffffff);
+    ImageR[1] = new Sprite("Images/hero/heroR2.bmp", 0xffffffff);
+    ImageR[2] = new Sprite("Images/hero/heroR3.bmp", 0xffffffff);
+    ImageR[3] = new Sprite("Images/hero/heroR4.bmp", 0xffffffff);
+    ImageR[4] = new Sprite("Images/hero/heroR5.bmp", 0xffffffff);
 
-    ImageL[0] = new Sprite("Images/heroL1.bmp", 0xffffffff);
-    ImageL[1] = new Sprite("Images/heroL2.bmp", 0xffffffff);
-    ImageL[2] = new Sprite("Images/heroL3.bmp", 0xffffffff);
-    ImageL[3] = new Sprite("Images/heroL4.bmp", 0xffffffff);
-    ImageL[4] = new Sprite("Images/heroL5.bmp", 0xffffffff);
+    ImageL[0] = new Sprite("Images/hero/heroL1.bmp", 0xffffffff);
+    ImageL[1] = new Sprite("Images/hero/heroL2.bmp", 0xffffffff);
+    ImageL[2] = new Sprite("Images/hero/heroL3.bmp", 0xffffffff);
+    ImageL[3] = new Sprite("Images/hero/heroL4.bmp", 0xffffffff);
+    ImageL[4] = new Sprite("Images/hero/heroL5.bmp", 0xffffffff);
 
-    ImageJR[0] = new Sprite("Images/heroJ1.bmp", 0xffffffff);
-    ImageJR[1] = new Sprite("Images/heroJ2.bmp", 0xffffffff);
-    ImageJR[2] = new Sprite("Images/heroJ3.bmp", 0xffffffff);
-    ImageJR[3] = new Sprite("Images/heroJ4.bmp", 0xffffffff);
+    ImageJR[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
+    ImageJR[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
+    ImageJR[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
+    ImageJR[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
 
-    ImageJL[0] = new Sprite("Images/heroJ1.bmp", 0xffffffff);
-    ImageJL[1] = new Sprite("Images/heroJ2.bmp", 0xffffffff);
-    ImageJL[2] = new Sprite("Images/heroJ3.bmp", 0xffffffff);
-    ImageJL[3] = new Sprite("Images/heroJ4.bmp", 0xffffffff);
+    ImageJL[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
+    ImageJL[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
+    ImageJL[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
+    ImageJL[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
 
-    ImageUD[0] = new Sprite("Images/heroU1.bmp", 0xffffffff);
-    ImageUD[1] = new Sprite("Images/heroU2.bmp", 0xffffffff);
-    ImageUD[2] = new Sprite("Images/heroU3.bmp", 0xffffffff);
-    ImageUD[3] = new Sprite("Images/heroU4.bmp", 0xffffffff);
+    ImageUD[0] = new Sprite("Images/hero/heroU1.bmp", 0xffffffff);
+    ImageUD[1] = new Sprite("Images/hero/heroU2.bmp", 0xffffffff);
+    ImageUD[2] = new Sprite("Images/hero/heroU3.bmp", 0xffffffff);
+    ImageUD[3] = new Sprite("Images/hero/heroU4.bmp", 0xffffffff);
 
     for (int i = 0; i < 5; i++) {
       if (i != 4) ImageJL[i]->Rotate();
@@ -497,12 +497,12 @@ class Player { // Hero: Player
       int ny1 = y / 20 + 1;
       int ny2 = y / 20 + 2;
 
-      if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 ||
-          MatMap[ny][nx] == 9) {
-        if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 ||
-            MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9) {
-          if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 ||
-              MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9) {
+      if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
+          gameMap[ny][nx] == 9) {
+        if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
+            gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
+          if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
+              gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
             ChangeImage('R');
             x += step;
             timer1 = 0;
@@ -522,12 +522,12 @@ class Player { // Hero: Player
       int ny1 = y / 20 + 1;
       int ny2 = y / 20 + 2;
 
-      if (MatMap[ny][nx] == 0 || MatMap[ny][nx] == 5 || MatMap[ny][nx] == 3 ||
-          MatMap[ny][nx] == 9) {
-        if (MatMap[ny1][nx] == 0 || MatMap[ny1][nx] == 5 ||
-            MatMap[ny1][nx] == 3 || MatMap[ny][nx] == 9) {
-          if (MatMap[ny2][nx] == 0 || MatMap[ny2][nx] == 5 ||
-              MatMap[ny2][nx] == 3 || MatMap[ny][nx] == 9) {
+      if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
+          gameMap[ny][nx] == 9) {
+        if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
+            gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
+          if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
+              gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
             ChangeImage('L');
             x -= step;
             timer1 = 0;
@@ -545,10 +545,10 @@ class Player { // Hero: Player
       int nx1 = (x + w) / 20;
       int ny = (y + h + velocity) / 20;
 
-      if (MatMap[ny][nx] == 0 && MatMap[ny][nx1] == 0) {
+      if (gameMap[ny][nx] == 0 && gameMap[ny][nx1] == 0) {
         y += velocity;
         timerG1 = 0;
-      } else if (MatMap[ny][nx] != 0) {
+      } else if (gameMap[ny][nx] != 0) {
         y = ny * 20 - h;
 
         velocity = 0;
@@ -562,7 +562,7 @@ class Player { // Hero: Player
       int nx = x / 20;
       int ny = (y - velocityJ) / 20;
 
-      if (MatMap[ny][nx] == 0 && velocityJ >= 0) {
+      if (gameMap[ny][nx] == 0 && velocityJ >= 0) {
         y -= velocityJ;
 
         timerG1 = 0;
@@ -580,13 +580,13 @@ class Player { // Hero: Player
           int nx = x / 20;
           int ny = y / 20;
 
-          if (MatMap[ny][nx] == 3) {
+          if (gameMap[ny][nx] == 3) {
             ChangeImage('U');
             y -= 5;
           }
 
-          if (MatMap[ny][nx] == 0 && MatMap[(y + h) / 20][nx] == 3 &&
-              MatMap[ny + 1][nx] == 3)
+          if (gameMap[ny][nx] == 0 && gameMap[(y + h) / 20][nx] == 3 &&
+              gameMap[ny + 1][nx] == 3)
             y = (y / 20 + 1) * 20 - h;
 
           U = false;
@@ -599,7 +599,7 @@ class Player { // Hero: Player
           int nx = x / 20;
           int ny = (y + h + 5) / 20;
 
-          if (MatMap[ny][nx] == 3) {
+          if (gameMap[ny][nx] == 3) {
             ChangeImage('U');
             y += 5;
           }
@@ -662,7 +662,7 @@ class Player { // Hero: Player
 
   void ChargeMatMap(int MatMap1[30][40]) {
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) MatMap[i][j] = MatMap1[i][j];
+      for (int j = 0; j < 40; j++) gameMap[i][j] = MatMap1[i][j];
   }
 };
 int Player::dt = 0;

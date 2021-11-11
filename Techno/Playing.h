@@ -355,7 +355,7 @@ void setMap() {
 
   for (int i = 0; i < blocksInHeight; i++)
     for (int j = 0; j < blocksInWidth; j++)
-      player->MatMap[i][j] = gameMap[i][j];
+      player->gameMap[i][j] = gameMap[i][j];
 }
 void loadDoors() {
   // Global: gameMap, doorEntities, finalDoor, movingStairBlocks, blockSize
