@@ -650,47 +650,43 @@ int Fire::counter = 0;
 class Door {
  public:
   int x, y;
-  int Cadr;
-  int num;
 
-  Sprite *ImageView;
-  Sprite *Image[2];
-
+  Sprite *currentFrame; // ImageView: currentFrame
   static int counter;
 
+ private:
+  int num = 5;
+  Sprite *assets[2]; // Images: assets
+  int frame = 0; // Cadr: frame
+
  public:
-  Door(int _x, int _y) : x(_x), y(_y), Cadr(0), num(5) {
-    ImageView = NULL;
-    Image[0] = new Sprite("Images/Door1.bmp", 0xffffffff);
-    Image[1] = new Sprite("Images/Door2.bmp", 0xffffffff);
+  Door(int x, int y) {
+    this->x = x;
+    this->y = y;
+    
+    assets[0] = new Sprite("Images/Door1.bmp", 0xffffffff);
+    assets[1] = new Sprite("Images/Door2.bmp", 0xffffffff);
 
-    ImageView = Image[0];
-
+    currentFrame = assets[0];
     counter++;
   }
 
   bool contains(int x, int y) {  // Touch: contains
-    return x >= this->x && x <= this->x + ImageView->width && y >= this->y && y <= this->y + ImageView->height;
+    return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
  private:
-  void updateFrame(int MatMap[30][40]) {  // ChangeCadr
-    if (Cadr < 1)
-      Cadr++;
-    else
-      Cadr = 0;
+  void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
+    frame = (frame + 1) % 2;
 
-    ImageView = Image[Cadr];
+    currentFrame = assets[frame];
 
-    MatMap[y / 20][x / 20] = num;
-    MatMap[y / 20 + 1][x / 20] = num;
-    MatMap[y / 20 + 2][x / 20] = num;
-    MatMap[y / 20 + 3][x / 20] = num;
+    gameMap[y / blockSize][x / blockSize] = num;
+    gameMap[y / blockSize + 1][x / blockSize] = num;
+    gameMap[y / blockSize + 2][x / blockSize] = num;
+    gameMap[y / blockSize + 3][x / blockSize] = num;
 
-    if (num == 5)
-      num = 4;
-    else
-      num = 5;
+    num = num == 5 ? 4 : 5;
   }
 };
 int Door::counter = 0;
