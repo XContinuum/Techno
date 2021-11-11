@@ -452,7 +452,7 @@ void loadNextLevel() { // nextLevel: loadNextLevel
   level++;
 
   for (int i = 0; i < 9; i++)
-    if (inventory->objects[i] == INV_KEY) inventory->objects[i] = INV_EMPTY_CELL;
+    if (inventory->cells[i] == INV_KEY) inventory->cells[i] = INV_EMPTY_CELL;
 
   clearClassInformation();
   resetEntities();
@@ -713,8 +713,8 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   int inventoryCell = inventory->touchedCellIndex(clickedX, clickedY);
   
   if (inventory->move) {
-    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == INV_EMPTY_CELL) {
-      inventory->objects[inventoryCell] = selectedObjectId;
+    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
+      inventory->cells[inventoryCell] = selectedObjectId;
       inventory->updateCellSprites();
       selectedObjectId = INV_EMPTY_CELL;
     }
@@ -724,8 +724,8 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
 
     if (inventoryCell != -1) {
       inventory->move = true;
-      selectedObjectId = inventory->objects[inventoryCell];
-      inventory->objects[inventoryCell] = INV_EMPTY_CELL;
+      selectedObjectId = inventory->cells[inventoryCell];
+      inventory->cells[inventoryCell] = INV_EMPTY_CELL;
     }
   }
 
@@ -799,7 +799,7 @@ void updateFrames(int clickedX, int clickedY) {
   // DOOR---
 
   // FinalDoor+++
-  bool isHoldingKey = inventory->objects[0] == 2;
+  bool isHoldingKey = inventory->cells[0] == 2;
 
   for (int i = 0; i < FinalDoor::counter; i++) {
     if (didClickRightButton && finalDoor[i]->contains(clickedX, clickedY)) {

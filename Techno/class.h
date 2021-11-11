@@ -879,46 +879,12 @@ class Arrow {
     y = 0;
     num = 0;
 
-    Images[0] = new Sprite("Images/c0.bmp", 0xffffffff);
-    Images[1] = new Sprite("Images/c1.bmp", 0xffffffff);
-    Images[2] = new Sprite("Images/c2.bmp", 0xffffffff);
-    Images[3] = new Sprite("Images/c3.bmp", 0xffffffff);
-    Images[4] = new Sprite("Images/c4.bmp", 0xffffffff);
-    Images[5] = new Sprite("Images/c5.bmp", 0xffffffff);
-    Images[6] = new Sprite("Images/c6.bmp", 0xffffffff);
-    Images[7] = new Sprite("Images/c7.bmp", 0xffffffff);
-    Images[8] = new Sprite("Images/c8.bmp", 0xffffffff);
-    Images[9] = new Sprite("Images/c9.bmp", 0xffffffff);
-    Images[10] = new Sprite("Images/c10.bmp", 0xffffffff);
-    Images[11] = new Sprite("Images/c11.bmp", 0xffffffff);
-    Images[12] = new Sprite("Images/c12.bmp", 0xffffffff);
-    Images[13] = new Sprite("Images/c13.bmp", 0xffffffff);
-    Images[14] = new Sprite("Images/c14.bmp", 0xffffffff);
-    Images[15] = new Sprite("Images/c15.bmp", 0xffffffff);
-    Images[16] = new Sprite("Images/c16.bmp", 0xffffffff);
-    Images[17] = new Sprite("Images/c17.bmp", 0xffffffff);
-    Images[18] = new Sprite("Images/c18.bmp", 0xffffffff);
-    Images[19] = new Sprite("Images/c19.bmp", 0xffffffff);
-    Images[20] = new Sprite("Images/c20.bmp", 0xffffffff);
-    Images[21] = new Sprite("Images/c21.bmp", 0xffffffff);
-    Images[22] = new Sprite("Images/c22.bmp", 0xffffffff);
-    Images[23] = new Sprite("Images/c23.bmp", 0xffffffff);
-    Images[24] = new Sprite("Images/c24.bmp", 0xffffffff);
-    Images[25] = new Sprite("Images/c25.bmp", 0xffffffff);
-    Images[26] = new Sprite("Images/c26.bmp", 0xffffffff);
-    Images[27] = new Sprite("Images/c27.bmp", 0xffffffff);
-    Images[28] = new Sprite("Images/c28.bmp", 0xffffffff);
-    Images[29] = new Sprite("Images/c29.bmp", 0xffffffff);
-    Images[30] = new Sprite("Images/c30.bmp", 0xffffffff);
-    Images[31] = new Sprite("Images/c31.bmp", 0xffffffff);
-    Images[32] = new Sprite("Images/c32.bmp", 0xffffffff);
-    Images[33] = new Sprite("Images/c33.bmp", 0xffffffff);
-    Images[34] = new Sprite("Images/c34.bmp", 0xffffffff);
-    Images[35] = new Sprite("Images/c35.bmp", 0xffffffff);
-    Images[36] = new Sprite("Images/c36.bmp", 0xffffffff);
-    Images[37] = new Sprite("Images/c37.bmp", 0xffffffff);
-    Images[38] = new Sprite("Images/c38.bmp", 0xffffffff);
-    Images[39] = new Sprite("Images/c39.bmp", 0xffffffff);
+    char *path = new char[30];
+    for (int i = 0; i < 40; i++) {
+      sprintf(path, "Images/c%d.bmp", i);
+
+      Images[0] = new Sprite(path, 0xffffffff);
+    }
   }
 
   void draw(Param *p) {
@@ -930,7 +896,7 @@ class Arrow {
 
 class Inventory { // Inventar: Inventory
  public:
-  int objects[9]; // cells
+  int cells[9]; // objects: cells
 
   int x, y;
   int move;
@@ -955,7 +921,7 @@ class Inventory { // Inventar: Inventory
     openInventory = new Sprite("Images/inventory/inventory_open.bmp", 0xffffffff);
     toolTip = new Sprite("Images/inventory/tool_tip.bmp", 0xffffffff);
 
-    for (int i = 0; i < 9; i++) objects[i] = INV_EMPTY_CELL;
+    for (int i = 0; i < 9; i++) cells[i] = INV_EMPTY_CELL;
 
     updateCellSprites();
   }
@@ -965,7 +931,7 @@ class Inventory { // Inventar: Inventory
       p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
       for (int i = 0; i < 9; i++) {
-        if (objects[i] != INV_EMPTY_CELL) {
+        if (cells[i] != INV_EMPTY_CELL) {
           std::tie(x, y) = cellPosition(i);
 
           p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
@@ -976,7 +942,7 @@ class Inventory { // Inventar: Inventory
       p->draw(x, y, inventorySprite->width, inventorySprite->height,
               inventorySprite);
 
-      if (objects[0] != INV_EMPTY_CELL) {
+      if (cells[0] != INV_EMPTY_CELL) {
         std::tie(x, y) = cellPosition(0);
 
         p->draw(x, y, cellSprites[0]->width, cellSprites[0]->height,
@@ -992,8 +958,8 @@ class Inventory { // Inventar: Inventory
     int num;
 
     for (int i = 0; i < 9; i++) {
-      if (objects[i] != INV_EMPTY_CELL) {
-        num = sprintf(path, "Images/o%d.bmp", objects[i]);
+      if (cells[i] != INV_EMPTY_CELL) {
+        num = sprintf(path, "Images/o%d.bmp", cells[i]);
 
         cellSprites[i] = new Sprite(path, 0xffffffff);
       }
@@ -1028,9 +994,9 @@ class Inventory { // Inventar: Inventory
     if (num == INV_EMPTY_CELL) return;
 
     for (int i = 0; i < 9; i++) {
-      if (objects[i] != INV_EMPTY_CELL) continue;
+      if (cells[i] != INV_EMPTY_CELL) continue;
       
-      objects[i] = num;
+      cells[i] = num;
       break;
     }
 
