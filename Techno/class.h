@@ -156,7 +156,7 @@ class NeoSprite : public Sprite {
     os.close();
   }
 };
-struct Tochka {
+struct Point {
   int X, Y;
 };
 // Classes---
