@@ -410,15 +410,13 @@ class Player { // Hero: Player
 
   int gameMap[30][40]; // MatMap: gameMap
 
-  static int dt;
-  static int timer;
-  static int timer1;
-
   static int dtG;
   static int timerG;
   static int timerG1;
 
-  bool isMovingLeft, isMovingRight, isJumping, isClimbingUp, isClimbingDown, canFall; // L, R, J, U, D, G
+  bool isMovingLeft, isMovingRight, isJumping; // L, R, J
+  bool isClimbingUp, isClimbingDown, canFall; // U, D, G
+
   int jumpVelocity; // velocityJ: jumpVelocity
 
  private:
@@ -436,6 +434,8 @@ class Player { // Hero: Player
   const int acceleration = 3; // accel: acceleration
   const int step = 7;
 
+  int startTime;
+
  public:
   Player() : x(0), y(0), velocity(0), jumpVelocity(0) {
     isMovingLeft = false;
@@ -444,6 +444,7 @@ class Player { // Hero: Player
     isClimbingUp = false;
     isClimbingDown = false;
     canFall = true;
+
     rightWalkFrame = 0;
     leftWalkFrame = 0;
     climbFrame = 0;
@@ -504,7 +505,8 @@ class Player { // Hero: Player
     }
   }
   void gravity() { // Gravitaton: gravity
-    if (isJumping || !canFall) return;
+    if (isJumping) return;
+    if (!canFall) return;
 
     if (velocity <= 20) velocity += acceleration;
 
@@ -591,14 +593,6 @@ class Player { // Hero: Player
     return false;
   }
 
-  static void Timer() {
-    if (timer1 == 0)
-      timer1 =
-          timeGetTime();  // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
-
-    timer = timeGetTime();
-    dt = timer - timer1;
-  }
   static void TimerG() {
     if (timerG1 == 0) timerG1 = timeGetTime();
 
@@ -611,6 +605,17 @@ class Player { // Hero: Player
       for (int j = 0; j < 40; j++) {
         this->gameMap[i][j] = gameMap[i][j];
       }
+  }
+
+  bool shouldUpdatePlayerActions() {
+    // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
+    if (startTime == NULL) startTime = timeGetTime();
+    int timeSinceLastFrame = timeGetTime() - startTime;
+
+    if (timeSinceLastFrame > 15) {
+      startTime = timeGetTime();
+    }
+    return timeSinceLastFrame > 15;
   }
 
   private:
@@ -648,10 +653,6 @@ class Player { // Hero: Player
      return path;
    }
 };
-int Player::dt = 0;
-int Player::timer = 0;
-int Player::timer1 = 0;
-
 int Player::dtG = 0;
 int Player::timerG = 0;
 int Player::timerG1 = 0;

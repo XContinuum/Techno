@@ -514,7 +514,6 @@ void playerEvents() {
   // External: Player class
   player->duplicateMap(gameMap); // does not mutate parameter
 
-  Player::Timer();
   Player::TimerG();
 
   Keyboard key = keyboardMapping(buffer);
@@ -562,9 +561,9 @@ void playerEvents() {
 
   player->Jump();
 
-  if (Player::dtG > blockSize) player->gravity();
+  if (Player::dtG > 20) player->gravity();
 
-  if (Player::dt > 15) {
+  if (player->shouldUpdatePlayerActions()) {
     player->moveLeft();
     player->moveRight();
     player->moveUpLadder();
