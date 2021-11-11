@@ -818,10 +818,10 @@ int Book::counter = 0;
 class Bonus {
    public:
     int x, y;
-    int Cadr;
+    int frame; // Cadr: frame
     bool show;
 
-    Sprite *ImageView;
+    Sprite *currentFrame; // ImageView: currentFrame
     Sprite *Image[10];
 
     static int counter;
@@ -832,8 +832,8 @@ class Bonus {
     int c;
 
    public:
-    Bonus(int _x, int _y) : x(_x), y(_y), Cadr(0), show(true), c(0) {
-        ImageView = NULL;
+    Bonus(int _x, int _y) : x(_x), y(_y), frame(0), show(true), c(0) {
+        currentFrame = NULL;
 
         Image[0] = new Sprite("Images/bonus1.bmp", 0xffffffff);
         Image[1] = new Sprite("Images/bonus2.bmp", 0xffffffff);
@@ -846,18 +846,18 @@ class Bonus {
         Image[8] = new Sprite("Images/bonus9.bmp", 0xffffffff);
         Image[9] = new Sprite("Images/bonus10.bmp", 0xffffffff);
 
-        ImageView = Image[0];
+        currentFrame = Image[0];
 
         counter++;
     }
 
     void ChangeCadr() {
-        if (Cadr < 9)
-            Cadr++;
+        if (frame < 9)
+            frame++;
         else
-            Cadr = 0;
+            frame = 0;
 
-        ImageView = Image[Cadr];
+        currentFrame = Image[frame];
     }
 
     static void Timer() {
@@ -870,8 +870,8 @@ class Bonus {
     bool Touch(int X, int Y) {
         bool t = false;
 
-        if (X >= x && X <= x + ImageView->width && Y >= y &&
-            Y <= y + ImageView->height)
+        if (X >= x && X <= x + currentFrame->width && Y >= y &&
+            Y <= y + currentFrame->height)
             t = true;
 
         return t;

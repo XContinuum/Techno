@@ -147,8 +147,8 @@ void drawEntities(int cursorX, int cursorY) {
     if (!bonusEntities[i]->show) continue;
 
     paramDraw->Draw(
-        bonusEntities[i]->x, bonusEntities[i]->y, bonusEntities[i]->ImageView->width,
-        bonusEntities[i]->ImageView->height, bonusEntities[i]->ImageView);
+        bonusEntities[i]->x, bonusEntities[i]->y, bonusEntities[i]->currentFrame->width,
+        bonusEntities[i]->currentFrame->height, bonusEntities[i]->currentFrame);
   }
 
   for (int i = 0; i < BlockMoves::counter; i++) {
