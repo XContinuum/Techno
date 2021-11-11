@@ -288,77 +288,35 @@ class Text {
   }
 
  private:
-  int convertion(char ASC, int i) {
-    int ASCII = static_cast<int>(ASC);
-    int sym = 0;
+  int convertion(char c, int i) {
     szLetters[i] = 'O';
 
-    // Symb+++
-    switch (ASC) {
-      case '.':
-        sym = 62;
-        break;
+    if (c == '.') return 62;
+    if (c == ':') return 63;
+    if (c == '/') return 64;
+    if (c == '-') return 65;
+    if (c == '+') return 66;
+    if (c == '(') return 67;
+    if (c == ')') return 68;
+    if (c == '*') return 69;
+    if (c == '=') return 70;
+    if (c == ',') return 71;
+    if (c == '!') return 72;
+    if (c == ' ') return 73;
 
-      case ':':
-        sym = 63;
-        break;
-
-      case '/':
-        sym = 64;
-        break;
-
-      case '-':
-        sym = 65;
-        break;
-
-      case '+':
-        sym = 66;
-        break;
-
-      case '(':
-        sym = 67;
-        break;
-
-      case ')':
-        sym = 68;
-        break;
-
-      case '*':
-        sym = 69;
-        break;
-
-      case '=':
-        sym = 70;
-        break;
-
-      case ',':
-        sym = 71;
-        break;
-
-      case '!':
-        sym = 72;
-        break;
-
-      case ' ':
-        sym = 73;
-        break;
-
-      default:
-        if (ASCII - 97 >= 0) {  // low
-          sym = ASCII - 97;
-          szLetters[i] = 'L';
-        } else if (ASCII - 65 >= 0) {  // up
-          sym = ASCII - 65 + 26;
-          szLetters[i] = 'U';
-        } else if (ASCII - 48 >= 0) {  // num
-          sym = ASCII - 48 + 52;
-          szLetters[i] = 'N';
-        }
-        break;
+    int ASCII = static_cast<int>(c);
+    if (ASCII - 97 >= 0) {  // low
+      szLetters[i] = 'L';
+      return ASCII - 97;
+    } else if (ASCII - 65 >= 0) {  // up
+      szLetters[i] = 'U';
+      return ASCII - 65 + 26;
+    } else if (ASCII - 48 >= 0) {  // num
+      szLetters[i] = 'N';
+      return ASCII - 48 + 52;
     }
-    // Symb---
 
-    return sym;
+    return 0;
   }
 
   void ChangeColor(int color) {
@@ -648,34 +606,35 @@ class Player { // Hero: Player
 class Fire {
  public:
   int x, y;
-  int frame;
+  int frame = 0;
   Sprite *currentSprite;
-  Sprite *Image[3];
 
   static int counter;
 
+ private:
+  Sprite *assets[3]; // Image: assets
+  int startTime;
+
  public:
-  Fire(int _x, int _y) : x(_x), y(_y), frame(0) {
-    currentSprite = NULL;
+  Fire(int x, int y) {
+    this->x = x;
+    this->y = y;
 
-    Image[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
-    Image[1] = new Sprite("Images/fire2.bmp", 0xffffffff);
-    Image[2] = new Sprite("Images/fire3.bmp", 0xffffffff);
+    assets[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
+    assets[1] = new Sprite("Images/fire2.bmp", 0xffffffff);
+    assets[2] = new Sprite("Images/fire3.bmp", 0xffffffff);
 
-    currentSprite = Image[0];
-
+    currentSprite = assets[0];
     counter++;
   }
   void updateFrame() {  // ChangeCadr: updateFrame
     if (!shouldUpdate()) return;
 
     frame = (frame + 1) % 3;
-    currentSprite = Image[frame];
+    currentSprite = assets[frame];
   }
 
  private:
-  int startTime;
-
   bool shouldUpdate() {
     if (startTime == NULL) startTime = timeGetTime();
     int timeSinceLastFrame = timeGetTime() - startTime;
