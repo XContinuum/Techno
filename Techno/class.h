@@ -398,7 +398,7 @@ class Text {
   }
 };
 
-class Hero {
+class Player { // Hero: Player
  public:
   int x, y;
   int w, h;
@@ -434,7 +434,7 @@ class Hero {
   int accel, accelJ;
 
  public:
-  Hero()
+  Player()
       : x(0),
         y(0),
         CadrR(0),
@@ -665,13 +665,13 @@ class Hero {
       for (int j = 0; j < 40; j++) MatMap[i][j] = MatMap1[i][j];
   }
 };
-int Hero::dt = 0;
-int Hero::timer = 0;
-int Hero::timer1 = 0;
+int Player::dt = 0;
+int Player::timer = 0;
+int Player::timer1 = 0;
 
-int Hero::dtG = 0;
-int Hero::timerG = 0;
-int Hero::timerG1 = 0;
+int Player::dtG = 0;
+int Player::timerG = 0;
+int Player::timerG1 = 0;
 
 class Fire {
  public:

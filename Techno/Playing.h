@@ -38,7 +38,7 @@ Sprite* pauseOverlay; // pause: pauseOverlay
 Sprite* pauseMenuSprite; // Menu_pause: pauseMenuSprite
 
 // Objects in the game+++
-Hero* player; // Personage: player
+Player* player; // Personage: player
 Fire* fireEntities[10]; // f: fireEntities - TODO: change array data structure to list (so we dont need to store the length)
 Door* doorEntities[10]; // d: doorEntities
 Book* bookEntities[10]; // b: bookEntities
@@ -435,7 +435,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Exit---
 
   if (missionButtons[0]->contains(clickedX, clickedY)) {
-    player = new Hero(); // TODO: pass x & y into Hero
+    player = new Player(); // TODO: pass x & y into Player
     player->x = 40;
     player->y = 40;
 
@@ -511,11 +511,11 @@ void setNextMapFilepath(int level) {
 }
 void playerEvents() {
   // Global: player, gameMap, buffer, inventory
-  // External: Hero class
+  // External: Player class
   player->ChargeMatMap(gameMap); // does not mutate parameter
 
-  Hero::Timer();
-  Hero::TimerG();
+  Player::Timer();
+  Player::TimerG();
 
   Keyboard key = keyboardMapping(buffer);
 
@@ -562,9 +562,9 @@ void playerEvents() {
 
   player->Jump();
 
-  if (Hero::dtG > blockSize) player->Gravitaton();
+  if (Player::dtG > blockSize) player->Gravitaton();
 
-  if (Hero::dt > 15) {
+  if (Player::dt > 15) {
     player->MoveL();
     player->MoveR();
     player->UD('U');
