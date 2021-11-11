@@ -1018,35 +1018,7 @@ class Chest {
 
     combinaison = 0;
 
-    InitButtons();
-  }
-  void InitButtons() {
-    lock = new Button("Images/chest/code.bmp", 0xffffffff);
-    lock->x = (w - lock->w) / 2;
-    lock->y = (h - lock->h) / 2;
-    lock->show = true;
-
-    ar = new Arrow();
-    ar->x = lock->x + 145;
-    ar->y = lock->y + 149;
-
-    locker = new Button("Images/chest/locker.bmp", 0xffffffff);
-    locker->x = (w - lock->w) / 2 + 99;
-    locker->y = (h - lock->h) / 2 + 107;
-    locker->show = true;
-
-    LockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
-    LockerLight->x = locker->x;
-    LockerLight->y = locker->y;
-    LockerLight->show = false;
-
-    lOK = new Button("Images/chest/lOK.bmp", 0xffffffff);
-    lOK->x = lock->x + 156;
-    lOK->y = lock->y + 161;
-    lOK->show = false;
-
-    codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100,
-                        locker->y + 100, 0xFFED1C24);  // code
+    initializeButtons();
   }
 
   int TouchObject(int X, int Y) {
@@ -1311,6 +1283,35 @@ class Chest {
       p->draw((w - lock->w) / 2 + 99 + 2, (h - lock->h) / 2 + 107,
               OkOpen->width, OkOpen->height, OkOpen);
   }
+  private:
+   void initializeButtons() {
+     lock = new Button("Images/chest/code.bmp", 0xffffffff);
+     lock->x = (w - lock->w) / 2;
+     lock->y = (h - lock->h) / 2;
+     lock->show = true;
+
+     ar = new Arrow();
+     ar->x = lock->x + 145;
+     ar->y = lock->y + 149;
+
+     locker = new Button("Images/chest/locker.bmp", 0xffffffff);
+     locker->x = (w - lock->w) / 2 + 99;
+     locker->y = (h - lock->h) / 2 + 107;
+     locker->show = true;
+
+     LockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
+     LockerLight->x = locker->x;
+     LockerLight->y = locker->y;
+     LockerLight->show = false;
+
+     lOK = new Button("Images/chest/lOK.bmp", 0xffffffff);
+     lOK->x = lock->x + 156;
+     lOK->y = lock->y + 161;
+     lOK->show = false;
+
+     codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100,
+                         locker->y + 100, 0xFFED1C24);  // code
+   }
 };
 int Chest::dt = 0;
 int Chest::timer = 0;
@@ -1324,21 +1325,22 @@ int Chest::Yi = 0;
 class PressurePlate { // ButtonON: PressurePlate
  public:
   int x, y;
-  Sprite *Image;
-
   static int counter;
+
+ private:
+  Sprite *asset; // Image: asset
 
  public:
   PressurePlate(int x, int y) {
     this->x = x;
     this->y = y;
-    Image = new Sprite("Images/pressure_plate.bmp");
+    asset = new Sprite("Images/pressure_plate.bmp");
 
     counter++;
   }
 
   bool contains(int x, int y) { // Touch: contains
-    return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
+    return x >= this->x && x <= this->x + asset->width && y >= this->y && y <= this->y + asset->height;
   }
 };
 int PressurePlate::counter = 0;
