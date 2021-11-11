@@ -944,15 +944,13 @@ class Chest {
  public:
   int x, y;
   int mX1, mY1; // mX1, mY1
-  int Answer; // Answer:
   int check; // check:
-  int objects[6 * 8]; // objects: 
+  int objects[6 * 8]; // objects: items
 
   bool expO; // expO:
   bool show; // show:
   bool showC; // showC:
   bool move; // move:
-  bool BOk; // BOk:
 
   static bool iLmb; // iLmb:
   static int counter; // counter:
@@ -962,17 +960,10 @@ class Chest {
   static int timer; // timer:
   static int timer1; // timer1:
 
-  char *question; // question:
-
-  Sprite *ImObjects[6 * 8]; // ImObjects:
-  Text *txt; // txt:
-  Text *codeView; // codeView:
-
-  Arrow *ar; // ar:
-
  private:
   Sprite *currentFrame; // ImageView: currentFrame
-  
+  Sprite *ImObjects[6 * 8]; // ImObjects:
+
   Sprite *assets[2]; // Image: assets; TODO: remove
   Sprite *code; // code:
   Sprite *OpenExp; // OpenExp: toolTip
@@ -984,6 +975,14 @@ class Chest {
   Button *LockerLight; // LockerLight:
   Button *lOK; // lOK:
 
+  Arrow *ar; // ar:
+
+  Text *txt; // txt:
+  Text *codeView; // codeView:
+  char *question; // question:
+  int Answer; // Answer:
+
+  bool BOk; // BOk:
 
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
