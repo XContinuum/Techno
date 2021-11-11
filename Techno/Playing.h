@@ -559,9 +559,11 @@ void playerEvents() {
       break;
   }
 
-  player->Jump();
 
-  if (Player::dtG > 20) player->gravity();
+  if (Player::dtG > 20) {
+    player->jump();
+    player->gravity();
+  }
 
   if (player->shouldUpdatePlayerActions()) {
     player->moveLeft();

@@ -483,7 +483,6 @@ class Player { // Hero: Player
         isPassThroughBlock(playerRow3, followingColumn)) {
       updateFrame('R');
       x += step;
-      timer1 = 0;
     }
   }
 
@@ -501,7 +500,6 @@ class Player { // Hero: Player
         isPassThroughBlock(playerRow3, previousColumn)) {
       updateFrame('L');
       x -= step;
-      timer1 = 0;
     }
   }
   void gravity() { // Gravitaton: gravity
@@ -526,8 +524,7 @@ class Player { // Hero: Player
   }
   void jump() { // Jump: jump
     if (!isJumping) return;
-    if (dtG <= 20) return;
-
+    
     jumpVelocity -= acceleration;
 
     int nx = x / blockSize;
@@ -560,8 +557,6 @@ class Player { // Hero: Player
         gameMap[playerBottomRow][nx] == LADDER_ID &&
         gameMap[playerTopRow + 1][nx] == LADDER_ID)
       y = (y / blockSize + 1) * blockSize - h;
-
-    timer1 = 0;
   }
 
   void moveDownLadder() {
@@ -575,8 +570,6 @@ class Player { // Hero: Player
       updateFrame('U');
       y += 5;
     }
-
-    timer1 = 0;
   }
 
   void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
