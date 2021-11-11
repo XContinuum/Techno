@@ -1141,10 +1141,10 @@ class Chest {
                    (h - code->height) / 2 + 68);
   }
   //+++
-  void openLock(Inventory *Inv, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
+  void openLock(Inventory *inventory, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
     if (!show) return;
 
-    if (lmb && !lock->contains(X, Y) && !Inv->containsInOpenInventory(X, Y))
+    if (lmb && !lock->contains(X, Y) && !inventory->containsInOpenInventory(X, Y))
       show = false;
 
     int mmx = mX - locker->x;
@@ -1152,7 +1152,7 @@ class Chest {
     int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) +
                     (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
 
-    if (lOK->contains(X, Y) == true && lmb == true) {
+    if (lmb && lOK->contains(X, Y)) {
       lOK->show = true;
 
       if (sd < 2)
@@ -1164,32 +1164,13 @@ class Chest {
     } else
       lOK->show = false;
 
-    if (LockerLight->contains(mX, mY) == true && dist > 55 && dist < 88) {
+    if (LockerLight->contains(mX, mY) && dist > 55 && dist < 88) {
       LockerLight->show = true;
 
-      if (locker->contains(X, Y) == true && lmb == true) {
-        // Calculate angle+++
-        double xn = locker->w / 2;
-        double yn = locker->h / 2;
-
-        double x1 = 0;
-        double y1 = locker->h / 2;
-
-        double xm = (X - locker->x) - xn;
-        double ym = yn - (Y - locker->y);
-
-        double a2 = sqrt(xm * xm + ym * ym);
-
-        double angle1 = acos(ym / a2);
-        double angle2 = (angle1 * 180) / 3.14;
-
-        if (X - locker->x < xn) angle2 = 360 - angle2;
-
-        int angle = angle2 / 9;
-
+      if (lmb && locker->contains(X, Y)) {
+        int angle = calculateAngle(X, Y);
         cd[sd] = angle;
         combinaison = cd[0] * 10000 + cd[1] * 100 + cd[2];
-        // Calculate angle---
 
         // Show angle+++
         ar->num = angle;
@@ -1201,7 +1182,7 @@ class Chest {
         if (cd[0] < 10)
           ran = sprintf(showText, "0%d 0%d 0%d", cd[0], cd[1], cd[2]);
         else
-          // ran=sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
+          ran = sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
 
           codeView->changeText(showText);
         //Показ комбинации на экран---
@@ -1310,6 +1291,26 @@ class Chest {
 
      codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100,
                          locker->y + 100, 0xFFED1C24);  // code
+   }
+
+   int calculateAngle(int clickedX, int clickedY) {
+     double xn = locker->w / 2;
+     double yn = locker->h / 2;
+
+     double x1 = 0;
+     double y1 = locker->h / 2;
+
+     double xm = (clickedX - locker->x) - xn;
+     double ym = yn - (clickedY - locker->y);
+
+     double a2 = sqrt(xm * xm + ym * ym);
+
+     double angle1 = acos(ym / a2);
+     double angle2 = (angle1 * 180) / 3.14;
+
+     if (clickedX - locker->x < xn) angle2 = 360 - angle2;
+
+     return angle2 / 9;
    }
 };
 int Chest::dt = 0;
