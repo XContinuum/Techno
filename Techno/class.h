@@ -964,23 +964,27 @@ class Chest {
 
   char *question; // question:
 
-  Sprite *ImageView; // ImageView:
   Sprite *ImObjects[6 * 8]; // ImObjects:
-  Sprite *Image[2]; // Image:
-  Sprite *code; // code:
-  Sprite *OpenExp; // OpenExp:
-  Sprite *Content; // Content:
-  Sprite *OkOpen; // OkOpen:
   Text *txt; // txt:
   Text *codeView; // codeView:
+
+  Arrow *ar; // ar:
+
+ private:
+  Sprite *currentFrame; // ImageView: currentFrame
+  
+  Sprite *assets[2]; // Image: assets; TODO: remove
+  Sprite *code; // code:
+  Sprite *OpenExp; // OpenExp: toolTip
+  Sprite *Content; // Content:
+  Sprite *OkOpen; // OkOpen:
+  
   Button *lock; // lock:
   Button *locker; // locker:
   Button *LockerLight; // LockerLight:
   Button *lOK; // lOK:
 
-  Arrow *ar; // ar:
 
- private:
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
   int cd[3]; // cd:
@@ -991,14 +995,14 @@ class Chest {
       : show(false), expO(false), showC(false), move(false), check(0) {
     this->x = x;
     this->y = y;
-    Image[0] = new Sprite("Images/chest/chest1.bmp");
-    Image[1] = new Sprite("Images/chest/chest2.bmp");
-    
+    assets[0] = new Sprite("Images/chest/chest1.bmp");
+    assets[1] = new Sprite("Images/chest/chest2.bmp");
+
     code = new Sprite("Images/chest/code.bmp");
     OpenExp = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
     Content = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
     OkOpen = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
-    ImageView = Image[0];
+    currentFrame = assets[0];
 
     counter++;
     Answer = ans1 * 1000 + ans2;
@@ -1056,7 +1060,7 @@ class Chest {
     return t;
   }
   bool contains(int x, int y) { // Touch: contains
-    return x >= this->x && x <= this->x + ImageView->width && y >= this->y && y <= this->y + ImageView->height;
+    return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
   static void SetPosition(int X, int Y) {
@@ -1193,7 +1197,7 @@ class Chest {
   }
   //++++
   void draw(Param *p) {
-    p->draw(x, y, ImageView->width, ImageView->height, ImageView);
+    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
 
     if (expO == true)
       p->draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
