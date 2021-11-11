@@ -696,9 +696,6 @@ class Fire {
     Sprite *Image[3];
 
     static int counter;
-    static int dt;
-    static int timer;
-    static int timer1;
 
    public:
     Fire(int _x, int _y) : x(_x), y(_y), frame(0) {
@@ -712,37 +709,27 @@ class Fire {
 
         counter++;
     }
-    void updateFrame() { // ChangeCadr: updateFrame
-        frame = (frame + 1) % 3;
-        currentSprite = Image[frame];
-        
-        //
-        // if (shouldUpdate()) { // TODO:
-        //     frame = (frame + 1) % 3;
-        //     currentSprite = fireSprite[frame];
-        // }
+    void updateFrame() {  // ChangeCadr: updateFrame
+      if (!shouldUpdate()) return;
+      
+      frame = (frame + 1) % 3;
+      currentSprite = Image[frame];
     }
-    // bool shouldUpdate() { // TODO:
-    //   if (startTime == NULL) startTime = timeGetTime();
-    //   int timeSinceLastFrame = timeGetTime() - startTime;
 
-    //   if (timeSinceLastFrame > 50) {
-    //     startTime = timeGetTime();
-    //   }
-    //   return timeSinceLastFrame > 50;
-    // }
+    private: 
+    int startTime;
 
-    static void Timer() {
-        if (timer1 == 0) timer1 = timeGetTime();
+    bool shouldUpdate() {
+      if (startTime == NULL) startTime = timeGetTime();
+      int timeSinceLastFrame = timeGetTime() - startTime;
 
-        timer = timeGetTime();
-        dt = timer - timer1;
+      if (timeSinceLastFrame > 50) {
+        startTime = timeGetTime();
+      }
+      return timeSinceLastFrame > 50;
     }
 };
 int Fire::counter = 0;
-int Fire::dt = 0;
-int Fire::timer = 0;
-int Fire::timer1 = 0;
 
 class Door {
    public:

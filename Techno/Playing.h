@@ -786,13 +786,9 @@ void updateFrames(int clickedX, int clickedY) {
   // Classes: Fire, Bonus, Door, FinalDoor, ButtonON, BlockMoves
 
   // FIRE---
-  Fire::Timer();
-
-  if (Fire::dt > 50) { // update frame every 50ms
-    for (int i = 0; i < Fire::counter; i++) fireEntities[i]->updateFrame();
-
-    Fire::timer1 = 0;
-    Fire::dt = 0;
+  // update frame every 50ms
+  for (int i = 0; i < Fire::counter; i++) {
+    fireEntities[i]->updateFrame();
   }
   // FIRE+++
 
