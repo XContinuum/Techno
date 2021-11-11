@@ -768,33 +768,26 @@ int Book::counter = 0;
 class Bonus {
  public:
   int x, y;
-  int frame;  // Cadr: frame
-  bool show;
+  bool show = true;
 
   Sprite *currentFrame;  // ImageView: currentFrame
-  Sprite *Image[10];
-
   static int counter;
 
-  int c;  // TODO: delete this?
+ private:
+  int frame = 0;  // Cadr: frame
+  int startTime;
+  Sprite *bonusAssets[10];  // Image: bonusAssets
 
  public:
-  Bonus(int _x, int _y) : x(_x), y(_y), frame(0), show(true), c(0) {
-    currentFrame = NULL;
+  Bonus(int x, int y) {
+    this->x = x;
+    this->y = y;
 
-    Image[0] = new Sprite("Images/bonus1.bmp", 0xffffffff);
-    Image[1] = new Sprite("Images/bonus2.bmp", 0xffffffff);
-    Image[2] = new Sprite("Images/bonus3.bmp", 0xffffffff);
-    Image[3] = new Sprite("Images/bonus4.bmp", 0xffffffff);
-    Image[4] = new Sprite("Images/bonus5.bmp", 0xffffffff);
-    Image[5] = new Sprite("Images/bonus6.bmp", 0xffffffff);
-    Image[6] = new Sprite("Images/bonus7.bmp", 0xffffffff);
-    Image[7] = new Sprite("Images/bonus8.bmp", 0xffffffff);
-    Image[8] = new Sprite("Images/bonus9.bmp", 0xffffffff);
-    Image[9] = new Sprite("Images/bonus10.bmp", 0xffffffff);
+    for (int i = 0; i < 10; i++) {
+      bonusAssets[i] = new Sprite(getAssetName(i + 1), 0xffffffff);
+    }
 
-    currentFrame = Image[0];
-
+    currentFrame = bonusAssets[0];
     counter++;
   }
 
@@ -802,7 +795,7 @@ class Bonus {
     if (!shouldUpdate()) return;
 
     frame = (frame + 1) % 9;
-    currentFrame = Image[frame];
+    currentFrame = bonusAssets[frame];
   }
 
   bool contains(int x, int y) {  // Touch: contains
@@ -811,8 +804,6 @@ class Bonus {
   }
 
  private:
-  int startTime;
-
   bool shouldUpdate() {
     if (startTime == NULL) startTime = timeGetTime();
     int timeSinceLastFrame = timeGetTime() - startTime;
@@ -821,6 +812,13 @@ class Bonus {
       startTime = timeGetTime();
     }
     return timeSinceLastFrame > 50;
+  }
+
+  char *getAssetName(int i) {
+    char *path = new char[30];
+    sprintf(path, "Images/bonus%d.bmp", i);
+
+    return path;
   }
 };
 int Bonus::counter = 0;
