@@ -1417,33 +1417,33 @@ int BlockMoves::timer1 = 0;
 class FinalDoor {
  public:
   int x, y;
-  int num;
   bool needsKey = false;  // nk: Need key
-
-  Sprite *ImageView;
-  Sprite *NeedKey;
 
   static int counter;
 
-  int type;
-
  private:
-  Sprite *assets[2]; // Image: assets
   int frame = 0; // Cadr: frame
+  int num = 9;
+
+  Sprite *assets[2]; // Image: assets
+  Sprite *currentFrame; // ImageView: currentFrame
+  Sprite *needKeyAsset; // NeedKey: needKeyAsset
+  int type; // type
 
  public:
-  FinalDoor(int _x, int _y, int _type)
-      : x(_x), y(_y), num(9), type(_type) {
-    ImageView = NULL;
+  FinalDoor(int x, int y, int type) {
+    this->x = x;
+    this->y = y;
+    this->type = type;
+
     assets[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
     assets[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
 
-    ImageView = assets[0];
-
-    NeedKey = new Sprite("Images/NeedKey.bmp", 0xffffffff);
+    currentFrame = assets[0];
+    needKeyAsset = new Sprite("Images/NeedKey.bmp", 0xffffffff);
 
     counter++;
-    //
+
     if (type == 1) {
       assets[0]->flipHorizontally();
       assets[1]->flipHorizontally();
@@ -1451,35 +1451,32 @@ class FinalDoor {
   }
 
   bool contains(int x, int y) {  // Touch: contains
-    return x >= this->x && x <= this->x + ImageView->width && y >= this->y &&
-           y <= this->y + ImageView->height;
+    return x >= this->x && x <= this->x + currentFrame->width && y >= this->y &&
+           y <= this->y + currentFrame->height;
   }
 
   void draw(Param *p) {
-    p->draw((x + assets[0]->width) - ImageView->width, y, ImageView->width,
-            ImageView->height, ImageView);
+    p->draw((x + assets[0]->width) - currentFrame->width, y, currentFrame->width,
+            currentFrame->height, currentFrame);
 
     // NeedKey
     if (needsKey)
-      p->draw((w - NeedKey->width) / 2, (h - NeedKey->height) / 2,
-              NeedKey->width, NeedKey->height, NeedKey);
+      p->draw((w - needKeyAsset->width) / 2, (h - needKeyAsset->height) / 2,
+              needKeyAsset->width, needKeyAsset->height, needKeyAsset);
   }
 
   void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
     if (type != 0) return;
     frame = (frame + 1) % 2;
 
-    ImageView = assets[frame];
+    currentFrame = assets[frame];
 
     gameMap[y / 20][x / 20] = num;
     gameMap[y / 20 + 1][x / 20] = num;
     gameMap[y / 20 + 2][x / 20] = num;
     gameMap[y / 20 + 3][x / 20] = num;
 
-    if (num == 9)
-      num = 8;
-    else
-      num = 9;
+    num = num == 9 ? 8 : 9;
   }
 };
 int FinalDoor::counter = 0;
