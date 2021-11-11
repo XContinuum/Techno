@@ -1147,18 +1147,11 @@ class Chest {
     if (lmb && !lock->contains(X, Y) && !inventory->containsInOpenInventory(X, Y))
       show = false;
 
-    int mmx = mX - locker->x;
-    int mmy = mY - locker->y;
-    int dist = sqrt((mmx - locker->w / 2) * (mmx - locker->w / 2) +
-                    (locker->h / 2 - mmy) * (locker->h / 2 - mmy));
+    int dist = distanceFromLocker(mX, mY);
 
     if (lmb && lOK->contains(X, Y)) {
       lOK->show = true;
-
-      if (sd < 2)
-        sd++;
-      else
-        sd = 0;
+      sd = (sd + 1) % 3;
 
       lmb = false;
     } else
@@ -1175,17 +1168,7 @@ class Chest {
         // Show angle+++
         ar->num = angle;
 
-        //Показ комбинации на экран+++
-        char *showText = new char[100];
-        int ran = 0;
-
-        if (cd[0] < 10)
-          ran = sprintf(showText, "0%d 0%d 0%d", cd[0], cd[1], cd[2]);
-        else
-          ran = sprintf(showText,"%d %d %d",cd[0],cd[1],cd[2]);
-
-          codeView->changeText(showText);
-        //Показ комбинации на экран---
+        displayCombination(cd[0], cd[1], cd[2]);
         // Show angle---
 
         lmb = false;
@@ -1311,6 +1294,25 @@ class Chest {
      if (clickedX - locker->x < xn) angle2 = 360 - angle2;
 
      return angle2 / 9;
+   }
+
+   int distanceFromLocker(int cursorX, int cursorY) {
+     int dx = cursorX - locker->x - locker->w / 2;
+     int dy = locker->h / 2 - (cursorY - locker->y);
+     int distance = sqrt(dx * dx + dy * dy);
+
+     return distance;
+   }
+
+   void displayCombination(int num1, int num2, int num3) {
+     char *showText = new char[100];
+
+     if (num1 < 10)
+       sprintf(showText, "0%d 0%d 0%d", num1, num2, num3);
+     else
+       sprintf(showText, "%d %d %d", num1, num2, num3);
+
+     codeView->changeText(showText);
    }
 };
 int Chest::dt = 0;
