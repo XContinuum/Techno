@@ -956,9 +956,9 @@ class Inventory { // Inventar: Inventory
     mX = 0;
     mY = 0;
 
-    Image = new Sprite("Images/inventar/Inventar.bmp", 0xffffffff);
-    Open = new Sprite("Images/inventar/InventarOpen.bmp", 0xffffffff);
-    toolTip = new Sprite("Images/inventar/InventarExp.bmp", 0xffffffff);
+    Image = new Sprite("Images/inventory/Inventar.bmp", 0xffffffff);
+    Open = new Sprite("Images/inventory/InventarOpen.bmp", 0xffffffff);
+    toolTip = new Sprite("Images/inventory/InventarExp.bmp", 0xffffffff);
 
     for (int i = 0; i < 9; i++) objects[i] = 0;
 
@@ -1008,7 +1008,7 @@ class Inventory { // Inventar: Inventory
     return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
   }
   int TouchObject(int X, int Y) {
-    // "Images/inventar/InventarOpen.bmp"
+    // "Images/inventory/InventarOpen.bmp"
     int x1 = 17;
     int x2 = 297;
     int y1 = 7;
