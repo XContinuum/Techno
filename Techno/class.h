@@ -646,7 +646,7 @@ class Player { // Hero: Player
 
    char *getAssetName(int i, char mode) {
      char *path = new char[30];
-     sprintf(path, "Images/hero/hero%c%d.bmp", mode, i);
+     sprintf(path, "Images/player/hero%c%d.bmp", mode, i);
 
      return path;
    }
