@@ -614,29 +614,17 @@ class Hero {
   void ChangeImage(char d) {
     switch (d) {
       case 'L':
-        if (CadrL < 4)
-          CadrL++;
-        else
-          CadrL = 0;
-
+        CadrL = (CadrL + 1) % 4;
         Image = ImageL[CadrL];
         break;
 
       case 'R':
-        if (CadrR < 4)
-          CadrR++;
-        else
-          CadrR = 0;
-
+        CadrR = (CadrR + 1) % 4;
         Image = ImageR[CadrR];
         break;
 
       case 'U':
-        if (CadrU < 3)
-          CadrU++;
-        else
-          CadrU = 0;
-
+        CadrU = (CadrU + 1) % 3;
         Image = ImageUD[CadrU];
         break;
     }
