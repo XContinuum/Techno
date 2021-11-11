@@ -459,16 +459,16 @@ class Player { // Hero: Player
     int alphaChannel = 0xffffffff;
 
     for (int i = 0; i < 5; i++) {
-      rightWalk[i] = new Sprite(getAssetName(i, 'R'), alphaChannel);
-      leftWalk[i] = new Sprite(getAssetName(i, 'L'), alphaChannel);
+      rightWalk[i] = new Sprite(getAssetName(i + 1, 'R'), alphaChannel);
+      leftWalk[i] = new Sprite(getAssetName(i + 1, 'L'), alphaChannel);
     }
 
     for (int i = 0; i < 3; i++) {
-      rightJump[i] = new Sprite(getAssetName(i, 'J'), alphaChannel);
-      leftJump[i] = new Sprite(getAssetName(i, 'J'), alphaChannel);
+      rightJump[i] = new Sprite(getAssetName(i + 1, 'J'), alphaChannel);
+      leftJump[i] = new Sprite(getAssetName(i + 1, 'J'), alphaChannel);
       leftJump[i]->flipHorizontally();
 
-      ladderClimb[i] = new Sprite(getAssetName(i, 'U'), alphaChannel);
+      ladderClimb[i] = new Sprite(getAssetName(i + 1, 'U'), alphaChannel);
     }
     
     currentFrame = rightWalk[0];
@@ -646,7 +646,7 @@ class Player { // Hero: Player
 
    char *getAssetName(int i, char mode) {
      char *path = new char[30];
-     sprintf(path, "Images/player/hero%c%d.bmp", mode, i);
+     sprintf(path, "Images/player/player%c%d.bmp", mode, i);
 
      return path;
    }
