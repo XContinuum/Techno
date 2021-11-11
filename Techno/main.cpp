@@ -307,7 +307,7 @@ void initialization() {
     backButton->y = 554;
     backButton->show = false;
 
-    inventory = new Inventar();
+    inventory = new Inventory();
     inventory->x = 0;
     inventory->y = 0;
     inventory->show = false;
@@ -451,7 +451,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
                 didClickLeftButton = true;
 
-                Inventar::SetPosition(clickedX, clickedY);
+                Inventory::SetPosition(clickedX, clickedY);
                 Chest::SetPosition(clickedX, clickedY);
             }
 

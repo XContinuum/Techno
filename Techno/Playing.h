@@ -49,7 +49,7 @@ ButtonON* pressurePlate[10]; // bt: pressurePlate
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
 
-Inventar* inventory; // Inv: inventory
+Inventory* inventory; // Inv: inventory
 
 // Move Invent Chest+++
 int selectedObjectId = INV_EMPTY_CELL; // posObject: selectedObjectId
@@ -712,10 +712,10 @@ void showInventoryToolTip(int mouseX, int mouseY) {
   inventory->mY = mouseY;
 }
 void inventoryMoveEvents() {
-  if (!inventory->TouchInvShow(Inventar::Xi, Inventar::Yi)) return;
-  if (!Inventar::iLmb) return;
+  if (!inventory->TouchInvShow(Inventory::Xi, Inventory::Yi)) return;
+  if (!Inventory::iLmb) return;
 
-  int inventoryCell = inventory->TouchObject(Inventar::Xi, Inventar::Yi);
+  int inventoryCell = inventory->TouchObject(Inventory::Xi, Inventory::Yi);
   
   if (inventory->move) {
     if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->objects[inventoryCell] == INV_EMPTY_CELL) {
@@ -736,9 +736,9 @@ void inventoryMoveEvents() {
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->move = !inventory->move;
 
-  Inventar::Xi = 0;
-  Inventar::Yi = 0;
-  Inventar::iLmb = false;
+  Inventory::Xi = 0;
+  Inventory::Yi = 0;
+  Inventory::iLmb = false;
 }
 void chestMoveEvents() {
   for (int i = 0; i < Chest::counter; i++) {

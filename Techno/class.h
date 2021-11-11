@@ -156,7 +156,7 @@ class NeoSprite : public Sprite {
     os.close();
   }
 };
-struct Point {
+struct Point { // Tochka: Point
   int X, Y;
 };
 // Classes---
@@ -928,7 +928,7 @@ class Arrow {
   }
 };
 
-class Inventar {
+class Inventory { // Inventar: Inventory
  public:
   int x, y;
   int mX, mY;
@@ -950,7 +950,7 @@ class Inventar {
   Sprite *ImObjects[9];
 
  public:
-  Inventar() : exp(false), move(false) {
+  Inventory() : exp(false), move(false) {
     x = 0;
     y = 0;
     mX = 0;
@@ -1050,9 +1050,9 @@ class Inventar {
     }
   }
 };
-bool Inventar::iLmb = false;
-int Inventar::Xi = 0;
-int Inventar::Yi = 0;
+bool Inventory::iLmb = false;
+int Inventory::Xi = 0;
+int Inventory::Yi = 0;
 
 class Chest {
  public:
@@ -1283,7 +1283,7 @@ class Chest {
                    (h - code->height) / 2 + 68);
   }
   //+++
-  void OpenLock(Inventar *Inv, bool &lmb, int X, int Y, int mX, int mY) {
+  void OpenLock(Inventory *Inv, bool &lmb, int X, int Y, int mX, int mY) {
     if (show == true) {
       if (lock->contains(X, Y) == false && lmb == true &&
           Inv->TouchInvShow(X, Y) == false)
