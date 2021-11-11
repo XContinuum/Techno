@@ -406,16 +406,7 @@ class Player { // Hero: Player
   int exitX;
   int exitY;
 
-  int CadrR, CadrL, CadrU;
-
-  Sprite *ImageR[5];
-  Sprite *ImageL[5];
-
-  Sprite *ImageUD[4];
-  Sprite *ImageJR[4];
-  Sprite *ImageJL[4];
-
-  Sprite *Image;
+  Sprite *Image; // Image: currentFrame
 
   int gameMap[30][40]; // MatMap: gameMap
 
@@ -433,12 +424,20 @@ class Player { // Hero: Player
   int velocity, velocityJ;
   int accel, accelJ;
 
+ private:
+  int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
+  
+  Sprite *ImageR[5];
+  Sprite *ImageL[5];
+
+  Sprite *ImageUD[4];
+  Sprite *ImageJR[4];
+  Sprite *ImageJL[4];
+
  public:
   Player()
       : x(0),
         y(0),
-        CadrR(0),
-        CadrL(0),
         L(false),
         R(false),
         J(false),
@@ -448,9 +447,12 @@ class Player { // Hero: Player
         accelJ(3),
         U(false),
         D(false),
-        CadrU(0),
         G(true) {
     Image = NULL;
+
+    rightWalkFrame = 0;
+    leftWalkFrame = 0;
+    climbFrame = 0;
 
     ImageR[0] = new Sprite("Images/hero/heroR1.bmp", 0xffffffff);
     ImageR[1] = new Sprite("Images/hero/heroR2.bmp", 0xffffffff);
@@ -614,18 +616,18 @@ class Player { // Hero: Player
   void ChangeImage(char d) {
     switch (d) {
       case 'L':
-        CadrL = (CadrL + 1) % 4;
-        Image = ImageL[CadrL];
+        leftWalkFrame = (leftWalkFrame + 1) % 4;
+        Image = ImageL[leftWalkFrame];
         break;
 
       case 'R':
-        CadrR = (CadrR + 1) % 4;
-        Image = ImageR[CadrR];
+        rightWalkFrame = (rightWalkFrame + 1) % 4;
+        Image = ImageR[rightWalkFrame];
         break;
 
       case 'U':
-        CadrU = (CadrU + 1) % 3;
-        Image = ImageUD[CadrU];
+        climbFrame = (climbFrame + 1) % 3;
+        Image = ImageUD[climbFrame];
         break;
     }
 
