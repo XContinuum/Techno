@@ -851,12 +851,8 @@ class Bonus {
         counter++;
     }
 
-    void ChangeCadr() {
-        if (frame < 9)
-            frame++;
-        else
-            frame = 0;
-
+    void udpateFrame() { // ChangeCadr: udpateFrame
+        frame = (frame + 1) % 9;
         currentFrame = Image[frame];
     }
 
