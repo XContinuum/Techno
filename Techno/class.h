@@ -480,7 +480,7 @@ class Player { // Hero: Player
     ImageUD[3] = new Sprite("Images/hero/heroU4.bmp", 0xffffffff);
 
     for (int i = 0; i < 5; i++) {
-      if (i != 4) ImageJL[i]->Rotate();
+      if (i != 4) ImageJL[i]->flipHorizontally();
     }
     Image = ImageR[0];
 
@@ -1500,8 +1500,8 @@ class FinalDoor {
     counter++;
     //
     if (type == 1) {
-      Image[0]->Rotate();
-      Image[1]->Rotate();
+      Image[0]->flipHorizontally();
+      Image[1]->flipHorizontally();
     }
   }
 

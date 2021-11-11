@@ -102,7 +102,7 @@ class Sprite {
     }
 
     // Flips around Y axis
-    void Rotate() {
+    void flipHorizontally() { // Rotate: flipHorizontally
         std::ifstream is(name, std::ios::binary);
         is.seekg(18);
         is.read(reinterpret_cast<char *>(&width), sizeof(width));
