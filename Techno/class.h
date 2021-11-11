@@ -825,11 +825,8 @@ class Bonus {
     Sprite *Image[10];
 
     static int counter;
-    static int dt;
-    static int timer;
-    static int timer1;
 
-    int c;
+    int c; // TODO: delete this?
 
    public:
     Bonus(int _x, int _y) : x(_x), y(_y), frame(0), show(true), c(0) {
@@ -852,15 +849,10 @@ class Bonus {
     }
 
     void udpateFrame() { // ChangeCadr: udpateFrame
-        frame = (frame + 1) % 9;
-        currentFrame = Image[frame];
-    }
+      if (!shouldUpdate()) return;
 
-    static void Timer() {
-        if (timer1 == 0) timer1 = timeGetTime();
-
-        timer = timeGetTime();
-        dt = timer - timer1;
+      frame = (frame + 1) % 9;
+      currentFrame = Image[frame];
     }
 
     bool Touch(int X, int Y) {
@@ -872,11 +864,21 @@ class Bonus {
 
         return t;
     }
+
+   private:
+    int startTime;
+
+    bool shouldUpdate() {
+      if (startTime == NULL) startTime = timeGetTime();
+      int timeSinceLastFrame = timeGetTime() - startTime;
+
+      if (timeSinceLastFrame > 50) {
+        startTime = timeGetTime();
+      }
+      return timeSinceLastFrame > 50;
+    }
 };
 int Bonus::counter = 0;
-int Bonus::dt = 0;
-int Bonus::timer = 0;
-int Bonus::timer1 = 0;
 
 class Arrow {
    public:

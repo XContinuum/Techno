@@ -793,13 +793,8 @@ void updateFrames(int clickedX, int clickedY) {
   // FIRE+++
 
   // BONUS---
-  Bonus::Timer();
-
-  if (Bonus::dt > 50) {
-    for (int i = 0; i < Bonus::counter; i++) bonusEntities[i]->udpateFrame();
-
-    Bonus::timer1 = 0;
-    Bonus::dt = 0;
+  for (int i = 0; i < Bonus::counter; i++) {
+    bonusEntities[i]->udpateFrame();
   }
   // BONUS+++
 
