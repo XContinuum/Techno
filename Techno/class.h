@@ -946,8 +946,8 @@ class Inventory { // Inventar: Inventory
 
  private:
   Sprite *toolTip; // InventarExp: toolTip
-  Sprite *Image;
-  Sprite *Open;
+  Sprite *inventorySprite; // Image: inventorySprite
+  Sprite *openInventory; // Open: openInventory
   Sprite *ImObjects[9];
 
  public:
@@ -955,8 +955,8 @@ class Inventory { // Inventar: Inventory
     x = 0;
     y = 0;
 
-    Image = new Sprite("Images/inventory/inventory.bmp", 0xffffffff);
-    Open = new Sprite("Images/inventory/inventory_open.bmp", 0xffffffff);
+    inventorySprite = new Sprite("Images/inventory/inventory.bmp", 0xffffffff);
+    openInventory = new Sprite("Images/inventory/inventory_open.bmp", 0xffffffff);
     toolTip = new Sprite("Images/inventory/tool_tip.bmp", 0xffffffff);
 
     for (int i = 0; i < 9; i++) objects[i] = INV_EMPTY_CELL;
@@ -965,7 +965,7 @@ class Inventory { // Inventar: Inventory
   }
 
   void draw(Param *p, int cursorX, int cursorY) {
-    p->draw(x, y, Image->width, Image->height, Image);
+    p->draw(x, y, inventorySprite->width, inventorySprite->height, inventorySprite);
 
     // 0---
     if (objects[0] != 0)
@@ -974,7 +974,7 @@ class Inventory { // Inventar: Inventory
     // 0+++
 
     if (show == true) {
-      p->draw(x, y, Open->width, Open->height, Open);
+      p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
       for (int i = 0; i < 9; i++) {
         if (objects[i] != 0) {
@@ -1004,7 +1004,7 @@ class Inventory { // Inventar: Inventory
     }
   }
   bool contains(int x, int y) { // Touch: contains
-    return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
+    return x >= this->x && x <= this->x + inventorySprite->width && y >= this->y && y <= this->y + inventorySprite->height;
   }
   int TouchObject(int X, int Y) {
     // "Images/inventory/inventory_open.bmp"
@@ -1030,18 +1030,13 @@ class Inventory { // Inventar: Inventory
     iLmb = true;
   }
 
-  int TouchInvShow(int X, int Y) {
-    bool t = false;
-
-    if (X >= x && X <= x + Open->width && Y >= y && Y <= y + Open->height)
-      t = true;
-
-    return t;
+  bool TouchInvShow(int x, int y) {
+    return x >= this->x && x <= this->x + openInventory->width && y >= this->y && y <= this->y + openInventory->height;
   }
 
   void AddObject(int num) {
     for (int i = 0; i < 9; i++) {
-      if (num != 0 && objects[i] == 0) {
+      if (num != INV_EMPTY_CELL && objects[i] == INV_EMPTY_CELL) {
         objects[i] = num;
         ChangeImages();
         break;
