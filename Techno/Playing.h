@@ -627,7 +627,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   didPlayerTouchBonus();
   showInventoryToolTip(cursorX, cursorY);
 
-  if (inventory->Touch(clickedX, clickedY)) inventory->show = true;
+  if (inventory->contains(clickedX, clickedY)) inventory->show = true;
 
   // clicked showing result = clicked || showing 
   // T        T       T
@@ -658,8 +658,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < Book::counter; i++) {
     if (!(bookEntities[i]->state = 'C' && bookEntities[i]->show)) continue;
 
-    bool bottomLeft = bookEntities[i]->Touch(player->x, player->y + player->Image->height);
-    bool bottomRight = bookEntities[i]->Touch(player->x + player->Image->width, player->y + player->Image->height);
+    bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->Image->height);
+    bool bottomRight = bookEntities[i]->contains(player->x + player->Image->width, player->y + player->Image->height);
 
     if (bottomLeft || bottomRight) {
       bookEntities[i]->state = 'O';
@@ -677,8 +677,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // CHEST+++
   if (key == KEY_O) {
     for (int i = 0; i < Chest::counter; i++) {
-      bool bottomLeft = chest[i]->Touch(player->x, player->y + player->h - 1);
-      bool bottomRight = chest[i]->Touch(player->x + player->w, player->y + player->h - 1);
+      bool bottomLeft = chest[i]->contains(player->x, player->y + player->h - 1);
+      bool bottomRight = chest[i]->contains(player->x + player->w, player->y + player->h - 1);
 
       if (bottomLeft || bottomRight)
         chest[i]->show = true;
@@ -692,8 +692,8 @@ void didPlayerTouchBonus() {
   for (int i = 0; i < Bonus::counter; i++) {
     if (!bonusEntities[i]->show) continue;
 
-    bool bottomLeft = bonusEntities[i]->Touch(player->x, player->y + player->h - 1);
-    bool bottomRight = bonusEntities[i]->Touch(player->x + player->w, player->y + player->h - 1);
+    bool bottomLeft = bonusEntities[i]->contains(player->x, player->y + player->h - 1);
+    bool bottomRight = bonusEntities[i]->contains(player->x + player->w, player->y + player->h - 1);
 
     if (bottomLeft || bottomRight) {
       score += 10;
@@ -707,7 +707,7 @@ void didPlayerTouchBonus() {
   }
 }
 void showInventoryToolTip(int mouseX, int mouseY) {
-  inventory->exp = inventory->Touch(mouseX, mouseY); // show or hide tool tip
+  inventory->exp = inventory->contains(mouseX, mouseY); // show or hide tool tip
   inventory->mX = mouseX + 10;
   inventory->mY = mouseY;
 }
@@ -776,7 +776,7 @@ void chestMoveEvents() {
   }
 }
 void showChestToolTip(int i, int mouseX, int mouseY) {
-  chest[i]->expO = chest[i]->Touch(mouseX, mouseY);
+  chest[i]->expO = chest[i]->contains(mouseX, mouseY);
   chest[i]->mX1 = mouseX + 10;
   chest[i]->mY1 = mouseY;
 }
@@ -800,18 +800,18 @@ void updateFrames(int clickedX, int clickedY) {
 
   // DOOR+++
   for (int i = 0; i < Door::counter; i++)
-    doorEntities[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton);
+    doorEntities[i]->contains(clickedX, clickedY, gameMap, didClickLeftButton);
   // DOOR---
 
   // FinalDoor+++
   for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->Touch(clickedX, clickedY, gameMap, didClickLeftButton,
+    finalDoor[i]->contains(clickedX, clickedY, gameMap, didClickLeftButton,
                         inventory->objects[0]);
   // FinalDoor---
 
   // ButtonON+++
   for (int i = 0; i < ButtonON::counter; i++) {
-    if (pressurePlate[i]->Touch(player->x, player->y + player->h - 1))
+    if (pressurePlate[i]->contains(player->x, player->y + player->h - 1))
       BlockMoves::UP = true;
   }
   // ButtonON---

@@ -754,7 +754,7 @@ class Door {
     counter++;
   }
 
-  void Touch(int X, int Y, int MatMap[30][40], bool &rmb) {
+  void contains(int X, int Y, int MatMap[30][40], bool &rmb) { // Touch: contains
     if (X >= x && X <= x + ImageView->width && Y >= y &&
         Y <= y + ImageView->height && rmb == true) {
       updateFrame(MatMap);
@@ -807,7 +807,7 @@ class Book {
     counter++;
   }
 
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + Image->width && Y >= y && y <= Y + Image->height)
@@ -858,7 +858,7 @@ class Bonus {
     currentFrame = Image[frame];
   }
 
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + currentFrame->width && Y >= y &&
@@ -1022,7 +1022,7 @@ class Inventar {
       }
     }
   }
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
@@ -1224,7 +1224,7 @@ class Chest {
 
     return t;
   }
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + ImageView->width && Y >= y &&
@@ -1478,7 +1478,7 @@ class ButtonON {
     counter++;
   }
 
-  bool Touch(int X, int Y) {
+  bool contains(int X, int Y) { // Touch: contains
     bool t = false;
 
     if (X >= x && X <= x + Image->width && Y >= y && Y <= y + Image->height)
@@ -1591,7 +1591,7 @@ class FinalDoor {
     }
   }
 
-  void Touch(int X, int Y, int MatMap[30][40], bool &rmb, int inv) {
+  void contains(int X, int Y, int MatMap[30][40], bool &rmb, int inv) { // Touch: contains
     if (X >= x && X <= x + ImageView->width && Y >= y &&
         Y <= y + ImageView->height && rmb == true && inv == 2) {
       updateFrame(MatMap);
