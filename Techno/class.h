@@ -696,28 +696,26 @@ int Door::counter = 0;
 class Book {
  public:
   int x, y;
-  bool show;
+  bool show = true;
+  char state = 'C'; // closed state
 
-  Sprite *Image;
-
-  Sprite *Image1;
+  Sprite *bookAsset; // Image: bookAsset
   Sprite *ImageBack;
 
   static int counter;
-  char state;
 
  public:
-  Book(int _x, int _y) : x(_x), y(_y), show(true), state('C') {
+  Book(int x, int y) {
+    this->x = x;
+    this->y = y;
     ImageBack = NULL;
-    Image = NULL;
-    Image1 = new Sprite("Images/book.bmp");
-
-    Image = Image1;
+    bookAsset = new Sprite("Images/book.bmp"); // closed book
+    
     counter++;
   }
 
   bool contains(int x, int y) { // Touch: contains
-    return x >= this->x && x <= this->x + Image->width && y >= this->y && this->y <= y + Image->height;
+    return x >= this->x && x <= this->x + bookAsset->width && y >= this->y && this->y <= y + bookAsset->height;
   }
 };
 int Book::counter = 0;

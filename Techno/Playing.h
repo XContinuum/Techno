@@ -21,6 +21,7 @@ int AIR_ID = 0;
 int LADDER_ID = 3;
 int MOVING_BLOCK_ID = 6;
 int DOOR_ID = 4;
+int CLOSED_DOOR_ID = 5; // I think so?
 int FINAL_DOOR_ID = 8;
 
 // Inventory objects
@@ -184,8 +185,8 @@ void drawEntities(int cursorX, int cursorY) {
     }
 
     paramDraw->draw(bookEntities[i]->x, bookEntities[i]->y,
-                    bookEntities[i]->Image->width, bookEntities[i]->Image->height,
-                    bookEntities[i]->Image);
+                    bookEntities[i]->bookAsset->width, bookEntities[i]->bookAsset->height,
+                    bookEntities[i]->bookAsset);
   }
   // Book---
 
@@ -659,9 +660,9 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     bool bottomRight = bookEntities[i]->contains(player->x + player->currentFrame->width, player->y + player->currentFrame->height);
 
     if (bottomLeft || bottomRight) {
-      bookEntities[i]->state = 'O';
-      bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff);
-      bookEntities[i]->Image = bookEntities[i]->ImageBack;
+      bookEntities[i]->state = 'O'; // open state
+      bookEntities[i]->ImageBack = new Sprite("Images/book1.bmp", 0xffffffff); // open book
+      bookEntities[i]->bookAsset = bookEntities[i]->ImageBack;
       bookEntities[i]->x = (screenPixelWidth - bookEntities[i]->ImageBack->width) / 2;
       bookEntities[i]->y = (screenPixelHeight - bookEntities[i]->ImageBack->height) / 2;
 
