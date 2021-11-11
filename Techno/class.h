@@ -930,42 +930,41 @@ class Arrow {
 
 class Inventory { // Inventar: Inventory
  public:
+  int objects[9]; // cells
+
   int x, y;
   int mX, mY;
-  int w, h;
-  int objects[9];
   int move;
   int check;
 
   bool show;
-  bool exp;
+  bool showTooltip; // exp: showTooltip
 
   static bool iLmb;
   static int Xi;
   static int Yi;
 
+ private:
+  Sprite *toolTip; // InventarExp: toolTip
   Sprite *Image;
   Sprite *Open;
-  Sprite *toolTip; // InventarExp: toolTip
   Sprite *ImObjects[9];
 
  public:
-  Inventory() : exp(false), move(false) {
+  Inventory() : showTooltip(false), move(false) {
     x = 0;
     y = 0;
-    mX = 0;
-    mY = 0;
 
     Image = new Sprite("Images/inventory/inventory.bmp", 0xffffffff);
     Open = new Sprite("Images/inventory/inventory_open.bmp", 0xffffffff);
     toolTip = new Sprite("Images/inventory/tool_tip.bmp", 0xffffffff);
 
-    for (int i = 0; i < 9; i++) objects[i] = 0;
+    for (int i = 0; i < 9; i++) objects[i] = INV_EMPTY_CELL;
 
     ChangeImages();
   }
 
-  void draw(Param *p) {
+  void draw(Param *p, int cursorX, int cursorY) {
     p->draw(x, y, Image->width, Image->height, Image);
 
     // 0---
@@ -989,8 +988,8 @@ class Inventory { // Inventar: Inventory
       }
     }
 
-    if (exp == true)
-      p->draw(mX, mY, toolTip->width, toolTip->height, toolTip);
+    if (showTooltip)
+      p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   void ChangeImages() {
     char *path = new char[30];

@@ -172,7 +172,7 @@ void drawEntities(int cursorX, int cursorY) {
   }
   // Chest---
 
-  inventory->draw(paramDraw);
+  inventory->draw(paramDraw, cursorX, cursorY);
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
@@ -625,7 +625,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Class: Chest class, Book class
 
   didPlayerTouchBonus();
-  showInventoryToolTip(cursorX, cursorY);
+  inventory->showTooltip = inventory->contains(cursorX, cursorY); // show or hide tool tip
 
   if (inventory->contains(clickedX, clickedY)) inventory->show = true;
 
@@ -705,11 +705,6 @@ void didPlayerTouchBonus() {
       bonusEntities[i]->show = false;
     }
   }
-}
-void showInventoryToolTip(int mouseX, int mouseY) {
-  inventory->exp = inventory->contains(mouseX, mouseY); // show or hide tool tip
-  inventory->mX = mouseX + 10;
-  inventory->mY = mouseY;
 }
 void inventoryMoveEvents() {
   if (!inventory->TouchInvShow(Inventory::Xi, Inventory::Yi)) return;
