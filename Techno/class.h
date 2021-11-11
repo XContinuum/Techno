@@ -424,12 +424,12 @@ class Player { // Hero: Player
  private:
   int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
   
-  Sprite *ImageR[5];
-  Sprite *ImageL[5];
+  Sprite *rightWalk[5]; // ImageR: rightWalk
+  Sprite *leftWalk[5]; // ImageL: leftWalk
 
-  Sprite *ImageUD[4];
-  Sprite *ImageJR[4];
-  Sprite *ImageJL[4];
+  Sprite *ladderClimb[4]; // ImageUD: ladderClimb
+  Sprite *rightJump[4]; // ImageJR: rightJump
+  Sprite *leftJump[4]; // ImageJL: leftJump
 
   // Gravity
   int velocity;
@@ -456,37 +456,37 @@ class Player { // Hero: Player
     leftWalkFrame = 0;
     climbFrame = 0;
 
-    ImageR[0] = new Sprite("Images/hero/heroR1.bmp", 0xffffffff);
-    ImageR[1] = new Sprite("Images/hero/heroR2.bmp", 0xffffffff);
-    ImageR[2] = new Sprite("Images/hero/heroR3.bmp", 0xffffffff);
-    ImageR[3] = new Sprite("Images/hero/heroR4.bmp", 0xffffffff);
-    ImageR[4] = new Sprite("Images/hero/heroR5.bmp", 0xffffffff);
+    rightWalk[0] = new Sprite("Images/hero/heroR1.bmp", 0xffffffff);
+    rightWalk[1] = new Sprite("Images/hero/heroR2.bmp", 0xffffffff);
+    rightWalk[2] = new Sprite("Images/hero/heroR3.bmp", 0xffffffff);
+    rightWalk[3] = new Sprite("Images/hero/heroR4.bmp", 0xffffffff);
+    rightWalk[4] = new Sprite("Images/hero/heroR5.bmp", 0xffffffff);
 
-    ImageL[0] = new Sprite("Images/hero/heroL1.bmp", 0xffffffff);
-    ImageL[1] = new Sprite("Images/hero/heroL2.bmp", 0xffffffff);
-    ImageL[2] = new Sprite("Images/hero/heroL3.bmp", 0xffffffff);
-    ImageL[3] = new Sprite("Images/hero/heroL4.bmp", 0xffffffff);
-    ImageL[4] = new Sprite("Images/hero/heroL5.bmp", 0xffffffff);
+    leftWalk[0] = new Sprite("Images/hero/heroL1.bmp", 0xffffffff);
+    leftWalk[1] = new Sprite("Images/hero/heroL2.bmp", 0xffffffff);
+    leftWalk[2] = new Sprite("Images/hero/heroL3.bmp", 0xffffffff);
+    leftWalk[3] = new Sprite("Images/hero/heroL4.bmp", 0xffffffff);
+    leftWalk[4] = new Sprite("Images/hero/heroL5.bmp", 0xffffffff);
 
-    ImageJR[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
-    ImageJR[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
-    ImageJR[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
-    ImageJR[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
+    rightJump[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
+    rightJump[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
+    rightJump[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
+    rightJump[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
 
-    ImageJL[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
-    ImageJL[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
-    ImageJL[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
-    ImageJL[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
+    leftJump[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
+    leftJump[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
+    leftJump[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
+    leftJump[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
 
-    ImageUD[0] = new Sprite("Images/hero/heroU1.bmp", 0xffffffff);
-    ImageUD[1] = new Sprite("Images/hero/heroU2.bmp", 0xffffffff);
-    ImageUD[2] = new Sprite("Images/hero/heroU3.bmp", 0xffffffff);
-    ImageUD[3] = new Sprite("Images/hero/heroU4.bmp", 0xffffffff);
+    ladderClimb[0] = new Sprite("Images/hero/heroU1.bmp", 0xffffffff);
+    ladderClimb[1] = new Sprite("Images/hero/heroU2.bmp", 0xffffffff);
+    ladderClimb[2] = new Sprite("Images/hero/heroU3.bmp", 0xffffffff);
+    ladderClimb[3] = new Sprite("Images/hero/heroU4.bmp", 0xffffffff);
 
     for (int i = 0; i < 5; i++) {
-      if (i != 4) ImageJL[i]->flipHorizontally();
+      if (i != 4) leftJump[i]->flipHorizontally();
     }
-    currentFrame = ImageR[0];
+    currentFrame = rightWalk[0];
 
     w = currentFrame->width;
     h = currentFrame->height;
@@ -636,17 +636,17 @@ class Player { // Hero: Player
      switch (d) {
        case 'L':
          leftWalkFrame = (leftWalkFrame + 1) % 4;
-         currentFrame = ImageL[leftWalkFrame];
+         currentFrame = leftWalk[leftWalkFrame];
          break;
 
        case 'R':
          rightWalkFrame = (rightWalkFrame + 1) % 4;
-         currentFrame = ImageR[rightWalkFrame];
+         currentFrame = rightWalk[rightWalkFrame];
          break;
 
        case 'U':
          climbFrame = (climbFrame + 1) % 3;
-         currentFrame = ImageUD[climbFrame];
+         currentFrame = ladderClimb[climbFrame];
          break;
      }
 
