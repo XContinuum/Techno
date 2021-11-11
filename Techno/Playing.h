@@ -315,7 +315,7 @@ void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
 
     case 4:
       for (int i = 0; i < coordQuantity / 4; i++)
-        chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1], level,
+        chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1],
                              coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
       break;
 

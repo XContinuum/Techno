@@ -943,7 +943,6 @@ class Inventory { // Inventar: Inventory
 class Chest {
  public:
   int x, y;
-  int Cadr; // Cadr
   int mX1, mY1; // mX1, mY1
   int Answer; // Answer:
   int check; // check:
@@ -982,22 +981,19 @@ class Chest {
   Arrow *ar; // ar:
 
  private:
+  int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
   int cd[3]; // cd:
   int sd; // sd:
 
  public:
-  Chest(int _x, int _y, int Level, int ans1, int ans2)
-      : x(_x),
-        y(_y),
-        Cadr(0),
-        show(false),
-        expO(false),
-        showC(false),
-        move(false),
-        check(0) {
+  Chest(int x, int y, int ans1, int ans2)
+      : show(false), expO(false), showC(false), move(false), check(0) {
+    this->x = x;
+    this->y = y;
     Image[0] = new Sprite("Images/chest/chest1.bmp");
     Image[1] = new Sprite("Images/chest/chest2.bmp");
+    
     code = new Sprite("Images/chest/code.bmp");
     OpenExp = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
     Content = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
