@@ -678,13 +678,15 @@ class Door {
  private:
   void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
     frame = (frame + 1) % 2;
-
     currentFrame = assets[frame];
+    
+    int row = y / blockSize;
+    int column = x / blockSize;
 
-    gameMap[y / blockSize][x / blockSize] = num;
-    gameMap[y / blockSize + 1][x / blockSize] = num;
-    gameMap[y / blockSize + 2][x / blockSize] = num;
-    gameMap[y / blockSize + 3][x / blockSize] = num;
+    gameMap[row][column] = num;
+    gameMap[row + 1][column] = num;
+    gameMap[row + 2][column] = num;
+    gameMap[row + 3][column] = num;
 
     num = num == 5 ? 4 : 5;
   }
