@@ -713,14 +713,9 @@ class Fire {
         counter++;
     }
     void updateFrame() { // ChangeCadr: updateFrame
-        // TODO: convert to modulo operator
-        // CountCadr = (CountCadr + 1) % 3;
-        if (frame < 2)
-            frame++;
-        else
-            frame = 0;
-
+        frame = (frame + 1) % 3;
         currentSprite = Image[frame];
+        
         //
         // if (shouldUpdate()) { // TODO:
         //     frame = (frame + 1) % 3;
