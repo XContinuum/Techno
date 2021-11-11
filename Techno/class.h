@@ -1321,7 +1321,7 @@ bool Chest::iLmb = false;
 int Chest::Xi = 0;
 int Chest::Yi = 0;
 
-class ButtonON {
+class PressurePlate { // ButtonON: PressurePlate
  public:
   int x, y;
   Sprite *Image;
@@ -1329,7 +1329,7 @@ class ButtonON {
   static int counter;
 
  public:
-  ButtonON(int x, int y) {
+  PressurePlate(int x, int y) {
     this->x = x;
     this->y = y;
     Image = new Sprite("Images/buttonON.bmp");
@@ -1341,7 +1341,7 @@ class ButtonON {
     return x >= this->x && x <= this->x + Image->width && y >= this->y && y <= this->y + Image->height;
   }
 };
-int ButtonON::counter = 0;
+int PressurePlate::counter = 0;
 
 class BlockMoves {
  public:

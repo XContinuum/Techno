@@ -47,7 +47,7 @@ Book* bookEntities[10]; // b: bookEntities
 Bonus* bonusEntities[10]; // bons: bonusEntities
 Chest* chest[10];
 BlockMoves* movingStairBlocks[5]; // bm: movingStairBlocks
-ButtonON* pressurePlate[10]; // bt: pressurePlate
+PressurePlate* pressurePlate[10]; // bt: pressurePlate
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
 
@@ -321,7 +321,7 @@ void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
 
     case 5: 
       for (int i = 0; i < coordQuantity / 2; i++)
-        pressurePlate[i] = new ButtonON(coordinates[i * 2], coordinates[i * 2 + 1]);
+        pressurePlate[i] = new PressurePlate(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
     case 6: // Next mission position
@@ -480,7 +480,7 @@ void clearClassInformation() {
   Chest::iLmb = false;
   //------
   BlockMoves::counter = 0;
-  ButtonON::counter = 0;
+  PressurePlate::counter = 0;
   FinalDoor::counter = 0;
 }
 void resetEntities() {
@@ -770,7 +770,7 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
 void updateFrames(int clickedX, int clickedY) {
   // Global: fireEntities, bonusEntities, doorEntities, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
   // External: didClickLeftButton
-  // Classes: Fire, Bonus, Door, FinalDoor, ButtonON, BlockMoves
+  // Classes: Fire, Bonus, Door, FinalDoor, PressurePlate, BlockMoves
 
   // FIRE---
   // update frame every 50ms
@@ -813,12 +813,10 @@ void updateFrames(int clickedX, int clickedY) {
   }
   // FinalDoor---
 
-  // ButtonON+++
-  for (int i = 0; i < ButtonON::counter; i++) {
+  for (int i = 0; i < PressurePlate::counter; i++) {
     if (pressurePlate[i]->contains(player->x, player->y + player->h - 1))
       BlockMoves::UP = true;
   }
-  // ButtonON---
 
   // Block Moves+++
   BlockMoves::Timer();
