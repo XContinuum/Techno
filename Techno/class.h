@@ -418,11 +418,8 @@ class Player { // Hero: Player
   static int timerG;
   static int timerG1;
 
-  bool move;
   bool L, R, J, U, D, G;
-
-  int velocity, velocityJ;
-  int accel, accelJ;
+  int velocityJ;
 
  private:
   int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
@@ -433,6 +430,11 @@ class Player { // Hero: Player
   Sprite *ImageUD[4];
   Sprite *ImageJR[4];
   Sprite *ImageJL[4];
+
+  // Gravity
+  int velocity;
+  int accel;
+  int accelJ;
 
  public:
   Player()
@@ -500,17 +502,11 @@ class Player { // Hero: Player
     int ny1 = y / 20 + 1;
     int ny2 = y / 20 + 2;
 
-    if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
-        gameMap[ny][nx] == 9) {
-      if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
-          gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
-        if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
-            gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
-          updateFrame('R');
-          x += step;
-          timer1 = 0;
-        }
-      }
+    if (isPassThroughBlock(ny, nx) && isPassThroughBlock(ny1, nx) &&
+        isPassThroughBlock(ny2, nx)) {
+      updateFrame('R');
+      x += step;
+      timer1 = 0;
     }
   }
 
@@ -524,17 +520,11 @@ class Player { // Hero: Player
     int ny1 = y / 20 + 1;
     int ny2 = y / 20 + 2;
 
-    if (gameMap[ny][nx] == 0 || gameMap[ny][nx] == 5 || gameMap[ny][nx] == 3 ||
-        gameMap[ny][nx] == 9) {
-      if (gameMap[ny1][nx] == 0 || gameMap[ny1][nx] == 5 ||
-          gameMap[ny1][nx] == 3 || gameMap[ny][nx] == 9) {
-        if (gameMap[ny2][nx] == 0 || gameMap[ny2][nx] == 5 ||
-            gameMap[ny2][nx] == 3 || gameMap[ny][nx] == 9) {
-          updateFrame('L');
-          x -= step;
-          timer1 = 0;
-        }
-      }
+    if (isPassThroughBlock(ny, nx) && isPassThroughBlock(ny1, nx) &&
+        isPassThroughBlock(ny2, nx)) {
+      updateFrame('L');
+      x -= step;
+      timer1 = 0;
     }
   }
   void gravity() { // Gravitaton: gravity
@@ -546,10 +536,10 @@ class Player { // Hero: Player
     int nx1 = (x + w) / 20;
     int ny = (y + h + velocity) / 20;
 
-    if (gameMap[ny][nx] == 0 && gameMap[ny][nx1] == 0) {
+    if (gameMap[ny][nx] == AIR_ID && gameMap[ny][nx1] == AIR_ID) {
       y += velocity;
       timerG1 = 0;
-    } else if (gameMap[ny][nx] != 0) {
+    } else if (gameMap[ny][nx] != AIR_ID) {
       y = ny * 20 - h;
 
       velocity = 0;
@@ -562,7 +552,7 @@ class Player { // Hero: Player
       int nx = x / 20;
       int ny = (y - velocityJ) / 20;
 
-      if (gameMap[ny][nx] == 0 && velocityJ >= 0) {
+      if (gameMap[ny][nx] == AIR_ID && velocityJ >= 0) {
         y -= velocityJ;
 
         timerG1 = 0;
@@ -580,13 +570,13 @@ class Player { // Hero: Player
     int nx = x / 20;
     int ny = y / 20;
 
-    if (gameMap[ny][nx] == 3) {
+    if (gameMap[ny][nx] == LADDER_ID) {
       updateFrame('U');
       y -= 5;
     }
 
-    if (gameMap[ny][nx] == 0 && gameMap[(y + h) / 20][nx] == 3 &&
-        gameMap[ny + 1][nx] == 3)
+    if (gameMap[ny][nx] == AIR_ID && gameMap[(y + h) / 20][nx] == LADDER_ID &&
+        gameMap[ny + 1][nx] == LADDER_ID)
       y = (y / 20 + 1) * 20 - h;
 
     timer1 = 0;
@@ -599,7 +589,7 @@ class Player { // Hero: Player
     int nx = x / 20;
     int ny = (y + h + 5) / 20;
 
-    if (gameMap[ny][nx] == 3) {
+    if (gameMap[ny][nx] == LADDER_ID) {
       updateFrame('U');
       y += 5;
     }
@@ -661,6 +651,11 @@ class Player { // Hero: Player
 
      w = currentFrame->width;
      h = currentFrame->height;
+   }
+
+   bool isPassThroughBlock(int row, int column) {
+     return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
+            gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
    }
 };
 int Player::dt = 0;
