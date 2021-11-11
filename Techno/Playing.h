@@ -512,7 +512,7 @@ void setNextMapFilepath(int level) {
 void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Player class
-  player->ChargeMatMap(gameMap); // does not mutate parameter
+  player->duplicateMap(gameMap); // does not mutate parameter
 
   Player::Timer();
   Player::TimerG();
@@ -526,14 +526,14 @@ void playerEvents() {
 
     case KEY_RIGHT:
     case KEY_D:
-      player->R = true;
-      player->L = false;
+      player->isMovingRight = true;
+      player->isMovingLeft = false;
       break;
 
     case KEY_LEFT:
     case KEY_A:
-      player->L = true;
-      player->R = false;
+      player->isMovingLeft = true;
+      player->isMovingRight = false;
       break;
 
     case KEY_SPACE:
@@ -542,21 +542,21 @@ void playerEvents() {
       int bottom = (player->y + player->h) / blockSize;
 
       if (!(gameMap[bottom][leftPlayerSide] == AIR_ID && gameMap[bottom][rightPlayerSide] == AIR_ID)) {
-        player->J = true;
+        player->isJumping = true;
         player->jumpVelocity = 15;
       }
       break;
     
     case KEY_UP:
     case KEY_W:
-      player->U = true;
-      player->D = false;
+      player->isClimbingUp = true;
+      player->isClimbingDown = false;
       break;
 
     case KEY_DOWN:
     case KEY_S:
-      player->D = true;
-      player->U = false;
+      player->isClimbingDown = true;
+      player->isClimbingUp = false;
       break;
   }
 
@@ -573,7 +573,7 @@ void playerEvents() {
     int leftPlayerSide = player->x / blockSize;
     int bottom = (player->y + player->h) / blockSize;
 
-    player->G = gameMap[bottom][leftPlayerSide] != LADDER_ID;
+    player->canFall = gameMap[bottom][leftPlayerSide] != LADDER_ID;
   }
 }
 

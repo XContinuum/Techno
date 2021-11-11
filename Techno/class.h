@@ -418,7 +418,7 @@ class Player { // Hero: Player
   static int timerG;
   static int timerG1;
 
-  bool L, R, J, U, D, G;
+  bool isMovingLeft, isMovingRight, isJumping, isClimbingUp, isClimbingDown, canFall; // L, R, J, U, D, G
   int jumpVelocity; // velocityJ: jumpVelocity
 
  private:
@@ -437,19 +437,13 @@ class Player { // Hero: Player
   const int step = 7;
 
  public:
-  Player()
-      : x(0),
-        y(0),
-        L(false),
-        R(false),
-        J(false),
-        velocity(0),
-        jumpVelocity(0),
-        U(false),
-        D(false),
-        G(true) {
-    currentFrame = NULL;
-
+  Player() : x(0), y(0), velocity(0), jumpVelocity(0) {
+    isMovingLeft = false;
+    isMovingRight = false;
+    isJumping = false;
+    isClimbingUp = false;
+    isClimbingDown = false;
+    canFall = true;
     rightWalkFrame = 0;
     leftWalkFrame = 0;
     climbFrame = 0;
@@ -468,7 +462,6 @@ class Player { // Hero: Player
 
       ladderClimb[i] = new Sprite(getAssetName(i + 1, 'U'), alphaChannel);
     }
-    
     currentFrame = rightWalk[0];
 
     w = currentFrame->width;
@@ -476,8 +469,8 @@ class Player { // Hero: Player
   }
 
   void moveRight() { // MoveR: moveRight
-    if (!R) return;
-    R = false;
+    if (!isMovingRight) return;
+    isMovingRight = false;
 
     int followingColumn = (x + w + step) / blockSize;
     int playerRow1 = y / blockSize;
@@ -494,8 +487,8 @@ class Player { // Hero: Player
   }
 
   void moveLeft() { // MoveL: moveLeft
-    if (!L) return;
-    L = false;
+    if (!isMovingLeft) return;
+    isMovingLeft = false;
 
     int previousColumn = (x - step) / blockSize;
     int playerRow1 = y / blockSize;
@@ -511,7 +504,7 @@ class Player { // Hero: Player
     }
   }
   void gravity() { // Gravitaton: gravity
-    if (J || !G) return;
+    if (isJumping || !canFall) return;
 
     if (velocity <= 20) velocity += acceleration;
 
@@ -530,7 +523,7 @@ class Player { // Hero: Player
     }
   }
   void jump() { // Jump: jump
-    if (!J) return;
+    if (!isJumping) return;
     if (dtG <= 20) return;
 
     jumpVelocity -= acceleration;
@@ -546,11 +539,11 @@ class Player { // Hero: Player
 
     jumpVelocity = 0;
     timerG1 = 0;
-    J = false;
+    isJumping = false;
   }
   void moveUpLadder() {  // UD: moveUpLadder()
-    if (!U) return;
-    U = false;
+    if (!isClimbingUp) return;
+    isClimbingUp = false;
 
     int nx = x / blockSize;
     int playerTopRow = y / blockSize;
@@ -570,8 +563,8 @@ class Player { // Hero: Player
   }
 
   void moveDownLadder() {
-    if (!D) return;
-    D = false;
+    if (!isClimbingDown) return;
+    isClimbingDown = false;
 
     int nx = x / blockSize;
     int ny = (y + h + 5) / blockSize;
@@ -613,9 +606,11 @@ class Player { // Hero: Player
     dtG = timerG - timerG1;
   }
 
-  void ChargeMatMap(int MatMap1[30][40]) {
+  void duplicateMap(int gameMap[30][40]) {  // ChargeMatMap: duplicateMap
     for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) gameMap[i][j] = MatMap1[i][j];
+      for (int j = 0; j < 40; j++) {
+        this->gameMap[i][j] = gameMap[i][j];
+      }
   }
 
   private:
