@@ -944,7 +944,7 @@ class Inventory { // Inventar: Inventory
   Sprite *inventorySprite; // Image: inventorySprite
   Sprite *openInventory; // Open: openInventory
   
-  Sprite *ImObjects[9];
+  Sprite *cellSprites[9]; // ImObjects: cellSprites
 
  public:
   Inventory() : showTooltip(false), move(false) {
@@ -961,26 +961,26 @@ class Inventory { // Inventar: Inventory
   }
 
   void draw(Param *p, int cursorX, int cursorY) {
-    p->draw(x, y, inventorySprite->width, inventorySprite->height, inventorySprite);
-
-    // 0---
-    if (objects[0] != 0)
-      p->draw(17 + 0 * 7 + 0 * 25 - 7, 7, ImObjects[0]->width,
-              ImObjects[0]->height, ImObjects[0]);
-    // 0+++
-
-    if (show == true) {
+    if (show) {
       p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
       for (int i = 0; i < 9; i++) {
         if (objects[i] != INV_EMPTY_CELL) {
-          int l = 17 + i * 7 + i * 25;
+          std::tie(x, y) = cellPosition(i);
 
-          if (i == 0) l = 17 + i * 7 + i * 25 - 7;
-
-          p->draw(l, 7, ImObjects[i]->width, ImObjects[i]->height,
-                  ImObjects[i]);
+          p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
+                  cellSprites[i]);
         }
+      }
+    } else {
+      p->draw(x, y, inventorySprite->width, inventorySprite->height,
+              inventorySprite);
+
+      if (objects[0] != INV_EMPTY_CELL) {
+        std::tie(x, y) = cellPosition(0);
+
+        p->draw(x, y, cellSprites[0]->width, cellSprites[0]->height,
+                cellSprites[0]);
       }
     }
 
@@ -995,7 +995,7 @@ class Inventory { // Inventar: Inventory
       if (objects[i] != INV_EMPTY_CELL) {
         num = sprintf(path, "Images/o%d.bmp", objects[i]);
 
-        ImObjects[i] = new Sprite(path, 0xffffffff);
+        cellSprites[i] = new Sprite(path, 0xffffffff);
       }
     }
   }
@@ -1035,6 +1035,16 @@ class Inventory { // Inventar: Inventory
     }
 
     updateCellSprites();
+  }
+
+  private:
+  std::tuple<int, int> cellPosition(int cellIndex) {
+      int offset = cellIndex == 0 ? -7 : 0;
+
+      int cellSize = 25;
+      int cellSpace = 7;
+
+      return std::tuple<int, int>{17 + cellIndex * (cellSpace + cellSize) + offset, 7};
   }
 };
 
