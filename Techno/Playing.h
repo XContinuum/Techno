@@ -562,13 +562,13 @@ void playerEvents() {
 
   player->Jump();
 
-  if (Player::dtG > blockSize) player->Gravitaton();
+  if (Player::dtG > blockSize) player->gravity();
 
   if (Player::dt > 15) {
-    player->MoveL();
-    player->MoveR();
-    player->UD('U');
-    player->UD('D');
+    player->moveLeft();
+    player->moveRight();
+    player->moveUpLadder('U');
+    player->moveUpLadder('D');
 
     int leftPlayerSide = player->x / blockSize;
     int bottom = (player->y + player->h) / blockSize;

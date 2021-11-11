@@ -490,12 +490,11 @@ class Player { // Hero: Player
     h = currentFrame->height;
   }
 
-  void MoveR() {
-    int step = 7;
-
+  void moveRight() { // MoveR: moveRight
     if (!R) return;
     R = false;
 
+    int step = 7;
     int nx = (x + w + step) / 20;
     int ny = y / 20;
     int ny1 = y / 20 + 1;
@@ -515,12 +514,11 @@ class Player { // Hero: Player
     }
   }
 
-  void MoveL() {
-    int step = 7;
-
+  void moveLeft() { // MoveL: moveLeft
     if (!L) return;
     L = false;
 
+    int step = 7;
     int nx = (x - step) / 20;
     int ny = y / 20;
     int ny1 = y / 20 + 1;
@@ -539,7 +537,7 @@ class Player { // Hero: Player
       }
     }
   }
-  void Gravitaton() {
+  void gravity() { // Gravitaton: gravity
     if (J || !G) return;
 
     if (velocity <= 20) velocity += accel;
@@ -557,7 +555,7 @@ class Player { // Hero: Player
       velocity = 0;
     }
   }
-  void Jump() {
+  void jump() { // Jump: jump
     if (J == true && dtG > 20) {
       velocityJ -= accel;
 
@@ -575,7 +573,7 @@ class Player { // Hero: Player
       }
     }
   }
-  void UD(char d) {
+  void moveUpLadder(char d) { // UD: moveUpLadder()
     switch (d) {
       case 'U':
         if (U == true) {
