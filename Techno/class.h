@@ -1423,18 +1423,18 @@ class FinalDoor {
 
  private:
   int frame = 0; // Cadr: frame
-  int num = 9;
+  int doorId = 9; // num: doorId
 
+  int doorType; // type: doorType
   Sprite *assets[2]; // Image: assets
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *needKeyAsset; // NeedKey: needKeyAsset
-  int type; // type
 
  public:
-  FinalDoor(int x, int y, int type) {
+  FinalDoor(int x, int y, int doorType) {
     this->x = x;
     this->y = y;
-    this->type = type;
+    this->doorType = doorType;
 
     assets[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
     assets[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
@@ -1444,7 +1444,7 @@ class FinalDoor {
 
     counter++;
 
-    if (type == 1) {
+    if (doorType == 1) {
       assets[0]->flipHorizontally();
       assets[1]->flipHorizontally();
     }
@@ -1459,24 +1459,25 @@ class FinalDoor {
     p->draw((x + assets[0]->width) - currentFrame->width, y, currentFrame->width,
             currentFrame->height, currentFrame);
 
-    // NeedKey
     if (needsKey)
-      p->draw((w - needKeyAsset->width) / 2, (h - needKeyAsset->height) / 2,
+      p->draw((screenPixelWidth - needKeyAsset->width) / 2, (screenPixelHeight - needKeyAsset->height) / 2,
               needKeyAsset->width, needKeyAsset->height, needKeyAsset);
   }
 
   void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
-    if (type != 0) return;
+    if (doorType != 0) return;
     frame = (frame + 1) % 2;
 
     currentFrame = assets[frame];
 
-    gameMap[y / 20][x / 20] = num;
-    gameMap[y / 20 + 1][x / 20] = num;
-    gameMap[y / 20 + 2][x / 20] = num;
-    gameMap[y / 20 + 3][x / 20] = num;
+    int row = y / blockSize;
+    int column = x / blockSize;
+    gameMap[row][column] = doorId;
+    gameMap[row + 1][column] = doorId;
+    gameMap[row + 2][column] = doorId;
+    gameMap[row + 3][column] = doorId;
 
-    num = num == 9 ? 8 : 9;
+    doorId = doorId == 9 ? 8 : 9;
   }
 };
 int FinalDoor::counter = 0;
