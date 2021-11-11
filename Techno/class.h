@@ -826,29 +826,28 @@ int Bonus::counter = 0;
 class Arrow {
  public:
   int x, y;
-  int num;
 
-  Sprite *Image;
-  Sprite *Images[40];
+ private:
+  int frame = 0;
+  Sprite *arrowAssets[40];
 
  public:
   Arrow() {
     x = 0;
     y = 0;
-    num = 0;
 
     char *path = new char[30];
     for (int i = 0; i < 40; i++) {
-      sprintf(path, "Images/c%d.bmp", i);
+      sprintf(path, "Images/c%d.bmp", i + 1);
 
-      Images[0] = new Sprite(path, 0xffffffff);
+      arrowAssets[i] = new Sprite(path, 0xffffffff);
     }
   }
 
   void draw(Param *p) {
-    Image = Images[num];
+    Sprite *currentFrame = arrowAssets[frame];
 
-    p->draw(x, y, Image->width, Image->height, Image);
+    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 };
 
