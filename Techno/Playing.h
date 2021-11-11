@@ -140,7 +140,7 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < FinalDoor::counter; i++) {
-    finalDoor[i]->Draw(paramDraw);
+    finalDoor[i]->draw(paramDraw);
   }
 
   for (int i = 0; i < Bonus::counter; i++) {
@@ -158,21 +158,21 @@ void drawEntities(int cursorX, int cursorY) {
 
   // Chest++++
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->Draw(paramDraw);
+    chest[i]->draw(paramDraw);
   }
 
-  player->Draw(paramDraw);
+  player->draw(paramDraw);
 
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->show) continue;
 
     paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                     pauseOverlay);
-    chest[i]->DrawC(paramDraw); // does not mutate parameter
+    chest[i]->drawC(paramDraw); // does not mutate parameter
   }
   // Chest---
 
-  inventory->Draw(paramDraw);
+  inventory->draw(paramDraw);
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {

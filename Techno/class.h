@@ -648,7 +648,7 @@ class Hero {
     w = Image->width;
     h = Image->height;
   }
-  void Draw(Param *p) { p->draw(x, y, Image->width, Image->height, Image); }
+  void draw(Param *p) { p->draw(x, y, Image->width, Image->height, Image); }
   bool ChangeLevel() {
     bool c = false;
 
@@ -939,7 +939,7 @@ class Arrow {
     Images[39] = new Sprite("Images/c39.bmp", 0xffffffff);
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     Image = Images[num];
 
     p->draw(x, y, Image->width, Image->height, Image);
@@ -983,7 +983,7 @@ class Inventar {
     ChangeImages();
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     p->draw(x, y, Image->width, Image->height, Image);
 
     // 0---
@@ -1404,18 +1404,18 @@ class Chest {
     }
   }
   //++++
-  void Draw(Param *p) {
+  void draw(Param *p) {
     p->draw(x, y, ImageView->width, ImageView->height, ImageView);
 
     if (expO == true)
       p->draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
   }
-  void DrawC(Param *p) {
+  void drawC(Param *p) {
     lock->draw(p);
 
     if (showC == false) locker->draw(p);
 
-    ar->Draw(p);
+    ar->draw(p);
     //---
     int *pos = new int[2];
 
@@ -1607,7 +1607,7 @@ class FinalDoor {
       nk = false;
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     p->draw((x + Image[0]->width) - ImageView->width, y, ImageView->width,
             ImageView->height, ImageView);
 
@@ -1675,7 +1675,7 @@ class DrawRectangle {
     }
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     p->rectSize.left = x;
     p->rectSize.top = y;
     p->rectSize.right = p->rectSize.left + w;
@@ -1695,3 +1695,4 @@ class DrawRectangle {
                reinterpret_cast<char *>(&img[j + i * w]), 4);
   }
 };
+
