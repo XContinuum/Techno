@@ -808,9 +808,16 @@ void updateFrames(int clickedX, int clickedY) {
   // DOOR---
 
   // FinalDoor+++
-  for (int i = 0; i < FinalDoor::counter; i++)
-    finalDoor[i]->contains(clickedX, clickedY, gameMap, didClickLeftButton,
-                        inventory->objects[0]);
+  bool isHoldingKey = inventory->objects[0] == 2;
+
+  for (int i = 0; i < FinalDoor::counter; i++) {
+    if (isHoldingKey && didClickLeftButton &&
+        finalDoor[i]->contains(clickedX, clickedY)) {
+      finalDoor[i]->updateFrame(gameMap);
+      didClickRightButton = false;
+    }
+    finalDoor[i]->updateNeedKey();
+  }
   // FinalDoor---
 
   // ButtonON+++

@@ -1557,13 +1557,12 @@ class FinalDoor {
     }
   }
 
-  void contains(int X, int Y, int MatMap[30][40], bool &rmb, int inv) { // Touch: contains
-    if (X >= x && X <= x + ImageView->width && Y >= y &&
-        Y <= y + ImageView->height && rmb == true && inv == 2) {
-      updateFrame(MatMap);
-      rmb = false;
-    }
+  bool contains(int X, int Y) { // Touch: contains
+    return X >= x && X <= x + ImageView->width && Y >= y &&
+        Y <= y + ImageView->height;
+  }
 
+  void updateNeedKey() {
     if (X >= x && X <= x + ImageView->width && Y >= y &&
         Y <= y + ImageView->height && rmb == true && inv != 2)
       nk = true;
@@ -1583,7 +1582,6 @@ class FinalDoor {
               NeedKey->width, NeedKey->height, NeedKey);
   }
 
- private:
   void updateFrame(int MatMap[30][40]) {  // ChangeCadr: updateFrame
     if (type == 0) {
       if (Cadr < 1)
