@@ -456,36 +456,21 @@ class Player { // Hero: Player
     leftWalkFrame = 0;
     climbFrame = 0;
 
-    rightWalk[0] = new Sprite("Images/hero/heroR1.bmp", 0xffffffff);
-    rightWalk[1] = new Sprite("Images/hero/heroR2.bmp", 0xffffffff);
-    rightWalk[2] = new Sprite("Images/hero/heroR3.bmp", 0xffffffff);
-    rightWalk[3] = new Sprite("Images/hero/heroR4.bmp", 0xffffffff);
-    rightWalk[4] = new Sprite("Images/hero/heroR5.bmp", 0xffffffff);
-
-    leftWalk[0] = new Sprite("Images/hero/heroL1.bmp", 0xffffffff);
-    leftWalk[1] = new Sprite("Images/hero/heroL2.bmp", 0xffffffff);
-    leftWalk[2] = new Sprite("Images/hero/heroL3.bmp", 0xffffffff);
-    leftWalk[3] = new Sprite("Images/hero/heroL4.bmp", 0xffffffff);
-    leftWalk[4] = new Sprite("Images/hero/heroL5.bmp", 0xffffffff);
-
-    rightJump[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
-    rightJump[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
-    rightJump[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
-    rightJump[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
-
-    leftJump[0] = new Sprite("Images/hero/heroJ1.bmp", 0xffffffff);
-    leftJump[1] = new Sprite("Images/hero/heroJ2.bmp", 0xffffffff);
-    leftJump[2] = new Sprite("Images/hero/heroJ3.bmp", 0xffffffff);
-    leftJump[3] = new Sprite("Images/hero/heroJ4.bmp", 0xffffffff);
-
-    ladderClimb[0] = new Sprite("Images/hero/heroU1.bmp", 0xffffffff);
-    ladderClimb[1] = new Sprite("Images/hero/heroU2.bmp", 0xffffffff);
-    ladderClimb[2] = new Sprite("Images/hero/heroU3.bmp", 0xffffffff);
-    ladderClimb[3] = new Sprite("Images/hero/heroU4.bmp", 0xffffffff);
+    int alphaChannel = 0xffffffff;
 
     for (int i = 0; i < 5; i++) {
-      if (i != 4) leftJump[i]->flipHorizontally();
+      rightWalk[i] = new Sprite(getAssetName(i, 'R'), alphaChannel);
+      leftWalk[i] = new Sprite(getAssetName(i, 'L'), alphaChannel);
     }
+
+    for (int i = 0; i < 3; i++) {
+      rightJump[i] = new Sprite(getAssetName(i, 'J'), alphaChannel);
+      leftJump[i] = new Sprite(getAssetName(i, 'J'), alphaChannel);
+      leftJump[i]->flipHorizontally();
+
+      ladderClimb[i] = new Sprite(getAssetName(i, 'U'), alphaChannel);
+    }
+    
     currentFrame = rightWalk[0];
 
     w = currentFrame->width;
@@ -657,6 +642,13 @@ class Player { // Hero: Player
    bool isPassThroughBlock(int row, int column) {
      return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
             gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
+   }
+
+   char *getAssetName(int i, char mode) {
+     char *path = new char[30];
+     sprintf(path, "Images/hero/hero%c%d.bmp", mode, i);
+
+     return path;
    }
 };
 int Player::dt = 0;
