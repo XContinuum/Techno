@@ -238,7 +238,7 @@ void Draw() {
     if (isInitialState == true) {
         paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
-        for (int i = 0; i < 4; i++) btnMain[i]->Draw(paramDraw);
+        for (int i = 0; i < 4; i++) btnMain[i]->draw(paramDraw);
     }
     // MAIN MENU-------------------------------------------------------
 

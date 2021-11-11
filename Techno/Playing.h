@@ -95,7 +95,7 @@ void drawMission() {
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
-  if (missionButtons[0]->show) missionButtons[0]->Draw(paramDraw);
+  if (missionButtons[0]->show) missionButtons[0]->draw(paramDraw);
 
   // missions.bmp
   int missionsRows = 4;
@@ -119,7 +119,7 @@ void drawMission() {
     }
   }
 
-  if (backButton->show) backButton->Draw(paramDraw);
+  if (backButton->show) backButton->draw(paramDraw);
 }
 void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntities, doorEntities, bonusEntities, movingStairBlocks, chest, player, inventory, bookEntities, pauseOverlay
@@ -212,7 +212,7 @@ void drawPauseMenu() {
                   pauseMenuSprite->height, pauseMenuSprite);
 
   for (int i = 0; i < 4; i++) {
-    pauseMenuButtons[i]->Draw(paramDraw);
+    pauseMenuButtons[i]->draw(paramDraw);
   }
 }
 // ---------------------------------------------------------------------------------

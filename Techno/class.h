@@ -36,7 +36,7 @@ class Button {
     return t;
   }
 
-  void Draw(Param *p) {
+  void draw(Param *p) {
     if (show == true) p->draw(x, y, w, h, Image);
   }
 };
@@ -1411,9 +1411,9 @@ class Chest {
       p->draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
   }
   void DrawC(Param *p) {
-    lock->Draw(p);
+    lock->draw(p);
 
-    if (showC == false) locker->Draw(p);
+    if (showC == false) locker->draw(p);
 
     ar->Draw(p);
     //---
@@ -1424,8 +1424,8 @@ class Chest {
 
     codeView->draw(p, pos, 2);
     //+++
-    LockerLight->Draw(p);
-    lOK->Draw(p);
+    LockerLight->draw(p);
+    lOK->draw(p);
     txt->draw(p);
 
     if (showC == true) {
