@@ -573,42 +573,38 @@ class Player { // Hero: Player
       }
     }
   }
-  void moveUpLadder(char d) { // UD: moveUpLadder()
-    switch (d) {
-      case 'U':
-        if (U == true) {
-          int nx = x / 20;
-          int ny = y / 20;
+  void moveUpLadder() {  // UD: moveUpLadder()
+    if (!U) return;
+    U = false;
 
-          if (gameMap[ny][nx] == 3) {
-            updateFrame('U');
-            y -= 5;
-          }
+    int nx = x / 20;
+    int ny = y / 20;
 
-          if (gameMap[ny][nx] == 0 && gameMap[(y + h) / 20][nx] == 3 &&
-              gameMap[ny + 1][nx] == 3)
-            y = (y / 20 + 1) * 20 - h;
-
-          U = false;
-          timer1 = 0;
-        }
-        break;
-
-      case 'D':
-        if (D == true) {
-          int nx = x / 20;
-          int ny = (y + h + 5) / 20;
-
-          if (gameMap[ny][nx] == 3) {
-            updateFrame('U');
-            y += 5;
-          }
-
-          D = false;
-          timer1 = 0;
-        }
-        break;
+    if (gameMap[ny][nx] == 3) {
+      updateFrame('U');
+      y -= 5;
     }
+
+    if (gameMap[ny][nx] == 0 && gameMap[(y + h) / 20][nx] == 3 &&
+        gameMap[ny + 1][nx] == 3)
+      y = (y / 20 + 1) * 20 - h;
+
+    timer1 = 0;
+  }
+
+  void moveDownLadder() {
+    if (!D) return;
+    D = false;
+
+    int nx = x / 20;
+    int ny = (y + h + 5) / 20;
+
+    if (gameMap[ny][nx] == 3) {
+      updateFrame('U');
+      y += 5;
+    }
+
+    timer1 = 0;
   }
 
   void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }

@@ -567,8 +567,8 @@ void playerEvents() {
   if (Player::dt > 15) {
     player->moveLeft();
     player->moveRight();
-    player->moveUpLadder('U');
-    player->moveUpLadder('D');
+    player->moveUpLadder();
+    player->moveDownLadder();
 
     int leftPlayerSide = player->x / blockSize;
     int bottom = (player->y + player->h) / blockSize;
