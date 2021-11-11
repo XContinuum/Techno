@@ -247,7 +247,7 @@ void readEntities(char* fileBuffer, int bufferSize) {
 
       if (coordinates != NULL) {
         int coord_quantity = (index - prevColonIndex + 2) / 4;
-        createEntity(readingChunk, coordinates, coord_quantity);
+        createEntities(readingChunk, coordinates, coord_quantity);
       }
 
       prevColonIndex = index + 1;
@@ -288,7 +288,7 @@ int* readCoordinates(int begin, int end, char* fileBuffer) { // pure function
 
   return coordinates;
 }
-void createEntity(int readingChunk, int* coordinates, int coordQuantity) {
+void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
   // Global: pressurePlate, chest, bonusEntities, fireEntities
   switch (readingChunk) {
     case 0: // Load player coordinates
