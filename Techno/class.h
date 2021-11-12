@@ -1020,18 +1020,16 @@ class Chest {
   }
 
   int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
-    // This data is pulled from "Images/chest/InvChest.bmp"
-    if (this->isWithinInventory(x, y)) {
+    if (this->isWithinInventory(x, y) && didClickCell(x, y)) {
       std::tie(blockX, blockY) = findCell(x, y);
-
-      if (didClickCell(x, y))
-          return blockY * 8 + blockX;
+      return blockY * 8 + blockX;
     }
 
     return -1;
   }
 
   bool isWithinInventory(int x, int y) { // TouchInvChest: isWithinInventory
+    // This data is pulled from "Images/chest/InvChest.bmp"
     int inventoryChestLeft = 71;
     int inventoryChestTop = 109;
     int inventoryChestRight = 305;
