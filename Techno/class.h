@@ -1133,9 +1133,9 @@ class Chest {
     }
 
     if (lmb && locker->contains(clickedX, clickedY)) {  // left click
-      int angle = calculateAngle(clickedX, clickedY);
-      comboDigits[currentDigit] = angle;
-      lockAngle->frame = angle;
+      int lockNumer = calculatePickedNumber(clickedX, clickedY);
+      comboDigits[currentDigit] = lockNumer;
+      lockAngle->frame = lockNumer;
       displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
 
       lmb = false;
@@ -1244,7 +1244,7 @@ class Chest {
                          locker->y + 100, 0xFFED1C24);  // code
    }
 
-   int calculateAngle(int clickedX, int clickedY) {
+   int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
      double x = locker->w / 2;
      double y = locker->h / 2;
 
