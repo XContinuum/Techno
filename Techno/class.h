@@ -949,7 +949,7 @@ class Chest {
 
   bool expO; // expO:
   bool show; // show:
-  bool showC; // showC:
+  bool showC; // showC: showChestContents
   bool move; // move:
 
   static bool iLmb; // iLmb:
@@ -962,13 +962,13 @@ class Chest {
 
  private:
   Sprite *currentFrame; // ImageView: currentFrame
-  Sprite *ImObjects[6 * 8]; // ImObjects:
+  Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
 
   Sprite *assets[2]; // Image: assets; TODO: remove
   Sprite *code; // code:
-  Sprite *OpenExp; // OpenExp: toolTip
-  Sprite *Content; // Content:
-  Sprite *OkOpen; // OkOpen:
+  Sprite *toolTip; // OpenExp: toolTip
+  Sprite *chestGrid; // Content: chestGrid
+  Sprite *successUnlockAsset; // OkOpen: successUnlockAsset
   
   Button *lock; // lock:
   Button *locker; // locker:
@@ -998,9 +998,9 @@ class Chest {
     assets[1] = new Sprite("Images/chest/chest2.bmp");
 
     code = new Sprite("Images/chest/code.bmp");
-    OpenExp = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
-    Content = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
-    OkOpen = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
+    toolTip = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
+    chestGrid = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
+    successUnlockAsset = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
     currentFrame = assets[0];
 
     counter++;
@@ -1082,7 +1082,7 @@ class Chest {
       if (items[i] != 0) {
         num = sprintf(path, "Images/o%d.bmp", items[i]);
 
-        ImObjects[i] = new Sprite(path, 0xffffffff);
+        itemAssets[i] = new Sprite(path, 0xffffffff);
       }
     }
   }
@@ -1199,7 +1199,7 @@ class Chest {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
 
     if (expO == true)
-      p->draw(mX1, mY1, OpenExp->width, OpenExp->height, OpenExp);
+      p->draw(mX1, mY1, toolTip->width, toolTip->height, toolTip);
   }
   void drawC(Param *p) {
     lock->draw(p);
@@ -1220,8 +1220,8 @@ class Chest {
     txt->draw(p);
 
     if (showC == true) {
-      p->draw((w - code->width) / 2, (h - code->height) / 2, Content->width,
-              Content->height, Content);
+      p->draw((w - code->width) / 2, (h - code->height) / 2, chestGrid->width,
+              chestGrid->height, chestGrid);
 
       int ix = 0;
       int iy = 0;
@@ -1230,7 +1230,7 @@ class Chest {
         if (items[i] != 0)
           p->draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
                   (h - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
-                  ImObjects[i]->width, ImObjects[i]->height, ImObjects[i]);
+                  itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
 
         if (ix < 7)
           ix++;
@@ -1243,7 +1243,7 @@ class Chest {
 
     if (BOk == true)
       p->draw((w - lock->w) / 2 + 99 + 2, (h - lock->h) / 2 + 107,
-              OkOpen->width, OkOpen->height, OkOpen);
+              successUnlockAsset->width, successUnlockAsset->height, successUnlockAsset);
   }
   private:
    void initializeButtons() {
