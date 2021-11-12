@@ -986,7 +986,7 @@ class Chest {
 
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
-  int cd[3]; // cd:
+  int cd[3] = {0, 0, 0}; // cd:
   int sd; // sd:
 
  public:
@@ -1012,12 +1012,11 @@ class Chest {
     updateChestCells();
     //+++
     sd = 0;
-    for (int i = 0; i < 3; i++) cd[i] = 0;
 
     initializeButtons();
   }
 
-  int TouchObject(int x, int y) { // TouchObject: 
+  int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
     // This data is pulled from "Images/chest/InvChest.bmp"
     int inventoryChestLeft = 71;
     int inventoryChestTop = 109;

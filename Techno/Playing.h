@@ -735,7 +735,7 @@ void chestMoveEvents() {
       continue;
     }
 
-    int selectedChestCell = chest[i]->TouchObject(Chest::Xi, Chest::Yi);
+    int selectedChestCell = chest[i]->selectedChestCell(Chest::Xi, Chest::Yi);
 
     if (chest[i]->move) {
       if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
