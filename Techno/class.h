@@ -1026,10 +1026,10 @@ class Chest {
     int inventorySquareDim = 25;  // size of a single cell
     int spaceBetweenCells = 5;
 
-    int x1 = inventoryChestLeft + (w - code->width) / 2;
-    int x2 = inventoryChestRight + (w - code->width) / 2;
-    int y1 = inventoryChestTop + (h - code->height) / 2;
-    int y2 = inventoryChestBottom + (h - code->height) / 2;
+    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
+    int x2 = inventoryChestRight + (screenPixelWidth - code->width) / 2;
+    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
+    int y2 = inventoryChestBottom + (screenPixelHeight - code->height) / 2;
 
     int blockX = (X - x1) / (inventorySquareDim + spaceBetweenCells);
     int blockY = (Y - y1) / (inventorySquareDim + spaceBetweenCells);
@@ -1045,15 +1045,18 @@ class Chest {
 
     return -1;
   }
-  bool TouchInvChest(int X, int Y) {
-    bool t = false;
+  bool TouchInvChest(int x, int y) { // TouchInvChest: isWithinInventory
+    int inventoryChestLeft = 71;
+    int inventoryChestTop = 109;
+    int inventoryChestRight = 305;
+    int inventoryChestBottom = 283;
 
-    int x1 = 71 + (w - code->width) / 2, x2 = 305 + (w - code->width) / 2;
-    int y1 = 109 + (h - code->height) / 2, y2 = 283 + (h - code->height) / 2;
+    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
+    int x2 = inventoryChestRight + (screenPixelWidth - code->width) / 2;
+    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
+    int y2 = inventoryChestBottom + (screenPixelHeight - code->height) / 2;
 
-    if (X >= x1 && X <= x2 && Y >= y1 && Y <= y2) t = true;
-
-    return t;
+    return x >= x1 && x <= x2 && y >= y1 && y <= y2;
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
