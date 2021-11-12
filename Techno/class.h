@@ -1070,39 +1070,44 @@ class Chest {
 
     //+++++++++++++
     int i = 0;
-    int cont = 0;
+    int chunk = 0;
     int pos = 0;
 
     while (questionFile[i] != '\0') {
-      if (questionFile[i] == '%') {
-        cont++;
+      if (questionFile[i] == '%') chunk++;
 
-        if (cont == level) pos = i + 1;
-      }
+      if (chunk == level) pos = i + 1;
 
-      if (cont == level + 1) {
-        char *str = new char[i - pos];
+      if (chunk == level + 1) {
+        // copy chunk into str +++
+        int chunkLength = i - pos;
+        char *str = new char[chunkLength];
 
-        for (int z = 0; z < i - pos; z++) str[z] = questionFile[z + pos];
+        for (int z = 0; z < chunkLength; z++) {
+            str[z] = questionFile[z + pos];
+        }
 
-        str[i - pos] = '\0';
+        str[chunkLength] = '\0';
+        // copy chunk into str ---
 
-        int k = 0;
-
-        while (str[k] != '$') k++;
+        int end = findDelimiter(questionFile, pos, i, '$');
 
         // QUESTION+++
-        question = new char[k];
+        question = new char[end - pos];
 
-        for (int z1 = 0; z1 < k; z1++) question[z1] = str[z1];
+        for (int j = pos; j < end; j++) {
+            question[j] = questionFile[j];
+        }
 
-        question[k] = '\0';
+        question[end - pos] = '\0';
         // ANSWER+++
-        char *temp = new char[i - (k + 1)];
+        char *temp = new char[i - (end + 1)];
 
-        for (int z2 = 0; z2 < i - (k + 1); z2++) temp[z2] = str[z2 + k + 1];
+        for (int z2 = 0; z2 < i - (end + 1); z2++) {
+            temp[z2] = str[z2 + end + 1];
+        }
 
-        temp[i - (k + 1)] = '\0';
+        temp[i - (end + 1)] = '\0';
 
         answer = atoi(temp);
         // ANSWER---
@@ -1113,6 +1118,17 @@ class Chest {
 
     txt = new Text(question, 0xFF3D3D3D, (screenPixelWidth - code->width) / 2 + 15,
                    (screenPixelHeight - code->height) / 2 + 68);
+  }
+
+  int findDelimiter(char* str, int start, int end, char delimiter) {
+      int i = start;
+
+      while (str[i] != delimiter && i < end) {
+          i++;
+      }
+      if (i == end) return -1; // did not find
+
+      return i;
   }
   //+++
   void openLock(Inventory *inventory, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
