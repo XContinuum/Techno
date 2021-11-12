@@ -1020,12 +1020,11 @@ class Chest {
   }
 
   int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
-    if (this->isWithinInventory(x, y) && didClickCell(x, y)) {
-      std::tie(blockX, blockY) = findCell(x, y);
-      return blockY * 8 + blockX;
-    }
+    if (!this->isWithinInventory(x, y)) return -1; 
+    if (!didClickCell(x, y))) return -1;
 
-    return -1;
+    std::tie(blockX, blockY) = findCell(x, y);
+    return blockY * 8 + blockX;
   }
 
   bool isWithinInventory(int x, int y) { // TouchInvChest: isWithinInventory
