@@ -1070,18 +1070,18 @@ class Chest {
 
     int i = 0;
     int chunk = 0;
-    int pos = 0;
+    int start = 0;
 
     while (questionFile[i] != '\0') {
       if (questionFile[i] == '%') chunk++;
 
-      if (chunk == level) pos = i + 1;
+      if (chunk == level) start = i + 1;
 
       if (chunk == level + 1) {
-        int end = findDelimiter(questionFile, pos, i, '$');
-        question = copyChunk(questionFile, pos, end);
-        char* ans = copyChunk(questionFile, end + 1, i);
-        answer = atoi(ans);
+        int delimeter = findDelimiter(questionFile, start, i, '$');
+        
+        question = copyChunk(questionFile, start, delimeter);
+        answer = atoi(copyChunk(questionFile, delimeter + 1, i));
       }
 
       i++;
@@ -1090,7 +1090,6 @@ class Chest {
     txt = new Text(question, 0xFF3D3D3D, (screenPixelWidth - code->width) / 2 + 15,
                    (screenPixelHeight - code->height) / 2 + 68);
   }
-
   int findDelimiter(char *str, int start, int end, char delimiter) {
     int i = start;
 
