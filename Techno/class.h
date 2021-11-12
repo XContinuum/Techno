@@ -369,7 +369,7 @@ class Text {
 
 class Player { // Hero: Player
  public:
-  int x, y;
+  int x = 0, y = 0;
   int w, h;
 
   int exitX;
@@ -380,9 +380,10 @@ class Player { // Hero: Player
   int gameMap[30][40]; // MatMap: gameMap
 
   bool isMovingLeft, isMovingRight, isJumping; // L, R, J
-  bool isClimbingUp, isClimbingDown, canFall; // U, D, G
+  bool isClimbingUp, isClimbingDown; // U, D
+  bool canFall = true; // G
 
-  int jumpVelocity; // velocityJ: jumpVelocity
+  int jumpVelocity = 0; // velocityJ: jumpVelocity
 
  private:
   int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
@@ -395,7 +396,7 @@ class Player { // Hero: Player
   Sprite *leftJump[4]; // ImageJL: leftJump
 
   // Gravity
-  int velocity;
+  int velocity = 0;
   const int acceleration = 3; // accel: acceleration
   const int step = 7;
 
@@ -403,13 +404,12 @@ class Player { // Hero: Player
   int verticalStartTime;
 
  public:
-  Player() : x(0), y(0), velocity(0), jumpVelocity(0) {
+  Player() {
     isMovingLeft = false;
     isMovingRight = false;
     isJumping = false;
     isClimbingUp = false;
     isClimbingDown = false;
-    canFall = true;
 
     rightWalkFrame = 0;
     leftWalkFrame = 0;
@@ -1125,12 +1125,12 @@ class Chest {
   void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!show) return;
 
-    if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))
+    if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
       show = false;
 
     if (lmb && circle->contains(clickedX, clickedY)) { // left click circle
       circle->show = true;
-      currentDigit = (currentDigit + 1) % 3;
+      currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
 
       lmb = false;
     } else {
@@ -1143,7 +1143,7 @@ class Chest {
       lockerLight->show = distance > 55 && distance < 88; // within the ring
     }
 
-    if (lmb && locker->contains(clickedX, clickedY)) {  // left click
+    if (lockerLight->show && lmb && locker->contains(clickedX, clickedY)) {  // left click
       int lockNumer = calculatePickedNumber(clickedX, clickedY);
       comboDigits[currentDigit] = lockNumer;
       lockAngle->frame = lockNumer;
