@@ -1,5 +1,5 @@
 ﻿// Classes+++
-class Button {
+class Button { // Button: TappableArea
  public:
   int x, y;
   int w, h;
@@ -26,6 +26,13 @@ class Button {
   }
   Button(char *name, int trColor) {
     image = new Sprite(name, trColor);
+    w = image->width;
+    h = image->height;
+  }
+  Button(int x, int y, char *name, int transparency) {
+    this->x = x;
+    this->y = y;
+    image = new Sprite(name, transparency);
     w = image->width;
     h = image->height;
   }
@@ -1220,33 +1227,26 @@ class Chest {
               successUnlockAsset->width, successUnlockAsset->height,
               successUnlockAsset);
   }
-  private:
-   void initializeButtons() {
-     lock = new Button("Images/chest/code.bmp", 0xffffffff);
-     lock->x = (screenPixelWidth - lock->w) / 2;
-     lock->y = (screenPixelHeight - lock->h) / 2;
-     lock->show = true;
 
-     lockAngle = new LockAngle(145, 149);
+ private:
+  void initializeButtons() {
+    int x = (screenPixelWidth - lock->w) / 2;
+    int y = (screenPixelHeight - lock->h) / 2;
+    int alpha = 0xffffffff;
 
-     locker = new Button("Images/chest/locker.bmp", 0xffffffff);
-     locker->x = (screenPixelWidth - lock->w) / 2 + 99;
-     locker->y = (screenPixelHeight - lock->h) / 2 + 107;
-     locker->show = true;
+    lock = new Button(x, y, "Images/chest/code.bmp", alpha);
+    lockAngle = new LockAngle(x + 145, y + 149);
+    locker = new Button(x + 99, y + 107, "Images/chest/locker.bmp", alpha);
+    lockerLight = new Button(x + 99, y + 107, "Images/chest/lockerL.bmp", alpha);
+    circle = new Button(x + 156, x + 161, "Images/chest/lOK.bmp", alpha);
 
-     lockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
-     lockerLight->x = locker->x;
-     lockerLight->y = locker->y;
-     lockerLight->show = false;
+    lock->show = true;
+    locker->show = true;
+    lockerLight->show = false;
+    circle->show = false;
 
-     circle = new Button("Images/chest/lOK.bmp", 0xffffffff);
-     circle->x = lock->x + 156;
-     circle->y = lock->y + 161;
-     circle->show = false;
-
-     codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100,
-                         locker->y + 100, 0xFFED1C24);  // code
-   }
+    codeView = new Text("00 00 00", 0xFF808E9B, x + 100, t + 100, 0xFFED1C24);  // code
+  }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
      double x = locker->w / 2;
