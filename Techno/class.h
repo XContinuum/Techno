@@ -987,7 +987,6 @@ class Chest {
   bool correctCombination = false; // BOk: correctCombination
 
   int frame = 0; // Cadr: frame
-  int combination = 0; // combinaison: combination
   int comboDigits[3] = {0, 0, 0}; // cd: comboDigits
   int currentDigit = 0; // sd: currentDigit
 
@@ -1139,21 +1138,18 @@ class Chest {
       lockAngle->frame = angle;
       displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
 
-      combination =
-          comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
       lmb = false;
     }
 
     // Open++++
-    if (combination == answer && currentDigit == 0) correctCombination = true;
+    if (combination() == answer && currentDigit == 0) correctCombination = true;
 
     if (correctCombination == true) {
       Timer();
 
-      if (dt > 2000) {
+      if (dt > 2000) { // shows success checkmark for 2 seconds then dissapears
         showChestContents = true;
         correctCombination = false;
-        combination = 0;
 
         dt = 0;
         timer = 0;
@@ -1161,6 +1157,9 @@ class Chest {
       }
     }
     // Open----
+  }
+  int combination() {
+      return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
   }
   //++++
   void draw(Param *p) {
