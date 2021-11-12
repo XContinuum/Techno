@@ -237,7 +237,7 @@ void readScript(char* filename) {
   setMap();
   loadDoors();
 
-  for (int i = 0; i < Chest::counter; i++) chest[i]->LoadQuestion(level); // does not mutate parameter
+  for (int i = 0; i < Chest::counter; i++) chest[i]->loadQuestion(level); // does not mutate parameter
 }
 void readEntities(char* fileBuffer, int bufferSize) {
   int readingChunk = 0;

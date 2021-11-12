@@ -1065,31 +1065,27 @@ class Chest {
     }
   }
 
-  void LoadQuestion(int Level) { // LoadQuestion
-    char *c = new char[300];
-    std::ifstream ifs("Images/Data/questions.txt");
+  void loadQuestion(int level) { // LoadQuestion: loadQuestion
+    char* questionFile = readFile("Images/Data/questions.txt", 300);
 
-    for (int i = 0; i < 300; i++) ifs >> c[i];
-
-    ifs.close();
     //+++++++++++++
-    int j = 0;
+    int i = 0;
     int cont = 0;
     int pos = 0;
 
-    while (c[j] != '\0') {
-      if (c[j] == '%') {
+    while (questionFile[i] != '\0') {
+      if (questionFile[i] == '%') {
         cont++;
 
-        if (cont == Level) pos = j + 1;
+        if (cont == level) pos = i + 1;
       }
 
-      if (cont == Level + 1) {
-        char *str = new char[j - pos];
+      if (cont == level + 1) {
+        char *str = new char[i - pos];
 
-        for (int z = 0; z < j - pos; z++) str[z] = c[z + pos];
+        for (int z = 0; z < i - pos; z++) str[z] = questionFile[z + pos];
 
-        str[j - pos] = '\0';
+        str[i - pos] = '\0';
 
         int k = 0;
 
@@ -1102,21 +1098,21 @@ class Chest {
 
         question[k] = '\0';
         // ANSWER+++
-        char *temp = new char[j - (k + 1)];
+        char *temp = new char[i - (k + 1)];
 
-        for (int z2 = 0; z2 < j - (k + 1); z2++) temp[z2] = str[z2 + k + 1];
+        for (int z2 = 0; z2 < i - (k + 1); z2++) temp[z2] = str[z2 + k + 1];
 
-        temp[j - (k + 1)] = '\0';
+        temp[i - (k + 1)] = '\0';
 
         answer = atoi(temp);
         // ANSWER---
       }
 
-      j++;
+      i++;
     }
 
-    txt = new Text(question, 0xFF3D3D3D, (w - code->width) / 2 + 15,
-                   (h - code->height) / 2 + 68);
+    txt = new Text(question, 0xFF3D3D3D, (screenPixelWidth - code->width) / 2 + 15,
+                   (screenPixelHeight - code->height) / 2 + 68);
   }
   //+++
   void openLock(Inventory *inventory, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
