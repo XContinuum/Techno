@@ -1127,23 +1127,20 @@ class Chest {
       circle->show = false;
     }
 
-    int distance = distanceFromLocker(cursorX, cursorY);
-    if (lockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) { // hover over 
-      lockerLight->show = true;
-    } else {
-      lockerLight->show = false;
+    if (lockerLight->contains(cursorX, cursorY)) {  // hover over
+      int distance = distanceFromLocker(cursorX, cursorY);
+      
+      lockerLight->show = distance > 55 && distance < 88; // within the ring
     }
 
     if (lmb && locker->contains(clickedX, clickedY)) {  // left click
       int angle = calculateAngle(clickedX, clickedY);
-
       comboDigits[currentDigit] = angle;
-      combination =
-          comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
-
       lockAngle->frame = angle;
       displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
 
+      combination =
+          comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
       lmb = false;
     }
 
