@@ -944,13 +944,13 @@ class Chest {
  public:
   int x, y;
   int mX1, mY1; // mX1, mY1
-  int check; // check:
+  int check = 0; // check:
   int items[6 * 8]; // objects: items
 
-  bool expO; // expO:
-  bool show; // show:
-  bool showC; // showC: showChestContents
-  bool move; // move:
+  bool expO = false; // expO: showToolTip
+  bool show = false; // show:
+  bool showC = false; // showC: showChestContents
+  bool move = false; // move:
 
   static bool iLmb; // iLmb:
   static int counter; // counter:
@@ -982,7 +982,7 @@ class Chest {
   char *question; // question:
   int Answer; // Answer:
 
-  bool BOk; // BOk:
+  bool BOk = false; // BOk:
 
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
@@ -990,8 +990,7 @@ class Chest {
   int sd; // sd:
 
  public:
-  Chest(int x, int y, int ans1, int ans2)
-      : show(false), expO(false), showC(false), move(false), check(0) {
+  Chest(int x, int y, int ans1, int ans2) {
     this->x = x;
     this->y = y;
     assets[0] = new Sprite("Images/chest/chest1.bmp");
@@ -1005,8 +1004,6 @@ class Chest {
 
     counter++;
     Answer = ans1 * 1000 + ans2;
-
-    BOk = false;
     //----
     for (int i = 0; i < 6 * 8; i++) items[i] = 0;
 
