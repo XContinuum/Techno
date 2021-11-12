@@ -1104,9 +1104,9 @@ class Chest {
     char* result = new char[end - start];
 
     for (int i = start; i < end; i++) {
-      result[i] = str[i];
+      result[i] = str[start + i];
     }
-    result[end - pos] = '\0'; // end of text flag
+    result[end - start] = '\0'; // end of text flag
 
     return result;
   }
