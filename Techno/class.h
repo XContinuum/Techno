@@ -792,7 +792,7 @@ class Bonus {
 };
 int Bonus::counter = 0;
 
-class Arrow { // LockerPin
+class LockAngle { // Arrow: LockAngle
  public:
   int x, y;
 
@@ -801,9 +801,9 @@ class Arrow { // LockerPin
   Sprite *arrowAssets[40];
 
  public:
-  Arrow() {
-    x = 0;
-    y = 0;
+  LockAngle(int x, int y) {
+    this->x = x;
+    this->y = y;
 
     char *path = new char[30];
     for (int i = 0; i < 40; i++) {
@@ -975,7 +975,7 @@ class Chest {
   Button *LockerLight; // LockerLight:
   Button *lOK; // lOK:
 
-  Arrow *ar; // ar:
+  LockAngle *ar; // ar: lockAngle
 
   Text *txt; // txt:
   Text *codeView; // codeView:
@@ -1250,9 +1250,7 @@ class Chest {
      lock->y = (h - lock->h) / 2;
      lock->show = true;
 
-     ar = new Arrow();
-     ar->x = lock->x + 145;
-     ar->y = lock->y + 149;
+     ar = new LockAngle(145, 149);
 
      locker = new Button("Images/chest/locker.bmp", 0xffffffff);
      locker->x = (w - lock->w) / 2 + 99;
