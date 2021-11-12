@@ -1080,8 +1080,8 @@ class Chest {
       if (chunk == level + 1) {
         int delimeter = findDelimiter(questionFile, start, i, '$');
         
-        question = copyChunk(questionFile, start, delimeter);
-        answer = atoi(copyChunk(questionFile, delimeter + 1, i));
+        question = copyChunk(questionFile, start, delimeter); // Example: x=(2+3)*3-(2*2-4)
+        answer = atoi(copyChunk(questionFile, delimeter + 1, i)); // Example: 000015
       }
 
       i++;
@@ -1111,15 +1111,13 @@ class Chest {
     return result;
   }
   //+++
-  void openLock(Inventory *inventory, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
+  void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!show) return;
 
-    if (lmb && !lock->contains(X, Y) && !inventory->containsInOpenInventory(X, Y))
+    if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))
       show = false;
 
-    int dist = distanceFromLocker(mX, mY);
-
-    if (lmb && lOK->contains(X, Y)) {
+    if (lmb && lOK->contains(clickedX, clickedY)) {
       lOK->show = true;
       sd = (sd + 1) % 3;
 
@@ -1128,11 +1126,12 @@ class Chest {
       lOK->show = false;
     }
 
-    if (LockerLight->contains(mX, mY) && dist > 55 && dist < 88) {
+    int distance = distanceFromLocker(cursorX, cursorY);
+    if (LockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) {
       LockerLight->show = true;
 
-      if (lmb && locker->contains(X, Y)) {
-        int angle = calculateAngle(X, Y);
+      if (lmb && locker->contains(clickedX, clickedY)) {
+        int angle = calculateAngle(clickedX, clickedY);
         cd[sd] = angle;
         combination = cd[0] * 10000 + cd[1] * 100 + cd[2];
 
