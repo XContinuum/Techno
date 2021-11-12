@@ -1110,7 +1110,7 @@ class Chest {
 
     return result;
   }
-  //+++
+
   void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!show) return;
 
@@ -1161,7 +1161,7 @@ class Chest {
   int combination() {
       return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
   }
-  //++++
+
   void draw(Param *p) {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
 
@@ -1245,23 +1245,23 @@ class Chest {
    }
 
    int calculateAngle(int clickedX, int clickedY) {
-     double xn = locker->w / 2;
-     double yn = locker->h / 2;
+     double x = locker->w / 2;
+     double y = locker->h / 2;
 
-     double x1 = 0;
-     double y1 = locker->h / 2;
+     double dx = (clickedX - locker->x) - x;
+     double dy = y - (clickedY - locker->y);
 
-     double xm = (clickedX - locker->x) - xn;
-     double ym = yn - (clickedY - locker->y);
+     double hypotenuse = sqrt(dx * dx + dy * dy);
+     double angleRadians = acos(dy / hypotenuse);
 
-     double a2 = sqrt(xm * xm + ym * ym);
+     const double PI = 3.14;
+     double angleDegrees = (angleRadians * 180) / PI;
 
-     double angle1 = acos(ym / a2);
-     double angle2 = (angle1 * 180) / 3.14;
+     if (clickedX - locker->x < x) angleDegrees = 360 - angleDegrees;
 
-     if (clickedX - locker->x < xn) angle2 = 360 - angle2;
+     double degreesPerNotch = 9; // 360/40
 
-     return angle2 / 9;
+     return angleDegrees / degreesPerNotch;
    }
 
    int distanceFromLocker(int cursorX, int cursorY) {
