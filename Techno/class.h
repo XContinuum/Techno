@@ -795,9 +795,9 @@ int Bonus::counter = 0;
 class LockAngle { // Arrow: LockAngle
  public:
   int x, y;
+  int frame = 0;
 
  private:
-  int frame = 0;
   Sprite *arrowAssets[40];
 
  public:
@@ -972,7 +972,7 @@ class Chest {
   
   Button *lock; // lock:
   Button *locker; // locker:
-  Button *LockerLight; // LockerLight:
+  Button *lockerLight; // LockerLight: lockerLight
   Button *lOK; // lOK:
 
   LockAngle *lockAngle; // ar: lockAngle
@@ -986,8 +986,8 @@ class Chest {
 
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
-  int cd[3] = {0, 0, 0}; // cd:
-  int sd; // sd:
+  int comboDigits[3] = {0, 0, 0}; // cd: comboDigits
+  int currentDigit = 0; // sd: currentDigit
 
   int codeX, codeY;
 
@@ -1013,7 +1013,6 @@ class Chest {
 
     updateChestCells();
     //+++
-    sd = 0;
 
     initializeButtons();
     setupCodeCoordinates();
@@ -1119,7 +1118,7 @@ class Chest {
 
     if (lmb && lOK->contains(clickedX, clickedY)) {
       lOK->show = true;
-      sd = (sd + 1) % 3;
+      currentDigit = (currentDigit + 1) % 3;
 
       lmb = false;
     } else {
@@ -1127,28 +1126,26 @@ class Chest {
     }
 
     int distance = distanceFromLocker(cursorX, cursorY);
-    if (LockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) {
-      LockerLight->show = true;
+    if (lockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) {
+      lockerLight->show = true;
 
       if (lmb && locker->contains(clickedX, clickedY)) {
         int angle = calculateAngle(clickedX, clickedY);
-        cd[sd] = angle;
-        combination = cd[0] * 10000 + cd[1] * 100 + cd[2];
+        
+        comboDigits[currentDigit] = angle;
+        combination = comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
 
-        // Show angle+++
-        lockAngle->num = angle;
-
-        displayCombination(cd[0], cd[1], cd[2]);
-        // Show angle---
+        lockAngle->frame = angle;
+        displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
 
         lmb = false;
       }
     } else {
-      LockerLight->show = false;
+      lockerLight->show = false;
     }
 
     // Open++++
-    if (combination == answer && sd == 0) correctCombination = true;
+    if (combination == answer && currentDigit == 0) correctCombination = true;
 
     if (correctCombination == true) {
       Timer();
@@ -1181,12 +1178,12 @@ class Chest {
     //---
     int *pos = new int[2];
 
-    pos[0] = sd;
-    pos[1] = sd + 1;
+    pos[0] = currentDigit;
+    pos[1] = currentDigit + 1;
 
     codeView->draw(p, pos, 2);
     //+++
-    LockerLight->draw(p);
+    lockerLight->draw(p);
     lOK->draw(p);
     txt->draw(p);
 
@@ -1234,10 +1231,10 @@ class Chest {
      locker->y = (screenPixelHeight - lock->h) / 2 + 107;
      locker->show = true;
 
-     LockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
-     LockerLight->x = locker->x;
-     LockerLight->y = locker->y;
-     LockerLight->show = false;
+     lockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
+     lockerLight->x = locker->x;
+     lockerLight->y = locker->y;
+     lockerLight->show = false;
 
      lOK = new Button("Images/chest/lOK.bmp", 0xffffffff);
      lOK->x = lock->x + 156;
