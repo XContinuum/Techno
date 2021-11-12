@@ -729,7 +729,7 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
 }
 void chestMoveEvents() {
   for (int i = 0; i < Chest::counter; i++) {
-    bool clickedChest = chest[i]->TouchInvChest(Chest::Xi, Chest::Yi);
+    bool clickedChest = chest[i]->isWithinInventory(Chest::Xi, Chest::Yi);
 
     if (!(clickedChest && chest[i]->showChestContents && Chest::iLmb)) {
       continue;
