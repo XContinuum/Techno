@@ -1068,7 +1068,6 @@ class Chest {
   void loadQuestion(int level) { // LoadQuestion: loadQuestion
     char* questionFile = readFile("Images/Data/questions.txt", 300);
 
-    //+++++++++++++
     int i = 0;
     int chunk = 0;
     int pos = 0;
@@ -1079,38 +1078,10 @@ class Chest {
       if (chunk == level) pos = i + 1;
 
       if (chunk == level + 1) {
-        // copy chunk into str +++
-        int chunkLength = i - pos;
-        char *str = new char[chunkLength];
-
-        for (int z = 0; z < chunkLength; z++) {
-            str[z] = questionFile[z + pos];
-        }
-
-        str[chunkLength] = '\0';
-        // copy chunk into str ---
-
         int end = findDelimiter(questionFile, pos, i, '$');
-
-        // QUESTION+++
-        question = new char[end - pos];
-
-        for (int j = pos; j < end; j++) {
-            question[j] = questionFile[j];
-        }
-
-        question[end - pos] = '\0';
-        // ANSWER+++
-        char *temp = new char[i - (end + 1)];
-
-        for (int z2 = 0; z2 < i - (end + 1); z2++) {
-            temp[z2] = str[z2 + end + 1];
-        }
-
-        temp[i - (end + 1)] = '\0';
-
-        answer = atoi(temp);
-        // ANSWER---
+        question = copyChunk(questionFile, pos, end);
+        char* ans = copyChunk(questionFile, end + 1, i);
+        answer = atoi(ans);
       }
 
       i++;
@@ -1120,15 +1091,25 @@ class Chest {
                    (screenPixelHeight - code->height) / 2 + 68);
   }
 
-  int findDelimiter(char* str, int start, int end, char delimiter) {
-      int i = start;
+  int findDelimiter(char *str, int start, int end, char delimiter) {
+    int i = start;
 
-      while (str[i] != delimiter && i < end) {
-          i++;
-      }
-      if (i == end) return -1; // did not find
+    while (str[i] != delimiter && i < end) {
+      i++;
+    }
+    if (i == end) return -1;  // did not find
 
-      return i;
+    return i;
+  }
+  char* copyChunk(char* str, int start, int send) {
+    char* result = new char[end - start];
+
+    for (int i = start; i < end; i++) {
+      result[i] = str[i];
+    }
+    result[end - pos] = '\0'; // end of text flag
+
+    return result;
   }
   //+++
   void openLock(Inventory *inventory, bool &lmb, int X, int Y, int mX, int mY) { // OpenLock: openLock
