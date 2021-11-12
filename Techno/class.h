@@ -1018,28 +1018,45 @@ class Chest {
 
   int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
     // This data is pulled from "Images/chest/InvChest.bmp"
-    int inventoryChestLeft = 71;
-    int inventoryChestTop = 109;
-    int inventorySquareDim = 25;  // size of a single cell
-    int spaceBetweenCells = 5;
-
-    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
-    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
-
-    int blockX = (x - x1) / (inventorySquareDim + spaceBetweenCells);
-    int blockY = (y - y1) / (inventorySquareDim + spaceBetweenCells);
-    bool isWithinInventory = this->isWithinInventory(X, Y);
-
     if (this->isWithinInventory(x, y)) {
-      if (x - x1 - blockX * (inventorySquareDim + spaceBetweenCells) <=
-          inventorySquareDim)
-        if (y - y1 - blockY * (inventorySquareDim + spaceBetweenCells) <=
-            inventorySquareDim)
+      std::tie(blockX, blockY) = findCell(x, y);
+
+      if (didClickCell(x, y))
           return blockY * 8 + blockX;
     }
 
     return -1;
   }
+  bool didClickCell(int x, int y) { // Makes sure clicked cell and not space between
+    int inventoryChestLeft = 71;
+    int inventoryChestTop = 109;
+    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
+    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
+
+    std::tie(blockX, blockY) = findCell(x, y);
+
+    int inventorySquareDim = 25;  // size of a single cell
+    int spaceBetweenCells = 5;
+    int a = x - x1 - blockX * (inventorySquareDim + spaceBetweenCells);
+    int b = y - y1 - blockY * (inventorySquareDim + spaceBetweenCells);
+
+    return a <= inventorySquareDim && b <= inventorySquareDim;
+  }
+  std::tuple<int, int> findCell(int x, int y) {
+    int inventoryChestLeft = 71;
+    int inventoryChestTop = 109;
+    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
+    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
+
+    int inventorySquareDim = 25;  // size of a single cell
+    int spaceBetweenCells = 5;
+
+    int blockX = (x - x1) / (inventorySquareDim + spaceBetweenCells);
+    int blockY = (y - y1) / (inventorySquareDim + spaceBetweenCells);
+
+    return std::tuple<int, int>(blockX, blockY);
+  }
+
   bool isWithinInventory(int x, int y) { // TouchInvChest: isWithinInventory
     int inventoryChestLeft = 71;
     int inventoryChestTop = 109;
