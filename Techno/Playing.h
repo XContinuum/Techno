@@ -731,7 +731,7 @@ void chestMoveEvents() {
   for (int i = 0; i < Chest::counter; i++) {
     bool clickedChest = chest[i]->TouchInvChest(Chest::Xi, Chest::Yi);
 
-    if (!(clickedChest && chest[i]->showC && Chest::iLmb)) {
+    if (!(clickedChest && chest[i]->showChestContents && Chest::iLmb)) {
       continue;
     }
 
@@ -763,7 +763,7 @@ void chestMoveEvents() {
   }
 }
 void showChestToolTip(int i, int mouseX, int mouseY) {
-  chest[i]->expO = chest[i]->contains(mouseX, mouseY);
+  chest[i]->showToolTip = chest[i]->contains(mouseX, mouseY);
   chest[i]->mX1 = mouseX + 10;
   chest[i]->mY1 = mouseY;
 }

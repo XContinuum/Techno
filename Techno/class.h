@@ -792,7 +792,7 @@ class Bonus {
 };
 int Bonus::counter = 0;
 
-class Arrow {
+class Arrow { // LockerPin
  public:
   int x, y;
 
@@ -947,9 +947,9 @@ class Chest {
   int check = 0; // check:
   int items[6 * 8]; // objects: items
 
-  bool expO = false; // expO: showToolTip
+  bool showToolTip = false; // expO: showToolTip
   bool show = false; // show:
-  bool showC = false; // showC: showChestContents
+  bool showChestContents = false; // showC: showChestContents
   bool move = false; // move:
 
   static bool iLmb; // iLmb:
@@ -979,8 +979,8 @@ class Chest {
 
   Text *txt; // txt:
   Text *codeView; // codeView:
-  char *question; // question:
-  int Answer; // Answer:
+  char *question;
+  int answer; // Answer: answer
 
   bool BOk = false; // BOk:
 
@@ -1003,7 +1003,7 @@ class Chest {
     currentFrame = assets[0];
 
     counter++;
-    Answer = ans1 * 1000 + ans2;
+    answer = ans1 * 1000 + ans2;
     //----
     for (int i = 0; i < 6 * 8; i++) items[i] = 0;
 
@@ -1126,7 +1126,7 @@ class Chest {
 
         temp[j - (k + 1)] = '\0';
 
-        Answer = atoi(temp);
+        answer = atoi(temp);
         // ANSWER---
       }
 
@@ -1150,8 +1150,9 @@ class Chest {
       sd = (sd + 1) % 3;
 
       lmb = false;
-    } else
+    } else {
       lOK->show = false;
+    }
 
     if (LockerLight->contains(mX, mY) && dist > 55 && dist < 88) {
       LockerLight->show = true;
@@ -1174,13 +1175,13 @@ class Chest {
     }
 
     // Open++++
-    if (combination == Answer && sd == 0) BOk = true;
+    if (combination == answer && sd == 0) BOk = true;
 
     if (BOk == true) {
       Timer();
 
       if (dt > 2000) {
-        showC = true;
+        showChestContents = true;
         BOk = false;
         combination = 0;
 
@@ -1195,13 +1196,13 @@ class Chest {
   void draw(Param *p) {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
 
-    if (expO == true)
+    if (showToolTip)
       p->draw(mX1, mY1, toolTip->width, toolTip->height, toolTip);
   }
   void drawC(Param *p) {
     lock->draw(p);
 
-    if (showC == false) locker->draw(p);
+    if (!showChestContents) locker->draw(p);
 
     ar->draw(p);
     //---
@@ -1216,7 +1217,7 @@ class Chest {
     lOK->draw(p);
     txt->draw(p);
 
-    if (showC == true) {
+    if (showChestContents) {
       p->draw((w - code->width) / 2, (h - code->height) / 2, chestGrid->width,
               chestGrid->height, chestGrid);
 
