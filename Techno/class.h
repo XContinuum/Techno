@@ -975,7 +975,7 @@ class Chest {
   Button *LockerLight; // LockerLight:
   Button *lOK; // lOK:
 
-  LockAngle *ar; // ar: lockAngle
+  LockAngle *lockAngle; // ar: lockAngle
 
   Text *txt; // txt:
   Text *codeView; // codeView:
@@ -1009,7 +1009,7 @@ class Chest {
 
     items[0] = 2;
 
-    ChangeImages();
+    updateChestCells();
     //+++
     sd = 0;
     for (int i = 0; i < 3; i++) cd[i] = 0;
@@ -1059,7 +1059,7 @@ class Chest {
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
-  static void SetPosition(int X, int Y) {
+  static void SetPosition(int X, int Y) { // SetPosition
     Xi = X;
     Yi = Y;
     iLmb = true;
@@ -1071,19 +1071,15 @@ class Chest {
     dt = timer - timer1;
   }
 
-  void ChangeImages() {
-    char *path = new char[30];
-    int num;
-
+  void updateChestCells() { // ChangeImages: updateChestCells
     for (int i = 0; i < 6 * 8; i++) {
-      if (items[i] != 0) {
-        num = sprintf(path, "Images/o%d.bmp", items[i]);
+      if (items[i] == INV_EMPTY_CELL) continue;
 
-        itemAssets[i] = new Sprite(path, 0xffffffff);
-      }
+      itemAssets[i] = new Sprite(getAssetPath(items[i]), 0xffffffff);
     }
   }
-  void LoadQuestion(int Level) {
+
+  void LoadQuestion(int Level) { // LoadQuestion
     char *c = new char[300];
     std::ifstream ifs("Images/Data/questions.txt");
 
@@ -1163,7 +1159,7 @@ class Chest {
         combination = cd[0] * 10000 + cd[1] * 100 + cd[2];
 
         // Show angle+++
-        ar->num = angle;
+        lockAngle->num = angle;
 
         displayCombination(cd[0], cd[1], cd[2]);
         // Show angle---
@@ -1204,7 +1200,7 @@ class Chest {
 
     if (!showChestContents) locker->draw(p);
 
-    ar->draw(p);
+    lockAngle->draw(p);
     //---
     int *pos = new int[2];
 
@@ -1250,7 +1246,7 @@ class Chest {
      lock->y = (h - lock->h) / 2;
      lock->show = true;
 
-     ar = new LockAngle(145, 149);
+     lockAngle = new LockAngle(145, 149);
 
      locker = new Button("Images/chest/locker.bmp", 0xffffffff);
      locker->x = (w - lock->w) / 2 + 99;
@@ -1308,6 +1304,13 @@ class Chest {
        sprintf(showText, "%d %d %d", num1, num2, num3);
 
      codeView->changeText(showText);
+   }
+
+   char *getAssetPath(int i) {
+     char *path = new char[30];
+     sprintf(path, "Images/o%d.bmp", i);
+
+     return path;
    }
 };
 int Chest::dt = 0;

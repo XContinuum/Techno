@@ -740,7 +740,7 @@ void chestMoveEvents() {
     if (chest[i]->move) {
       if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
         chest[i]->items[selectedChestCell] = selectedObjectId;
-        chest[i]->ChangeImages();
+        chest[i]->updateChestCells();
         selectedObjectId = i;
       }
 
