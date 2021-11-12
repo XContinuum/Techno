@@ -961,6 +961,8 @@ class Chest {
   static int timer1; // timer1:
 
  private:
+  const int chestRows = 6;
+  const int chestColumns = 8;
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
 
@@ -973,7 +975,7 @@ class Chest {
   Button *lock; // lock:
   Button *locker; // locker:
   Button *lockerLight; // LockerLight: lockerLight
-  Button *lOK; // lOK:
+  Button *circle; // lOK: circle
 
   LockAngle *lockAngle; // ar: lockAngle
 
@@ -996,7 +998,7 @@ class Chest {
     this->x = x;
     this->y = y;
     assets[0] = new Sprite("Images/chest/chest1.bmp");
-    assets[1] = new Sprite("Images/chest/chest2.bmp");
+    assets[1] = new Sprite("Images/chest/chest2.bmp"); // TODO: remove
 
     code = new Sprite("Images/chest/code.bmp");
     toolTip = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
@@ -1004,18 +1006,18 @@ class Chest {
     successUnlockAsset = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
     currentFrame = assets[0];
 
-    counter++;
     answer = ans1 * 1000 + ans2;
+
     //----
-    for (int i = 0; i < 6 * 8; i++) items[i] = 0;
-
-    items[0] = 2;
-
+    for (int i = 0; i < chestRows * chestColumns; i++) items[i] = INV_EMPTY_CELL;
+    items[0] = INV_KEY;
     updateChestCells();
     //+++
 
     initializeButtons();
     setupCodeCoordinates();
+
+    counter++;
   }
 
   int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
@@ -1057,7 +1059,7 @@ class Chest {
   }
 
   void updateChestCells() { // ChangeImages: updateChestCells
-    for (int i = 0; i < 6 * 8; i++) {
+    for (int i = 0; i < chestRows * chestColumns; i++) {
       if (items[i] == INV_EMPTY_CELL) continue;
 
       itemAssets[i] = new Sprite(getAssetPath(items[i]), 0xffffffff);
@@ -1116,32 +1118,33 @@ class Chest {
     if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))
       show = false;
 
-    if (lmb && lOK->contains(clickedX, clickedY)) {
-      lOK->show = true;
+    if (lmb && circle->contains(clickedX, clickedY)) { // left click circle
+      circle->show = true;
       currentDigit = (currentDigit + 1) % 3;
 
       lmb = false;
     } else {
-      lOK->show = false;
+      circle->show = false;
     }
 
     int distance = distanceFromLocker(cursorX, cursorY);
-    if (lockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) {
+    if (lockerLight->contains(cursorX, cursorY) && distance > 55 && distance < 88) { // hover over 
       lockerLight->show = true;
-
-      if (lmb && locker->contains(clickedX, clickedY)) {
-        int angle = calculateAngle(clickedX, clickedY);
-        
-        comboDigits[currentDigit] = angle;
-        combination = comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
-
-        lockAngle->frame = angle;
-        displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
-
-        lmb = false;
-      }
     } else {
       lockerLight->show = false;
+    }
+
+    if (lmb && locker->contains(clickedX, clickedY)) {  // left click
+      int angle = calculateAngle(clickedX, clickedY);
+
+      comboDigits[currentDigit] = angle;
+      combination =
+          comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
+
+      lockAngle->frame = angle;
+      displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
+
+      lmb = false;
     }
 
     // Open++++
@@ -1184,7 +1187,7 @@ class Chest {
     codeView->draw(p, pos, 2);
     //+++
     lockerLight->draw(p);
-    lOK->draw(p);
+    circle->draw(p);
     txt->draw(p);
 
     if (showChestContents) {
@@ -1195,7 +1198,7 @@ class Chest {
       int ix = 0;
       int iy = 0;
 
-      for (int i = 0; i < 6 * 8; i++) {
+      for (int i = 0; i < chestRows * chestColumns; i++) {
         if (items[i] != 0)
           p->draw(
               (screenPixelWidth - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
@@ -1236,10 +1239,10 @@ class Chest {
      lockerLight->y = locker->y;
      lockerLight->show = false;
 
-     lOK = new Button("Images/chest/lOK.bmp", 0xffffffff);
-     lOK->x = lock->x + 156;
-     lOK->y = lock->y + 161;
-     lOK->show = false;
+     circle = new Button("Images/chest/lOK.bmp", 0xffffffff);
+     circle->x = lock->x + 156;
+     circle->y = lock->y + 161;
+     circle->show = false;
 
      codeView = new Text("00 00 00", 0xFF808E9B, locker->x + 100,
                          locker->y + 100, 0xFFED1C24);  // code
