@@ -982,7 +982,7 @@ class Chest {
   char *question;
   int answer; // Answer: answer
 
-  bool BOk = false; // BOk:
+  bool correctCombination = false; // BOk: correctCombination
 
   int frame = 0; // Cadr: frame
   int combination = 0; // combinaison: combination
@@ -1148,14 +1148,14 @@ class Chest {
     }
 
     // Open++++
-    if (combination == answer && sd == 0) BOk = true;
+    if (combination == answer && sd == 0) correctCombination = true;
 
-    if (BOk == true) {
+    if (correctCombination == true) {
       Timer();
 
       if (dt > 2000) {
         showChestContents = true;
-        BOk = false;
+        correctCombination = false;
         combination = 0;
 
         dt = 0;
@@ -1191,7 +1191,8 @@ class Chest {
     txt->draw(p);
 
     if (showChestContents) {
-      p->draw((w - code->width) / 2, (h - code->height) / 2, chestGrid->width,
+      p->draw((screenPixelWidth - code->width) / 2,
+              (screenPixelHeight - code->height) / 2, chestGrid->width,
               chestGrid->height, chestGrid);
 
       int ix = 0;
@@ -1199,9 +1200,10 @@ class Chest {
 
       for (int i = 0; i < 6 * 8; i++) {
         if (items[i] != 0)
-          p->draw((w - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
-                  (h - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
-                  itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
+          p->draw(
+              (screenPixelWidth - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
+              (screenPixelHeight - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
+              itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
 
         if (ix < 7)
           ix++;
@@ -1212,22 +1214,24 @@ class Chest {
       }
     }
 
-    if (BOk == true)
-      p->draw((w - lock->w) / 2 + 99 + 2, (h - lock->h) / 2 + 107,
-              successUnlockAsset->width, successUnlockAsset->height, successUnlockAsset);
+    if (correctCombination == true)
+      p->draw((screenPixelWidth - lock->w) / 2 + 99 + 2,
+              (screenPixelHeight - lock->h) / 2 + 107,
+              successUnlockAsset->width, successUnlockAsset->height,
+              successUnlockAsset);
   }
   private:
    void initializeButtons() {
      lock = new Button("Images/chest/code.bmp", 0xffffffff);
-     lock->x = (w - lock->w) / 2;
-     lock->y = (h - lock->h) / 2;
+     lock->x = (screenPixelWidth - lock->w) / 2;
+     lock->y = (screenPixelHeight - lock->h) / 2;
      lock->show = true;
 
      lockAngle = new LockAngle(145, 149);
 
      locker = new Button("Images/chest/locker.bmp", 0xffffffff);
-     locker->x = (w - lock->w) / 2 + 99;
-     locker->y = (h - lock->h) / 2 + 107;
+     locker->x = (screenPixelWidth - lock->w) / 2 + 99;
+     locker->y = (screenPixelHeight - lock->h) / 2 + 107;
      locker->show = true;
 
      LockerLight = new Button("Images/chest/lockerL.bmp", 0xffffffff);
