@@ -8,24 +8,26 @@ class Button {
   bool SubShow;
   bool showBorder;
 
-  Sprite *Image;
+  Sprite *image; // Image: image
   Sprite *Border;
 
  public:
-  Button(int _x, int _y, char *name) : x(_x), y(_y) {
-    Image = new Sprite(name);
-    w = Image->width;
-    h = Image->height;
+  Button(int x, int y, char *name) {
+    this->x = x;
+    this->y = y;
+    image = new Sprite(name);
+    w = image->width;
+    h = image->height;
   }
   Button(char *name) {
-    Image = new Sprite(name);
-    w = Image->width;
-    h = Image->height;
+    image = new Sprite(name);
+    w = image->width;
+    h = image->height;
   }
   Button(char *name, int trColor) {
-    Image = new Sprite(name, trColor);
-    w = Image->width;
-    h = Image->height;
+    image = new Sprite(name, trColor);
+    w = image->width;
+    h = image->height;
   }
 
   bool contains(int x, int y) { // Touch: contains
@@ -33,7 +35,9 @@ class Button {
   }
 
   void draw(Param *p) {
-    if (show == true) p->draw(x, y, w, h, Image);
+    if (!show) return;
+    
+    p->draw(x, y, w, h, image);
   }
 };
 
@@ -46,11 +50,11 @@ class NeoElement : public Sprite, public Button {
   void ChangeColor(int from, int to) {
     for (int i = 0; i < height; ++i)
       for (int j = 0; j < width; ++j)
-        if (Button::Image->img[j + i * width] == from)
-          Button::Image->img[j + i * width] = to;
+        if (Button::image->img[j + i * width] == from)
+          Button::image->img[j + i * width] = to;
   }
   int FollowColor(int X, int Y) {
-    int color = Button::Image->img[X + Y * width];
+    int color = Button::image->img[X + Y * width];
 
     return color;
   }
