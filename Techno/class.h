@@ -217,7 +217,7 @@ class Text {
   int length; // size: length
 
  public:
-  Text(char *str, int color, int x, int y) { // remove color
+  Text(int x, int y, char *str, int color) { // remove color
     this->x = x;
     this->y = y;
 
@@ -1041,7 +1041,7 @@ class Chest {
       i++;
     }
 
-    questionText = new Text(question, VERY_DARK_GRAY, codeX + 15, codeY + 68);
+    questionText = new Text(codeX + 15, codeY + 68, question, VERY_DARK_GRAY);
   }
   int findDelimiter(char *str, int start, int end, char delimiter) {
     int i = start;
@@ -1180,7 +1180,7 @@ class Chest {
     lockerLight->show = false;
     circle->show = false;
 
-    combinationText = new Text("00 00 00", DARK_GRAYISH_BLUE, x + 199, y + 207);
+    combinationText = new Text(x + 199, y + 207, "00 00 00", DARK_GRAYISH_BLUE);
   }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber

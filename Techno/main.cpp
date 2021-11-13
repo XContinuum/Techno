@@ -277,7 +277,7 @@ void initialization() {
 
     // Play+++
     char *tt = "score:0";                   // delete
-    scoreText = new Text(tt, 0xFF808E9B, 8, 43);  // score
+    scoreText = new Text(8, 43, tt, 0xFF808E9B);  // score
 
     // Rectangle+++
     dr = new DrawRectangle(5, 5, 40, 50, 0xff000000, 0xffffffff);
