@@ -1277,7 +1277,6 @@ int PressurePlate::counter = 0;
 class BlockMoves {
  public:
   int x, y;
-  int pX, pY;
   int pI;
 
   Sprite *Image;
@@ -1288,21 +1287,24 @@ class BlockMoves {
   static int timer;
   static int timer1;
 
+ private:
+  int initialX, initialY; // pX, pY
+
  public:
   BlockMoves(int x, int y, int pi) {
     this->x = x;
     this->y = y - 1;
-    this->pX = x;
-    this->pY = y - 1;
+    this->initialX = x;
+    this->initialY = y - 1;
     this->pI = pi - 1;
     Image = new Sprite(MOVING_BLOCK_IMG);
 
     counter++;
   }
 
-  bool BlockMoveUp(int gameMap[30][40]) {
+  bool BlockMoveUp(int gameMap[30][40]) { // BlockMoveUp: blockMoveUp
     if (y > pI) {
-      gameMap[pY / 20 + 1][pX / 20] = 0;
+      gameMap[initialY / 20 + 1][initialX / 20] = AIR_ID;
 
       if (y - pI <= 5)
         y -= (y - pI);
@@ -1311,24 +1313,24 @@ class BlockMoves {
     }
 
     if (y == pI) {
-      gameMap[y / 20 + 1][x / 20] = 6;
+      gameMap[y / 20 + 1][x / 20] = MOVING_BLOCK_ID;
       return false;
     }
 
     return true;
   }
-  void BlockMoveDown(int gameMap[30][40]) {
-    if (y < pY) {
-      gameMap[pI / 20 + 1][x / 20] = 0;
+  void BlockMoveDown(int gameMap[30][40]) { // BlockMoveDown: blockMoveDown
+    if (y < initialY) {
+      gameMap[pI / 20 + 1][x / 20] = AIR_ID;
 
-      if (pY - y <= 5)
-        y += (pY - y);
+      if (initialY - y <= 5)
+        y += (initialY - y);
       else
         y += 5;
     }
 
-    if (y == pY) {
-      gameMap[y / 20 + 1][x / 20] = 6;
+    if (y == initialY) {
+      gameMap[y / 20 + 1][x / 20] = MOVING_BLOCK_ID;
     }
   }
 
