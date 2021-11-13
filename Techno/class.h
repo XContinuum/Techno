@@ -1,5 +1,8 @@
 ﻿#define WHITE 0xffffffff
 #define BLACK 0xff000000
+#define VERY_DARK_GRAY 0xff3d3d3d
+#define VIVID_RED 0xffed1c24
+#define DARK_GRAYISH_BLUE 0xff808e9b
 
 // Classes+++
 class Button { // Button: TappableArea
@@ -902,7 +905,6 @@ class Chest {
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
 
-  Sprite *assets[2]; // Image: assets; TODO: remove
   Sprite *code; // code:
   Sprite *toolTip; // OpenExp: toolTip
   Sprite *chestGrid; // Content: chestGrid
@@ -915,7 +917,7 @@ class Chest {
 
   LockAngle *lockAngle; // ar: lockAngle
 
-  Text *txt; // txt:
+  Text *questionText; // txt: questionText
   Text *codeView; // codeView:
   char *question;
   int answer; // Answer: answer
@@ -941,14 +943,12 @@ class Chest {
   Chest(int x, int y, int ans1, int ans2) {
     this->x = x;
     this->y = y;
-    assets[0] = new Sprite("Images/chest/chest1.bmp");
-    assets[1] = new Sprite("Images/chest/chest2.bmp"); // TODO: remove
 
     code = new Sprite("Images/chest/code.bmp");
-    toolTip = new Sprite("Images/chest/OpenChest.bmp", WHITE);
-    chestGrid = new Sprite("Images/chest/InvChest.bmp", WHITE);
-    successUnlockAsset = new Sprite("Images/chest/OpenTrue.bmp", WHITE);
-    currentFrame = assets[0];
+    toolTip = new Sprite("Images/chest/tool_tip.bmp", WHITE);
+    chestGrid = new Sprite("Images/chest/chest_grid.bmp", WHITE);
+    successUnlockAsset = new Sprite("Images/chest/success_unlock_asset.bmp", WHITE);
+    currentFrame = new Sprite("Images/chest/chest1.bmp");
 
     answer = ans1 * 1000 + ans2;
 
@@ -971,7 +971,7 @@ class Chest {
   }
 
   bool isWithinInventory(int x, int y) { // TouchInvChest: isWithinInventory
-    // This data is pulled from "Images/chest/InvChest.bmp"
+    // This data is pulled from "Images/chest/chest_grid.bmp"
     int inventoryChestRight = 305;
     int inventoryChestBottom = 283;
 
@@ -1028,7 +1028,7 @@ class Chest {
       i++;
     }
 
-    txt = new Text(question, 0xff3d3d3d, codeX + 15, codeY + 68);
+    questionText = new Text(question, VERY_DARK_GRAY, codeX + 15, codeY + 68);
   }
   int findDelimiter(char *str, int start, int end, char delimiter) {
     int i = start;
@@ -1120,11 +1120,11 @@ class Chest {
     pos[0] = currentDigit;
     pos[1] = currentDigit + 1;
 
-    codeView->draw(p, pos, 2, 0xffed1c24);
+    codeView->draw(p, pos, 2, VIVID_RED);
     //+++
     lockerLight->draw(p);
     circle->draw(p);
-    txt->draw(p);
+    questionText->draw(p);
 
     if (showChestContents) {
       p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
@@ -1166,7 +1166,7 @@ class Chest {
     lockerLight->show = false;
     circle->show = false;
 
-    codeView = new Text("00 00 00", 0xff808e9b, x + 100, t + 100);  // code
+    codeView = new Text("00 00 00", DARK_GRAYISH_BLUE, x + 100, t + 100);  // code
   }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
