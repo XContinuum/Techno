@@ -1127,46 +1127,44 @@ class Chest {
   void drawC(Param *p) { // drawC: drawChestInventory
     lock->draw(p);
 
-    if (!showChestContents) locker->draw(p);
+    if (showChestContents) {
+      drawChestContents(p);
+    } else {
+      locker->draw(p);
+    }
 
     lockAngle->draw(p);
-    //---
-    int *pos = new int[2];
-
-    pos[0] = currentDigit;
-    pos[1] = currentDigit + 1;
-
-    combinationText->draw(p, pos, 2, VIVID_RED);
-    //+++
+    combinationText->draw(p, (int[2]){currentDigit, currentDigit + 1}, 2, VIVID_RED);
     lockerLight->draw(p);
     circle->draw(p);
     questionText->draw(p);
 
-    if (showChestContents) {
-      p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
-
-      for (int i = 0; i < chestRows * chestColumns; i++) {
-        if (items[i] == INV_EMPTY_CELL) continue;
-
-        int column = (i % chestColumns);
-        int row = (i - column) / chestColumns;
-
-        int x = codeX + inventoryChestLeft + column * (spaceBetweenCells + inventorySquareDim);
-        int y = codeY + inventoryChestTop + row * (spaceBetweenCells + inventorySquareDim);
-        p->draw(x, y, itemAssets[i]->width, itemAssets[i]->height,
-                itemAssets[i]);
-      }
-    }
-
     if (correctCombination) {
-      int x = (screenPixelWidth - lock->w) / 2 + 99 + 2;
-      int y = (screenPixelHeight - lock->h) / 2 + 107;
+      int x = lock->x + 99 + 2;
+      int y = lock->y + 107;
       p->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
               successUnlockAsset);
     }
   }
 
  private:
+  void drawChestContents(Param *p) {
+    p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
+
+    for (int i = 0; i < chestRows * chestColumns; i++) {
+      if (items[i] == INV_EMPTY_CELL) continue;
+
+      int column = (i % chestColumns);
+      int row = (i - column) / chestColumns;
+
+      int x = codeX + inventoryChestLeft +
+              column * (spaceBetweenCells + inventorySquareDim);
+      int y = codeY + inventoryChestTop +
+              row * (spaceBetweenCells + inventorySquareDim);
+      p->draw(x, y, itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
+    }
+  }
+
   void initializeButtons() {
     int x = (screenPixelWidth - lock->w) / 2;
     int y = (screenPixelHeight - lock->h) / 2;
