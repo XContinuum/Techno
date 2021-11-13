@@ -190,10 +190,11 @@ class Text {
     for (int i = 0; i < length; i++) {
       int index = convert(string[i]);
       
+      char category = letterCategory(string[i]);
       int distance = 0;
-      if (szLetters[i] == 'U') distance = 1;
-      if (szLetters[i] == 'L') distance = 5;
-      if (szLetters[i] == 'N') distance = 5;
+      if (category== 'U') distance = 1;
+      if (category== 'L') distance = 5;
+      if (category== 'N') distance = 5;
 
       p->draw(x + i * letters[i]->width - distance * i, y, letters[index]->width,
               letters[index]->height, letters[index]);
@@ -209,10 +210,11 @@ class Text {
           letter = lettersColor[index];
       }
       
+      char category = letterCategory(string[i]);
       int distance = 0;
-      if (szLetters[i] == 'U') distance = 1;
-      if (szLetters[i] == 'L') distance = 5;
-      if (szLetters[i] == 'N') distance = 5;
+      if (category == 'U') distance = 1;
+      if (category == 'L') distance = 5;
+      if (category == 'N') distance = 5;
 
       p->draw(x + i * letter->width - distance * i, y, letter->width, letter->height,
               letter);
@@ -233,12 +235,12 @@ class Text {
     szLetters = new char[length];
 
     for (int i = 0; i < length; i++) {
-      szLetters[i] = something(string[i]);
+      szLetters[i] = letterCategory(string[i]);
     }
   }
 
  private:
-  int something(char c) { // TODO: rename
+  int letterCategory(char c) {
     int ASCII = static_cast<int>(c);
     if (getCode(c) != NULL) {
       if (ASCII - 97 >= 0) {  // low
