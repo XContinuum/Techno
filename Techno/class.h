@@ -1304,16 +1304,13 @@ class MovingBlock { // BlockMoves: MovingBlock
 
   bool moveUp(int gameMap[30][40]) { // BlockMoveUp: moveUp
     if (y > pI) {
-      gameMap[initialY / 20 + 1][initialX / 20] = AIR_ID;
+      gameMap[initialY / blockSize + 1][initialX / blockSize] = AIR_ID;
 
-      if (y - pI <= 5)
-        y -= (y - pI);
-      else
-        y -= 5;
+      y -= std::min(y - pI, 5);
     }
 
     if (y == pI) {
-      gameMap[y / 20 + 1][x / 20] = MOVING_BLOCK_ID;
+      gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
       return false;
     }
 
@@ -1321,16 +1318,13 @@ class MovingBlock { // BlockMoves: MovingBlock
   }
   void moveDown(int gameMap[30][40]) { // BlockMoveDown: moveDown
     if (y < initialY) {
-      gameMap[pI / 20 + 1][x / 20] = AIR_ID;
+      gameMap[pI / blockSize + 1][x / blockSize] = AIR_ID;
 
-      if (initialY - y <= 5)
-        y += (initialY - y);
-      else
-        y += 5;
+      y += std::min(initialY - y, 5);
     }
 
     if (y == initialY) {
-      gameMap[y / 20 + 1][x / 20] = MOVING_BLOCK_ID;
+      gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
     }
   }
 
