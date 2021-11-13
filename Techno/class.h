@@ -166,24 +166,17 @@ class Text {
   int x, y;
 
  private:
-  Sprite *txt;
   Sprite *letters[77];
-  Sprite *lettersColor[77];
-
   int length; // size: length
-  char *szLetters;
 
  public:
   Text(char *str, int color, int x, int y) { // remove color
     this->x = x;
     this->y = y;
-    txt = new Sprite("Images/Text.bmp", 0xffffffff);
 
+    cutLetters();
     changeColor(color);
     changeText(str);
-  }
-  Text(char *str, int color, int x, int y, int extraColor): Text(str, color, x, y) {
-    changeColor(extraColor);
   }
 
   void draw(Param *p) {
@@ -201,13 +194,13 @@ class Text {
     }
   }
 
-  void draw(Param *p, int *pos, int size) {
+  void draw(Param *p, int *pos, int size, int highlightColor) {
     for (int i = 0; i < length; i++) {
       int index = convert(string[i]);
 
       Sprite *letter = letters[index];
       if (isValueInArray(i, pos, size)) {
-          letter = lettersColor[index];
+        letter->replaceColor(color, highlightColor);
       }
       
       char category = letterCategory(string[i]);
@@ -230,13 +223,7 @@ class Text {
 
   void changeText(char *str) {
     string = str; // TODO: investigate if I should free memory for previous string
-
     length = calculateLength(str);
-    szLetters = new char[length];
-
-    for (int i = 0; i < length; i++) {
-      szLetters[i] = letterCategory(string[i]);
-    }
   }
 
  private:
@@ -293,9 +280,9 @@ class Text {
     return str;
   }
 
-  void changeColor(int color) { // ChangeColor: changeColor
+  void cutLetters() { // ChangeColor: changeColor: cutLetters
     const int black = 0xff000000;
-    int w = 11, h = 11;
+    const int w = 11, h = 11;
 
     for (int i = 0; i < 77; i++) {
       int column = i % 26;
@@ -303,6 +290,13 @@ class Text {
 
       letters[i] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
       letters[i]->cut(w * column, h * row, w, h);
+    }
+  }
+
+  void changeColor(int color) {
+    const int black = 0xff000000;
+
+    for (int i = 0; i < 77; i++) {
       letters[i]->replaceColor(black, color);
     }
   }
@@ -1134,7 +1128,7 @@ class Chest {
     pos[0] = currentDigit;
     pos[1] = currentDigit + 1;
 
-    codeView->draw(p, pos, 2);
+    codeView->draw(p, pos, 2, 0xffed1c24);
     //+++
     lockerLight->draw(p);
     circle->draw(p);
@@ -1181,7 +1175,7 @@ class Chest {
     lockerLight->show = false;
     circle->show = false;
 
-    codeView = new Text("00 00 00", 0xFF808E9B, x + 100, t + 100, 0xFFED1C24);  // code
+    codeView = new Text("00 00 00", 0xff808e9b, x + 100, t + 100);  // code
   }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
