@@ -181,63 +181,35 @@ class Text {
   Sprite *letters[77];
   Sprite *lettersColor[77];
 
-  int size;
-  int w, h;
+  int size; // size: length
+  int w = 11, h = 11; 
   int *encode;
 
   char *szLetters;
-  int initColor;
 
  public:
-  Text(char *str, int color, int _x, int _y) : string(str) {
-    w = 11;
-    h = 11;
+  Text(char *str, int color, int x, int y) { // remove color
+    this->string = str;
+    this->x = x;
+    this->y = y;
 
     txt = new Sprite("Images/Text.bmp", 0xffffffff);
 
-    initColor = color;
-    ChangeColor(color);
+    changeColor(color);
 
-    x = _x;
-    y = _y;
     // Conv+++
     size = 0;
-
     while (string[size] != '\0') size++;
-
-    encode = new int[size];
 
     szLetters = new char[size];
     szLetters[size] = '\0';
 
+    encode = new int[size];
     for (int i = 0; i < size; i++)
       encode[i] = convertion(static_cast<int>(string[i]), i);
   }
-  Text(char *str, int color, int _x, int _y, int addC) : string(str) {
-    w = 11;
-    h = 11;
-
-    txt = new Sprite("Images/Text.bmp", 0xffffffff);
-
-    initColor = color;
-    ChangeColor(color);
-
-    x = _x;
-    y = _y;
-    // Conv+++
-    size = 0;
-
-    while (string[size] != '\0') size++;
-
-    encode = new int[size];
-
-    szLetters = new char[size];
-    szLetters[size] = '\0';
-
-    for (int i = 0; i < size; i++)
-      encode[i] = convertion(static_cast<int>(string[i]), i);
-
-    addColor(addC);
+  Text(char *str, int color, int x, int y, int extraColor): Text(str, color, x, y) {
+    addColor(extraColor);
   }
 
   void draw(Param *p) {
@@ -330,7 +302,7 @@ class Text {
     return 0;
   }
 
-  void ChangeColor(int color) {
+  void changeColor(int color) { // ChangeColor: changeColor
     int i = 0;
     int j = 0;
 
@@ -1181,7 +1153,7 @@ class Chest {
     if (showToolTip)
       p->draw(mX1, mY1, toolTip->width, toolTip->height, toolTip);
   }
-  void drawC(Param *p) {
+  void drawC(Param *p) { // drawC: drawChestInventory
     lock->draw(p);
 
     if (!showChestContents) locker->draw(p);
