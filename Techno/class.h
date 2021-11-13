@@ -270,7 +270,6 @@ class Text {
 
     return 0;
   }
-
   int getCode(char c) {
     if (c == '.') return 62;
     if (c == ':') return 63;
@@ -287,7 +286,6 @@ class Text {
     
     return NULL;
   }
-
   int calculateLength(char* str) {
     int length = 0;
     while (str[length] != '\0') length++;
@@ -296,39 +294,20 @@ class Text {
   }
 
   void changeColor(int color) { // ChangeColor: changeColor
-    int i = 0;
-    int j = 0;
+    const int black = 0xff000000;
 
-    for (int k = 0; k < 77; k++) {
-      letters[k] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
-      letters[k]->cut(w * j, h * i, w, h);
-      letters[k]->replaceColor(0xFF000000, color);
-
-      j++;
-
-      if (j == 26) {
-        i++;
-        j = 0;
-      }
+    for (int i = 0; i < 77; i++) {
+      int column = i % 26;
+      int row = (i - column) / 26;
+      
+      letters[i] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
+      letters[i]->cut(w * column, h * row, w, h);
+      letters[i]->replaceColor(blaci, color);
     }
   }
 
   void addColor(int color) {
-    int i = 0;
-    int j = 0;
-
-    for (int k = 0; k < 77; k++) {
-      lettersColor[k] = new Sprite("Images/Text.bmp", 0xffffffff);
-      lettersColor[k]->cut(w * j, h * i, w, h);
-      lettersColor[k]->replaceColor(0xFF000000, color);
-
-      j++;
-
-      if (j == 26) {
-        i++;
-        j = 0;
-      }
-    }
+    changeColor(color);
   }
 };
 
