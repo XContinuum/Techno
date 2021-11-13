@@ -4,6 +4,32 @@
 #define VIVID_RED 0xffed1c24
 #define DARK_GRAYISH_BLUE 0xff808e9b
 
+#define CHARACTERS_ASSET "Images/Text.bmp"
+
+#define CLOSED_BOOK_IMG "Images/closed_book.bmp"
+#define OPEN_BOOK_IMG "Images/open_book.bmp"
+
+// Inventory
+#define INVENTORY_IMG "Images/inventory/inventory.bmp"
+#define OPEN_INVENTORY_IMG "Images/inventory/inventory_open.bmp"
+#define INVENTORY_TOOLTIP_IMG "Images/inventory/tool_tip.bmp"
+
+// Chest
+#define CHEST_CODE_IMG "Images/chest/code.bmp"
+#define CHEST_TOOLTIP_IMG "Images/chest/tool_tip.bmp"
+#define CHEST_GRID_IMG "Images/chest/chest_grid.bmp"
+#define SUCCESS_UNLOCK_IMG "Images/chest/success_unlock_asset.bmp"
+#define CLOSED_CHEST_IMG "Images/chest/chest1.bmp"
+
+#define LOCKER_IMG "Images/chest/locker.bmp"
+#define LIGHT_LOCKER_IMG "Images/chest/lockerL.bmp"
+#define CIRCLE_IMG "Images/chest/lOK.bmp"
+
+#define MOVING_BLOCK_IMG "Images/blockM.bmp"
+#define PRESSURE_PLATE_IMG "Images/pressure_plate.bmp"
+
+#define NEED_KEY_IMG "Images/NeedKey.bmp"
+
 // Classes+++
 class Button { // Button: TappableArea
  public:
@@ -292,7 +318,7 @@ class Text {
       int column = i % 26;
       int row = (i - column) / 26;
 
-      letters[i] = new Sprite("Images/Text.bmp", WHITE); // TODO: make this more efficient
+      letters[i] = new Sprite(CHARACTERS_ASSET, WHITE); // TODO: make this more efficient
       letters[i]->cut(w * column, h * row, w, h);
     }
   }
@@ -655,8 +681,8 @@ class Book {
   Book(int x, int y) {
     this->x = x;
     this->y = y;
-    assets[0] = new Sprite("Images/closed_book.bmp");
-    assets[1] = new Sprite("Images/open_book.bmp", WHITE);
+    assets[0] = new Sprite(CLOSED_BOOK_IMG);
+    assets[1] = new Sprite(OPEN_BOOK_IMG, WHITE);
     
     bookAsset = assets[0];
     counter++;
@@ -786,9 +812,9 @@ class Inventory { // Inventar: Inventory
 
  public:
   Inventory() {
-    inventorySprite = new Sprite("Images/inventory/inventory.bmp", WHITE);
-    openInventory = new Sprite("Images/inventory/inventory_open.bmp", WHITE);
-    toolTip = new Sprite("Images/inventory/tool_tip.bmp", WHITE);
+    inventorySprite = new Sprite(INVENTORY_IMG, WHITE);
+    openInventory = new Sprite(OPEN_INVENTORY_IMG, WHITE);
+    toolTip = new Sprite(INVENTORY_TOOLTIP_IMG, WHITE);
 
     for (int i = 0; i < 9; i++) cells[i] = INV_EMPTY_CELL;
 
@@ -944,11 +970,11 @@ class Chest {
     this->x = x;
     this->y = y;
 
-    code = new Sprite("Images/chest/code.bmp");
-    toolTip = new Sprite("Images/chest/tool_tip.bmp", WHITE);
-    chestGrid = new Sprite("Images/chest/chest_grid.bmp", WHITE);
-    successUnlockAsset = new Sprite("Images/chest/success_unlock_asset.bmp", WHITE);
-    currentFrame = new Sprite("Images/chest/chest1.bmp");
+    code = new Sprite(CHEST_CODE_IMG);
+    toolTip = new Sprite(CHEST_TOOLTIP_IMG, WHITE);
+    chestGrid = new Sprite(CHEST_GRID_IMG, WHITE);
+    successUnlockAsset = new Sprite(SUCCESS_UNLOCK_IMG, WHITE);
+    currentFrame = new Sprite(CLOSED_CHEST_IMG);
 
     answer = ans1 * 1000 + ans2;
 
@@ -1155,11 +1181,11 @@ class Chest {
     int x = (screenPixelWidth - lock->w) / 2;
     int y = (screenPixelHeight - lock->h) / 2;
 
-    lock = new Button(x, y, "Images/chest/code.bmp", WHITE);
+    lock = new Button(x, y, CHEST_CODE_IMG, WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
-    locker = new Button(x + 99, y + 107, "Images/chest/locker.bmp", WHITE);
-    lockerLight = new Button(x + 99, y + 107, "Images/chest/lockerL.bmp", WHITE);
-    circle = new Button(x + 156, x + 161, "Images/chest/lOK.bmp", WHITE);
+    locker = new Button(x + 99, y + 107, LOCKER_IMG, WHITE);
+    lockerLight = new Button(x + 99, y + 107, LIGHT_LOCKER_IMG, WHITE);
+    circle = new Button(x + 156, x + 161, CIRCLE_IMG, WHITE);
 
     lock->show = true;
     locker->show = true;
@@ -1256,7 +1282,7 @@ class PressurePlate { // ButtonON: PressurePlate
   PressurePlate(int x, int y) {
     this->x = x;
     this->y = y;
-    asset = new Sprite("Images/pressure_plate.bmp");
+    asset = new Sprite(PRESSURE_PLATE_IMG);
 
     counter++;
   }
@@ -1288,7 +1314,7 @@ class BlockMoves {
     this->pX = x;
     this->pY = y - 1;
     this->pI = pi - 1;
-    Image = new Sprite("Images/blockM.bmp");
+    Image = new Sprite(MOVING_BLOCK_IMG);
 
     counter++;
   }
@@ -1364,7 +1390,7 @@ class FinalDoor {
     assets[1] = new Sprite("Images/NextDoor2.bmp", WHITE);
     currentFrame = assets[0];
 
-    needKeyAsset = new Sprite("Images/NeedKey.bmp", WHITE);
+    needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
 
     counter++;
 
