@@ -24,8 +24,8 @@ class Button { // Button: TappableArea
     w = image->width;
     h = image->height;
   }
-  Button(char *name, int trColor) {
-    image = new Sprite(name, trColor);
+  Button(char *name, int transparency) {
+    image = new Sprite(name, transparency);
     w = image->width;
     h = image->height;
   }
@@ -1267,14 +1267,14 @@ class Chest {
    bool didClickCell(int x, int y) { // Makes sure clicked cell and not space between
      std::tie(blockX, blockY) = findCell(x, y);
 
-     int a = x - (inventoryChestLeft + codeX) - blockX * (inventorySquareDim + spaceBetweenCells);
-     int b = y - (inventoryChestTop + codeY) - blockY * (inventorySquareDim + spaceBetweenCells);
+     int a = x - (codeX + inventoryChestLeft) - blockX * (inventorySquareDim + spaceBetweenCells);
+     int b = y - (codeY + inventoryChestTop) - blockY * (inventorySquareDim + spaceBetweenCells);
 
      return a <= inventorySquareDim && b <= inventorySquareDim;
    }
    std::tuple<int, int> findCell(int x, int y) {
-     int blockX = (x - (inventoryChestLeft + codeX)) / (inventorySquareDim + spaceBetweenCells);
-     int blockY = (y - (inventoryChestTop + codeY)) / (inventorySquareDim + spaceBetweenCells);
+     int blockX = (x - (codeX + inventoryChestLeft)) / (inventorySquareDim + spaceBetweenCells);
+     int blockY = (y - (codeY + inventoryChestTop)) / (inventorySquareDim + spaceBetweenCells);
 
      return std::tuple<int, int>(blockX, blockY);
    }
