@@ -154,8 +154,8 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < MovingBlock::counter; i++) {
-    paramDraw->draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->Image->width,
-                    movingStairBlocks[i]->Image->height, movingStairBlocks[i]->Image);
+    paramDraw->draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->asset->width,
+                    movingStairBlocks[i]->asset->height, movingStairBlocks[i]->asset);
   }
 
   // Chest++++

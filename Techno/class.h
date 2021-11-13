@@ -1279,7 +1279,7 @@ class MovingBlock { // BlockMoves: MovingBlock
   int x, y;
   int pI;
 
-  Sprite *Image;
+  Sprite *asset; // Image: asset
 
   static bool UP;
   static int counter;
@@ -1297,7 +1297,7 @@ class MovingBlock { // BlockMoves: MovingBlock
     this->initialX = x;
     this->initialY = y - 1;
     this->pI = pi - 1;
-    Image = new Sprite(MOVING_BLOCK_IMG);
+    asset = new Sprite(MOVING_BLOCK_IMG);
 
     counter++;
   }
