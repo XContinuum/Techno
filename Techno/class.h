@@ -3,38 +3,27 @@ class Button { // Button: TappableArea
  public:
   int x, y;
   int w, h;
-
-  bool show;
-  bool SubShow;
-  bool showBorder;
-
   Sprite *image; // Image: image
-  Sprite *Border;
+  bool show;
+
+  bool SubShow; // SubShow
+  bool showBorder;
+  Sprite *Border; // Border
 
  public:
-  Button(int x, int y, char *name) {
-    this->x = x;
-    this->y = y;
-    image = new Sprite(name);
-    w = image->width;
-    h = image->height;
-  }
-  Button(char *name) {
-    image = new Sprite(name);
-    w = image->width;
-    h = image->height;
-  }
   Button(char *name, int transparency) {
     image = new Sprite(name, transparency);
     w = image->width;
     h = image->height;
   }
-  Button(int x, int y, char *name, int transparency) {
+  Button(char *name): Button(name, 0) {}
+  Button(int x, int y, char *name): Button(name, 0) {
     this->x = x;
     this->y = y;
-    image = new Sprite(name, transparency);
-    w = image->width;
-    h = image->height;
+  }
+  Button(int x, int y, char *name, int transparency): Button(name, transparency) {
+    this->x = x;
+    this->y = y;
   }
 
   bool contains(int x, int y) { // Touch: contains
