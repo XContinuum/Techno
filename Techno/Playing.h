@@ -23,7 +23,7 @@ int MOVING_BLOCK_ID = 6;
 int DOOR_ID = 4;
 int CLOSED_DOOR_ID = 5; // I think so?
 int FINAL_DOOR_ID = 8;
-int OPEN_FINAL_DOOR_ID = 9; // Final open door?
+int CLOSED_FINAL_DOOR_ID = 9; // Final open door?
 
 // Inventory objects
 int INV_EMPTY_CELL = 0;

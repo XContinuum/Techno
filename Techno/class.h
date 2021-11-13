@@ -1347,7 +1347,7 @@ class FinalDoor {
 
  private:
   int frame = 0; // Cadr: frame
-  int doorId = 9; // num: doorId
+  int isOpen = false; // num: doorId: isOpen
 
   int doorType; // type: doorType
   Sprite *assets[2]; // Image: assets
@@ -1362,8 +1362,8 @@ class FinalDoor {
 
     assets[0] = new Sprite("Images/NextDoor1.bmp", WHITE);
     assets[1] = new Sprite("Images/NextDoor2.bmp", WHITE);
-
     currentFrame = assets[0];
+
     needKeyAsset = new Sprite("Images/NeedKey.bmp", WHITE);
 
     counter++;
@@ -1396,12 +1396,12 @@ class FinalDoor {
 
     int row = y / blockSize;
     int column = x / blockSize;
+    int doorId = isOpen ? FINAL_DOOR_ID : CLOSED_FINAL_DOOR_ID;
+
     gameMap[row][column] = doorId;
     gameMap[row + 1][column] = doorId;
     gameMap[row + 2][column] = doorId;
     gameMap[row + 3][column] = doorId;
-
-    doorId = doorId == 9 ? 8 : 9;
   }
 };
 int FinalDoor::counter = 0;
