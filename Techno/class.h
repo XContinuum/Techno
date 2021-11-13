@@ -178,38 +178,24 @@ class Text {
 
  public:
   Text(char *str, int color, int x, int y) { // remove color
-    this->string = str;
     this->x = x;
     this->y = y;
-
     txt = new Sprite("Images/Text.bmp", 0xffffffff);
+
     changeColor(color);
-
-    // Conv+++
-    length = calculateLength(str);
-    szLetters = new char[length];
-    encode = new int[length];
-
-    for (int i = 0; i < length; i++) {
-      encode[i] = convertion(string[i]);
-      szLetters[i] = something(string[i]);
-    }
+    changeText(str);
   }
   Text(char *str, int color, int x, int y, int extraColor): Text(str, color, x, y) {
     addColor(extraColor);
   }
 
   void draw(Param *p) {
-    int n = 0;
-    int distance = 0;
-
     for (int i = 0; i < length; i++) {
-      n = encode[i];
+      int n = encode[i];
+      int distance = 0;
 
       if (szLetters[i] == 'U') distance = 1;
-
       if (szLetters[i] == 'L') distance = 5;
-
       if (szLetters[i] == 'N') distance = 5;
 
       p->draw(x + i * letters[i]->width - distance * i, y, letters[n]->width,
@@ -218,12 +204,10 @@ class Text {
   }
 
   void draw(Param *p, int *pos, int s) {
-    int n = 0;
-    int distance = 0;
     Sprite *temp;
 
     for (int i = 0; i < length; i++) {
-      n = encode[i];
+      int n = encode[i];
       temp = letters[n];
 
       //++++
@@ -231,10 +215,10 @@ class Text {
         if (i == pos[j]) temp = lettersColor[n];
       //----
 
+      int distance = 0;
+
       if (szLetters[i] == 'U') distance = 1;
-
       if (szLetters[i] == 'L') distance = 5;
-
       if (szLetters[i] == 'N') distance = 5;
 
       p->draw(x + i * temp->width - distance * i, y, temp->width, temp->height,
@@ -250,7 +234,7 @@ class Text {
     szLetters = new char[length];
 
     for (int i = 0; i < length; i++) {
-      encode[i] = convertion(string[i]);
+      encode[i] = convert(string[i]);
       szLetters[i] = something(string[i]);
     }
   }
@@ -270,7 +254,7 @@ class Text {
 
     return 'O';
   }
-  int convertion(char c) {
+  int convert(char c) { // convertion: convert
     int code = getCode(c);
 
     if (code != NULL) return code;
@@ -316,7 +300,7 @@ class Text {
     int j = 0;
 
     for (int k = 0; k < 77; k++) {
-      letters[k] = new Sprite("Images/Text.bmp", 0xffffffff);
+      letters[k] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
       letters[k]->cut(w * j, h * i, w, h);
       letters[k]->replaceColor(0xFF000000, color);
 
