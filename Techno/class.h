@@ -183,17 +183,13 @@ class Text {
     this->y = y;
 
     txt = new Sprite("Images/Text.bmp", 0xffffffff);
-
     changeColor(color);
 
     // Conv+++
-    length = 0;
-    while (string[length] != '\0') length++;
-
+    length = calculateLength(str);
     szLetters = new char[length];
-    szLetters[length] = '\0';
-
     encode = new int[length];
+
     for (int i = 0; i < length; i++) {
       encode[i] = convertion(string[i]);
       szLetters[i] = something(string[i]);
@@ -247,15 +243,11 @@ class Text {
   }
 
   void changeText(char *str) {
-    string = str;
-    length = 0;
+    string = str; // TODO: investigate if I should free memory for previous string
 
-    while (string[length] != '\0') length++;
-
+    length = calculateLength(str);
     encode = new int[length];
-
     szLetters = new char[length];
-    szLetters[length] = '\0';
 
     for (int i = 0; i < length; i++) {
       encode[i] = convertion(string[i]);
@@ -310,6 +302,13 @@ class Text {
     if (c == ' ') return 73;
     
     return NULL;
+  }
+
+  int calculateLength(char* str) {
+    int length = 0;
+    while (str[length] != '\0') length++;
+    
+    return str;
   }
 
   void changeColor(int color) { // ChangeColor: changeColor
