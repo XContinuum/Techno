@@ -274,19 +274,6 @@ class Text {
   int convertion(char c, int i) {
     szLetters[i] = 'O';
 
-    if (c == '.') return 62;
-    if (c == ':') return 63;
-    if (c == '/') return 64;
-    if (c == '-') return 65;
-    if (c == '+') return 66;
-    if (c == '(') return 67;
-    if (c == ')') return 68;
-    if (c == '*') return 69;
-    if (c == '=') return 70;
-    if (c == ',') return 71;
-    if (c == '!') return 72;
-    if (c == ' ') return 73;
-
     int ASCII = static_cast<int>(c);
     if (ASCII - 97 >= 0) {  // low
       szLetters[i] = 'L';
@@ -299,6 +286,22 @@ class Text {
       return ASCII - 48 + 52;
     }
 
+    return getCode(c);
+  }
+
+  int getCode(char c) {
+    if (c == '.') return 62;
+    if (c == ':') return 63;
+    if (c == '/') return 64;
+    if (c == '-') return 65;
+    if (c == '+') return 66;
+    if (c == '(') return 67;
+    if (c == ')') return 68;
+    if (c == '*') return 69;
+    if (c == '=') return 70;
+    if (c == ',') return 71;
+    if (c == '!') return 72;
+    if (c == ' ') return 73;
     return 0;
   }
 
