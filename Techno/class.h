@@ -1048,10 +1048,10 @@ class Chest {
     int inventoryChestRight = 305;
     int inventoryChestBottom = 283;
 
-    int x1 = inventoryChestLeft + codeX;
-    int x2 = inventoryChestRight + codeX;
-    int y1 = inventoryChestTop + codeY;
-    int y2 = inventoryChestBottom + codeY;
+    int x1 = codeX + inventoryChestLeft;
+    int x2 = codeX + inventoryChestRight;
+    int y1 = codeY + inventoryChestTop;
+    int y2 = codeY + inventoryChestBottom;
 
     return x >= x1 && x <= x2 && y >= y1 && y <= y2;
   }
@@ -1202,31 +1202,25 @@ class Chest {
     if (showChestContents) {
       p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
 
-      int ix = 0;
-      int iy = 0;
-
       for (int i = 0; i < chestRows * chestColumns; i++) {
-        if (items[i] != 0)
-          p->draw(codeX + inventoryChestLeft + (ix)*spaceBetweenCells +
-                      (ix)*inventorySquareDim,
-                  codeY + inventoryChestTop + (iy)*spaceBetweenCells +
-                      (iy)*inventorySquareDim,
-                  itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
+        if (items[i] == INV_EMPTY_CELL) continue;
 
-        if (ix < 7)
-          ix++;
-        else {
-          iy++;
-          ix = 0;
-        }
+        int column = (i % chestColumns);
+        int row = (i - column) / chestColumns;
+
+        int x = codeX + inventoryChestLeft + column * (spaceBetweenCells + inventorySquareDim);
+        int y = codeY + inventoryChestTop + row * (spaceBetweenCells + inventorySquareDim);
+        p->draw(x, y, itemAssets[i]->width, itemAssets[i]->height,
+                itemAssets[i]);
       }
     }
 
-    if (correctCombination == true)
-      p->draw((screenPixelWidth - lock->w) / 2 + 99 + 2,
-              (screenPixelHeight - lock->h) / 2 + 107,
-              successUnlockAsset->width, successUnlockAsset->height,
+    if (correctCombination) {
+      int x = (screenPixelWidth - lock->w) / 2 + 99 + 2;
+      int y = (screenPixelHeight - lock->h) / 2 + 107;
+      p->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
               successUnlockAsset);
+    }
   }
 
  private:
