@@ -930,7 +930,7 @@ class Chest {
   LockAngle *lockAngle; // ar: lockAngle
 
   Text *questionText; // txt: questionText
-  Text *codeView; // codeView:
+  Text *combinationText; // codeView: combinationText
   char *question;
   int answer; // Answer: answer
 
@@ -952,7 +952,7 @@ class Chest {
   const int spaceBetweenCells = 5;
 
  public:
-  Chest(int x, int y, int ans1, int ans2) {
+  Chest(int x, int y) {
     this->x = x;
     this->y = y;
 
@@ -961,8 +961,6 @@ class Chest {
     chestGrid = new Sprite(CHEST_GRID_IMG, WHITE);
     successUnlockAsset = new Sprite(SUCCESS_UNLOCK_IMG, WHITE);
     currentFrame = new Sprite(CLOSED_CHEST_IMG);
-
-    answer = ans1 * 1000 + ans2;
 
     for (int i = 0; i < chestRows * chestColumns; i++) items[i] = INV_EMPTY_CELL;
     items[0] = INV_KEY;
@@ -1018,6 +1016,9 @@ class Chest {
     }
   }
 
+  // ---------------------------------------------------------------
+  // loadQuestion: TODO: move to its own class
+  // ---------------------------------------------------------------
   void loadQuestion(int level) { // LoadQuestion: loadQuestion
     char* questionFile = readFile("Images/Data/questions.txt", 300);
 
@@ -1062,6 +1063,9 @@ class Chest {
 
     return result;
   }
+  // ---------------------------------------------------------------
+  // loadQuestion {END}
+  // ---------------------------------------------------------------
 
   void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!show) return;
@@ -1132,7 +1136,7 @@ class Chest {
     pos[0] = currentDigit;
     pos[1] = currentDigit + 1;
 
-    codeView->draw(p, pos, 2, VIVID_RED);
+    combinationText->draw(p, pos, 2, VIVID_RED);
     //+++
     lockerLight->draw(p);
     circle->draw(p);
@@ -1178,7 +1182,7 @@ class Chest {
     lockerLight->show = false;
     circle->show = false;
 
-    codeView = new Text("00 00 00", DARK_GRAYISH_BLUE, x + 100, t + 100);  // code
+    combinationText = new Text("00 00 00", DARK_GRAYISH_BLUE, x + 199, y + 207);
   }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
@@ -1210,14 +1214,14 @@ class Chest {
    }
 
    void displayCombination(int num1, int num2, int num3) {
-     char *showText = new char[100];
+     char *currentCombo = new char[100];
 
      if (num1 < 10)
-       sprintf(showText, "0%d 0%d 0%d", num1, num2, num3);
+       sprintf(currentCombo, "0%d 0%d 0%d", num1, num2, num3);
      else
-       sprintf(showText, "%d %d %d", num1, num2, num3);
+       sprintf(currentCombo, "%d %d %d", num1, num2, num3);
 
-     codeView->changeText(showText);
+     combinationText->changeText(currentCombo);
    }
 
    bool didClickCell(int x, int y) { // Makes sure clicked cell and not space between

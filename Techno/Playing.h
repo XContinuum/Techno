@@ -314,9 +314,8 @@ void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
       break;
 
     case 4:
-      for (int i = 0; i < coordQuantity / 4; i++)
-        chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1],
-                             coordinates[i * 4 + 2], coordinates[i * 4 + 3]);
+      for (int i = 0; i < coordQuantity / 4; i++) // ignore the last two coordinates, we load the answer from the questions folder
+        chest[i] = new Chest(coordinates[i * 4], coordinates[i * 4 + 1]);
       break;
 
     case 5: 
