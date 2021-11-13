@@ -194,8 +194,10 @@ class Text {
     szLetters[size] = '\0';
 
     encode = new int[size];
-    for (int i = 0; i < size; i++)
-      encode[i] = convertion(static_cast<int>(string[i]), i);
+    for (int i = 0; i < size; i++) {
+      encode[i] = convertion(string[i]);
+      szLetters[i] = something(string[i]);
+    }
   }
   Text(char *str, int color, int x, int y, int extraColor): Text(str, color, x, y) {
     addColor(extraColor);
@@ -255,27 +257,42 @@ class Text {
     szLetters = new char[size];
     szLetters[size] = '\0';
 
-    for (int i = 0; i < size; i++)
-      encode[i] = convertion(static_cast<int>(string[i]), i);
+    for (int i = 0; i < size; i++) {
+      encode[i] = convertion(string[i]);
+      szLetters[i] = something(string[i]);
+    }
   }
 
  private:
-  int convertion(char c, int i) {
-    szLetters[i] = 'O';
+  int something(char c) { // TODO: rename
+    int ASCII = static_cast<int>(c);
+    if (getCode(c) != NULL) {
+      if (ASCII - 97 >= 0) {  // low
+        return 'L';
+      } else if (ASCII - 65 >= 0) {  // up
+        return 'U';
+      } else if (ASCII - 48 >= 0) {  // num
+        return 'N';
+      }
+    }
+
+    return 'O';
+  }
+  int convertion(char c) {
+    int code = getCode(c);
+
+    if (code != NULL) return code;
 
     int ASCII = static_cast<int>(c);
     if (ASCII - 97 >= 0) {  // low
-      szLetters[i] = 'L';
       return ASCII - 97;
     } else if (ASCII - 65 >= 0) {  // up
-      szLetters[i] = 'U';
       return ASCII - 65 + 26;
     } else if (ASCII - 48 >= 0) {  // num
-      szLetters[i] = 'N';
       return ASCII - 48 + 52;
     }
 
-    return getCode(c);
+    return 0;
   }
 
   int getCode(char c) {
@@ -291,7 +308,8 @@ class Text {
     if (c == ',') return 71;
     if (c == '!') return 72;
     if (c == ' ') return 73;
-    return 0;
+    
+    return NULL;
   }
 
   void changeColor(int color) { // ChangeColor: changeColor
