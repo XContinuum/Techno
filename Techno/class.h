@@ -972,8 +972,6 @@ class Chest {
   static int timer1; // timer1:
 
  private:
-  const int chestRows = 6;
-  const int chestColumns = 8;
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
 
@@ -1003,6 +1001,15 @@ class Chest {
 
   int codeX, codeY;
 
+  // Constants
+  const int chestRows = 6;
+  const int chestColumns = 8;
+
+  const int inventoryChestTop = 109;
+  const int inventoryChestLeft = 71;
+  const int inventorySquareDim = 25;  // size of a single cell
+  const int spaceBetweenCells = 5;
+
  public:
   Chest(int x, int y, int ans1, int ans2) {
     this->x = x;
@@ -1018,11 +1025,9 @@ class Chest {
 
     answer = ans1 * 1000 + ans2;
 
-    //----
     for (int i = 0; i < chestRows * chestColumns; i++) items[i] = INV_EMPTY_CELL;
     items[0] = INV_KEY;
     updateChestCells();
-    //+++
 
     initializeButtons();
     setupCodeCoordinates();
@@ -1035,20 +1040,18 @@ class Chest {
     if (!didClickCell(x, y))) return -1;
 
     std::tie(blockX, blockY) = findCell(x, y);
-    return blockY * 8 + blockX;
+    return blockY * chestColumns + blockX;
   }
 
   bool isWithinInventory(int x, int y) { // TouchInvChest: isWithinInventory
     // This data is pulled from "Images/chest/InvChest.bmp"
-    int inventoryChestLeft = 71;
-    int inventoryChestTop = 109;
     int inventoryChestRight = 305;
     int inventoryChestBottom = 283;
 
-    int x1 = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
-    int x2 = inventoryChestRight + (screenPixelWidth - code->width) / 2;
-    int y1 = inventoryChestTop + (screenPixelHeight - code->height) / 2;
-    int y2 = inventoryChestBottom + (screenPixelHeight - code->height) / 2;
+    int x1 = inventoryChestLeft + codeX;
+    int x2 = inventoryChestRight + codeX;
+    int y1 = inventoryChestTop + codeY;
+    int y2 = inventoryChestBottom + codeY;
 
     return x >= x1 && x <= x2 && y >= y1 && y <= y2;
   }
@@ -1098,8 +1101,7 @@ class Chest {
       i++;
     }
 
-    txt = new Text(question, 0xFF3D3D3D, (screenPixelWidth - code->width) / 2 + 15,
-                   (screenPixelHeight - code->height) / 2 + 68);
+    txt = new Text(question, 0xFF3D3D3D, codeX + 15, codeY + 68);
   }
   int findDelimiter(char *str, int start, int end, char delimiter) {
     int i = start;
@@ -1198,19 +1200,18 @@ class Chest {
     txt->draw(p);
 
     if (showChestContents) {
-      p->draw((screenPixelWidth - code->width) / 2,
-              (screenPixelHeight - code->height) / 2, chestGrid->width,
-              chestGrid->height, chestGrid);
+      p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
 
       int ix = 0;
       int iy = 0;
 
       for (int i = 0; i < chestRows * chestColumns; i++) {
         if (items[i] != 0)
-          p->draw(
-              (screenPixelWidth - code->width) / 2 + 71 + (ix)*5 + (ix)*25,
-              (screenPixelHeight - code->height) / 2 + 109 + (iy)*5 + (iy)*25,
-              itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
+          p->draw(codeX + inventoryChestLeft + (ix)*spaceBetweenCells +
+                      (ix)*inventorySquareDim,
+                  codeY + inventoryChestTop + (iy)*spaceBetweenCells +
+                      (iy)*inventorySquareDim,
+                  itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
 
         if (ix < 7)
           ix++;
@@ -1294,32 +1295,24 @@ class Chest {
      return path;
    }
 
-   bool didClickCell(int x, int y) {
-     // Makes sure clicked cell and not space between
+   bool didClickCell(int x, int y) { // Makes sure clicked cell and not space between
      std::tie(blockX, blockY) = findCell(x, y);
 
-     int inventorySquareDim = 25;  // size of a single cell
-     int spaceBetweenCells = 5;
-     int a = x - codeX - blockX * (inventorySquareDim + spaceBetweenCells);
-     int b = y - codeY - blockY * (inventorySquareDim + spaceBetweenCells);
+     int a = x - (inventoryChestLeft + codeX) - blockX * (inventorySquareDim + spaceBetweenCells);
+     int b = y - (inventoryChestTop + codeY) - blockY * (inventorySquareDim + spaceBetweenCells);
 
      return a <= inventorySquareDim && b <= inventorySquareDim;
    }
    std::tuple<int, int> findCell(int x, int y) {
-     int inventorySquareDim = 25;  // size of a single cell
-     int spaceBetweenCells = 5;
-
-     int blockX = (x - codeX) / (inventorySquareDim + spaceBetweenCells);
-     int blockY = (y - codeY) / (inventorySquareDim + spaceBetweenCells);
+     int blockX = (x - (inventoryChestLeft + codeX)) / (inventorySquareDim + spaceBetweenCells);
+     int blockY = (y - (inventoryChestTop + codeY)) / (inventorySquareDim + spaceBetweenCells);
 
      return std::tuple<int, int>(blockX, blockY);
    }
 
    void setupCodeCoordinates() {
-     int inventoryChestLeft = 71;
-     int inventoryChestTop = 109;
-     codeX = inventoryChestLeft + (screenPixelWidth - code->width) / 2;
-     codeY = inventoryChestTop + (screenPixelHeight - code->height) / 2;
+     codeX = (screenPixelWidth - code->width) / 2;
+     codeY = (screenPixelHeight - code->height) / 2;
    }
 };
 int Chest::dt = 0;
