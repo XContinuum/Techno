@@ -1417,29 +1417,29 @@ class DrawRectangle {
 
   int *img;
 
-  int BorderC;
-  int FillC;
+  int BorderC; // BorderC: borderColor
+  int FillC; // FillC: fillColor
 
  public:
-  DrawRectangle(int _x, int _y, int _w, int _h, int BorColor, int FillColor) {
-    x = _x;
-    y = _y;
-    w = _w;
-    h = _h;
+  DrawRectangle(int x, int y, int w, int h, int borderColor, int fillColor) {
+    this->x = x;
+    this->y = y;
+    this->w = w;
+    this->h = h;
 
-    BorderC = BorColor;
-    FillC = FillColor;
+    BorderC = borderColor;
+    FillC = fillColor;
 
     img = new int[w * h * 32 / 8];
 
     for (int i = 0; i < h; ++i)
-      for (int j = 0; j < w; ++j) img[j + i * w] = FillColor;
+      for (int j = 0; j < w; ++j) img[j + i * w] = fillColor;
 
     for (int i = 0; i < h; ++i) {
       for (int j = 0; j < w; ++j) {
-        if (i == 0 || i == h - 1) img[j + i * w] = BorColor;
+        if (i == 0 || i == h - 1) img[j + i * w] = borderColor;
 
-        if (j == 0 || j == w - 1) img[j + i * w] = BorColor;
+        if (j == 0 || j == w - 1) img[j + i * w] = borderColor;
       }
     }
   }
