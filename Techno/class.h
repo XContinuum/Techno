@@ -1302,7 +1302,7 @@ class MovingBlock { // BlockMoves: MovingBlock
     counter++;
   }
 
-  bool BlockMoveUp(int gameMap[30][40]) { // BlockMoveUp: blockMoveUp
+  bool moveUp(int gameMap[30][40]) { // BlockMoveUp: moveUp
     if (y > pI) {
       gameMap[initialY / 20 + 1][initialX / 20] = AIR_ID;
 
@@ -1319,7 +1319,7 @@ class MovingBlock { // BlockMoves: MovingBlock
 
     return true;
   }
-  void BlockMoveDown(int gameMap[30][40]) { // BlockMoveDown: blockMoveDown
+  void moveDown(int gameMap[30][40]) { // BlockMoveDown: moveDown
     if (y < initialY) {
       gameMap[pI / 20 + 1][x / 20] = AIR_ID;
 

@@ -823,7 +823,7 @@ void updateFrames(int clickedX, int clickedY) {
     bool b = true;
 
     for (int i = 0; i < MovingBlock::counter; i++) {
-      bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap); // mutates parameter
+      bool tmp = movingStairBlocks[i]->moveUp(gameMap); // mutates parameter
 
       if (!tmp) b = false;
     }
@@ -839,7 +839,7 @@ void updateFrames(int clickedX, int clickedY) {
   if (MovingBlock::dt > 1000 * 10) MovingBlock::UP = false;
 
   if (MovingBlock::dt > 5 && !MovingBlock::UP) {
-    for (int i = 0; i < MovingBlock::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap); // mutates parameter
+    for (int i = 0; i < MovingBlock::counter; i++) movingStairBlocks[i]->moveDown(gameMap); // mutates parameter
   }
   // Block Moves---
 }
