@@ -1,4 +1,6 @@
-﻿// Classes+++
+﻿#define WHITE 0xffffffff
+
+// Classes+++
 class Button { // Button: TappableArea
  public:
   int x, y;
@@ -287,7 +289,7 @@ class Text {
       int column = i % 26;
       int row = (i - column) / 26;
 
-      letters[i] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
+      letters[i] = new Sprite("Images/Text.bmp", WHITE); // TODO: make this more efficient
       letters[i]->cut(w * column, h * row, w, h);
     }
   }
@@ -349,19 +351,17 @@ class Player { // Hero: Player
     leftWalkFrame = 0;
     climbFrame = 0;
 
-    int alphaChannel = 0xffffffff;
-
     for (int i = 0; i < 5; i++) {
-      rightWalk[i] = new Sprite(getAssetName(i + 1, 'R'), alphaChannel);
-      leftWalk[i] = new Sprite(getAssetName(i + 1, 'L'), alphaChannel);
+      rightWalk[i] = new Sprite(getAssetName(i + 1, 'R'), WHITE);
+      leftWalk[i] = new Sprite(getAssetName(i + 1, 'L'), WHITE);
     }
 
     for (int i = 0; i < 3; i++) {
-      rightJump[i] = new Sprite(getAssetName(i + 1, 'J'), alphaChannel);
-      leftJump[i] = new Sprite(getAssetName(i + 1, 'J'), alphaChannel);
+      rightJump[i] = new Sprite(getAssetName(i + 1, 'J'), WHITE);
+      leftJump[i] = new Sprite(getAssetName(i + 1, 'J'), WHITE);
       leftJump[i]->flipHorizontally();
 
-      ladderClimb[i] = new Sprite(getAssetName(i + 1, 'U'), alphaChannel);
+      ladderClimb[i] = new Sprite(getAssetName(i + 1, 'U'), WHITE);
     }
     currentFrame = rightWalk[0];
 
@@ -565,9 +565,9 @@ class Fire {
     this->x = x;
     this->y = y;
 
-    assets[0] = new Sprite("Images/fire1.bmp", 0xffffffff);
-    assets[1] = new Sprite("Images/fire2.bmp", 0xffffffff);
-    assets[2] = new Sprite("Images/fire3.bmp", 0xffffffff);
+    assets[0] = new Sprite("Images/fire1.bmp", WHITE);
+    assets[1] = new Sprite("Images/fire2.bmp", WHITE);
+    assets[2] = new Sprite("Images/fire3.bmp", WHITE);
 
     currentSprite = assets[0];
     counter++;
@@ -609,8 +609,8 @@ class Door {
     this->x = x;
     this->y = y;
     
-    assets[0] = new Sprite("Images/Door1.bmp", 0xffffffff);
-    assets[1] = new Sprite("Images/Door2.bmp", 0xffffffff);
+    assets[0] = new Sprite("Images/Door1.bmp", WHITE);
+    assets[1] = new Sprite("Images/Door2.bmp", WHITE);
 
     currentFrame = assets[0];
     counter++;
@@ -655,7 +655,7 @@ class Book {
     this->x = x;
     this->y = y;
     assets[0] = new Sprite("Images/closed_book.bmp");
-    assets[1] = new Sprite("Images/open_book.bmp", 0xffffffff);
+    assets[1] = new Sprite("Images/open_book.bmp", WHITE);
     
     bookAsset = assets[0];
     counter++;
@@ -698,7 +698,7 @@ class Bonus {
     this->y = y;
 
     for (int i = 0; i < 10; i++) {
-      bonusAssets[i] = new Sprite(getAssetName(i + 1), 0xffffffff);
+      bonusAssets[i] = new Sprite(getAssetName(i + 1), WHITE);
     }
 
     currentFrame = bonusAssets[0];
@@ -754,7 +754,7 @@ class LockAngle { // Arrow: LockAngle
     for (int i = 0; i < 40; i++) {
       sprintf(path, "Images/c%d.bmp", i + 1);
 
-      arrowAssets[i] = new Sprite(path, 0xffffffff);
+      arrowAssets[i] = new Sprite(path, WHITE);
     }
   }
 
@@ -788,9 +788,9 @@ class Inventory { // Inventar: Inventory
     x = 0;
     y = 0;
 
-    inventorySprite = new Sprite("Images/inventory/inventory.bmp", 0xffffffff);
-    openInventory = new Sprite("Images/inventory/inventory_open.bmp", 0xffffffff);
-    toolTip = new Sprite("Images/inventory/tool_tip.bmp", 0xffffffff);
+    inventorySprite = new Sprite("Images/inventory/inventory.bmp", WHITE);
+    openInventory = new Sprite("Images/inventory/inventory_open.bmp", WHITE);
+    toolTip = new Sprite("Images/inventory/tool_tip.bmp", WHITE);
 
     for (int i = 0; i < 9; i++) cells[i] = INV_EMPTY_CELL;
 
@@ -832,7 +832,7 @@ class Inventory { // Inventar: Inventory
       if (cells[i] != INV_EMPTY_CELL) {
         num = sprintf(path, "Images/o%d.bmp", cells[i]);
 
-        cellSprites[i] = new Sprite(path, 0xffffffff);
+        cellSprites[i] = new Sprite(path, WHITE);
       }
     }
   }
@@ -952,9 +952,9 @@ class Chest {
     assets[1] = new Sprite("Images/chest/chest2.bmp"); // TODO: remove
 
     code = new Sprite("Images/chest/code.bmp");
-    toolTip = new Sprite("Images/chest/OpenChest.bmp", 0xffffffff);
-    chestGrid = new Sprite("Images/chest/InvChest.bmp", 0xffffffff);
-    successUnlockAsset = new Sprite("Images/chest/OpenTrue.bmp", 0xffffffff);
+    toolTip = new Sprite("Images/chest/OpenChest.bmp", WHITE);
+    chestGrid = new Sprite("Images/chest/InvChest.bmp", WHITE);
+    successUnlockAsset = new Sprite("Images/chest/OpenTrue.bmp", WHITE);
     currentFrame = assets[0];
 
     answer = ans1 * 1000 + ans2;
@@ -1009,7 +1009,7 @@ class Chest {
     for (int i = 0; i < chestRows * chestColumns; i++) {
       if (items[i] == INV_EMPTY_CELL) continue;
 
-      itemAssets[i] = new Sprite(getAssetPath(items[i]), 0xffffffff);
+      itemAssets[i] = new Sprite(getAssetPath(items[i]), WHITE);
     }
   }
 
@@ -1035,7 +1035,7 @@ class Chest {
       i++;
     }
 
-    txt = new Text(question, 0xFF3D3D3D, codeX + 15, codeY + 68);
+    txt = new Text(question, 0xff3d3d3d, codeX + 15, codeY + 68);
   }
   int findDelimiter(char *str, int start, int end, char delimiter) {
     int i = start;
@@ -1161,13 +1161,12 @@ class Chest {
   void initializeButtons() {
     int x = (screenPixelWidth - lock->w) / 2;
     int y = (screenPixelHeight - lock->h) / 2;
-    int alpha = 0xffffffff;
 
-    lock = new Button(x, y, "Images/chest/code.bmp", alpha);
+    lock = new Button(x, y, "Images/chest/code.bmp", WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
-    locker = new Button(x + 99, y + 107, "Images/chest/locker.bmp", alpha);
-    lockerLight = new Button(x + 99, y + 107, "Images/chest/lockerL.bmp", alpha);
-    circle = new Button(x + 156, x + 161, "Images/chest/lOK.bmp", alpha);
+    locker = new Button(x + 99, y + 107, "Images/chest/locker.bmp", WHITE);
+    lockerLight = new Button(x + 99, y + 107, "Images/chest/lockerL.bmp", WHITE);
+    circle = new Button(x + 156, x + 161, "Images/chest/lOK.bmp", WHITE);
 
     lock->show = true;
     locker->show = true;
@@ -1368,11 +1367,11 @@ class FinalDoor {
     this->y = y;
     this->doorType = doorType;
 
-    assets[0] = new Sprite("Images/NextDoor1.bmp", 0xffffffff);
-    assets[1] = new Sprite("Images/NextDoor2.bmp", 0xffffffff);
+    assets[0] = new Sprite("Images/NextDoor1.bmp", WHITE);
+    assets[1] = new Sprite("Images/NextDoor2.bmp", WHITE);
 
     currentFrame = assets[0];
-    needKeyAsset = new Sprite("Images/NeedKey.bmp", 0xffffffff);
+    needKeyAsset = new Sprite("Images/NeedKey.bmp", WHITE);
 
     counter++;
 
