@@ -30,6 +30,19 @@
 
 #define NEED_KEY_IMG "Images/NeedKey.bmp"
 
+Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
+  Sprite **assets;
+
+  for (int i = 0; i < total; i++) {
+    char *path = new char[30];
+    sprintf(path, ASSET_PATH_FORMAT, i + 1);
+
+    assets[i] = new Sprite(path, transparency);
+  }
+
+  return assets;
+}
+
 // Classes+++
 class Button { // Button: TappableArea
  public:
@@ -378,17 +391,15 @@ class Player { // Hero: Player
     leftWalkFrame = 0;
     climbFrame = 0;
 
-    for (int i = 0; i < 5; i++) {
-      rightWalk[i] = new Sprite(getAssetName(i + 1, 'R'), WHITE);
-      leftWalk[i] = new Sprite(getAssetName(i + 1, 'L'), WHITE);
-    }
+    rightWalk = loadAssets("Images/player/playerR%d.bmp", 5, WHITE);
+    leftWalk = loadAssets("Images/player/playerL%d.bmp", 5, WHITE);
+
+    rightJump = loadAssets("Images/player/playerJ%d.bmp", 3, WHITE);
+    leftJump = loadAssets("Images/player/playerJ%d.bmp", 3, WHITE);
+    ladderClimb = loadAssets("Images/player/playerU%d.bmp", 3, WHITE);
 
     for (int i = 0; i < 3; i++) {
-      rightJump[i] = new Sprite(getAssetName(i + 1, 'J'), WHITE);
-      leftJump[i] = new Sprite(getAssetName(i + 1, 'J'), WHITE);
       leftJump[i]->flipHorizontally();
-
-      ladderClimb[i] = new Sprite(getAssetName(i + 1, 'U'), WHITE);
     }
     currentFrame = rightWalk[0];
 
@@ -566,13 +577,6 @@ class Player { // Hero: Player
      return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
             gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
    }
-
-   char *getAssetName(int i, char mode) {
-     char *path = new char[30];
-     sprintf(path, "Images/player/player%c%d.bmp", mode, i);
-
-     return path;
-   }
 };
 
 class Fire {
@@ -592,9 +596,7 @@ class Fire {
     this->x = x;
     this->y = y;
 
-    assets[0] = new Sprite("Images/fire1.bmp", WHITE);
-    assets[1] = new Sprite("Images/fire2.bmp", WHITE);
-    assets[2] = new Sprite("Images/fire3.bmp", WHITE);
+    assets = loadAssets("Images/fire%d.bmp", 3, WHITE)
 
     currentSprite = assets[0];
     counter++;
@@ -636,8 +638,7 @@ class Door {
     this->x = x;
     this->y = y;
     
-    assets[0] = new Sprite("Images/Door1.bmp", WHITE);
-    assets[1] = new Sprite("Images/Door2.bmp", WHITE);
+    assets = loadAssets("Images/Door%d.bmp", 2, WHITE);
 
     currentFrame = assets[0];
     counter++;
@@ -724,9 +725,7 @@ class Bonus {
     this->x = x;
     this->y = y;
 
-    for (int i = 0; i < 10; i++) {
-      bonusAssets[i] = new Sprite(getAssetName(i + 1), WHITE);
-    }
+    bonusAssets = loadAssets("Images/bonus%d.bmp", 10, WHITE);
 
     currentFrame = bonusAssets[0];
     counter++;
@@ -754,13 +753,6 @@ class Bonus {
     }
     return timeSinceLastFrame > 50;
   }
-
-  char *getAssetName(int i) {
-    char *path = new char[30];
-    sprintf(path, "Images/bonus%d.bmp", i);
-
-    return path;
-  }
 };
 int Bonus::counter = 0;
 
@@ -777,12 +769,7 @@ class LockAngle { // Arrow: LockAngle
     this->x = x;
     this->y = y;
 
-    char *path = new char[30];
-    for (int i = 0; i < 40; i++) {
-      sprintf(path, "Images/c%d.bmp", i + 1);
-
-      arrowAssets[i] = new Sprite(path, WHITE);
-    }
+    arrowAssets = loadAssets("Images/c%d.bmp", 40, WHITE)
   }
 
   void draw(Param *p) {
@@ -854,7 +841,7 @@ class Inventory { // Inventar: Inventory
     for (int i = 0; i < 9; i++) {
       if (cells[i] == INV_EMPTY_CELL) continue;
 
-      sprintf(path, "Images/o%d.bmp", cells[i]);
+      sprintf(path, "Images/o%d.bmp", cells[i]); // TODO: store the object images in some type of hash
       cellSprites[i] = new Sprite(path, WHITE);
     }
   }
@@ -1028,7 +1015,7 @@ class Chest {
     for (int i = 0; i < chestRows * chestColumns; i++) {
       if (items[i] == INV_EMPTY_CELL) continue;
 
-      itemAssets[i] = new Sprite(getAssetPath(items[i]), WHITE);
+      itemAssets[i] = new Sprite(getAssetPath(items[i]), WHITE); // TODO: store object assets in some hash
     }
   }
 
@@ -1386,18 +1373,15 @@ class FinalDoor {
     this->y = y;
     this->doorType = doorType;
 
-    assets[0] = new Sprite("Images/NextDoor1.bmp", WHITE);
-    assets[1] = new Sprite("Images/NextDoor2.bmp", WHITE);
-    currentFrame = assets[0];
-
     needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
-
-    counter++;
+    assets = loadAssets("Images/NextDoor%d.bmp", 2, WHITE);
+    currentFrame = assets[0];
 
     if (doorType == 1) {
       assets[0]->flipHorizontally();
       assets[1]->flipHorizontally();
     }
+    counter++;
   }
 
   bool contains(int x, int y) {  // Touch: contains
