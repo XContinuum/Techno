@@ -226,8 +226,6 @@ Param *paramDraw;
 #include "Create_map.h"
 #include "Playing.h"
 
-DrawRectangle* dr;
-
 int timer;
 int timer1;
 int dt;
@@ -278,10 +276,6 @@ void initialization() {
     // Play+++
     char *tt = "score:0";                   // delete
     scoreText = new Text(8, 43, tt, 0xFF808E9B);  // score
-
-    // Rectangle+++
-    dr = new DrawRectangle(5, 5, 40, 50, 0xff000000, 0xffffffff);
-    // Rectangle---
 
     missions = new Sprite("Images/missions.bmp");
     pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
