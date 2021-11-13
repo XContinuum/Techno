@@ -727,7 +727,7 @@ class Bonus {
     this->x = x;
     this->y = y;
 
-    bonusAssets = loadAssets("Images/bonus%d.bmp", 10, WHITE);
+    bonusAssets = loadAssets("Images/bonus/bonus%d.bmp", 10, WHITE);
 
     currentFrame = bonusAssets[0];
     counter++;
