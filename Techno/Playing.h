@@ -159,18 +159,16 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   // Chest++++
-  for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->draw(paramDraw);
-  }
-
   player->draw(paramDraw);
 
   for (int i = 0; i < Chest::counter; i++) {
-    if (!chest[i]->show) continue;
+    chest[i]->draw(paramDraw);
+
+    if (!chest[i]->isOpen) continue;
 
     paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                     pauseOverlay);
-    chest[i]->drawC(paramDraw); // does not mutate parameter
+    chest[i]->drawOpenChest(paramDraw); // does not mutate parameter
   }
   // Chest---
 
@@ -676,7 +674,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
       bool bottomRight = chest[i]->contains(player->x + player->w, player->y + player->h - 1);
 
       if (bottomLeft || bottomRight)
-        chest[i]->show = true;
+        chest[i]->isOpen = true;
     }
   }
   // CHEST---

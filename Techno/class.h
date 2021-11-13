@@ -901,7 +901,7 @@ class Chest {
   int items[6 * 8]; // objects: items
 
   bool showToolTip = false; // expO: showToolTip
-  bool show = false; // show:
+  bool isOpen = false; // show: isOpen
   bool showChestContents = false; // showC: showChestContents
   bool move = false; // move:
 
@@ -1068,10 +1068,10 @@ class Chest {
   // ---------------------------------------------------------------
 
   void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
-    if (!show) return;
+    if (!isOpen) return;
 
     if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
-      show = false;
+      isOpen = false;
 
     if (lmb && circle->contains(clickedX, clickedY)) { // left click circle
       circle->show = true;
@@ -1124,7 +1124,7 @@ class Chest {
     if (showToolTip)
       p->draw(mX1, mY1, toolTip->width, toolTip->height, toolTip);
   }
-  void drawC(Param *p) { // drawC: drawChestInventory
+  void drawOpenChest(Param *p) { // drawC: drawOpenChest
     lock->draw(p);
 
     if (showChestContents) {
