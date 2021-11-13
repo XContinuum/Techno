@@ -1127,10 +1127,10 @@ class Chest {
   void drawOpenChest(Param *p) { // drawC: drawOpenChest
     lock->draw(p);
 
-    if (!isChestLocked) {
-      drawChestContents(p); // unlocked chest
-    } else {
+    if (isChestLocked) {
       locker->draw(p); // locked chest
+    } else {
+      drawChestContents(p); // unlocked chest
     }
 
     lockAngle->draw(p);
