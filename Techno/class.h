@@ -1,4 +1,5 @@
 ﻿#define WHITE 0xffffffff
+#define BLACK 0xff000000
 
 // Classes+++
 class Button { // Button: TappableArea
@@ -282,7 +283,6 @@ class Text {
   }
 
   void cutLetters() { // ChangeColor: changeColor: cutLetters
-    const int black = 0xff000000;
     const int w = 11, h = 11;
 
     for (int i = 0; i < 77; i++) {
@@ -295,10 +295,8 @@ class Text {
   }
 
   void changeColor(int color) {
-    const int black = 0xff000000;
-
     for (int i = 0; i < 77; i++) {
-      letters[i]->replaceColor(black, color);
+      letters[i]->replaceColor(BLACK, color);
     }
   }
 };
@@ -826,20 +824,18 @@ class Inventory { // Inventar: Inventory
   }
   void updateCellSprites() { // ChangeImages: updateCellSprites
     char *path = new char[30];
-    int num;
 
     for (int i = 0; i < 9; i++) {
-      if (cells[i] != INV_EMPTY_CELL) {
-        num = sprintf(path, "Images/o%d.bmp", cells[i]);
-
-        cellSprites[i] = new Sprite(path, WHITE);
-      }
+      if (cells[i] == INV_EMPTY_CELL) continue;
+      
+      sprintf(path, "Images/o%d.bmp", cells[i]);
+      cellSprites[i] = new Sprite(path, WHITE);
     }
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + inventorySprite->width && y >= this->y && y <= this->y + inventorySprite->height;
   }
-  int touchedCellIndex(int X, int Y) { // TouchObject: touchedCellIndex
+  int touchedCellIndex(int x, int y) { // TouchObject: touchedCellIndex
     // "Images/inventory/inventory_open.bmp"
     int x1 = 17;
     int x2 = 297;
@@ -848,9 +844,9 @@ class Inventory { // Inventar: Inventory
     int cellSize = 25;
     int cellSpace = 7;
 
-    int block = (X - x1) / (cellSize + cellSpace);
-    bool isWithinInventory = X >= x1 && X <= x2 && Y >= y1 && Y <= y2;
-    bool isWithinCell = X - x1 - block * (cellSize + cellSpace) <= cellSize;
+    int block = (x - x1) / (cellSize + cellSpace);
+    bool isWithinInventory = x >= x1 && x <= x2 && y >= y1 && y <= y2;
+    bool isWithinCell = x - x1 - block * (cellSize + cellSpace) <= cellSize;
 
     if (isWithinInventory && isWithinCell) return block;
 
