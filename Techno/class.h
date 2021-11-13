@@ -767,12 +767,12 @@ class Inventory { // Inventar: Inventory
  public:
   int cells[9]; // objects: cells
 
-  int x, y;
+  int x = 0, y = 0;
   int move;
-  int check;
+  int selectedCell; // check: selectedCell
 
-  bool show;
-  bool showTooltip; // exp: showTooltip
+  bool show = false;
+  bool showTooltip = false; // exp: showTooltip
 
  private:
   Sprite *toolTip; // InventarExp: toolTip
@@ -782,10 +782,7 @@ class Inventory { // Inventar: Inventory
   Sprite *cellSprites[9]; // ImObjects: cellSprites
 
  public:
-  Inventory() : showTooltip(false), move(false) {
-    x = 0;
-    y = 0;
-
+  Inventory() {
     inventorySprite = new Sprite("Images/inventory/inventory.bmp", WHITE);
     openInventory = new Sprite("Images/inventory/inventory_open.bmp", WHITE);
     toolTip = new Sprite("Images/inventory/tool_tip.bmp", WHITE);
@@ -827,7 +824,7 @@ class Inventory { // Inventar: Inventory
 
     for (int i = 0; i < 9; i++) {
       if (cells[i] == INV_EMPTY_CELL) continue;
-      
+
       sprintf(path, "Images/o%d.bmp", cells[i]);
       cellSprites[i] = new Sprite(path, WHITE);
     }

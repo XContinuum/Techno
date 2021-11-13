@@ -706,17 +706,18 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   if (!didClickLeftButton) return;
   if (!inventory->containsInOpenInventory(clickedX, clickedY) return;
 
+  // left clicked open inventory
   int inventoryCell = inventory->touchedCellIndex(clickedX, clickedY);
   
   if (inventory->move) {
-    if (inventoryCell != -1 && inventory->check != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
+    if (inventoryCell != -1 && inventory->selectedCell != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
       inventory->cells[inventoryCell] = selectedObjectId;
       inventory->updateCellSprites();
       selectedObjectId = INV_EMPTY_CELL;
     }
     inventory->move = false;
   } else {
-    inventory->check = inventoryCell;
+    inventory->selectedCell = inventoryCell;
 
     if (inventoryCell != -1) {
       inventory->move = true;
