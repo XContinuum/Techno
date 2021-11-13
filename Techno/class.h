@@ -171,8 +171,6 @@ class Text {
   Sprite *lettersColor[77];
 
   int length; // size: length
-  
-  int *encode;
   char *szLetters;
 
  public:
@@ -190,21 +188,22 @@ class Text {
 
   void draw(Param *p) {
     for (int i = 0; i < length; i++) {
-      int n = encode[i];
+      int index = convert(string[i]);
+      
       int distance = 0;
-
       if (szLetters[i] == 'U') distance = 1;
       if (szLetters[i] == 'L') distance = 5;
       if (szLetters[i] == 'N') distance = 5;
 
-      p->draw(x + i * letters[i]->width - distance * i, y, letters[n]->width,
-              letters[n]->height, letters[n]);
+      p->draw(x + i * letters[i]->width - distance * i, y, letters[index]->width,
+              letters[index]->height, letters[index]);
     }
   }
 
   void draw(Param *p, int *pos, int size) {
     for (int i = 0; i < length; i++) {
       int index = convert(string[i]);
+
       Sprite *letter = letters[index];
       if (isValueInArray(i, pos, size)) {
           letter = lettersColor[index];
@@ -231,11 +230,9 @@ class Text {
     string = str; // TODO: investigate if I should free memory for previous string
 
     length = calculateLength(str);
-    encode = new int[length];
     szLetters = new char[length];
 
     for (int i = 0; i < length; i++) {
-      encode[i] = convert(string[i]);
       szLetters[i] = something(string[i]);
     }
   }
