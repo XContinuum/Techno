@@ -771,7 +771,7 @@ class LockAngle { // Arrow: LockAngle
     this->x = x;
     this->y = y;
 
-    arrowAssets = loadAssets("Images/c%d.bmp", 40, WHITE)
+    arrowAssets = loadAssets("Images/lock_angle/c%d.bmp", 40, WHITE);
   }
 
   void draw(Param *p) {
