@@ -902,7 +902,7 @@ class Chest {
 
   bool showToolTip = false; // expO: showToolTip
   bool isOpen = false; // show: isOpen
-  bool isChestUnlocked = false; // showC: showChestContents: isChestUnlocked
+  bool isChestLocked = true; // showC: showChestContents: isChestUnlocked: isChestLocked
   bool move = false; // move:
 
   static bool iLmb; // iLmb:
@@ -1104,7 +1104,7 @@ class Chest {
       Timer();
 
       if (dt > 2000) { // shows success checkmark for 2 seconds then dissapears
-        isChestUnlocked = true;
+        isChestLocked = false;
         correctCombination = false;
 
         dt = 0;
@@ -1127,7 +1127,7 @@ class Chest {
   void drawOpenChest(Param *p) { // drawC: drawOpenChest
     lock->draw(p);
 
-    if (isChestUnlocked) {
+    if (!isChestLocked) {
       drawChestContents(p); // unlocked chest
     } else {
       locker->draw(p); // locked chest
