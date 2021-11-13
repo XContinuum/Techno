@@ -170,7 +170,7 @@ class Text {
   Sprite *letters[77];
   Sprite *lettersColor[77];
 
-  int size; // size: length
+  int length; // size: length
   int w = 11, h = 11; 
   int *encode;
 
@@ -187,14 +187,14 @@ class Text {
     changeColor(color);
 
     // Conv+++
-    size = 0;
-    while (string[size] != '\0') size++;
+    length = 0;
+    while (string[length] != '\0') length++;
 
-    szLetters = new char[size];
-    szLetters[size] = '\0';
+    szLetters = new char[length];
+    szLetters[length] = '\0';
 
-    encode = new int[size];
-    for (int i = 0; i < size; i++) {
+    encode = new int[length];
+    for (int i = 0; i < length; i++) {
       encode[i] = convertion(string[i]);
       szLetters[i] = something(string[i]);
     }
@@ -207,7 +207,7 @@ class Text {
     int n = 0;
     int distance = 0;
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < length; i++) {
       n = encode[i];
 
       if (szLetters[i] == 'U') distance = 1;
@@ -226,7 +226,7 @@ class Text {
     int distance = 0;
     Sprite *temp;
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < length; i++) {
       n = encode[i];
       temp = letters[n];
 
@@ -248,16 +248,16 @@ class Text {
 
   void changeText(char *str) {
     string = str;
-    size = 0;
+    length = 0;
 
-    while (string[size] != '\0') size++;
+    while (string[length] != '\0') length++;
 
-    encode = new int[size];
+    encode = new int[length];
 
-    szLetters = new char[size];
-    szLetters[size] = '\0';
+    szLetters = new char[length];
+    szLetters[length] = '\0';
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < length; i++) {
       encode[i] = convertion(string[i]);
       szLetters[i] = something(string[i]);
     }
