@@ -171,9 +171,8 @@ class Text {
   Sprite *lettersColor[77];
 
   int length; // size: length
-  int w = 11, h = 11; 
+  
   int *encode;
-
   char *szLetters;
 
  public:
@@ -186,7 +185,7 @@ class Text {
     changeText(str);
   }
   Text(char *str, int color, int x, int y, int extraColor): Text(str, color, x, y) {
-    addColor(extraColor);
+    changeColor(extraColor);
   }
 
   void draw(Param *p) {
@@ -203,27 +202,29 @@ class Text {
     }
   }
 
-  void draw(Param *p, int *pos, int s) {
-    Sprite *temp;
-
+  void draw(Param *p, int *pos, int size) {
     for (int i = 0; i < length; i++) {
-      int n = encode[i];
-      temp = letters[n];
-
-      //++++
-      for (int j = 0; j < s; j++)
-        if (i == pos[j]) temp = lettersColor[n];
-      //----
-
+      int index = convert(string[i]);
+      Sprite *letter = letters[index];
+      if (isValueInArray(i, pos, size)) {
+          letter = lettersColor[index];
+      }
+      
       int distance = 0;
-
       if (szLetters[i] == 'U') distance = 1;
       if (szLetters[i] == 'L') distance = 5;
       if (szLetters[i] == 'N') distance = 5;
 
-      p->draw(x + i * temp->width - distance * i, y, temp->width, temp->height,
-              temp);
+      p->draw(x + i * letter->width - distance * i, y, letter->width, letter->height,
+              letter);
     }
+  }
+  bool isValueInArray(int value, int* arr, int size) {
+      for (int i = 0; i< size; i++) {
+          if (arr[i] == value)
+            return true;
+      }
+      return false;
   }
 
   void changeText(char *str) {
@@ -254,7 +255,7 @@ class Text {
 
     return 'O';
   }
-  int convert(char c) { // convertion: convert
+  int convert(char c) { // convertion: convert: getIndex
     int code = getCode(c);
 
     if (code != NULL) return code;
@@ -295,19 +296,16 @@ class Text {
 
   void changeColor(int color) { // ChangeColor: changeColor
     const int black = 0xff000000;
+    int w = 11, h = 11;
 
     for (int i = 0; i < 77; i++) {
       int column = i % 26;
       int row = (i - column) / 26;
-      
+
       letters[i] = new Sprite("Images/Text.bmp", 0xffffffff); // TODO: make this more efficient
       letters[i]->cut(w * column, h * row, w, h);
-      letters[i]->replaceColor(blaci, color);
+      letters[i]->replaceColor(black, color);
     }
-  }
-
-  void addColor(int color) {
-    changeColor(color);
   }
 };
 
