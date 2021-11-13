@@ -43,6 +43,8 @@ Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
   return assets;
 }
 
+auto item_assets = loadAssets("Images/o%d.bmp", 2, WHITE);
+
 // Classes+++
 class Button { // Button: TappableArea
  public:
@@ -596,7 +598,7 @@ class Fire {
     this->x = x;
     this->y = y;
 
-    assets = loadAssets("Images/fire%d.bmp", 3, WHITE)
+    assets = loadAssets("Images/fire%d.bmp", 3, WHITE);
 
     currentSprite = assets[0];
     counter++;
@@ -836,13 +838,10 @@ class Inventory { // Inventar: Inventory
       p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   void updateCellSprites() { // ChangeImages: updateCellSprites
-    char *path = new char[30];
-
     for (int i = 0; i < 9; i++) {
       if (cells[i] == INV_EMPTY_CELL) continue;
 
-      sprintf(path, "Images/o%d.bmp", cells[i]); // TODO: store the object images in some type of hash
-      cellSprites[i] = new Sprite(path, WHITE);
+      cellSprites[i] = item_assets[cells[i]];
     }
   }
   bool contains(int x, int y) { // Touch: contains
@@ -1015,7 +1014,7 @@ class Chest {
     for (int i = 0; i < chestRows * chestColumns; i++) {
       if (items[i] == INV_EMPTY_CELL) continue;
 
-      itemAssets[i] = new Sprite(getAssetPath(items[i]), WHITE); // TODO: store object assets in some hash
+      itemAssets[i] = item_assets[items[i]];
     }
   }
 
@@ -1219,13 +1218,6 @@ class Chest {
        sprintf(showText, "%d %d %d", num1, num2, num3);
 
      codeView->changeText(showText);
-   }
-
-   char *getAssetPath(int i) {
-     char *path = new char[30];
-     sprintf(path, "Images/o%d.bmp", i);
-
-     return path;
    }
 
    bool didClickCell(int x, int y) { // Makes sure clicked cell and not space between
