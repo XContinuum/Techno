@@ -46,7 +46,7 @@ Door* doorEntities[10]; // d: doorEntities
 Book* bookEntities[10]; // b: bookEntities
 Bonus* bonusEntities[10]; // bons: bonusEntities
 Chest* chest[10];
-BlockMoves* movingStairBlocks[5]; // bm: movingStairBlocks
+MovingBlock* movingStairBlocks[5]; // bm: movingStairBlocks
 PressurePlate* pressurePlate[10]; // bt: pressurePlate
 FinalDoor* finalDoor[10]; // Fd: finalDoor
 // Objects in the game---
@@ -153,7 +153,7 @@ void drawEntities(int cursorX, int cursorY) {
         bonusEntities[i]->currentFrame->height, bonusEntities[i]->currentFrame);
   }
 
-  for (int i = 0; i < BlockMoves::counter; i++) {
+  for (int i = 0; i < MovingBlock::counter; i++) {
     paramDraw->draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->Image->width,
                     movingStairBlocks[i]->Image->height, movingStairBlocks[i]->Image);
   }
@@ -382,7 +382,7 @@ void loadDoors() {
           int pi = 0;
           if (movingBlockCount == 0) pi = (i - 1) * blockSize;
 
-          movingStairBlocks[movingBlockCount] = new BlockMoves(j * blockSize, i * blockSize, pi);
+          movingStairBlocks[movingBlockCount] = new MovingBlock(j * blockSize, i * blockSize, pi);
 
           movingBlockCount++;
           break;
@@ -476,7 +476,7 @@ void clearClassInformation() {
 
   Chest::iLmb = false;
   //------
-  BlockMoves::counter = 0;
+  MovingBlock::counter = 0;
   PressurePlate::counter = 0;
   FinalDoor::counter = 0;
 }
@@ -768,7 +768,7 @@ void showChestToolTip(int i, int mouseX, int mouseY) {
 void updateFrames(int clickedX, int clickedY) {
   // Global: fireEntities, bonusEntities, doorEntities, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
   // External: didClickLeftButton
-  // Classes: Fire, Bonus, Door, FinalDoor, PressurePlate, BlockMoves
+  // Classes: Fire, Bonus, Door, FinalDoor, PressurePlate, MovingBlock
 
   // FIRE---
   // update frame every 50ms
@@ -813,16 +813,16 @@ void updateFrames(int clickedX, int clickedY) {
 
   for (int i = 0; i < PressurePlate::counter; i++) {
     if (pressurePlate[i]->contains(player->x, player->y + player->h - 1))
-      BlockMoves::UP = true;
+      MovingBlock::UP = true;
   }
 
   // Block Moves+++
-  BlockMoves::Timer();
+  MovingBlock::Timer();
 
-  if (BlockMoves::dt > 5 && BlockMoves::UP) {
+  if (MovingBlock::dt > 5 && MovingBlock::UP) {
     bool b = true;
 
-    for (int i = 0; i < BlockMoves::counter; i++) {
+    for (int i = 0; i < MovingBlock::counter; i++) {
       bool tmp = movingStairBlocks[i]->BlockMoveUp(gameMap); // mutates parameter
 
       if (!tmp) b = false;
@@ -833,13 +833,13 @@ void updateFrames(int clickedX, int clickedY) {
     /// F   T  F
     /// F   F  F
 
-    if (b) BlockMoves::timer1 = 0;
+    if (b) MovingBlock::timer1 = 0;
   }
 
-  if (BlockMoves::dt > 1000 * 10) BlockMoves::UP = false;
+  if (MovingBlock::dt > 1000 * 10) MovingBlock::UP = false;
 
-  if (BlockMoves::dt > 5 && !BlockMoves::UP) {
-    for (int i = 0; i < BlockMoves::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap); // mutates parameter
+  if (MovingBlock::dt > 5 && !MovingBlock::UP) {
+    for (int i = 0; i < MovingBlock::counter; i++) movingStairBlocks[i]->BlockMoveDown(gameMap); // mutates parameter
   }
   // Block Moves---
 }

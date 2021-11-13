@@ -1274,7 +1274,7 @@ class PressurePlate { // ButtonON: PressurePlate
 };
 int PressurePlate::counter = 0;
 
-class BlockMoves {
+class MovingBlock { // BlockMoves: MovingBlock
  public:
   int x, y;
   int pI;
@@ -1291,7 +1291,7 @@ class BlockMoves {
   int initialX, initialY; // pX, pY
 
  public:
-  BlockMoves(int x, int y, int pi) {
+  MovingBlock(int x, int y, int pi) {
     this->x = x;
     this->y = y - 1;
     this->initialX = x;
@@ -1341,11 +1341,11 @@ class BlockMoves {
     dt = timer - timer1;
   }
 };
-bool BlockMoves::UP = false;
-int BlockMoves::counter = 0;
-int BlockMoves::dt = 0;
-int BlockMoves::timer = 0;
-int BlockMoves::timer1 = 0;
+bool MovingBlock::UP = false;
+int MovingBlock::counter = 0;
+int MovingBlock::dt = 0;
+int MovingBlock::timer = 0;
+int MovingBlock::timer1 = 0;
 
 class FinalDoor {
  public:
