@@ -182,14 +182,9 @@ class Text {
   void draw(Param *p) {
     for (int i = 0; i < length; i++) {
       int index = convert(string[i]);
-      
-      char category = letterCategory(string[i]);
-      int distance = 0;
-      if (category== 'U') distance = 1;
-      if (category== 'L') distance = 5;
-      if (category== 'N') distance = 5;
+      int offset = charOffset(string[i]);
 
-      p->draw(x + i * letters[i]->width - distance * i, y, letters[index]->width,
+      p->draw(x + i * (letters[i]->width - offset), y, letters[index]->width,
               letters[index]->height, letters[index]);
     }
   }
@@ -197,36 +192,40 @@ class Text {
   void draw(Param *p, int *pos, int size, int highlightColor) {
     for (int i = 0; i < length; i++) {
       int index = convert(string[i]);
+      int offset = charOffset(string[i]);
 
       Sprite *letter = letters[index];
       if (isValueInArray(i, pos, size)) {
         letter->replaceColor(color, highlightColor);
       }
-      
-      char category = letterCategory(string[i]);
-      int distance = 0;
-      if (category == 'U') distance = 1;
-      if (category == 'L') distance = 5;
-      if (category == 'N') distance = 5;
 
-      p->draw(x + i * letter->width - distance * i, y, letter->width, letter->height,
-              letter);
+      p->draw(x + i * (letter->width - offset), y, letter->width,
+              letter->height, letter);
     }
   }
-  bool isValueInArray(int value, int* arr, int size) {
-      for (int i = 0; i< size; i++) {
-          if (arr[i] == value)
-            return true;
-      }
-      return false;
-  }
-
   void changeText(char *str) {
     string = str; // TODO: investigate if I should free memory for previous string
     length = calculateLength(str);
   }
 
  private:
+  bool isValueInArray(int value, int *arr, int size) {
+    for (int i = 0; i < size; i++) {
+      if (arr[i] == value) return true;
+    }
+    return false;
+  }
+
+  int charOffset(char c) {
+      char category = letterCategory(c);
+
+      if (category == 'U') return 1;
+      if (category == 'L') return 5;
+      if (category == 'N') return 5;
+
+      return 0;
+  }
+
   int letterCategory(char c) {
     int ASCII = static_cast<int>(c);
     if (getCode(c) != NULL) {
