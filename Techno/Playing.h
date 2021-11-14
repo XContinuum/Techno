@@ -642,7 +642,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   }
   // Chest---
 
-  updateFrames(clickedX, clickedY);
+  didTouchPressurePlate();
+  updateFrames();
   doorInteractions(clickedX, clickedY);
 
   // BOOKS+++
@@ -749,10 +750,9 @@ void chestMoveEvents(int clickedX, int clickedY) {
     }
   }
 }
-void updateFrames(int clickedX, int clickedY) {
-  // Global: fireEntities, bonusEntities, doorEntities, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
-  // External: didClickRightButton
-  // Classes: Fire, Bonus, Door, FinalDoor, PressurePlate, MovingBlock
+void updateFrames() {
+  // Global: fireEntities, bonusEntities, gameMap, movingStairBlocks
+  // Classes: Fire, Bonus, MovingBlock
 
   // Fire
   for (int i = 0; i < Fire::counter; i++) {
@@ -762,11 +762,6 @@ void updateFrames(int clickedX, int clickedY) {
   // Bonus
   for (int i = 0; i < Bonus::counter; i++) {
     bonusEntities[i]->udpateFrame();
-  }
-
-  for (int i = 0; i < PressurePlate::counter; i++) {
-    if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
-      shouldMoveStairsUp = true;
   }
 
   // Block Moves
@@ -781,28 +776,34 @@ void updateFrames(int clickedX, int clickedY) {
   }
 }
 
+void didTouchPressurePlate() {
+  for (int i = 0; i < PressurePlate::counter; i++) {
+    if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
+      shouldMoveStairsUp = true;
+  }
+}
+
 void doorInteractions(int clickedX, int clickedY) {
-  if (didClickRightButton) {
-    // Door
-    for (int i = 0; i < Door::counter; i++) {
-      if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
+  if (!didClickRightButton) return;
+  // Door
+  for (int i = 0; i < Door::counter; i++) {
+    if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
 
-      updateFrame(gameMap);
-    }
+    updateFrame(gameMap);
+  }
 
-    // FinalDoor
-    bool isHoldingKey = inventory->cells[0] == INV_KEY;
+  // FinalDoor
+  bool isHoldingKey = inventory->cells[0] == INV_KEY;
 
-    for (int i = 0; i < FinalDoor::counter; i++) {
-      if (finalDoor[i]->contains(clickedX, clickedY)) {
-        if (isHoldingKey) {
-          finalDoor[i]->updateFrame(gameMap);
-        } else {
-          finalDoor[i]->needsKey = true;
-        }
+  for (int i = 0; i < FinalDoor::counter; i++) {
+    if (finalDoor[i]->contains(clickedX, clickedY)) {
+      if (isHoldingKey) {
+        finalDoor[i]->updateFrame(gameMap);
       } else {
-        finalDoor[i]->needsKey = false;
+        finalDoor[i]->needsKey = true;
       }
+    } else {
+      finalDoor[i]->needsKey = false;
     }
   }
 }
