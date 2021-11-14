@@ -104,7 +104,7 @@ class NeoSprite : public Sprite {
   NeoSprite(char *name) : Sprite(name) {}
   NeoSprite(char *name, int transparentColor) : Sprite(name, transparentColor) {}
 
-  void AddImage(int x, int y, Sprite *sprite) { // AddImage: addImage
+  void addImage(int x, int y, Sprite *sprite) { // AddImage: addImage
     for (int i = 0; i < sprite->height; i++) {
       for (int j = 0; j < sprite->width; j++) {
         int index = j + i * sprite->width;
