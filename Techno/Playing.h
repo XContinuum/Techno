@@ -15,20 +15,20 @@ Button* backButton; // Back: backButton
 // Game+++
 int gameMap[30][40]; // MatMap: gameMap
 int level = 1;
-int blockSize = 20;
+const int blockSize = 20;
 
-int AIR_ID = 0;
-int LADDER_ID = 3;
-int MOVING_BLOCK_ID = 6;
-int DOOR_ID = 4;
-int CLOSED_DOOR_ID = 5; // I think so?
-int FINAL_DOOR_ID = 8;
-int CLOSED_FINAL_DOOR_ID = 9; // Final open door?
+#define AIR_ID 0;
+#define LADDER_ID 3;
+#define MOVING_BLOCK_ID 6;
+#define DOOR_ID 4;
+#define CLOSED_DOOR_ID 5; // I think so?
+#define FINAL_DOOR_ID 8;
+#define CLOSED_FINAL_DOOR_ID 9; // Final open door?
 
 // Inventory objects
-int INV_EMPTY_CELL = 0;
-int INV_BOOK = 1; // Images/o1.bmp
-int INV_KEY = 2; // Images/o2.bmp
+#define INV_EMPTY_CELL 0;
+#define INV_BOOK 1; // Images/o1.bmp
+#define INV_KEY 2; // Images/o2.bmp
 
 bool isBookMenuOpen = false; // stopB: isBookMenuOpen
 bool isPaused = false; // stop: isPaused

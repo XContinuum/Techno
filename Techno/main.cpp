@@ -226,7 +226,7 @@ Param *paramDraw;
 #include "Create_map.h"
 #include "Playing.h"
 
-int timer;
+int timer; // TODO: remove time
 int timer1;
 int dt;
 Button* lock;

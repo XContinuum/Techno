@@ -1250,7 +1250,7 @@ class PressurePlate { // ButtonON: PressurePlate
   static int counter;
 
  private:
-  Sprite *asset; // Image: asset
+  Sprite *asset; // Image: asset, should this be drawn?
 
  public:
   PressurePlate(int x, int y) {
@@ -1271,12 +1271,10 @@ class MovingBlock { // BlockMoves: MovingBlock
  public:
   int x, y;
   int pI;
-
-  Sprite *asset; // Image: asset
-
   static int counter;
 
  private:
+  Sprite *asset; // Image: asset
   int initialX, initialY; // pX, pY
   int startTime;
 
