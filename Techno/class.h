@@ -45,7 +45,6 @@ Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
 
 auto item_assets = loadAssets("Images/o%d.bmp", 2, WHITE);
 
-// Classes+++
 class Button { // Button: TappableArea
  public:
   int x, y;
@@ -90,7 +89,7 @@ class NeoElement : public Sprite, public Button {
   NeoElement(char *name, int trColor)
       : Sprite(name, trColor), Button(name, trColor) {}
 
-  void ChangeColor(int from, int to) {
+  void changeColor(int from, int to) { // ChangeColor: changeColor
     for (int i = 0; i < height; ++i)
       for (int j = 0; j < width; ++j)
         if (Button::image->img[j + i * width] == from)
