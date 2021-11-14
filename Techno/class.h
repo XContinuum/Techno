@@ -119,7 +119,7 @@ class NeoSprite : public Sprite {
       }
     }
   }
-  void AddImage(int x, int y, Sprite *sprite, int i) { // AddImage: addImage
+  void addImage(int x, int y, Sprite *sprite, int i) { // AddImage: addImage
     for (int i = 0; i < sprite->height; i++) {
       for (int j = 0; j < sprite->width; j++) {
         if (j + x > width) continue;
