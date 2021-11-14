@@ -109,14 +109,11 @@ void drawEntities(int cursorX, int cursorY) {
   for (int i = 0; i < Bonus::counter; i++) {
     if (!bonusEntities[i]->show) continue;
 
-    paramDraw->draw(
-        bonusEntities[i]->x, bonusEntities[i]->y, bonusEntities[i]->currentFrame->width,
-        bonusEntities[i]->currentFrame->height, bonusEntities[i]->currentFrame);
+    bonusEntities[i]->draw(paramDraw);
   }
 
   for (int i = 0; i < MovingBlock::counter; i++) {
-    paramDraw->draw(movingStairBlocks[i]->x, movingStairBlocks[i]->y, movingStairBlocks[i]->asset->width,
-                    movingStairBlocks[i]->asset->height, movingStairBlocks[i]->asset);
+    movingStairBlocks[i]->draw(paramDraw);
   }
 
   // Chest++++
@@ -145,24 +142,18 @@ void drawEntities(int cursorX, int cursorY) {
                       pauseOverlay);
     }
 
-    paramDraw->draw(bookEntities[i]->x, bookEntities[i]->y,
-                    bookEntities[i]->bookAsset->width, bookEntities[i]->bookAsset->height,
-                    bookEntities[i]->bookAsset);
+    bookEntities[i]->draw(paramDraw);
   }
   // Book---
 
   updateFrames();
 
-  // Cursor+++
+  // Cursor
   if (selectedObjectId != INV_EMPTY_CELL) {
-    char* path = new char[20];
-    sprintf(path, "Images/o%d.bmp", selectedObjectId);
-
-    Sprite* cursorIcon = new Sprite(path, 0xffffffff);
+    Sprite* cursorIcon = item_assets[selectedObjectId];
 
     paramDraw->draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
   }
-  // Cursor---
 }
 void updateFrames() {
   // Global: fireEntities, bonusEntities, gameMap, movingStairBlocks

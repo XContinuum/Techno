@@ -692,6 +692,10 @@ class Book {
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + bookAsset->width && y >= this->y && this->y <= y + bookAsset->height;
   }
+
+  void draw(Param *p) {
+    p->draw(x, y, bookAsset->width, bookAsset->height, bookAsset);
+  }
 };
 int Book::counter = 0;
 
@@ -729,6 +733,10 @@ class Bonus {
   bool contains(int x, int y) {  // Touch: contains
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y &&
            y <= this->y + currentFrame->height;
+  }
+
+  void draw(Param *p) {
+    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
  private:
@@ -1305,6 +1313,10 @@ class MovingBlock { // BlockMoves: MovingBlock
     if (y == initialY) {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
     }
+  }
+
+  void draw(Param *p) {
+    p->draw(x, y, asset->width, asset->height, asset);
   }
 
  private:
