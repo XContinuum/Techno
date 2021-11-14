@@ -201,10 +201,10 @@ struct Point { // Tochka: Point
 // Classes---
 class Text {
  public:
-  char *string;
   int x, y;
 
  private:
+  char *str; // string: str
   Sprite *letters[77];
   int length; // size: length
 
@@ -220,8 +220,8 @@ class Text {
 
   void draw(Param *p) {
     for (int i = 0; i < length; i++) {
-      int index = convert(string[i]);
-      int offset = charOffset(string[i]);
+      int index = convert(str[i]);
+      int offset = charOffset(str[i]);
 
       p->draw(x + i * (letters[i]->width - offset), y, letters[index]->width,
               letters[index]->height, letters[index]);
@@ -230,8 +230,8 @@ class Text {
 
   void draw(Param *p, int *pos, int size, int highlightColor) {
     for (int i = 0; i < length; i++) {
-      int index = convert(string[i]);
-      int offset = charOffset(string[i]);
+      int index = convert(str[i]);
+      int offset = charOffset(str[i]);
 
       Sprite *letter = letters[index];
       if (isValueInArray(i, pos, size)) {
@@ -243,7 +243,7 @@ class Text {
     }
   }
   void changeText(char *str) {
-    string = str; // TODO: investigate if I should free memory for previous string
+    this->str = str; // TODO: investigate if I should free memory for previous string
     length = calculateLength(str);
   }
 
