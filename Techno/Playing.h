@@ -78,14 +78,8 @@ bool shouldMoveStairsUp = false;
 // drawScene function
 // ---------------------------------------------------------------------------------
 void drawScene(int cursorX, int cursorY) { // ★★★
-  // Global: missionMode, isPaused, scoreText
-  //
+  // Global: isPaused, scoreText
   // External: paramDraw
-  if (missionMode) {
-    drawMission();
-    return;
-  }
-  
   drawEntities(cursorX, cursorY);
 
   if (isPaused) {
@@ -94,7 +88,7 @@ void drawScene(int cursorX, int cursorY) { // ★★★
 
   scoreText->draw(paramDraw);
 }
-void drawMission() {
+void drawMission() { // ★★★
   // Global: missions, missionButton, missionLock, backButton
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
