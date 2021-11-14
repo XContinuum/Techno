@@ -357,7 +357,7 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
   }
 }
 void setMap() {
-  map = new Sprite(mapBMPfilename, 0xffffffff);
+  map = new Sprite(mapBMPfilename, WHITE);
 
   player->duplicateMap(gameMap);
 }
@@ -692,7 +692,7 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   int inventoryCell = inventory->touchedCellIndex(clickedX, clickedY);
   
   if (inventory->move) {
-    if (inventoryCell != -1 && inventory->selectedCell != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
+    if (inventoryCell != NULL && inventory->selectedCell != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
       inventory->cells[inventoryCell] = selectedObjectId;
       inventory->updateCellSprites();
       selectedObjectId = INV_EMPTY_CELL;
@@ -701,7 +701,7 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   } else {
     inventory->selectedCell = inventoryCell;
 
-    if (inventoryCell != -1) {
+    if (inventoryCell != NULL) {
       inventory->move = true;
       selectedObjectId = inventory->cells[inventoryCell];
       inventory->cells[inventoryCell] = INV_EMPTY_CELL;

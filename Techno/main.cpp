@@ -276,7 +276,7 @@ void initialization() {
 
     // Play+++
     char *tt = "score:0";                   // delete
-    scoreText = new Text(8, 43, tt, 0xFF808E9B);  // score
+    scoreText = new Text(8, 43, tt, DARK_GRAYISH_BLUE);  // score
 
     missions = new Sprite("Images/missions.bmp");
     pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
@@ -286,18 +286,18 @@ void initialization() {
     missionButton[0]->y = 63;
     missionButton[0]->show = false;
 
-    pauseOverlay = new Sprite("Images/pause.bmp", 0xffffffff);
-    missionLock = new Sprite("Images/blocked.bmp", 0xffffffff);
+    pauseOverlay = new Sprite("Images/pause.bmp", WHITE);
+    missionLock = new Sprite("Images/blocked.bmp", WHITE);
 
     // Locker+++
-    lock = new Button("Images/chest/code.bmp", 0xffffffff);
+    lock = new Button("Images/chest/code.bmp", WHITE);
     lock->x = (screenPixelWidth - lock->w) / 2;
     lock->y = (screenPixelHeight - lock->h) / 2;
     lock->show = true;
 
     // Locker---
 
-    backButton = new Button("Images/back.bmp", 0xffffffff);
+    backButton = new Button("Images/back.bmp", WHITE);
     backButton->x = 15;
     backButton->y = 554;
     backButton->show = false;

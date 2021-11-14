@@ -3,6 +3,8 @@
 #define VERY_DARK_GRAY 0xff3d3d3d
 #define VIVID_RED 0xffed1c24
 #define DARK_GRAYISH_BLUE 0xff808e9b
+#define VERY_LIGHT_GRAY 0xffe5e5e5
+#define DARK_GRAY 0xff7f7f7f
 
 #define CHARACTERS_ASSET "Images/Text.bmp"
 
@@ -856,7 +858,7 @@ class Inventory { // Inventar: Inventory
 
     if (isWithinInventory && isWithinCell) return block;
 
-    return -1;
+    return NULL;
   }
 
   bool containsInOpenInventory(int x, int y) { // TouchInvShow: containsInOpenInventory
