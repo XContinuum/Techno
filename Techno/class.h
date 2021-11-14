@@ -105,13 +105,16 @@ class NeoSprite : public Sprite {
   NeoSprite(char *name, int transparentColor) : Sprite(name, transparentColor) {}
 
   void AddImage(int x, int y, Sprite *sprite) { // AddImage: addImage
-    for (int i = y; i < y + sprite->height; i++) {
-      for (int j = x; j < x + sprite->width; j++) {
-        int index = (j - x) + (i - y) * sprite->width;
+    for (int i = 0; i < sprite->height; i++) {
+      for (int j = 0; j < sprite->width; j++) {
+        int index = j + i * sprite->width;
         int pixel = sprite->img[index];
-
-        if (j <= width && i <= height && pixel != TransparentColor) {
-          img[j + i * width] = sprite->img[index];
+        
+        if (pixel == TransparentColor) continue;
+        
+        if (j + x <= width && i + y <= height) {
+          int currentPos = (j + x) + (i + y) * width;
+          img[currentPos] = sprite->img[index];
         }
       }
     }
