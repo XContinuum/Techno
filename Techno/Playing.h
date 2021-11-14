@@ -728,7 +728,7 @@ void chestMoveEvents(int clickedX, int clickedY) {
     int selectedChestCell = chest[i]->selectedChestCell(clickedX, clickedY);
 
     if (chest[i]->move) {
-      if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
+      if (selectedChestCell != NULL && chest[i]->check != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
         chest[i]->items[selectedChestCell] = selectedObjectId;
         chest[i]->updateChestCells();
         selectedObjectId = i;
@@ -739,7 +739,7 @@ void chestMoveEvents(int clickedX, int clickedY) {
     } else {
       chest[i]->check = selectedChestCell;
 
-      if (selectedChestCell != -1) {
+      if (selectedChestCell != NULL) {
         chest[i]->move = true;
         inventory->move = true;
         selectedObjectId = chest[i]->items[selectedChestCell];

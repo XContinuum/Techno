@@ -942,8 +942,8 @@ class Chest {
   }
 
   int selectedChestCell(int x, int y) { // TouchObject: selectedChestCell
-    if (!this->isWithinInventory(x, y)) return -1; 
-    if (!didClickCell(x, y))) return -1;
+    if (!this->isWithinInventory(x, y)) return NULL; 
+    if (!didClickCell(x, y))) return NULL;
 
     std::tie(blockX, blockY) = findCell(x, y);
     return blockY * chestColumns + blockX;
