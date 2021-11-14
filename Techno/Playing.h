@@ -411,12 +411,16 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
     loadNextLevel();
   }
 
+  keyboardEvents();
+  
   if (!isBookMenuOpen && !isPaused) {
     interactiveObjects(cursorX, cursorY, clickedX, clickedY);
     playerEvents();
   }
 
-  menuPause(cursorX, cursorY, clickedX, clickedY);
+  if (isPaused) {
+    pauseMenuInteractions(cursorX, cursorY, clickedX, clickedY);
+  }
 }
 void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
@@ -506,6 +510,25 @@ void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Player class
   player->duplicateMap(gameMap); // does not mutate parameter
+
+  if (player->shouldUpdateVerticalPosition()) {
+    player->jump();
+    player->gravity();
+  }
+
+  if (player->shouldUpdatePlayerActions()) {
+    player->moveLeft();
+    player->moveRight();
+    player->moveUpLadder();
+    player->moveDownLadder();
+
+    int leftPlayerSide = player->x / blockSize;
+    int bottom = (player->y + player->height) / blockSize;
+
+    player->canFall = gameMap[bottom][leftPlayerSide] != LADDER_ID;
+  }
+}
+void keyboardEvents() {
   Keyboard key = keyboardMapping(buffer);
 
   switch (key) {
@@ -576,30 +599,11 @@ void playerEvents() {
       player->isClimbingUp = false;
       break;
   }
-
-  if (player->shouldUpdateVerticalPosition()) {
-    player->jump();
-    player->gravity();
-  }
-
-  if (player->shouldUpdatePlayerActions()) {
-    player->moveLeft();
-    player->moveRight();
-    player->moveUpLadder();
-    player->moveDownLadder();
-
-    int leftPlayerSide = player->x / blockSize;
-    int bottom = (player->y + player->height) / blockSize;
-
-    player->canFall = gameMap[bottom][leftPlayerSide] != LADDER_ID;
-  }
 }
 
-void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: buffer, isPaused, pauseMenuButtons, playMode
+void pauseMenuInteractions(int cursorX, int cursorY, int clickedX, int clickedY) { // menuPause: pauseMenuInteractions
+  // Global: isPaused, pauseMenuButtons, playMode
   // External: isInitialState
-  if (!isPaused) return;
-
   for (int i = 0; i < 4; i++) {
     pauseMenuButtons[i]->show = pauseMenuButtons[i]->contains(cursorX, cursorY);
   }
