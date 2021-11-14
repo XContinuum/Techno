@@ -778,6 +778,7 @@ void doorInteractions(int clickedX, int clickedY) {
 enum Keyboard {
   KEY_A,
   KEY_E,
+  KEY_H,
   KEY_D,
   KEY_N,
   KEY_O,
@@ -795,6 +796,7 @@ enum Keyboard {
 Keyboard keyboardMapping(char* buffer) {
   if (buffer[DIK_A] & 0x80) return Keyboard::KEY_A;
   if (buffer[DIK_E] & 0x80) return Keyboard::KEY_E;
+  if (buffer[DIK_H] & 0x80) return Keyboard::KEY_H;
   if (buffer[DIK_D] & 0x80) return Keyboard::KEY_D;
   if (buffer[DIK_N] & 0x80) return Keyboard::KEY_N;
   if (buffer[DIK_O] & 0x80) return Keyboard::KEY_O;
@@ -809,4 +811,6 @@ Keyboard keyboardMapping(char* buffer) {
 
   if (buffer[DIK_RETURN] & 0x80) return Keyboard::KEY_RETURN;
   if (buffer[DIK_ESCAPE] & 0x80) return Keyboard::KEY_ESCAPE;
+
+  return NULL;
 }
