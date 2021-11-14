@@ -510,6 +510,19 @@ void playerEvents() {
   Keyboard key = keyboardMapping(buffer);
 
   switch (key) {
+    case KEY_E:
+      inventory->show = !inventory->show;
+      break;
+    
+    case KEY_O:
+      for (int i = 0; i < Chest::counter; i++) {
+        bool bottomLeft = chest[i]->contains(player->x, player->y + player->height - 1);
+        bool bottomRight = chest[i]->contains(player->x + player->width, player->y + player->height - 1);
+
+        if (bottomLeft || bottomRight) chest[i]->isOpen = true;
+      }
+      break;
+
     case KEY_N:
       inventory->addItem(INV_KEY);
       break;
@@ -616,25 +629,14 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // External: didClickLeftButton, screenPixelWidth, screenPixelHeight
   // Class: Chest class, Book class
 
-  didPlayerTouchBonus();
   inventory->showTooltip = inventory->contains(cursorX, cursorY); // show or hide tool tip
-
   if (inventory->contains(clickedX, clickedY)) inventory->show = true;
 
-  // clicked showing result = clicked || showing 
-  // T        T       T
-  // T        F       T 
-  // F        T       T
-  // F        F       F
+  didPlayerTouchBonus();
+  didTouchPressurePlate();
 
   inventoryMoveEvents(clickedX, clickeY);
   chestMoveEvents(clickedX, clickeY);
-
-  //++++++
-  Keyboard key = keyboardMapping(buffer);
-  
-  if (key == KEY_E) inventory->show = !inventory->show;
-  //-----
 
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
@@ -642,7 +644,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   }
   // Chest---
 
-  didTouchPressurePlate();
   updateFrames();
   doorInteractions(clickedX, clickedY);
 
@@ -661,18 +662,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     }
   }
   // BOOKS---
-
-  // CHEST+++
-  if (key == KEY_O) {
-    for (int i = 0; i < Chest::counter; i++) {
-      bool bottomLeft = chest[i]->contains(player->x, player->y + player->height - 1);
-      bool bottomRight = chest[i]->contains(player->x + player->width, player->y + player->height - 1);
-
-      if (bottomLeft || bottomRight)
-        chest[i]->isOpen = true;
-    }
-  }
-  // CHEST---
 }
 void didPlayerTouchBonus() {
   // Checks if player intersected with bonus entity.
