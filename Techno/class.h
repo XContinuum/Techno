@@ -133,7 +133,7 @@ class NeoSprite : public Sprite {
     }
   }
 
-  void Save(char *name) {
+  void save(char *name) { // Save: save
     std::ofstream os(name, std::ios::binary);
 
     unsigned char signature[2] = {'B', 'M'};
@@ -146,7 +146,7 @@ class NeoSprite : public Sprite {
     unsigned short colorPlanes = 1;
     unsigned short bpp = 32;
     unsigned int compression = 0;
-    unsigned int imgSize = dimensions[0] * dimensions[1] * 4;
+    unsigned int imgSize = width * height * 4;
     unsigned int resolution[2] = {2795, 2795};
     unsigned int pltColors = 0;
     unsigned int impColors = 0;
@@ -166,18 +166,18 @@ class NeoSprite : public Sprite {
     os.write(reinterpret_cast<char *>(&pltColors), sizeof(pltColors));
     os.write(reinterpret_cast<char *>(&impColors), sizeof(impColors));
 
-    unsigned char x, r, g, b;
+    unsigned char alpha, r, g, b;
 
-    for (int i = dimensions[1]; i > 0; --i) {
-      for (int j = 0; j < dimensions[0]; ++j) {
-        x = 0;
+    for (int i = height; i > 0; i--) {
+      for (int j = 0; j < width; j++) {
+        alpha = 0; // alpha channel?
         r = getColor(j, i, 'R');
         g = getColor(j, i, 'G');
         b = getColor(j, i, 'B');
         os.write(reinterpret_cast<char *>(&b), sizeof(b));
         os.write(reinterpret_cast<char *>(&g), sizeof(g));
         os.write(reinterpret_cast<char *>(&r), sizeof(r));
-        os.write(reinterpret_cast<char *>(&x), sizeof(x));
+        os.write(reinterpret_cast<char *>(&alpha), sizeof(alpha));
       }
     }
 
