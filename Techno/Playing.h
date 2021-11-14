@@ -400,8 +400,7 @@ void loadDoors() {
 // playLoop function
 // ---------------------------------------------------------------------------------
 void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★★
-  // Global: playMode, missionMode,isBookMenuOpen, isPaused
-  if (!playMode) return;
+  // Global: missionMode, isBookMenuOpen, isPaused
   if (missionMode) {
     mission(cursorX, cursorY, clickedX, clickedY);
     return;
@@ -412,7 +411,7 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
   }
 
   keyboardEvents();
-  
+
   if (!isBookMenuOpen && !isPaused) {
     interactiveObjects(cursorX, cursorY, clickedX, clickedY);
     playerEvents();
@@ -533,10 +532,14 @@ void keyboardEvents() {
 
   switch (key) {
     case KEY_E:
+      if (isBookMenuOpen || isPaused) return;
+
       inventory->show = !inventory->show;
       break;
     
     case KEY_O:
+      if (isBookMenuOpen || isPaused) return;
+
       for (int i = 0; i < Chest::counter; i++) {
         bool bottomLeft = chest[i]->contains(player->x, player->y + player->height - 1);
         bool bottomRight = chest[i]->contains(player->x + player->width, player->y + player->height - 1);
@@ -546,6 +549,8 @@ void keyboardEvents() {
       break;
 
     case KEY_RETURN:
+      if (!isBookMenuOpen) return;
+
       for (int i = 0; i < Book::counter; i++) {
         if (!bookEntities[i]->isOpen) continue;
         
@@ -566,17 +571,23 @@ void keyboardEvents() {
 
     case KEY_RIGHT:
     case KEY_D:
+      if (isBookMenuOpen || isPaused) return;
+
       player->isMovingRight = true;
       player->isMovingLeft = false;
       break;
 
     case KEY_LEFT:
     case KEY_A:
+      if (isBookMenuOpen || isPaused) return;
+
       player->isMovingLeft = true;
       player->isMovingRight = false;
       break;
 
     case KEY_SPACE:
+      if (isBookMenuOpen || isPaused) return;
+
       int leftPlayerSide = player->x / blockSize;
       int rightPlayerSide = (player->x + player->width) / blockSize;
       int bottom = (player->y + player->height) / blockSize;
@@ -589,12 +600,16 @@ void keyboardEvents() {
     
     case KEY_UP:
     case KEY_W:
+      if (isBookMenuOpen || isPaused) return;
+
       player->isClimbingUp = true;
       player->isClimbingDown = false;
       break;
 
     case KEY_DOWN:
     case KEY_S:
+      if (isBookMenuOpen || isPaused) return;
+
       player->isClimbingDown = true;
       player->isClimbingUp = false;
       break;

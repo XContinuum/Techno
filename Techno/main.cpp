@@ -184,13 +184,13 @@ class Param {
     }
 };
 
-int screenPixelWidth = 800; // w: screenPixelWidth
-int screenPixelHeight = 600; // h: screenPixelHeight
+const int screenPixelWidth = 800; // w: screenPixelWidth
+const int screenPixelHeight = 600; // h: screenPixelHeight
 
 #include "class.h"
 
-int blocksInWidth = 40; // mW: blocksInWidth
-int blocksInHeight = 30; // mH: blocksInHeight
+const int blocksInWidth = 40; // mW: blocksInWidth
+const int blocksInHeight = 30; // mH: blocksInHeight
 
 int left = (1280 - screenPixelWidth) / 2;
 int top = (800 - screenPixelHeight) / 2;
@@ -394,7 +394,9 @@ void mainMenuInteractions() {
     }
 
     // Procedures+++++++++
-    playLoop(cursorX, cursorY, clickedX, clickedY);
+    if (playMode) {
+      playLoop(cursorX, cursorY, clickedX, clickedY);
+    }
     createMap();
 }
 
