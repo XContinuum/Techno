@@ -773,7 +773,8 @@ void doorInteractions(int clickedX, int clickedY) {
   for (int i = 0; i < Door::counter; i++) {
     if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
 
-    updateFrame(gameMap);
+    doorEntities[i]->updateFrame();
+    doorEntities[i]->switchDoorState(gameMap); // mutates parameter
   }
 
   // FinalDoor

@@ -635,11 +635,12 @@ class Door {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
- private:
-  void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
+  void updateFrame() {  // ChangeCadr: updateFrame
     frame = (frame + 1) % 2;
     currentFrame = assets[frame];
-    
+  }
+
+  void switchDoorState(int gameMap[30][40]) {
     int row = y / blockSize;
     int column = x / blockSize;
 
