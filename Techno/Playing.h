@@ -753,31 +753,25 @@ void updateFrames(int clickedX, int clickedY) {
   // External: didClickLeftButton
   // Classes: Fire, Bonus, Door, FinalDoor, PressurePlate, MovingBlock
 
-  // FIRE---
-  // update frame every 50ms
+  // Fire
   for (int i = 0; i < Fire::counter; i++) {
     fireEntities[i]->updateFrame();
   }
-  // FIRE+++
 
-  // BONUS---
+  // Bonus
   for (int i = 0; i < Bonus::counter; i++) {
     bonusEntities[i]->udpateFrame();
   }
-  // BONUS+++
 
-  // DOOR+++
   if (didClickRightButton) {
+    // Door
     for (int i = 0; i < Door::counter; i++) {
       if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
       
       updateFrame(gameMap);
     }
-  }
-  // DOOR---
 
-  // FinalDoor+++
-  if (didClickRightButton) {
+    // FinalDoor
     bool isHoldingKey = inventory->cells[0] == INV_KEY;
 
     for (int i = 0; i < FinalDoor::counter; i++) {
@@ -793,14 +787,13 @@ void updateFrames(int clickedX, int clickedY) {
       }
     }
   }
-  // FinalDoor---
 
   for (int i = 0; i < PressurePlate::counter; i++) {
     if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
       shouldMoveStairsUp = true;
   }
 
-  // Block Moves+++
+  // Block Moves
   for (int i = 0; i < MovingBlock::counter; i++) {
     if (!movingStairBlocks[i].shouldUpdatePosition()) continue;
 
@@ -810,7 +803,6 @@ void updateFrames(int clickedX, int clickedY) {
       movingStairBlocks[i]->moveDown(gameMap);  // mutates parameter
     }
   }
-  // Block Moves---
 }
 // ---------------------------------------------------------------------------------
 // interactiveObjects {end}
