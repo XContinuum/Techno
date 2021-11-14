@@ -333,13 +333,6 @@ class Player { // Hero: Player
   int x = 0, y = 0;
   int width, height; // w, h
 
-  int exitX;
-  int exitY;
-
-  Sprite *currentFrame; // Image: currentFrame
-
-  int gameMap[30][40]; // MatMap: gameMap
-
   bool isMovingLeft = false, isMovingRight = false, isJumping = false; // L, R, J
   bool isClimbingUp = false, isClimbingDown = false; // U, D
   bool canFall = true; // G: canFall
@@ -347,14 +340,19 @@ class Player { // Hero: Player
   int jumpVelocity = 0; // velocityJ: jumpVelocity
 
  private:
+  int gameMap[30][40]; // MatMap: gameMap
   int rightWalkFrame = 0, leftWalkFrame = 0, climbFrame = 0; // CadrR, CadrL, CadrU
   
+  Sprite *currentFrame; // Image: currentFrame
+
   Sprite *rightWalk[5]; // ImageR: rightWalk
   Sprite *leftWalk[5]; // ImageL: leftWalk
 
   Sprite *ladderClimb[4]; // ImageUD: ladderClimb
   Sprite *rightJump[4]; // ImageJR: rightJump
   Sprite *leftJump[4]; // ImageJL: leftJump
+
+  int exitX, exitY;
 
   // Gravity
   int velocity = 0;
@@ -521,6 +519,11 @@ class Player { // Hero: Player
       verticalStartTime = timeGetTime();
     }
     return timeSinceLastFrame > 20;
+  }
+
+  void setExit(int x, int y) {
+    exitX = x;
+    exitY = y;
   }
 
   private:

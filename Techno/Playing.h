@@ -322,8 +322,7 @@ void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
       break;
 
     case 6: // Next mission position
-      player->exitX = coordinates[0];
-      player->exitY = coordinates[1];
+      player->setExit(coordinates[0], coordinates[1]);
       break;
   }
 }
@@ -352,9 +351,7 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
 void setMap() {
   map = new Sprite(mapBMPfilename, 0xffffffff);
 
-  for (int i = 0; i < blocksInHeight; i++)
-    for (int j = 0; j < blocksInWidth; j++)
-      player->gameMap[i][j] = gameMap[i][j];
+  player->duplicateMap(gameMap);
 }
 void loadDoors() {
   // Global: gameMap, doorEntities, finalDoor, movingStairBlocks, blockSize
@@ -656,8 +653,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     if (bookEntities[i]->isOpen) continue;
     if (!bookEntities[i]->show) continue;
 
-    bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->currentFrame->height);
-    bool bottomRight = bookEntities[i]->contains(player->x + player->currentFrame->width, player->y + player->currentFrame->height);
+    bool bottomLeft = bookEntities[i]->contains(player->x, player->y + player->height);
+    bool bottomRight = bookEntities[i]->contains(player->x + player->width, player->y + player->height);
 
     if (bottomLeft || bottomRight) {
       bookEntities[i]->openBook();
