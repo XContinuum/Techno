@@ -421,16 +421,14 @@ class Player { // Hero: Player
 
     if (velocity <= 20) velocity += acceleration;
 
-    int nx = x / blockSize;
-    int nx1 = (x + width) / blockSize;
-    int ny = (y + height + velocity) / blockSize;
+    int leftPlayerSide = x / blockSize;
+    int rightPlayerSide = (x + width) / blockSize;
+    int blockBelow = (y + height + velocity) / blockSize;
 
-    if (gameMap[ny][nx] == AIR_ID) {
-      if (gameMap[ny][nx1] == AIR_ID) {
-        y += velocity;
-      }
+    if (gameMap[blockBelow][leftPlayerSide] == AIR_ID && gameMap[blockBelow][rightPlayerSide] == AIR_ID) {
+      y += velocity;
     } else {
-      y = ny * blockSize - height;
+      y = blockBelow * blockSize - height;
       velocity = 0;
     }
   }
@@ -439,10 +437,10 @@ class Player { // Hero: Player
     
     jumpVelocity -= acceleration;
 
-    int nx = x / blockSize;
-    int ny = (y - jumpVelocity) / blockSize;
+    int leftPlayerSide = x / blockSize;
+    int blockAbove = (y - jumpVelocity) / blockSize;
 
-    if (gameMap[ny][nx] == AIR_ID && jumpVelocity >= 0) {
+    if (jumpVelocity >= 0 && gameMap[blockAbove][leftPlayerSide] == AIR_ID) {
       y -= jumpVelocity;
       return;
     }
@@ -454,18 +452,18 @@ class Player { // Hero: Player
     if (!isClimbingUp) return;
     isClimbingUp = false;
 
-    int nx = x / blockSize;
+    int leftPlayerSide = x / blockSize;
     int playerTopRow = y / blockSize;
     int playerBottomRow = (y + height) / blockSize;
 
-    if (gameMap[playerTopRow][nx] == LADDER_ID) {
+    if (gameMap[playerTopRow][leftPlayerSide] == LADDER_ID) {
       updateFrame('U');
       y -= 5;
     }
 
-    if (gameMap[playerTopRow][nx] == AIR_ID && 
-        gameMap[playerBottomRow][nx] == LADDER_ID &&
-        gameMap[playerTopRow + 1][nx] == LADDER_ID)
+    if (gameMap[playerTopRow][leftPlayerSide] == AIR_ID && 
+        gameMap[playerBottomRow][leftPlayerSide] == LADDER_ID &&
+        gameMap[playerTopRow + 1][leftPlayerSide] == LADDER_ID)
       y = (y / blockSize + 1) * blockSize - height;
   }
 
@@ -473,10 +471,10 @@ class Player { // Hero: Player
     if (!isClimbingDown) return;
     isClimbingDown = false;
 
-    int nx = x / blockSize;
-    int ny = (y + height + 5) / blockSize;
+    int leftPlayerSide = x / blockSize;
+    int blockBelow = (y + height + 5) / blockSize;
 
-    if (gameMap[ny][nx] == LADDER_ID) {
+    if (gameMap[blockBelow][leftPlayerSide] == LADDER_ID) {
       updateFrame('U');
       y += 5;
     }
@@ -496,9 +494,9 @@ class Player { // Hero: Player
     return false;
   }
 
-  void duplicateMap(int gameMap[30][40]) {  // ChargeMatMap: duplicateMap
-    for (int i = 0; i < 30; i++)
-      for (int j = 0; j < 40; j++) {
+  void duplicateMap(int gameMap[blocksInHeight][blocksInWidth]) {  // ChargeMatMap: duplicateMap
+    for (int i = 0; i < blocksInHeight; i++)
+      for (int j = 0; j < blocksInWidth; j++) {
         this->gameMap[i][j] = gameMap[i][j];
       }
   }
@@ -526,8 +524,8 @@ class Player { // Hero: Player
   }
 
   private:
-   void updateFrame(char d) { // ChangeImage: updateFrame
-     switch (d) {
+   void updateFrame(char direction) { // ChangeImage: updateFrame
+     switch (direction) {
        case 'L':
          leftWalkFrame = (leftWalkFrame + 1) % 4;
          currentFrame = leftWalk[leftWalkFrame];
