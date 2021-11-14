@@ -224,7 +224,7 @@ void drawPauseMenu() {
 // readScript function
 // ---------------------------------------------------------------------------------
 void readScript(char* filename) {
-  // Global: mapFilename, player
+  // Global: mapFilename
   // External: blocksInHeight, blocksInWidth
   int bufferSize = blocksInHeight * blocksInWidth + 100;
   char* fileBuffer = readFile(filename, bufferSize);
@@ -291,7 +291,7 @@ int* readCoordinates(int begin, int end, char* fileBuffer) { // pure function
 void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
   // Global: pressurePlate, chest, bonusEntities, fireEntities
   switch (readingChunk) {
-    case 0: // Load player coordinates
+    case 0:
       player->x = coordinates[0];
       player->y = coordinates[1];
       break;
@@ -321,7 +321,7 @@ void createEntities(int readingChunk, int* coordinates, int coordQuantity) {
         pressurePlate[i] = new PressurePlate(coordinates[i * 2], coordinates[i * 2 + 1]);
       break;
 
-    case 6: // Next mission position
+    case 6:
       player->setExit(coordinates[0], coordinates[1]);
       break;
   }
@@ -814,29 +814,14 @@ void updateFrames(int clickedX, int clickedY) {
   }
 
   // Block Moves+++
-  MovingBlock::Timer();
+  for (int i = 0; i < MovingBlock::counter; i++) {
+    if (!movingStairBlocks[i].shouldUpdatePosition()) continue;
 
-  if (MovingBlock::dt > 5 && MovingBlock::UP) {
-    bool b = true;
-
-    for (int i = 0; i < MovingBlock::counter; i++) {
-      bool tmp = movingStairBlocks[i]->moveUp(gameMap); // mutates parameter
-
-      if (!tmp) b = false;
+    if (MovingBlock::UP) {
+      movingStairBlocks[i]->moveUp(gameMap);  // mutates parameter
+    } else {
+      movingStairBlocks[i]->moveDown(gameMap);  // mutates parameter
     }
-    /// tmp b  A = tmp & b
-    /// T   T  T
-    /// T   F  F
-    /// F   T  F
-    /// F   F  F
-
-    if (b) MovingBlock::timer1 = 0;
-  }
-
-  if (MovingBlock::dt > 1000 * 10) MovingBlock::UP = false;
-
-  if (MovingBlock::dt > 5 && !MovingBlock::UP) {
-    for (int i = 0; i < MovingBlock::counter; i++) movingStairBlocks[i]->moveDown(gameMap); // mutates parameter
   }
   // Block Moves---
 }

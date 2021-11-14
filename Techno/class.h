@@ -1257,12 +1257,10 @@ class MovingBlock { // BlockMoves: MovingBlock
 
   static bool UP;
   static int counter;
-  static int dt;
-  static int timer;
-  static int timer1;
 
  private:
   int initialX, initialY; // pX, pY
+  int startTime;
 
  public:
   MovingBlock(int x, int y, int pi) {
@@ -1302,18 +1300,19 @@ class MovingBlock { // BlockMoves: MovingBlock
     }
   }
 
-  static void Timer() {
-    if (timer1 == 0) timer1 = timeGetTime();
+ bool shouldUpdatePosition() {
+    // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
+    if (startTime == NULL) startTime = timeGetTime();
+    int timeSinceLastFrame = timeGetTime() - startTime;
 
-    timer = timeGetTime();
-    dt = timer - timer1;
+    if (timeSinceLastFrame > 5) {
+      startTime = timeGetTime();
+    }
+    return timeSinceLastFrame > 5;
   }
 };
 bool MovingBlock::UP = false;
 int MovingBlock::counter = 0;
-int MovingBlock::dt = 0;
-int MovingBlock::timer = 0;
-int MovingBlock::timer1 = 0;
 
 class FinalDoor {
  public:
