@@ -637,6 +637,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   if (inventory->contains(clickedX, clickedY)) inventory->show = true;
 
   didPlayerTouchBonus();
+  didPlayerPickupBook();
   didTouchPressurePlate();
   
   inventoryMoveEvents(clickedX, clickedY);
@@ -649,8 +650,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
   }
-
-  // Books
+}
+void didPlayerPickupBook() {
   for (int i = 0; i < Book::counter; i++) {
     if (bookEntities[i]->isOpen) continue;
     if (!bookEntities[i]->show) continue;
