@@ -400,17 +400,12 @@ void loadDoors() {
 // playLoop function
 // ---------------------------------------------------------------------------------
 void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★★
-  // Global: missionMode, isBookMenuOpen, isPaused
-  if (missionMode) {
-    mission(cursorX, cursorY, clickedX, clickedY);
-    return;
-  }
+  // Global: isBookMenuOpen, isPaused
+  keyboardEvents();
 
   if (player->didReachExitDoor()) {
     loadNextLevel();
   }
-
-  keyboardEvents();
 
   if (!isBookMenuOpen && !isPaused) {
     interactiveObjects(cursorX, cursorY, clickedX, clickedY);
@@ -421,7 +416,7 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
     pauseMenuInteractions(cursorX, cursorY, clickedX, clickedY);
   }
 }
-void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
+void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★★
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
   // External: isInitialState
 

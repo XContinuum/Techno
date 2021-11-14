@@ -394,6 +394,9 @@ void mainMenuInteractions() {
     }
 
     // Procedures+++++++++
+    if (missionMode) {
+      mission(cursorX, cursorY, clickedX, clickedY);
+    }
     if (playMode) {
       playLoop(cursorX, cursorY, clickedX, clickedY);
     }
