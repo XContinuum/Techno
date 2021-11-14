@@ -870,11 +870,9 @@ class Inventory { // Inventar: Inventory
 class Chest {
  public:
   int x, y;
-  int mX1, mY1; // mX1, mY1
   int check = 0; // check:
   int items[6 * 8]; // objects: items
 
-  bool showToolTip = false; // expO: showToolTip
   bool isOpen = false; // show: isOpen
   bool isChestLocked = true; // showC: showChestContents: isChestUnlocked: isChestLocked
   bool move = false; // move:
@@ -1064,7 +1062,9 @@ class Chest {
     }
 
     // Open++++
-    if (combination() == answer && currentDigit == 0) correctCombination = true;
+    if (combination() == answer && currentDigit == 0) {
+      correctCombination = true;
+    }
 
     if (correctCombination == true) {
       Timer();
@@ -1086,9 +1086,12 @@ class Chest {
 
   void draw(Param *p) {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  }
+  void drawTooltip(Param *p, int cursorX, int cursorY) {
+    bool showToolTip = contains(cursorX, cursorY);
+    if (!showToolTip) return;
 
-    if (showToolTip)
-      p->draw(mX1, mY1, toolTip->width, toolTip->height, toolTip);
+    p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   void drawOpenChest(Param *p) { // drawC: drawOpenChest
     lock->draw(p);

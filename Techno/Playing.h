@@ -165,6 +165,7 @@ void drawEntities(int cursorX, int cursorY) {
 
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->draw(paramDraw);
+    chest[i]->drawTooltip(paramDraw, cursorX, cursorY);
 
     if (!chest[i]->isOpen) continue;
 
@@ -638,8 +639,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Chest+++
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
-
-    showChestToolTip(i, cursorX, cursorY);
   }
   // Chest---
 
@@ -721,7 +720,7 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
 }
 void chestMoveEvents(int clickedX, int clickedY) {
   if (!didClickLeftButton) return;
-  
+
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->isWithinInventory(clickedX, clickedY)) continue;
     if (chest[i]->isChestLocked) continue;
@@ -748,11 +747,6 @@ void chestMoveEvents(int clickedX, int clickedY) {
       }
     }
   }
-}
-void showChestToolTip(int i, int mouseX, int mouseY) {
-  chest[i]->showToolTip = chest[i]->contains(mouseX, mouseY);
-  chest[i]->mX1 = mouseX + 10;
-  chest[i]->mY1 = mouseY;
 }
 void updateFrames(int clickedX, int clickedY) {
   // Global: fireEntities, bonusEntities, doorEntities, gameMap, finalDoor, inventory, pressurePlate, player, movingStairBlocks
