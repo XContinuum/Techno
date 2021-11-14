@@ -1255,7 +1255,6 @@ class MovingBlock { // BlockMoves: MovingBlock
 
   Sprite *asset; // Image: asset
 
-  static bool UP;
   static int counter;
 
  private:
@@ -1311,7 +1310,6 @@ class MovingBlock { // BlockMoves: MovingBlock
     return timeSinceLastFrame > 5;
   }
 };
-bool MovingBlock::UP = false;
 int MovingBlock::counter = 0;
 
 class FinalDoor {

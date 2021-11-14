@@ -60,6 +60,8 @@ int selectedObjectId = INV_EMPTY_CELL; // posObject: selectedObjectId
 Text* scoreText; // txt: scoreText
 int score = 0;
 
+bool shouldMoveStairsUp = false;
+
 // Globals from main.cpp
 // -----
 // paramDraw - global buffer sprites are rendered to
@@ -810,14 +812,14 @@ void updateFrames(int clickedX, int clickedY) {
 
   for (int i = 0; i < PressurePlate::counter; i++) {
     if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
-      MovingBlock::UP = true;
+      shouldMoveStairsUp = true;
   }
 
   // Block Moves+++
   for (int i = 0; i < MovingBlock::counter; i++) {
     if (!movingStairBlocks[i].shouldUpdatePosition()) continue;
 
-    if (MovingBlock::UP) {
+    if (shouldMoveStairsUp) {
       movingStairBlocks[i]->moveUp(gameMap);  // mutates parameter
     } else {
       movingStairBlocks[i]->moveDown(gameMap);  // mutates parameter
