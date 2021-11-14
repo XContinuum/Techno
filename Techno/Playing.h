@@ -403,9 +403,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★�
   // Exit---
 
   if (missionButton->contains(clickedX, clickedY)) {
-    player = new Player(); // TODO: pass x & y into Player
-    player->x = 40;
-    player->y = 40;
+    player = new Player(40, 40);
 
     readScript(mapFilename);
 
@@ -449,21 +447,21 @@ void loadNextLevel() { // nextLevel: loadNextLevel
   setNextMapFilepath(level);
   readScript(mapFilename);
 }
-// Not sure what those values mean and why they should be reset
 void clearClassInformation() {
+  // TODO: remove counters for vector
   Fire::counter = 0;
   Door::counter = 0;
   Book::counter = 0;
   Bonus::counter = 0;
-  //++++++
-  Chest::dt = 0;
-  Chest::timer = 0;
-  Chest::timer1 = 0;
   Chest::counter = 0;
-  //------
   MovingBlock::counter = 0;
   PressurePlate::counter = 0;
   FinalDoor::counter = 0;
+
+  //------
+  Chest::dt = 0;
+  Chest::timer = 0;
+  Chest::timer1 = 0;
 }
 void resetEntities() {
   for (int i = 0; i < 10; i++) {

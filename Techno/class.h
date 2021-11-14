@@ -363,7 +363,10 @@ class Player { // Hero: Player
   int verticalStartTime;
 
  public:
-  Player() {
+  Player(int x, int y) {
+    this->x = x;
+    this->y = y;
+    
     rightWalk = loadAssets("Images/player/playerR%d.bmp", 5, WHITE);
     leftWalk = loadAssets("Images/player/playerL%d.bmp", 5, WHITE);
 
