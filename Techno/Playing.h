@@ -138,8 +138,7 @@ void drawEntities(int cursorX, int cursorY) {
     if (!bookEntities[i]->show) continue;
 
     if (bookEntities[i]->isOpen) {
-      paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
-                      pauseOverlay);
+      paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
     }
 
     bookEntities[i]->draw(paramDraw);
@@ -450,12 +449,10 @@ void loadNextLevel() { // nextLevel: loadNextLevel
   // External: 
   level++;
 
-  for (int i = 0; i < 9; i++)
-    if (inventory->cells[i] == INV_KEY) inventory->cells[i] = INV_EMPTY_CELL;
-
+  inventory->clearInventory();
   clearClassInformation();
   resetEntities();
-  clearMap(); // this might be redundant, as we are loading the new map next
+
   setNextMapFilepath(level);
   readScript(mapFilename);
 }
@@ -485,15 +482,6 @@ void resetEntities() {
     movingStairBlocks[i] = NULL;
     pressurePlate[i] = NULL;
     finalDoor[i] = NULL;
-  }
-}
-void clearMap() {
-  // Global: gameMap
-  // External: blocksInHeight, blocksInWidth
-  for (int i = 0; i < blocksInHeight; i++) {
-    for (int j = 0; j < blocksInWidth; j++) {
-      gameMap[i][j] = 0;
-    }
   }
 }
 void setNextMapFilepath(int level) {

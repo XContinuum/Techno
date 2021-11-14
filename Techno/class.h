@@ -876,6 +876,11 @@ class Inventory { // Inventar: Inventory
     updateCellSprites();
   }
 
+  void clearInventory() {
+    for (int i = 0; i < 9; i++)
+      if (cells[i] == INV_KEY) cells[i] = INV_EMPTY_CELL;
+  }
+
   private:
   std::tuple<int, int> cellPosition(int cellIndex) {
       int offset = cellIndex == 0 ? -7 : 0;
