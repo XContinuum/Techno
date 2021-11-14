@@ -625,8 +625,8 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: inventory, chest, player, buffer, bookEntities, isBookMenuOpen, 
-  // External: didClickLeftButton, screenPixelWidth, screenPixelHeight
+  // Global: inventory, chest, player, bookEntities, isBookMenuOpen, 
+  // External: didClickLeftButton
   // Class: Chest class, Book class
 
   inventory->showTooltip = inventory->contains(cursorX, cursorY); // show or hide tool tip
@@ -634,20 +634,19 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 
   didPlayerTouchBonus();
   didTouchPressurePlate();
-
-  inventoryMoveEvents(clickedX, clickeY);
-  chestMoveEvents(clickedX, clickeY);
-
-  // Chest+++
+  
+  inventoryMoveEvents(clickedX, clickedY);
+  chestMoveEvents(clickedX, clickedY);
+  doorInteractions(clickedX, clickedY);
+  
+  updateFrames();
+  
+  // Chest
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
   }
-  // Chest---
 
-  updateFrames();
-  doorInteractions(clickedX, clickedY);
-
-  // BOOKS+++
+  // Books
   for (int i = 0; i < Book::counter; i++) {
     if (bookEntities[i]->isOpen) continue;
     if (!bookEntities[i]->show) continue;
@@ -661,7 +660,6 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
       isBookMenuOpen = true;
     }
   }
-  // BOOKS---
 }
 void didPlayerTouchBonus() {
   // Checks if player intersected with bonus entity.
