@@ -340,14 +340,14 @@ class Player { // Hero: Player
 
   int gameMap[30][40]; // MatMap: gameMap
 
-  bool isMovingLeft, isMovingRight, isJumping; // L, R, J
-  bool isClimbingUp, isClimbingDown; // U, D
-  bool canFall = true; // G
+  bool isMovingLeft = false, isMovingRight = false, isJumping = false; // L, R, J
+  bool isClimbingUp = false, isClimbingDown = false; // U, D
+  bool canFall = true; // G: canFall
 
   int jumpVelocity = 0; // velocityJ: jumpVelocity
 
  private:
-  int rightWalkFrame, leftWalkFrame, climbFrame; // CadrR, CadrL, CadrU
+  int rightWalkFrame = 0, leftWalkFrame = 0, climbFrame = 0; // CadrR, CadrL, CadrU
   
   Sprite *rightWalk[5]; // ImageR: rightWalk
   Sprite *leftWalk[5]; // ImageL: leftWalk
@@ -366,16 +366,6 @@ class Player { // Hero: Player
 
  public:
   Player() {
-    isMovingLeft = false;
-    isMovingRight = false;
-    isJumping = false;
-    isClimbingUp = false;
-    isClimbingDown = false;
-
-    rightWalkFrame = 0;
-    leftWalkFrame = 0;
-    climbFrame = 0;
-
     rightWalk = loadAssets("Images/player/playerR%d.bmp", 5, WHITE);
     leftWalk = loadAssets("Images/player/playerL%d.bmp", 5, WHITE);
 
