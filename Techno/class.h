@@ -1266,6 +1266,8 @@ class MovingBlock { // BlockMoves: MovingBlock
   }
 
   bool moveUp(int gameMap[30][40]) { // BlockMoveUp: moveUp
+    if (!movingStairBlocks[i].shouldUpdatePosition()) return;
+
     if (y > pI) {
       gameMap[initialY / blockSize + 1][initialX / blockSize] = AIR_ID;
 
@@ -1280,6 +1282,8 @@ class MovingBlock { // BlockMoves: MovingBlock
     return true;
   }
   void moveDown(int gameMap[30][40]) { // BlockMoveDown: moveDown
+    if (!movingStairBlocks[i].shouldUpdatePosition()) return;
+
     if (y < initialY) {
       gameMap[pI / blockSize + 1][x / blockSize] = AIR_ID;
 
@@ -1291,7 +1295,8 @@ class MovingBlock { // BlockMoves: MovingBlock
     }
   }
 
- bool shouldUpdatePosition() {
+ private:
+  bool shouldUpdatePosition() {
     // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
     if (startTime == NULL) startTime = timeGetTime();
     int timeSinceLastFrame = timeGetTime() - startTime;

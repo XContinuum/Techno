@@ -766,8 +766,6 @@ void updateFrames() {
 
   // Block Moves
   for (int i = 0; i < MovingBlock::counter; i++) {
-    if (!movingStairBlocks[i].shouldUpdatePosition()) continue;
-
     if (shouldMoveStairsUp) {
       movingStairBlocks[i]->moveUp(gameMap);  // mutates parameter
     } else {
