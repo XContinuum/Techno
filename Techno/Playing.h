@@ -99,9 +99,7 @@ void drawEntities(int cursorX, int cursorY) {
   }
 
   for (int i = 0; i < Door::counter; i++) {
-    paramDraw->draw(doorEntities[i]->x, doorEntities[i]->y,
-                    doorEntities[i]->currentFrame->width,
-                    doorEntities[i]->currentFrame->height, doorEntities[i]->currentFrame);
+    doorEntities[i]->draw(paramDraw);
   }
 
   for (int i = 0; i < FinalDoor::counter; i++) {

@@ -607,11 +607,12 @@ class Door {
  public:
   int x, y;
 
-  Sprite *currentFrame; // ImageView: currentFrame
   static int counter;
 
  private:
-  int num = 5;
+  bool isOpen = false;
+
+  Sprite *currentFrame; // ImageView: currentFrame
   Sprite *assets[2]; // Images: assets
   int frame = 0; // Cadr: frame
 
@@ -630,6 +631,10 @@ class Door {
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
+  void draw(Param *p) {
+    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  }
+
  private:
   void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
     frame = (frame + 1) % 2;
@@ -638,12 +643,12 @@ class Door {
     int row = y / blockSize;
     int column = x / blockSize;
 
-    gameMap[row][column] = num;
-    gameMap[row + 1][column] = num;
-    gameMap[row + 2][column] = num;
-    gameMap[row + 3][column] = num;
+    gameMap[row][column] = isOpen ? 4 : 5;
+    gameMap[row + 1][column] = isOpen ? 4 : 5;
+    gameMap[row + 2][column] = isOpen ? 4 : 5;
+    gameMap[row + 3][column] = isOpen ? 4 : 5;
 
-    num = num == 5 ? 4 : 5;
+    isOpen = !isOpen;
   }
 };
 int Door::counter = 0;
