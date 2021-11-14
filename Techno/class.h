@@ -95,10 +95,8 @@ class NeoElement : public Sprite, public Button {
         if (Button::image->img[j + i * width] == from)
           Button::image->img[j + i * width] = to;
   }
-  int FollowColor(int X, int Y) {
-    int color = Button::image->img[X + Y * width];
-
-    return color;
+  int followColor(int x, int y) { // FollowColor: followColor
+    return Button::image->img[x + y * width];
   }
 };
 class NeoSprite : public Sprite {
