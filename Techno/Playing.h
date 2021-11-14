@@ -88,37 +88,6 @@ void drawScene(int cursorX, int cursorY) { // ★★★
 
   scoreText->draw(paramDraw);
 }
-void drawMission() { // ★★★
-  // Global: missions, missionButton, missionLock, backButton
-  // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
-
-  if (missionButton->show) missionButton->draw(paramDraw);
-
-  // missions.bmp
-  int missionsRows = 4;
-  int missionsColumns = 11;
-
-  // px
-  int missionsTableX = 22;
-  int missionsTableY = 63;
-  int horizontalSpace = 13;
-  int verticalSpace = 36;
-
-  for (int i = 0; i < missionsRows; i++) {
-    for (int j = 0; j < missionsColumns; j++) {
-      if (i == 0 && j == 0) continue;
-
-      int x = missionsTableX + j * (missionLock->width + horizontalSpace);
-      int y = missionsTableY + i * (missionLock->height + verticalSpace);
-
-      paramDraw->draw(x, y, missionLock->width, missionLock->height,
-                      missionLock);
-    }
-  }
-
-  if (backButton->show) backButton->draw(paramDraw);
-}
 void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntities, doorEntities, bonusEntities, movingStairBlocks, chest, player, inventory, bookEntities, pauseOverlay
   // selectedObjectId
@@ -241,6 +210,37 @@ void drawPauseMenu() {
 // drawScene {end}
 // ---------------------------------------------------------------------------------
 
+void drawMission() { // ★★★
+  // Global: missions, missionButton, missionLock, backButton
+  // External: paramDraw, screenPixelWidth, screenPixelHeight
+  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
+
+  if (missionButton->show) missionButton->draw(paramDraw);
+
+  // missions.bmp
+  int missionsRows = 4;
+  int missionsColumns = 11;
+
+  // px
+  int missionsTableX = 22;
+  int missionsTableY = 63;
+  int horizontalSpace = 13;
+  int verticalSpace = 36;
+
+  for (int i = 0; i < missionsRows; i++) {
+    for (int j = 0; j < missionsColumns; j++) {
+      if (i == 0 && j == 0) continue;
+
+      int x = missionsTableX + j * (missionLock->width + horizontalSpace);
+      int y = missionsTableY + i * (missionLock->height + verticalSpace);
+
+      paramDraw->draw(x, y, missionLock->width, missionLock->height,
+                      missionLock);
+    }
+  }
+
+  if (backButton->show) backButton->draw(paramDraw);
+}
 
 // ---------------------------------------------------------------------------------
 // readScript function
