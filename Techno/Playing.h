@@ -394,28 +394,6 @@ void loadDoors() {
 // readScript {end}
 // ---------------------------------------------------------------------------------
 
-
-
-// ---------------------------------------------------------------------------------
-// playLoop function
-// ---------------------------------------------------------------------------------
-void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★★
-  // Global: isBookMenuOpen, isPaused
-  keyboardEvents();
-
-  if (player->didReachExitDoor()) {
-    loadNextLevel();
-  }
-
-  if (!isBookMenuOpen && !isPaused) {
-    interactiveObjects(cursorX, cursorY, clickedX, clickedY);
-    playerEvents();
-  }
-
-  if (isPaused) {
-    pauseMenuInteractions(cursorX, cursorY, clickedX, clickedY);
-  }
-}
 void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★★
   // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
   // External: isInitialState
@@ -441,6 +419,27 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★�
   }
 
   missionButtons[0]->show = missionButtons[0]->contains(cursorX, cursorY);
+}
+
+// ---------------------------------------------------------------------------------
+// playLoop function
+// ---------------------------------------------------------------------------------
+void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★★
+  // Global: isBookMenuOpen, isPaused
+  keyboardEvents();
+
+  if (player->didReachExitDoor()) {
+    loadNextLevel();
+  }
+
+  if (!isBookMenuOpen && !isPaused) {
+    interactiveObjects(cursorX, cursorY, clickedX, clickedY);
+    playerEvents();
+  }
+
+  if (isPaused) {
+    pauseMenuInteractions(cursorX, cursorY, clickedX, clickedY);
+  }
 }
 void loadNextLevel() { // nextLevel: loadNextLevel
   // Global: player, level, inventory, mapFilename
