@@ -358,8 +358,6 @@ void loadMap(char* fileBuffer, int mapDeliminatorPos) {
 }
 void setMap() {
   map = new Sprite(mapBMPfilename, WHITE);
-
-  player->duplicateMap(gameMap);
 }
 void loadDoors() {
   // Global: gameMap, doorEntities, finalDoor, movingStairBlocks, blockSize
@@ -494,18 +492,16 @@ void setNextMapFilepath(int level) {
 void playerEvents() {
   // Global: player, gameMap, buffer, inventory
   // External: Player class
-  player->duplicateMap(gameMap); // does not mutate parameter
-
   if (player->shouldUpdateVerticalPosition()) {
-    player->jump();
-    player->gravity();
+    player->jump(gameMap);
+    player->gravity(gameMap);
   }
 
   if (player->shouldUpdatePlayerActions()) {
-    player->moveLeft();
-    player->moveRight();
-    player->moveUpLadder();
-    player->moveDownLadder();
+    player->moveLeft(gameMap);
+    player->moveRight(gameMap);
+    player->moveUpLadder(gameMap);
+    player->moveDownLadder(gameMap);
 
     int leftPlayerSide = player->x / blockSize;
     int bottom = (player->y + player->height) / blockSize;

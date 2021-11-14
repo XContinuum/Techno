@@ -342,7 +342,6 @@ class Player { // Hero: Player
   int jumpVelocity = 0; // velocityJ: jumpVelocity
 
  private:
-  int gameMap[30][40]; // MatMap: gameMap
   int rightWalkFrame = 0, leftWalkFrame = 0, climbFrame = 0; // CadrR, CadrL, CadrU
   
   Sprite *currentFrame; // Image: currentFrame
@@ -385,7 +384,7 @@ class Player { // Hero: Player
     height = currentFrame->height;
   }
 
-  void moveRight() { // MoveR: moveRight
+  void moveRight(int gameMap[30][40]) { // MoveR: moveRight
     if (!isMovingRight) return;
     isMovingRight = false;
 
@@ -394,15 +393,15 @@ class Player { // Hero: Player
     int playerRow2 = playerRow1 + 1;
     int playerRow3 = playerRow1 + 2;
 
-    if (isPassThroughBlock(playerRow1, followingColumn) && 
-        isPassThroughBlock(playerRow2, followingColumn) &&
-        isPassThroughBlock(playerRow3, followingColumn)) {
+    if (isPassThroughBlock(playerRow1, followingColumn, gameMap) && 
+        isPassThroughBlock(playerRow2, followingColumn, gameMap) &&
+        isPassThroughBlock(playerRow3, followingColumn, gameMap)) {
       updateFrame('R');
       x += step;
     }
   }
 
-  void moveLeft() { // MoveL: moveLeft
+  void moveLeft(int gameMap[30][40]) { // MoveL: moveLeft
     if (!isMovingLeft) return;
     isMovingLeft = false;
 
@@ -411,14 +410,14 @@ class Player { // Hero: Player
     int playerRow2 = playerRow1 + 1;
     int playerRow3 = playerRow1 + 2;
 
-    if (isPassThroughBlock(playerRow1, previousColumn) && 
-        isPassThroughBlock(playerRow2, previousColumn) &&
-        isPassThroughBlock(playerRow3, previousColumn)) {
+    if (isPassThroughBlock(playerRow1, previousColumn, gameMap) && 
+        isPassThroughBlock(playerRow2, previousColumn, gameMap) &&
+        isPassThroughBlock(playerRow3, previousColumn, gameMap)) {
       updateFrame('L');
       x -= step;
     }
   }
-  void gravity() { // Gravitaton: gravity
+  void gravity(int gameMap[30][40]) { // Gravitaton: gravity
     if (isJumping) return;
     if (!canFall) return;
 
@@ -435,7 +434,7 @@ class Player { // Hero: Player
       velocity = 0;
     }
   }
-  void jump() { // Jump: jump
+  void jump(int gameMap[30][40]) { // Jump: jump
     if (!isJumping) return;
     
     jumpVelocity -= acceleration;
@@ -451,7 +450,7 @@ class Player { // Hero: Player
     jumpVelocity = 0;
     isJumping = false;
   }
-  void moveUpLadder() {  // UD: moveUpLadder()
+  void moveUpLadder(int gameMap[30][40]) {  // UD: moveUpLadder()
     if (!isClimbingUp) return;
     isClimbingUp = false;
 
@@ -470,7 +469,7 @@ class Player { // Hero: Player
       y = (y / blockSize + 1) * blockSize - height;
   }
 
-  void moveDownLadder() {
+  void moveDownLadder(int gameMap[30][40]) {
     if (!isClimbingDown) return;
     isClimbingDown = false;
 
@@ -495,13 +494,6 @@ class Player { // Hero: Player
       return true;
 
     return false;
-  }
-
-  void duplicateMap(int gameMap[blocksInHeight][blocksInWidth]) {  // ChargeMatMap: duplicateMap
-    for (int i = 0; i < blocksInHeight; i++)
-      for (int j = 0; j < blocksInWidth; j++) {
-        this->gameMap[i][j] = gameMap[i][j];
-      }
   }
 
   bool shouldUpdatePlayerActions() {
@@ -554,7 +546,7 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
-   bool isPassThroughBlock(int row, int column) {
+   bool isPassThroughBlock(int row, int column, int gameMap[30][40]) {
      return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
             gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
    }
