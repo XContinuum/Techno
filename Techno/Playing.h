@@ -7,7 +7,7 @@ char* mapFilename = "Images/Data/map1.txt";
 char* mapBMPfilename = "Images/Data/map1.bmp";
 
 Sprite* missions;
-Button* missionButtons[1]; // btnOfMissions: missionButtons
+Button* missionButton; // btnOfMissions: missionButtons: missionButton
 Sprite* missionLock; // blocked: missionLock
 Button* backButton; // Back: backButton
 // Missions---
@@ -95,11 +95,11 @@ void drawScene(int cursorX, int cursorY) { // ★★★
   scoreText->draw(paramDraw);
 }
 void drawMission() {
-  // Global: missions, missionButtons, missionLock, backButton
+  // Global: missions, missionButton, missionLock, backButton
   // External: paramDraw, screenPixelWidth, screenPixelHeight
   paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
-  if (missionButtons[0]->show) missionButtons[0]->draw(paramDraw);
+  if (missionButton->show) missionButton->draw(paramDraw);
 
   // missions.bmp
   int missionsRows = 4;
@@ -395,7 +395,7 @@ void loadDoors() {
 // ---------------------------------------------------------------------------------
 
 void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★★
-  // Global: backButton, missionMode, playMode, missionButtons, player, map, gameMap
+  // Global: backButton, missionMode, playMode, missionButton, player, map, gameMap
   // External: isInitialState
 
   // Exit+++
@@ -408,7 +408,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★�
   backButton->show = backButton->contains(cursorX, cursorY);
   // Exit---
 
-  if (missionButtons[0]->contains(clickedX, clickedY)) {
+  if (missionButton->contains(clickedX, clickedY)) {
     player = new Player(); // TODO: pass x & y into Player
     player->x = 40;
     player->y = 40;
@@ -418,7 +418,7 @@ void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★�
     missionMode = false;
   }
 
-  missionButtons[0]->show = missionButtons[0]->contains(cursorX, cursorY);
+  missionButton->show = missionButton->contains(cursorX, cursorY);
 }
 
 // ---------------------------------------------------------------------------------
