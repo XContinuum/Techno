@@ -186,6 +186,8 @@ void drawEntities(int cursorX, int cursorY) {
   }
   // Book---
 
+  updateFrames();
+
   // Cursor+++
   if (selectedObjectId != INV_EMPTY_CELL) {
     char* path = new char[20];
@@ -196,6 +198,29 @@ void drawEntities(int cursorX, int cursorY) {
     paramDraw->draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
   }
   // Cursor---
+}
+void updateFrames() {
+  // Global: fireEntities, bonusEntities, gameMap, movingStairBlocks
+  // Classes: Fire, Bonus, MovingBlock
+
+  // Fire
+  for (int i = 0; i < Fire::counter; i++) {
+    fireEntities[i]->updateFrame();
+  }
+
+  // Bonus
+  for (int i = 0; i < Bonus::counter; i++) {
+    bonusEntities[i]->udpateFrame();
+  }
+
+  // Block Moves
+  for (int i = 0; i < MovingBlock::counter; i++) {
+    if (shouldMoveStairsUp) {
+      movingStairBlocks[i]->moveUp(gameMap);  // mutates parameter
+    } else {
+      movingStairBlocks[i]->moveDown(gameMap);  // mutates parameter
+    }
+  }
 }
 void drawPauseMenu() {
   // Global: pauseOverlay, pauseMenuSprite, pauseMenuButtons
@@ -643,9 +668,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   inventoryMoveEvents(clickedX, clickedY);
   chestMoveEvents(clickedX, clickedY);
   doorInteractions(clickedX, clickedY);
-  
-  updateFrames();
-  
+    
   // Chest
   for (int i = 0; i < Chest::counter; i++) {
     chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
@@ -742,37 +765,12 @@ void chestMoveEvents(int clickedX, int clickedY) {
     }
   }
 }
-void updateFrames() {
-  // Global: fireEntities, bonusEntities, gameMap, movingStairBlocks
-  // Classes: Fire, Bonus, MovingBlock
-
-  // Fire
-  for (int i = 0; i < Fire::counter; i++) {
-    fireEntities[i]->updateFrame();
-  }
-
-  // Bonus
-  for (int i = 0; i < Bonus::counter; i++) {
-    bonusEntities[i]->udpateFrame();
-  }
-
-  // Block Moves
-  for (int i = 0; i < MovingBlock::counter; i++) {
-    if (shouldMoveStairsUp) {
-      movingStairBlocks[i]->moveUp(gameMap);  // mutates parameter
-    } else {
-      movingStairBlocks[i]->moveDown(gameMap);  // mutates parameter
-    }
-  }
-}
-
 void didTouchPressurePlate() {
   for (int i = 0; i < PressurePlate::counter; i++) {
     if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
       shouldMoveStairsUp = true;
   }
 }
-
 void doorInteractions(int clickedX, int clickedY) {
   if (!didClickRightButton) return;
   // Door
