@@ -133,24 +133,6 @@ class NeoSprite : public Sprite {
     }
   }
 
-  int Color(int X, int Y, char letter) {
-    int color = img[X + Y * width];
-    int r, g, b;
-    int final = 0;
-
-    r = (BYTE)color;
-    g = (WORD)color >> 8;
-    b = (DWORD)color >> 16;
-
-    if (letter == 'R') final = r;
-
-    if (letter == 'G') final = g;
-
-    if (letter == 'B') final = b;
-
-    return final;
-  }
-
   void Save(char *name) {
     std::ofstream os(name, std::ios::binary);
 
@@ -189,9 +171,9 @@ class NeoSprite : public Sprite {
     for (int i = dimensions[1]; i > 0; --i) {
       for (int j = 0; j < dimensions[0]; ++j) {
         x = 0;
-        r = Color(j, i, 'R');
-        g = Color(j, i, 'G');
-        b = Color(j, i, 'B');
+        r = getColor(j, i, 'R');
+        g = getColor(j, i, 'G');
+        b = getColor(j, i, 'B');
         os.write(reinterpret_cast<char *>(&b), sizeof(b));
         os.write(reinterpret_cast<char *>(&g), sizeof(g));
         os.write(reinterpret_cast<char *>(&r), sizeof(r));
@@ -201,6 +183,17 @@ class NeoSprite : public Sprite {
 
     os.close();
   }
+
+  private:
+   int getColor(int x, int y, char channel) {  // Color: getColor
+     int color = img[x + y * width];
+     
+     if (channel == 'R') return (BYTE)color;
+     if (channel == 'G') return (WORD)color >> 8;
+     if (channel == 'B') return (DWORD)color >> 16;
+
+     return NULL;
+   }
 };
 struct Point { // Tochka: Point
   int X, Y;
