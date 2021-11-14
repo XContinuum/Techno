@@ -533,8 +533,8 @@ void playerEvents() {
 
     case KEY_SPACE:
       int leftPlayerSide = player->x / blockSize;
-      int rightPlayerSide = (player->x + player->w) / blockSize;
-      int bottom = (player->y + player->h) / blockSize;
+      int rightPlayerSide = (player->x + player->width) / blockSize;
+      int bottom = (player->y + player->height) / blockSize;
 
       if (!(gameMap[bottom][leftPlayerSide] == AIR_ID && gameMap[bottom][rightPlayerSide] == AIR_ID)) {
         player->isJumping = true;
@@ -567,7 +567,7 @@ void playerEvents() {
     player->moveDownLadder();
 
     int leftPlayerSide = player->x / blockSize;
-    int bottom = (player->y + player->h) / blockSize;
+    int bottom = (player->y + player->height) / blockSize;
 
     player->canFall = gameMap[bottom][leftPlayerSide] != LADDER_ID;
   }
@@ -670,8 +670,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // CHEST+++
   if (key == KEY_O) {
     for (int i = 0; i < Chest::counter; i++) {
-      bool bottomLeft = chest[i]->contains(player->x, player->y + player->h - 1);
-      bool bottomRight = chest[i]->contains(player->x + player->w, player->y + player->h - 1);
+      bool bottomLeft = chest[i]->contains(player->x, player->y + player->height - 1);
+      bool bottomRight = chest[i]->contains(player->x + player->width, player->y + player->height - 1);
 
       if (bottomLeft || bottomRight)
         chest[i]->isOpen = true;
@@ -685,8 +685,8 @@ void didPlayerTouchBonus() {
   for (int i = 0; i < Bonus::counter; i++) {
     if (!bonusEntities[i]->show) continue;
 
-    bool bottomLeft = bonusEntities[i]->contains(player->x, player->y + player->h - 1);
-    bool bottomRight = bonusEntities[i]->contains(player->x + player->w, player->y + player->h - 1);
+    bool bottomLeft = bonusEntities[i]->contains(player->x, player->y + player->height - 1);
+    bool bottomRight = bonusEntities[i]->contains(player->x + player->width, player->y + player->height - 1);
 
     if (bottomLeft || bottomRight) {
       score += 10;
@@ -812,7 +812,7 @@ void updateFrames(int clickedX, int clickedY) {
   // FinalDoor---
 
   for (int i = 0; i < PressurePlate::counter; i++) {
-    if (pressurePlate[i]->contains(player->x, player->y + player->h - 1))
+    if (pressurePlate[i]->contains(player->x, player->y + player->height - 1))
       MovingBlock::UP = true;
   }
 

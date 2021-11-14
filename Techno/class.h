@@ -331,7 +331,7 @@ class Text {
 class Player { // Hero: Player
  public:
   int x = 0, y = 0;
-  int w, h;
+  int width, height; // w, h
 
   int exitX;
   int exitY;
@@ -378,15 +378,15 @@ class Player { // Hero: Player
     }
     currentFrame = rightWalk[0];
 
-    w = currentFrame->width;
-    h = currentFrame->height;
+    width = currentFrame->width;
+    height = currentFrame->height;
   }
 
   void moveRight() { // MoveR: moveRight
     if (!isMovingRight) return;
     isMovingRight = false;
 
-    int followingColumn = (x + w + step) / blockSize;
+    int followingColumn = (x + width + step) / blockSize;
     int playerRow1 = y / blockSize;
     int playerRow2 = playerRow1 + 1;
     int playerRow3 = playerRow1 + 2;
@@ -422,15 +422,15 @@ class Player { // Hero: Player
     if (velocity <= 20) velocity += acceleration;
 
     int nx = x / blockSize;
-    int nx1 = (x + w) / blockSize;
-    int ny = (y + h + velocity) / blockSize;
+    int nx1 = (x + width) / blockSize;
+    int ny = (y + height + velocity) / blockSize;
 
     if (gameMap[ny][nx] == AIR_ID) {
       if (gameMap[ny][nx1] == AIR_ID) {
         y += velocity;
       }
     } else {
-      y = ny * blockSize - h;
+      y = ny * blockSize - height;
       velocity = 0;
     }
   }
@@ -456,7 +456,7 @@ class Player { // Hero: Player
 
     int nx = x / blockSize;
     int playerTopRow = y / blockSize;
-    int playerBottomRow = (y + h) / blockSize;
+    int playerBottomRow = (y + height) / blockSize;
 
     if (gameMap[playerTopRow][nx] == LADDER_ID) {
       updateFrame('U');
@@ -466,7 +466,7 @@ class Player { // Hero: Player
     if (gameMap[playerTopRow][nx] == AIR_ID && 
         gameMap[playerBottomRow][nx] == LADDER_ID &&
         gameMap[playerTopRow + 1][nx] == LADDER_ID)
-      y = (y / blockSize + 1) * blockSize - h;
+      y = (y / blockSize + 1) * blockSize - height;
   }
 
   void moveDownLadder() {
@@ -474,7 +474,7 @@ class Player { // Hero: Player
     isClimbingDown = false;
 
     int nx = x / blockSize;
-    int ny = (y + h + 5) / blockSize;
+    int ny = (y + height + 5) / blockSize;
 
     if (gameMap[ny][nx] == LADDER_ID) {
       updateFrame('U');
@@ -544,8 +544,8 @@ class Player { // Hero: Player
          break;
      }
 
-     w = currentFrame->width;
-     h = currentFrame->height;
+     width = currentFrame->width;
+     height = currentFrame->height;
    }
 
    bool isPassThroughBlock(int row, int column) {
