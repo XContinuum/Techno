@@ -266,32 +266,23 @@ class Text {
   }
 
   int letterCategory(char c) {
-    int ASCII = static_cast<int>(c);
-    if (getCode(c) != NULL) {
-      if (ASCII - 97 >= 0) {  // low
-        return 'L';
-      } else if (ASCII - 65 >= 0) {  // up
-        return 'U';
-      } else if (ASCII - 48 >= 0) {  // num
-        return 'N';
-      }
-    }
+    int ascii = static_cast<int>(c);
+
+    if (getCode(c) != NULL) return 'O'; // other?
+    if (ascii - 97 >= 0) return 'L';  // low
+    if (ascii - 65 >= 0) return 'U';  // up
+    if (ascii - 48 >= 0) return 'N';  // num
 
     return 'O';
   }
   int convert(char c) { // convertion: convert: getIndex
     int code = getCode(c);
+    int ascii = static_cast<int>(c);
 
-    if (code != NULL) return code;
-
-    int ASCII = static_cast<int>(c);
-    if (ASCII - 97 >= 0) {  // low
-      return ASCII - 97;
-    } else if (ASCII - 65 >= 0) {  // up
-      return ASCII - 65 + 26;
-    } else if (ASCII - 48 >= 0) {  // num
-      return ASCII - 48 + 52;
-    }
+    if (code != NULL) return code; // other
+    if (ascii - 97 >= 0) return ascii - 97;  // low
+    if (ascii - 65 >= 0) return ascii - 65 + 26;  // up
+    if (ascii - 48 >= 0) return ascii - 48 + 52;  // num
 
     return 0;
   }
