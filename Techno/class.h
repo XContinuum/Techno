@@ -366,7 +366,7 @@ class Player { // Hero: Player
   Player(int x, int y) {
     this->x = x;
     this->y = y;
-    
+
     rightWalk = loadAssets("Images/player/playerR%d.bmp", 5, WHITE);
     leftWalk = loadAssets("Images/player/playerL%d.bmp", 5, WHITE);
 
@@ -560,13 +560,12 @@ class Player { // Hero: Player
 
 class Fire {
  public:
-  int x, y;
-  int frame = 0;
-  Sprite *currentFrame; // currentSprite: currentFrame
-
   static int counter;
 
  private:
+  int x, y;
+  int frame = 0;
+  Sprite *currentFrame; // currentSprite: currentFrame
   Sprite *assets[3]; // Image: assets
   int startTime;
 
@@ -585,6 +584,10 @@ class Fire {
 
     frame = (frame + 1) % 3;
     currentFrame = assets[frame];
+  }
+
+  void draw(Param *p) {
+    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
  private:

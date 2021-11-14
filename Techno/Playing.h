@@ -95,9 +95,7 @@ void drawEntities(int cursorX, int cursorY) {
   paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
-    paramDraw->draw(fireEntities[i]->x, fireEntities[i]->y,
-                    fireEntities[i]->currentFrame->width,
-                    fireEntities[i]->currentFrame->height, fireEntities[i]->currentFrame);
+    fireEntities[i]->draw(paramDraw);
   }
 
   for (int i = 0; i < Door::counter; i++) {
