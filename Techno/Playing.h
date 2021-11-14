@@ -767,29 +767,30 @@ void updateFrames(int clickedX, int clickedY) {
   // BONUS+++
 
   // DOOR+++
-  for (int i = 0; i < Door::counter; i++) {
-    if (didClickRightButton && doorEntities[i]->contains(clickedX, clickedY)) {
+  if (didClickRightButton) {
+    for (int i = 0; i < Door::counter; i++) {
+      if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
+      
       updateFrame(gameMap);
-      didClickRightButton = false;
     }
   }
   // DOOR---
 
   // FinalDoor+++
-  bool isHoldingKey = inventory->cells[0] == 2;
+  if (didClickRightButton) {
+    bool isHoldingKey = inventory->cells[0] == INV_KEY;
 
-  for (int i = 0; i < FinalDoor::counter; i++) {
-    if (didClickRightButton && finalDoor[i]->contains(clickedX, clickedY)) {
-      if (isHoldingKey) {
-        finalDoor[i]->updateFrame(gameMap);
-        didClickRightButton = false;
-      } else {
-        finalDoor[i]->needsKey = true;
+    for (int i = 0; i < FinalDoor::counter; i++) {
+      if (finalDoor[i]->contains(clickedX, clickedY)) {
+        if (isHoldingKey) {
+          finalDoor[i]->updateFrame(gameMap);
+        } else {
+          finalDoor[i]->needsKey = true;
+        }
       }
-    }
-
-    if (!finalDoor[i]->contains(clickedX, clickedY)) {
-      finalDoor[i]->needsKey = false;
+      else {
+        finalDoor[i]->needsKey = false;
+      }
     }
   }
   // FinalDoor---
