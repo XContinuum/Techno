@@ -444,8 +444,6 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
                 clickedY = msg.pt.y - top;
 
                 didClickLeftButton = true;
-
-                Chest::SetPosition(clickedX, clickedY);
             }
 
             if (msg.message == WM_RBUTTONUP) {

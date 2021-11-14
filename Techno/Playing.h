@@ -468,12 +468,7 @@ void clearClassInformation() {
   Chest::dt = 0;
   Chest::timer = 0;
   Chest::timer1 = 0;
-
   Chest::counter = 0;
-  Chest::Xi = 0;
-  Chest::Yi = 0;
-
-  Chest::iLmb = false;
   //------
   MovingBlock::counter = 0;
   PressurePlate::counter = 0;
@@ -632,7 +627,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // F        F       F
 
   inventoryMoveEvents(clickedX, clickeY);
-  chestMoveEvents();
+  chestMoveEvents(clickedX, clickeY);
 
   //++++++
   Keyboard key = keyboardMapping(buffer);
@@ -724,15 +719,14 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
 
   for (int i = 0; i < Chest::counter; i++) chest[i]->move = !inventory->move;
 }
-void chestMoveEvents() {
+void chestMoveEvents(int clickedX, int clickedY) {
+  if (!didClickLeftButton) return;
+  
   for (int i = 0; i < Chest::counter; i++) {
-    bool clickedChest = chest[i]->isWithinInventory(Chest::Xi, Chest::Yi);
+    if (!chest[i]->isWithinInventory(clickedX, clickedY)) continue;
+    if (chest[i]->isChestLocked) continue;
 
-    if (!(clickedChest && !chest[i]->isChestLocked && Chest::iLmb)) {
-      continue;
-    }
-
-    int selectedChestCell = chest[i]->selectedChestCell(Chest::Xi, Chest::Yi);
+    int selectedChestCell = chest[i]->selectedChestCell(clickedX, clickedY);
 
     if (chest[i]->move) {
       if (selectedChestCell != -1 && chest[i]->check != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
@@ -753,10 +747,6 @@ void chestMoveEvents() {
         chest[i]->items[selectedChestCell] = INV_EMPTY_CELL;
       }
     }
-
-    Chest::Xi = i;
-    Chest::Yi = i;
-    Chest::iLmb = false;
   }
 }
 void showChestToolTip(int i, int mouseX, int mouseY) {

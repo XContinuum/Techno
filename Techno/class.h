@@ -879,10 +879,7 @@ class Chest {
   bool isChestLocked = true; // showC: showChestContents: isChestUnlocked: isChestLocked
   bool move = false; // move:
 
-  static bool iLmb; // iLmb:
   static int counter; // counter:
-  static int Xi; // Xi:
-  static int Yi; // Yi:
   static int dt; // dt:
   static int timer; // timer:
   static int timer1; // timer1:
@@ -970,11 +967,6 @@ class Chest {
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
-  static void SetPosition(int X, int Y) { // SetPosition
-    Xi = X;
-    Yi = Y;
-    iLmb = true;
-  }
   static void Timer() {
     if (timer1 == 0) timer1 = timeGetTime();
 
@@ -1221,9 +1213,6 @@ int Chest::timer = 0;
 int Chest::timer1 = 0;
 
 int Chest::counter = 0;
-bool Chest::iLmb = false;
-int Chest::Xi = 0;
-int Chest::Yi = 0;
 
 class PressurePlate { // ButtonON: PressurePlate
  public:
