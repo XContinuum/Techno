@@ -416,7 +416,6 @@ void playLoop(int cursorX, int cursorY, int clickedX, int clickedY) { // ★★�
     playerEvents();
   }
 
-  closeTheBook();
   menuPause(cursorX, cursorY, clickedX, clickedY);
 }
 void mission(int cursorX, int cursorY, int clickedX, int clickedY) {
@@ -523,6 +522,21 @@ void playerEvents() {
       }
       break;
 
+    case KEY_RETURN:
+      for (int i = 0; i < Book::counter; i++) {
+        if (!bookEntities[i]->isOpen) continue;
+        
+        bookEntities[i]->show = false;
+        isBookMenuOpen = false;
+
+        bookEntities[i]->closeBook();
+      }
+      break;
+
+    case KEY_ESCAPE:
+      isPaused = true;
+      break;
+
     case KEY_N:
       inventory->addItem(INV_KEY);
       break;
@@ -581,24 +595,9 @@ void playerEvents() {
   }
 }
 
-void closeTheBook() {
-  Keyboard key = keyboardMapping(buffer);
-  if (key != KEY_RETURN) return;
-
-  for (int i = 0; i < Book::counter; i++) {
-    if (bookEntities[i]->isOpen) {
-      bookEntities[i]->show = false;
-      isBookMenuOpen = false;
-      
-      bookEntities[i]->closeBook();
-    }
-  }
-}
 void menuPause(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: buffer, isPaused, pauseMenuButtons, playMode
   // External: isInitialState
-  Keyboard key = keyboardMapping(buffer);
-  if (key == KEY_ESCAPE) isPaused = true;
   if (!isPaused) return;
 
   for (int i = 0; i < 4; i++) {
@@ -672,12 +671,12 @@ void didPlayerTouchBonus() {
 
     if (bottomLeft || bottomRight) {
       score += 10;
+      bonusEntities[i]->show = false;
 
       char* sc = new char[100];
       sprintf(sc, "score:%d", score);
 
       scoreText->changeText(sc); // does not mutate parameter
-      bonusEntities[i]->show = false;
     }
   }
 }
