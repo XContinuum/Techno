@@ -559,7 +559,7 @@ class Fire {
  public:
   int x, y;
   int frame = 0;
-  Sprite *currentSprite;
+  Sprite *currentFrame; // currentSprite: currentFrame
 
   static int counter;
 
@@ -574,14 +574,14 @@ class Fire {
 
     assets = loadAssets("Images/fire%d.bmp", 3, WHITE);
 
-    currentSprite = assets[0];
+    currentFrame = assets[0];
     counter++;
   }
   void updateFrame() {  // ChangeCadr: updateFrame
     if (!shouldUpdate()) return;
 
     frame = (frame + 1) % 3;
-    currentSprite = assets[frame];
+    currentFrame = assets[frame];
   }
 
  private:
