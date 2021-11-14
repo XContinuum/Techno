@@ -101,24 +101,18 @@ class NeoElement : public Sprite, public Button {
 };
 class NeoSprite : public Sprite {
  public:
-  int w, h;
+  NeoSprite(char *name) : Sprite(name) {}
+  NeoSprite(char *name, int transparentColor) : Sprite(name, transparentColor) {}
 
- public:
-  NeoSprite(char *name) : Sprite(name) {
-    w = width;
-    h = height;
-  }
-  NeoSprite(char *name, int trColor) : Sprite(name, trColor) {
-    w = width;
-    h = height;
-  }
+  void AddImage(int x, int y, Sprite *sprite) { // AddImage: addImage
+    for (int i = y; i < y + sprite->height; i++) {
+      for (int j = x; j < x + sprite->width; j++) {
+        int index = (j - x) + (i - y) * sprite->width;
+        int pixel = sprite->img[index];
 
-  void AddImage(int x, int y, Sprite *sp) {
-    for (int i = y; i < y + sp->height; i++) {
-      for (int j = x; j < x + sp->width; j++) {
-        if (j <= width && i <= height &&
-            sp->img[(j - x) + (i - y) * sp->width] != TransparentColor)
-          img[j + i * width] = sp->img[(j - x) + (i - y) * sp->width];
+        if (j <= width && i <= height && pixel != TransparentColor) {
+          img[j + i * width] = sprite->img[index];
+        }
       }
     }
   }
@@ -153,12 +147,12 @@ class NeoSprite : public Sprite {
     std::ofstream os(name, std::ios::binary);
 
     unsigned char signature[2] = {'B', 'M'};
-    unsigned int fileSize = 14 + 40 + w * h * 4;
+    unsigned int fileSize = 14 + 40 + width * height * 4;
     unsigned int reserved = 0;
     unsigned int offset = 14 + 40;
 
     unsigned int headerSize = 40;
-    unsigned int dimensions[2] = {w, h};
+    unsigned int dimensions[2] = {width, height};
     unsigned short colorPlanes = 1;
     unsigned short bpp = 32;
     unsigned int compression = 0;
