@@ -90,8 +90,8 @@ class NeoElement : public Sprite, public Button {
       : Sprite(name, trColor), Button(name, trColor) {}
 
   void changeColor(int from, int to) { // ChangeColor: changeColor
-    for (int i = 0; i < height; ++i)
-      for (int j = 0; j < width; ++j)
+    for (int i = 0; i < height; i++)
+      for (int j = 0; j < width; j++)
         if (Button::image->img[j + i * width] == from)
           Button::image->img[j + i * width] = to;
   }
@@ -119,11 +119,16 @@ class NeoSprite : public Sprite {
       }
     }
   }
-  void AddImage(int x, int y, Sprite *sp, int i) {
-    for (int i = y; i < y + sp->height; i++) {
-      for (int j = x; j < x + sp->width; j++) {
-        if (j <= width && i <= height)
-          img[j + i * width] = sp->img[(j - x) + (i - y) * sp->width];
+  void AddImage(int x, int y, Sprite *sprite, int i) { // AddImage: addImage
+    for (int i = 0; i < sprite->height; i++) {
+      for (int j = 0; j < sprite->width; j++) {
+        if (j + x > width) continue;
+        if (i + y > height) continue; // TODO: should return?
+
+        int pos1 = j + i * sprite->width;
+        int pos2 = (j + x) + (i + y) * width;
+
+        img[pos2] = sprite->img[pos1];
       }
     }
   }
