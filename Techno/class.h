@@ -1291,24 +1291,27 @@ class MovingBlock { // BlockMoves: MovingBlock
 
     if (y > finalY) {
       gameMap[initialY / blockSize + 1][x / blockSize] = AIR_ID;
-
-      y -= std::min(y - finalY, 5);
     } else {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
-      return false;
     }
 
-    return true;
+    if (y > finalY) {
+      y -= std::min(y - finalY, 5);
+    }
+
+    return y > finalY;
   }
   void moveDown(Map gameMap) { // BlockMoveDown: moveDown
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
     if (y < initialY) {
       gameMap[finalY / blockSize + 1][x / blockSize] = AIR_ID;
-
-      y += std::min(initialY - y, 5);
     } else {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
+    }
+
+    if (y < initialY) {
+      y += std::min(initialY - y, 5);
     }
   }
 
