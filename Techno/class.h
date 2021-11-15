@@ -24,7 +24,7 @@
 #define CLOSED_CHEST_IMG "Images/chest/closed_chest.bmp"
 
 #define PADLOCK_IMG "Images/chest/padlock.bmp"
-#define LIGHT_LOCKER_IMG "Images/chest/highlighted_padlock.bmp"
+#define HIGHLIGHTED_PADLOCK_IMG "Images/chest/highlighted_padlock.bmp"
 #define CIRCLE_IMG "Images/chest/padlock_circle.bmp"
 
 #define MOVING_BLOCK_IMG "Images/blockM.bmp"
@@ -925,7 +925,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   
   Button *lockInstructions; // lock: lockInstructions
   Button *padlock; // locker: padlock
-  Button *lockerLight; // LockerLight: lockerLight
+  Button *highlightPadlock; // LockerLight: lockerLight: highlightPadlock
   Button *circle; // lOK: circle
 
   LockAngle *lockAngle; // ar: lockAngle
@@ -1057,10 +1057,10 @@ class Chest { // Chest should be split into three classes: One for inventory man
   // ---------------------------------------------------------------
 
   void highlightLock(int cursorX, int cursorY) {
-    if (!lockerLight->contains(cursorX, cursorY)) return;
+    if (!highlightPadlock->contains(cursorX, cursorY)) return;
     int distance = distanceFromLocker(cursorX, cursorY);
 
-    lockerLight->show = distance > 55 && distance < 88;  // within the ring
+    highlightPadlock->show = distance > 55 && distance < 88;  // within the ring
   }
 
   void shouldCloseLockerView(const Inventory *inventory, int clickedX, int clickedY) {
@@ -1078,7 +1078,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   }
 
   void openLock(int clickedX, int clickedY) { // OpenLock: openLock:
-    if (!lockerLight->show) return;
+    if (!highlightPadlock->show) return;
     if (!padlock->contains(clickedX, clickedY)) return;
 
     int lockNumer = calculatePickedNumber(clickedX, clickedY);
@@ -1132,7 +1132,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
     lockAngle->draw(p);
     combinationText->draw(p, (int[2]){currentDigit, currentDigit + 1}, 2, VIVID_RED);
-    lockerLight->draw(p);
+    highlightPadlock->draw(p);
     circle->draw(p);
     questionText->draw(p);
 
@@ -1169,12 +1169,12 @@ class Chest { // Chest should be split into three classes: One for inventory man
     lockInstructions = new Button(x, y, LOCK_INSTRUCTIONS_IMG, WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
     padlock = new Button(x + 99, y + 107, PADLOCK_IMG, WHITE);
-    lockerLight = new Button(x + 99, y + 107, LIGHT_LOCKER_IMG, WHITE);
+    highlightPadlock = new Button(x + 99, y + 107, HIGHLIGHTED_PADLOCK_IMG, WHITE);
     circle = new Button(x + 156, x + 161, CIRCLE_IMG, WHITE);
 
     lockInstructions->show = true;
     padlock->show = true;
-    lockerLight->show = false;
+    highlightPadlock->show = false;
     circle->show = false;
 
     combinationText = new Text(x + 199, y + 207, "00 00 00", DARK_GRAYISH_BLUE);
