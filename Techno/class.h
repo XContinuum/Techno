@@ -901,7 +901,7 @@ class Inventory { // Inventar: Inventory
   }
 };
 
-class Chest {
+class Chest { // Chest should be split into three classes: One for inventory management, one for lock management and one for question loading
  public:
   int x, y;
   int check = 0; // check:
@@ -912,9 +912,6 @@ class Chest {
   bool move = false; // move:
 
   static int counter; // counter:
-  static int dt; // dt:
-  static int timer; // timer:
-  static int timer1; // timer1:
 
  private:
   Sprite *currentFrame; // ImageView: currentFrame
@@ -953,6 +950,7 @@ class Chest {
   const int inventoryChestLeft = 71;
   const int inventorySquareDim = 25;  // size of a single cell
   const int spaceBetweenCells = 5;
+  int startTime;
 
  public:
   Chest(int x, int y) {
@@ -997,13 +995,6 @@ class Chest {
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
-  }
-
-  static void Timer() {
-    if (timer1 == 0) timer1 = timeGetTime();
-
-    timer = timeGetTime();
-    dt = timer - timer1;
   }
 
   void updateChestCells() { // ChangeImages: updateChestCells
@@ -1095,24 +1086,28 @@ class Chest {
     lockAngle->frame = lockNumer;
     displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
   }
-  
+
   void verifyCombination() {
     if (combination() == answer && currentDigit == 0) {
       correctCombination = true;
     }
 
     if (correctCombination == true) {
-      Timer();
-
-      if (dt > 2000) {  // shows success checkmark for 2 seconds then dissapears
+      if (shouldHideSuccessCheckmark()) {  // shows success checkmark for 2 seconds then dissapears
         isChestLocked = false;
         correctCombination = false;
-
-        dt = 0;
-        timer = 0;
-        timer1 = 0;
       }
     }
+  }
+  bool shouldHideSuccessCheckmark() {
+    // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
+    if (startTime == NULL) startTime = timeGetTime();
+    int timeSinceLastFrame = timeGetTime() - startTime;
+
+    if (timeSinceLastFrame > 2000) {
+      startTime = timeGetTime();
+    }
+    return timeSinceLastFrame > 2000;
   }
   int combination() {
       return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
@@ -1245,10 +1240,6 @@ class Chest {
      codeY = (screenPixelHeight - code->height) / 2;
    }
 };
-int Chest::dt = 0;
-int Chest::timer = 0;
-int Chest::timer1 = 0;
-
 int Chest::counter = 0;
 
 class PressurePlate { // ButtonON: PressurePlate

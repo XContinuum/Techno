@@ -466,11 +466,6 @@ void clearClassInformation() {
   MovingBlock::counter = 0;
   PressurePlate::counter = 0;
   FinalDoor::counter = 0;
-
-  //------
-  Chest::dt = 0;
-  Chest::timer = 0;
-  Chest::timer1 = 0;
 }
 void resetEntities() {
   for (int i = 0; i < 10; i++) {
@@ -652,7 +647,7 @@ void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clicked
       chest[i]->goToNextDigit(clickedX, clickedY);
       chest[i]->openLock(clickedX, clickedY);
     }
-    
+
     chest[i]->verifyCombination();
   }
 }
