@@ -821,24 +821,11 @@ class Inventory { // Inventar: Inventory
     if (show) {
       p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
-      for (int i = 0; i < inventorySize; i++) {
-        if (cells[i] != INV_EMPTY_CELL) {
-          std::tie(x, y) = cellPosition(i);
-
-          p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
-                  cellSprites[i]);
-        }
-      }
+      drawNitems(inventorySize);
     } else {
-      p->draw(x, y, inventorySprite->width, inventorySprite->height,
-              inventorySprite);
+      p->draw(x, y, inventorySprite->width, inventorySprite->height, inventorySprite);
 
-      if (cells[0] != INV_EMPTY_CELL) {
-        std::tie(x, y) = cellPosition(0);
-
-        p->draw(x, y, cellSprites[0]->width, cellSprites[0]->height,
-                cellSprites[0]);
-      }
+      drawNitems(1);
     }
 
     if (showTooltip)
@@ -893,11 +880,22 @@ class Inventory { // Inventar: Inventory
   }
 
   private:
-  std::tuple<int, int> cellPosition(int cellIndex) {
-      int offset = cellIndex == 0 ? -7 : 0;
+   void drawNitems(int n) {
+     for (int i = 0; i < n; i++) {
+       if (cells[i] == INV_EMPTY_CELL) continue;
+       std::tie(x, y) = cellPosition(i);
 
-      return std::tuple<int, int>{17 + cellIndex * (cellSpace + cellSize) + offset, 7};
-  }
+       p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
+               cellSprites[i]);
+     }
+   }
+
+   std::tuple<int, int> cellPosition(int cellIndex) {
+     int offset = cellIndex == 0 ? -7 : 0;
+
+     return std::tuple<int, int>{
+         17 + cellIndex * (cellSpace + cellSize) + offset, 7};
+   }
 };
 
 class Chest { // Chest should be split into three classes: One for inventory management, one for lock management and one for question loading
