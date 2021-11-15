@@ -1272,14 +1272,13 @@ class MovingBlock { // BlockMoves: MovingBlock
  private:
   Sprite *asset; // Image: asset
   int finalY;
-  int initialX, initialY; // pX, pY
+  int initialY; // pX, pY
   int startTime;
 
  public:
   MovingBlock(int x, int y, int finalY) {
     this->x = x;
     this->y = y;
-    this->initialX = x;
     this->initialY = y;
     this->finalY = finalY;
     asset = new Sprite(MOVING_BLOCK_IMG);
@@ -1291,12 +1290,10 @@ class MovingBlock { // BlockMoves: MovingBlock
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
     if (y > finalY) {
-      gameMap[initialY / blockSize + 1][initialX / blockSize] = AIR_ID;
+      gameMap[initialY / blockSize + 1][x / blockSize] = AIR_ID;
 
       y -= std::min(y - finalY, 5);
-    }
-
-    if (y == finalY) {
+    } else {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
       return false;
     }
@@ -1310,9 +1307,7 @@ class MovingBlock { // BlockMoves: MovingBlock
       gameMap[finalY / blockSize + 1][x / blockSize] = AIR_ID;
 
       y += std::min(initialY - y, 5);
-    }
-
-    if (y == initialY) {
+    } else {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
     }
   }
