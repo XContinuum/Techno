@@ -649,7 +649,8 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     chest[i]->highlightLock(cursorX, cursorY);
 
     if (didClickLeftButton) {
-      chest[i]->openLock(inventory, clickedX, clickedY);
+      chest[i]->shouldCloseLockerView(inventory, clickedX, clickedY);
+      chest[i]->openLock(clickedX, clickedY);
       chest[i]->verifyCombination();
     }
   }

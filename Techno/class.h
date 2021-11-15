@@ -1072,10 +1072,12 @@ class Chest {
     lockerLight->show = distance > 55 && distance < 88;  // within the ring
   }
 
-  void openLock(const Inventory *inventory, int clickedX, int clickedY) { // OpenLock: openLock
-    if (!lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
+  void shouldCloseLockerView(const Inventory *inventory, int clickedX, int clickedY) {
+    if (!lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))  // did not clicked lock
       isOpen = false;
+  }
 
+  void openLock(int clickedX, int clickedY) { // OpenLock: openLock: 
     if (circle->contains(clickedX, clickedY)) { // left click circle
       circle->show = true;
       currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
