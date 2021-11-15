@@ -802,12 +802,13 @@ class Inventory { // Inventar: Inventory
   
   Sprite *cellSprites[9]; // ImObjects: cellSprites
 
+  // "Images/inventory/inventory_open.bmp"
+  const int xOffset = 17;
+  const int yOffset = 7;
+
   const int cellSize = 25;
   const int cellSpace = 7;
   const int inventorySize = 9;
-
-  const int xOffset = 17;
-  const int yOffset = 7;
 
  public:
   Inventory() {
@@ -833,13 +834,6 @@ class Inventory { // Inventar: Inventory
 
     if (showTooltip)
       p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
-  }
-  void updateCellSprites() { // ChangeImages: updateCellSprites
-    for (int i = 0; i < inventorySize; i++) {
-      if (cells[i] == INV_EMPTY_CELL) continue;
-
-      cellSprites[i] = item_assets[cells[i]];
-    }
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + inventorySprite->width && y >= this->y && y <= this->y + inventorySprite->height;
@@ -880,22 +874,31 @@ class Inventory { // Inventar: Inventory
       if (cells[i] == INV_KEY) cells[i] = INV_EMPTY_CELL;
   }
 
-  private:
-   void drawNitems(int n) {
-     for (int i = 0; i < n; i++) {
-       if (cells[i] == INV_EMPTY_CELL) continue;
-       std::tie(x, y) = cellPosition(i);
+ private:
+  void updateCellSprites() {  // ChangeImages: updateCellSprites
+    for (int i = 0; i < inventorySize; i++) {
+      if (cells[i] == INV_EMPTY_CELL) continue;
 
-       p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
-               cellSprites[i]);
-     }
-   }
+      cellSprites[i] = item_assets[cells[i]];
+    }
+  }
+  
+  void drawNitems(int n) {
+    for (int i = 0; i < n; i++) {
+      if (cells[i] == INV_EMPTY_CELL) continue;
+      std::tie(x, y) = cellPosition(i);
 
-   std::tuple<int, int> cellPosition(int cellIndex) {
-     int offset = cellIndex == 0 ? -7 : 0;
+      p->draw(x, y, cellSprites[i]->width, cellSprites[i]->height,
+              cellSprites[i]);
+    }
+  }
 
-     return std::tuple<int, int>{xOffset + cellIndex * (cellSpace + cellSize) + offset, yOffset};
-   }
+  std::tuple<int, int> cellPosition(int cellIndex) {
+    int offset = cellIndex == 0 ? -7 : 0;
+
+    return std::tuple<int, int>{
+        xOffset + cellIndex * (cellSpace + cellSize) + offset, yOffset};
+  }
 };
 
 class Chest { // Chest should be split into three classes: One for inventory management, one for lock management and one for question loading
