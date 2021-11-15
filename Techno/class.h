@@ -17,7 +17,7 @@
 #define INVENTORY_TOOLTIP_IMG "Images/inventory/tool_tip.bmp"
 
 // Chest
-#define CHEST_CODE_IMG "Images/chest/lock_instructions.bmp"
+#define LOCK_INSTRUCTIONS_IMG "Images/chest/lock_instructions.bmp"
 #define CHEST_TOOLTIP_IMG "Images/chest/tool_tip.bmp"
 #define CHEST_GRID_IMG "Images/chest/chest_grid.bmp"
 #define SUCCESS_UNLOCK_IMG "Images/chest/success_unlock_asset.bmp"
@@ -919,7 +919,6 @@ class Chest { // Chest should be split into three classes: One for inventory man
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
 
-  Sprite *code; // code:
   Sprite *toolTip; // OpenExp: toolTip
   Sprite *chestGrid; // Content: chestGrid
   Sprite *successUnlockAsset; // OkOpen: successUnlockAsset
@@ -959,7 +958,6 @@ class Chest { // Chest should be split into three classes: One for inventory man
     this->x = x;
     this->y = y;
 
-    code = new Sprite(CHEST_CODE_IMG);
     toolTip = new Sprite(CHEST_TOOLTIP_IMG, WHITE);
     chestGrid = new Sprite(CHEST_GRID_IMG, WHITE);
     successUnlockAsset = new Sprite(SUCCESS_UNLOCK_IMG, WHITE);
@@ -1168,7 +1166,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
     int x = (screenPixelWidth - lock->w) / 2;
     int y = (screenPixelHeight - lock->h) / 2;
 
-    lock = new Button(x, y, CHEST_CODE_IMG, WHITE);
+    lock = new Button(x, y, LOCK_INSTRUCTIONS_IMG, WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
     locker = new Button(x + 99, y + 107, LOCKER_IMG, WHITE);
     lockerLight = new Button(x + 99, y + 107, LIGHT_LOCKER_IMG, WHITE);
@@ -1237,8 +1235,8 @@ class Chest { // Chest should be split into three classes: One for inventory man
    }
 
    void setupCodeCoordinates() {
-     codeX = (screenPixelWidth - code->width) / 2;
-     codeY = (screenPixelHeight - code->height) / 2;
+     codeX = (screenPixelWidth - lock->w) / 2;
+     codeY = (screenPixelHeight - lock->h) / 2;
    }
 };
 int Chest::counter = 0;
