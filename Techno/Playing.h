@@ -21,8 +21,8 @@ const int blockSize = 20;
 
 #define AIR_ID 0
 #define LADDER_ID 3
-#define DOOR_ID 4
-#define CLOSED_DOOR_ID 5 // I think so?
+#define CLOSED_DOOR_ID 4
+#define OPEN_DOOR_ID 5
 #define MOVING_BLOCK_ID 6
 #define FINAL_DOOR_ID 8
 #define CLOSED_FINAL_DOOR_ID 9 // Final open door?
@@ -369,8 +369,8 @@ void loadDoors() {
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
       switch (gameMap[i][j]) {
-        case DOOR_ID: // Load door
-          if (gameMap[i - 1][j] == DOOR_ID) continue;
+        case CLOSED_DOOR_ID: // Load door
+          if (gameMap[i - 1][j] == CLOSED_DOOR_ID) continue;
           
           doorEntities[Door::counter - 1] = new Door(j * blockSize, i * blockSize); 
           break;

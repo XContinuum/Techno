@@ -637,13 +637,13 @@ class Door {
   void switchDoorState(Map gameMap) {
     int row = y / blockSize;
     int column = x / blockSize;
-
-    gameMap[row][column] = isOpen ? 4 : 5;
-    gameMap[row + 1][column] = isOpen ? 4 : 5;
-    gameMap[row + 2][column] = isOpen ? 4 : 5;
-    gameMap[row + 3][column] = isOpen ? 4 : 5;
-
     isOpen = !isOpen;
+    int doorId = isOpen ? OPEN_DOOR_ID : DOOR_ID;
+
+    gameMap[row][column] = doorId;
+    gameMap[row + 1][column] = doorId;
+    gameMap[row + 2][column] = doorId;
+    gameMap[row + 3][column] = doorId;
   }
 };
 int Door::counter = 0;
