@@ -27,10 +27,10 @@
 #define HIGHLIGHTED_PADLOCK_IMG "Images/chest/highlighted_padlock.bmp"
 #define CIRCLE_IMG "Images/chest/padlock_circle.bmp"
 
-#define MOVING_BLOCK_IMG "Images/blockM.bmp"
+#define MOVING_BLOCK_IMG "Images/moving_block.bmp"
 #define PRESSURE_PLATE_IMG "Images/pressure_plate.bmp"
 
-#define NEED_KEY_IMG "Images/door/required_key_message.bmp"
+#define REQUIRED_KEY_MSG_IMG "Images/door/required_key_message.bmp"
 
 Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
   Sprite **assets;
@@ -45,7 +45,7 @@ Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
   return assets;
 }
 
-auto item_assets = loadAssets("Images/o%d.bmp", 2, WHITE);
+auto item_assets = loadAssets("Images/item_%d.bmp", 2, WHITE);
 
 class Button { // Button: TappableArea
  public:
@@ -1356,7 +1356,7 @@ class FinalDoor {
     this->y = y;
     this->isEndDoor = isEndDoor;
 
-    needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
+    needKeyAsset = new Sprite(REQUIRED_KEY_MSG_IMG, WHITE);
     assets = loadAssets("Images/door/final_door_%d.bmp", 2, WHITE);
     currentFrame = assets[0];
 
