@@ -1086,14 +1086,16 @@ class Chest {
     }
   }
 
-  void openLock(int clickedX, int clickedY) { // OpenLock: openLock: 
-    if (lockerLight->show && locker->contains(clickedX, clickedY)) {  // left click
-      int lockNumer = calculatePickedNumber(clickedX, clickedY);
-      comboDigits[currentDigit] = lockNumer;
-      lockAngle->frame = lockNumer;
-      displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
-    }
+  void openLock(int clickedX, int clickedY) { // OpenLock: openLock:
+    if (!lockerLight->show) return;
+    if (!locker->contains(clickedX, clickedY)) return;
+
+    int lockNumer = calculatePickedNumber(clickedX, clickedY);
+    comboDigits[currentDigit] = lockNumer;
+    lockAngle->frame = lockNumer;
+    displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
   }
+  
   void verifyCombination() {
     if (combination() == answer && currentDigit == 0) {
       correctCombination = true;

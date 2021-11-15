@@ -651,8 +651,9 @@ void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clicked
       chest[i]->shouldCloseLockerView(inventory, clickedX, clickedY);
       chest[i]->goToNextDigit(clickedX, clickedY);
       chest[i]->openLock(clickedX, clickedY);
-      chest[i]->verifyCombination();
     }
+    
+    chest[i]->verifyCombination();
   }
 }
 void didPlayerPickupBook() {
