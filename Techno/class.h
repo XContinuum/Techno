@@ -1065,17 +1065,15 @@ class Chest {
   // loadQuestion {END}
   // ---------------------------------------------------------------
 
-  void openLock(const Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
+  void openLock(const Inventory *inventory, bool didClickLeftButton, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!isOpen) return;
 
-    if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
+    if (didClickLeftButton && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
       isOpen = false;
 
-    if (lmb && circle->contains(clickedX, clickedY)) { // left click circle
+    if (didClickLeftButton && circle->contains(clickedX, clickedY)) { // left click circle
       circle->show = true;
       currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
-
-      lmb = false;
     } else {
       circle->show = false;
     }
@@ -1086,13 +1084,11 @@ class Chest {
       lockerLight->show = distance > 55 && distance < 88; // within the ring
     }
 
-    if (lockerLight->show && lmb && locker->contains(clickedX, clickedY)) {  // left click
+    if (lockerLight->show && didClickLeftButton && locker->contains(clickedX, clickedY)) {  // left click
       int lockNumer = calculatePickedNumber(clickedX, clickedY);
       comboDigits[currentDigit] = lockNumer;
       lockAngle->frame = lockNumer;
       displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
-
-      lmb = false;
     }
 
     // Open++++

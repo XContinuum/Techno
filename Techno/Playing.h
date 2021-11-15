@@ -644,7 +644,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
     
   // Chest
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); // mutates didClickLeftButton
+    chest[i]->openLock(inventory, didClickLeftButton, clickedX, clickedY, cursorX, cursorY); 
   }
 }
 void didPlayerPickupBook() {
