@@ -1072,25 +1072,25 @@ class Chest {
     lockerLight->show = distance > 55 && distance < 88;  // within the ring
   }
 
-  void openLock(const Inventory *inventory, bool didClickLeftButton, int clickedX, int clickedY) { // OpenLock: openLock
-    if (didClickLeftButton && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
+  void openLock(const Inventory *inventory, int clickedX, int clickedY) { // OpenLock: openLock
+    if (!lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
       isOpen = false;
 
-    if (didClickLeftButton && circle->contains(clickedX, clickedY)) { // left click circle
+    if (circle->contains(clickedX, clickedY)) { // left click circle
       circle->show = true;
       currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
     } else {
       circle->show = false;
     }
 
-    if (lockerLight->show && didClickLeftButton && locker->contains(clickedX, clickedY)) {  // left click
+    if (lockerLight->show && locker->contains(clickedX, clickedY)) {  // left click
       int lockNumer = calculatePickedNumber(clickedX, clickedY);
       comboDigits[currentDigit] = lockNumer;
       lockAngle->frame = lockNumer;
       displayCombination(comboDigits[0], comboDigits[1], comboDigits[2]);
     }
-
-    // Open++++
+  }
+  void verifyCombination() {
     if (combination() == answer && currentDigit == 0) {
       correctCombination = true;
     }
@@ -1098,7 +1098,7 @@ class Chest {
     if (correctCombination == true) {
       Timer();
 
-      if (dt > 2000) { // shows success checkmark for 2 seconds then dissapears
+      if (dt > 2000) {  // shows success checkmark for 2 seconds then dissapears
         isChestLocked = false;
         correctCombination = false;
 
@@ -1107,7 +1107,6 @@ class Chest {
         timer1 = 0;
       }
     }
-    // Open----
   }
   int combination() {
       return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
@@ -1202,7 +1201,7 @@ class Chest {
    }
 
    int distanceFromLocker(int cursorX, int cursorY) {
-     int dx = cursorX - locker->x - locker->w / 2;
+     int dx = (cursorX - locker->x) - locker->w / 2;
      int dy = locker->h / 2 - (cursorY - locker->y);
      int distance = sqrt(dx * dx + dy * dy);
 
