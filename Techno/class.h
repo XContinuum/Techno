@@ -769,18 +769,18 @@ class LockAngle { // Arrow: LockAngle
   int frame = 0;
 
  private:
-  Sprite *arrowAssets[40];
+  Sprite *angleAssets[40]; // arrowAssets
 
  public:
   LockAngle(int x, int y) {
     this->x = x;
     this->y = y;
 
-    arrowAssets = loadAssets("Images/lock_angle/angle_%d.bmp", 40, WHITE);
+    angleAssets = loadAssets("Images/lock_angle/angle_%d.bmp", 40, WHITE);
   }
 
   void draw(Param *p) {
-    Sprite *currentFrame = arrowAssets[frame];
+    Sprite *currentFrame = angleAssets[frame];
 
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
@@ -906,7 +906,7 @@ class Inventory { // Inventar: Inventory
 class Chest { // Chest should be split into three classes: One for inventory management, one for lock management and one for question loading
  public:
   int x, y;
-  int check = 0; // check:
+  int selectedChestCell = 0; // check: selectedChestCell
   int items[chestRows * chestColumns]; // objects: items
 
   bool isOpen = false; // show: isOpen
