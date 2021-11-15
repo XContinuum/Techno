@@ -639,10 +639,11 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   didTouchPressurePlate();
   
   inventoryMoveEvents(clickedX, clickedY);
-  chestMoveEvents(clickedX, clickedY);
   doorInteractions(clickedX, clickedY);
-    
-  // Chest
+  chestMoveEvents(clickedX, clickedY);
+  chestLockerInteractions(cursorX, cursorY, clickedX, clickedY);
+}
+void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->isOpen) continue;
 
