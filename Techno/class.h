@@ -1077,14 +1077,16 @@ class Chest {
       isOpen = false;
   }
 
-  void openLock(int clickedX, int clickedY) { // OpenLock: openLock: 
-    if (circle->contains(clickedX, clickedY)) { // left click circle
+  void goToNextDigit(int clickedX, int clickedY) {
+    if (circle->contains(clickedX, clickedY)) {  // left click circle
       circle->show = true;
-      currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
+      currentDigit = (currentDigit + 1) % 3;
     } else {
       circle->show = false;
     }
+  }
 
+  void openLock(int clickedX, int clickedY) { // OpenLock: openLock: 
     if (lockerLight->show && locker->contains(clickedX, clickedY)) {  // left click
       int lockNumer = calculatePickedNumber(clickedX, clickedY);
       comboDigits[currentDigit] = lockNumer;

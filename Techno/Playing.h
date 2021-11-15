@@ -627,9 +627,7 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // interactiveObjects functions
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
-  // Global: inventory, chest, player, bookEntities, isBookMenuOpen, 
-  // External: didClickLeftButton
-  // Class: Chest class, Book class
+  // Global: inventory
 
   inventory->showTooltip = inventory->contains(cursorX, cursorY); // show or hide tool tip
   if (inventory->contains(clickedX, clickedY)) inventory->show = true;
@@ -651,6 +649,7 @@ void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clicked
 
     if (didClickLeftButton) {
       chest[i]->shouldCloseLockerView(inventory, clickedX, clickedY);
+      chest[i]->goToNextDigit(clickedX, clickedY);
       chest[i]->openLock(clickedX, clickedY);
       chest[i]->verifyCombination();
     }
