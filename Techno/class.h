@@ -1377,12 +1377,14 @@ class FinalDoor {
               needKeyAsset->width, needKeyAsset->height, needKeyAsset);
   }
 
-  void updateFrame(Map gameMap) {  // ChangeCadr: updateFrame
+  void updateFrame() {  // ChangeCadr: updateFrame
     if (doorType != 0) return;
     frame = (frame + 1) % 2;
 
     currentFrame = assets[frame];
+  }
 
+  void switchDoorState(Map gameMap) {
     int row = y / blockSize;
     int column = x / blockSize;
     isOpen = !isOpen;

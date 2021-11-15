@@ -760,7 +760,8 @@ void doorInteractions(int clickedX, int clickedY) {
   for (int i = 0; i < FinalDoor::counter; i++) {
     if (finalDoor[i]->contains(clickedX, clickedY)) {
       if (isHoldingKey) {
-        finalDoor[i]->updateFrame(gameMap);
+        finalDoor[i]->updateFrame();
+        finalDoor[i]->switchDoorState(gameMap);
       } else {
         finalDoor[i]->needsKey = true;
       }
