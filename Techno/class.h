@@ -923,7 +923,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   Sprite *chestGrid; // Content: chestGrid
   Sprite *successUnlockAsset; // OkOpen: successUnlockAsset
   
-  Button *lock; // lock:
+  Button *lockInstructions; // lock: lockInstructions
   Button *locker; // locker:
   Button *lockerLight; // LockerLight: lockerLight
   Button *circle; // lOK: circle
@@ -1064,7 +1064,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   }
 
   void shouldCloseLockerView(const Inventory *inventory, int clickedX, int clickedY) {
-    if (!lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))  // did not clicked lock
+    if (!lockInstructions->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY))  // did not clicked lock
       isOpen = false;
   }
 
@@ -1122,7 +1122,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
     p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   void drawOpenChest(const Param *p) { // drawC: drawOpenChest
-    lock->draw(p);
+    lockInstructions->draw(p);
 
     if (isChestLocked) {
       locker->draw(p); // locked chest
@@ -1137,8 +1137,8 @@ class Chest { // Chest should be split into three classes: One for inventory man
     questionText->draw(p);
 
     if (showCheckmark) {
-      int x = lock->x + 99 + 2;
-      int y = lock->y + 107;
+      int x = lockInstructions->x + 99 + 2;
+      int y = lockInstructions->y + 107;
       p->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
               successUnlockAsset);
     }
@@ -1163,16 +1163,16 @@ class Chest { // Chest should be split into three classes: One for inventory man
   }
 
   void initializeButtons() {
-    int x = (screenPixelWidth - lock->w) / 2;
-    int y = (screenPixelHeight - lock->h) / 2;
+    int x = (screenPixelWidth - lockInstructions->w) / 2;
+    int y = (screenPixelHeight - lockInstructions->h) / 2;
 
-    lock = new Button(x, y, LOCK_INSTRUCTIONS_IMG, WHITE);
+    lockInstructions = new Button(x, y, LOCK_INSTRUCTIONS_IMG, WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
     locker = new Button(x + 99, y + 107, LOCKER_IMG, WHITE);
     lockerLight = new Button(x + 99, y + 107, LIGHT_LOCKER_IMG, WHITE);
     circle = new Button(x + 156, x + 161, CIRCLE_IMG, WHITE);
 
-    lock->show = true;
+    lockInstructions->show = true;
     locker->show = true;
     lockerLight->show = false;
     circle->show = false;
@@ -1235,8 +1235,8 @@ class Chest { // Chest should be split into three classes: One for inventory man
    }
 
    void setupCodeCoordinates() {
-     codeX = (screenPixelWidth - lock->w) / 2;
-     codeY = (screenPixelHeight - lock->h) / 2;
+     codeX = (screenPixelWidth - lockInstructions->w) / 2;
+     codeY = (screenPixelHeight - lockInstructions->h) / 2;
    }
 };
 int Chest::counter = 0;
