@@ -30,7 +30,7 @@
 #define MOVING_BLOCK_IMG "Images/blockM.bmp"
 #define PRESSURE_PLATE_IMG "Images/pressure_plate.bmp"
 
-#define NEED_KEY_IMG "Images/door/NeedKey.bmp"
+#define NEED_KEY_IMG "Images/door/required_key_message.bmp"
 
 Sprite **loadAssets(char *ASSET_PATH_FORMAT, int total, int transparency) {
   Sprite **assets;
