@@ -1357,7 +1357,7 @@ class FinalDoor {
     this->doorType = doorType;
 
     needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
-    assets = loadAssets("Images/door/NextDoor%d.bmp", 2, WHITE);
+    assets = loadAssets("Images/door/final_door_%d.bmp", 2, WHITE);
     currentFrame = assets[0];
 
     if (doorType == 1) {
