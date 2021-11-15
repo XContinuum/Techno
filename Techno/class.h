@@ -905,7 +905,7 @@ class Chest {
  public:
   int x, y;
   int check = 0; // check:
-  int items[6 * 8]; // objects: items
+  int items[chestRows * chestColumns]; // objects: items
 
   bool isOpen = false; // show: isOpen
   bool isChestLocked = true; // showC: showChestContents: isChestUnlocked: isChestLocked
@@ -988,12 +988,12 @@ class Chest {
     int inventoryChestRight = 305;
     int inventoryChestBottom = 283;
 
-    int x1 = codeX + inventoryChestLeft;
-    int x2 = codeX + inventoryChestRight;
-    int y1 = codeY + inventoryChestTop;
-    int y2 = codeY + inventoryChestBottom;
+    int chestLeft = codeX + inventoryChestLeft;
+    int chestRight = codeX + inventoryChestRight;
+    int chestTop = codeY + inventoryChestTop;
+    int chestBottom = codeY + inventoryChestBottom;
 
-    return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+    return x >= chestLeft && x <= chestRight && y >= chestTop && y <= chestBottom;
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
@@ -1017,7 +1017,7 @@ class Chest {
   // ---------------------------------------------------------------
   // loadQuestion: TODO: move to its own class
   // ---------------------------------------------------------------
-  void loadQuestion(int level) { // LoadQuestion: loadQuestion
+  void loadQuestion(const int level) { // LoadQuestion: loadQuestion
     char* questionFile = readFile("Images/Data/questions.txt", 300);
 
     int i = 0;
@@ -1041,7 +1041,7 @@ class Chest {
 
     questionText = new Text(codeX + 15, codeY + 68, question, VERY_DARK_GRAY);
   }
-  int findDelimiter(char *str, int start, int end, char delimiter) {
+  int findDelimiter(const char *str, int start, int end, char delimiter) {
     int i = start;
 
     while (str[i] != delimiter && i < end) {
@@ -1051,7 +1051,7 @@ class Chest {
 
     return i;
   }
-  char* copyChunk(char* str, int start, int send) {
+  char* copyChunk(const char* str, int start, int send) {
     char* result = new char[end - start];
 
     for (int i = start; i < end; i++) {
@@ -1065,7 +1065,7 @@ class Chest {
   // loadQuestion {END}
   // ---------------------------------------------------------------
 
-  void openLock(Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
+  void openLock(const Inventory *inventory, bool &lmb, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
     if (!isOpen) return;
 
     if (lmb && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
@@ -1118,16 +1118,16 @@ class Chest {
       return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
   }
 
-  void draw(Param *p) {
+  void draw(const Param *p) {
     p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
-  void drawTooltip(Param *p, int cursorX, int cursorY) {
+  void drawTooltip(const Param *p, int cursorX, int cursorY) {
     bool showToolTip = contains(cursorX, cursorY);
     if (!showToolTip) return;
 
     p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
-  void drawOpenChest(Param *p) { // drawC: drawOpenChest
+  void drawOpenChest(const Param *p) { // drawC: drawOpenChest
     lock->draw(p);
 
     if (isChestLocked) {
