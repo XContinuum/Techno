@@ -388,10 +388,7 @@ class Player { // Hero: Player
     if (!isMovingRight) return;
     isMovingRight = false;
 
-    int followingColumn = (x + width + step) / blockSize;
-    int playerRow = y / blockSize;
-
-    if (canPassThrough(playerRow, followingColumn, gameMap)) {
+    if (canPlayerMoveRight(gameMap)) {
       updateFrame('R');
       x += step;
     }
@@ -401,14 +398,12 @@ class Player { // Hero: Player
     if (!isMovingLeft) return;
     isMovingLeft = false;
 
-    int previousColumn = (x - step) / blockSize;
-    int playerRow = y / blockSize;
-
-    if (canPassThrough(playerRow, previousColumn, gameMap)) {
+    if (canPlayerMoveLeft(gameMap)) {
       updateFrame('L');
       x -= step;
     }
   }
+
   void gravity(const Map gameMap) { // Gravitaton: gravity
     if (isJumping) return;
     if (!canFall) return;
@@ -538,6 +533,18 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
+   bool canPlayerMoveLeft(const Map gameMap) {
+     int previousColumn = (x - step) / blockSize;
+     int playerRow = y / blockSize;
+
+     return canPassThrough(playerRow, previousColumn, gameMap);
+   }
+   bool canPlayerMoveRight(const Map gameMap) {
+     int followingColumn = (x + width + step) / blockSize;
+     int playerRow = y / blockSize;
+
+     return canPassThrough(playerRow, followingColumn, gameMap);
+   }
    bool canPassThrough(int row, int column, const Map gameMap) {
      return isPassThroughBlock(row, column, gameMap) &&
             isPassThroughBlock(row + 1, column, gameMap) &&
