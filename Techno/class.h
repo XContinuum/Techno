@@ -638,7 +638,7 @@ class Door {
     int row = y / blockSize;
     int column = x / blockSize;
     isOpen = !isOpen;
-    int doorId = isOpen ? OPEN_DOOR_ID : DOOR_ID;
+    int doorId = isOpen ? OPEN_DOOR_ID : CLOSED_DOOR_ID;
 
     gameMap[row][column] = doorId;
     gameMap[row + 1][column] = doorId;
