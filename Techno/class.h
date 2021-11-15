@@ -715,10 +715,10 @@ class Bonus {
   int x, y;
   bool show = true;
 
-  Sprite *currentFrame;  // ImageView: currentFrame
   static int counter;
 
  private:
+  Sprite *currentFrame;  // ImageView: currentFrame
   int frame = 0;  // Cadr: frame
   int startTime;
   Sprite *bonusAssets[10];  // Image: bonusAssets
@@ -737,7 +737,7 @@ class Bonus {
   void udpateFrame() {  // ChangeCadr: udpateFrame
     if (!shouldUpdate()) return;
 
-    frame = (frame + 1) % 9;
+    frame = (frame + 1) % 10;
     currentFrame = bonusAssets[frame];
   }
 
@@ -776,7 +776,7 @@ class LockAngle { // Arrow: LockAngle
     this->x = x;
     this->y = y;
 
-    arrowAssets = loadAssets("Images/lock_angle/c%d.bmp", 40, WHITE);
+    arrowAssets = loadAssets("Images/lock_angle/angle_%d.bmp", 40, WHITE);
   }
 
   void draw(Param *p) {
