@@ -389,13 +389,9 @@ class Player { // Hero: Player
     isMovingRight = false;
 
     int followingColumn = (x + width + step) / blockSize;
-    int playerRow1 = y / blockSize;
-    int playerRow2 = playerRow1 + 1;
-    int playerRow3 = playerRow1 + 2;
+    int playerRow = y / blockSize;
 
-    if (isPassThroughBlock(playerRow1, followingColumn, gameMap) && 
-        isPassThroughBlock(playerRow2, followingColumn, gameMap) &&
-        isPassThroughBlock(playerRow3, followingColumn, gameMap)) {
+    if (canPassThrough(playerRow, followingColumn, gameMap)) {
       updateFrame('R');
       x += step;
     }
@@ -406,13 +402,9 @@ class Player { // Hero: Player
     isMovingLeft = false;
 
     int previousColumn = (x - step) / blockSize;
-    int playerRow1 = y / blockSize;
-    int playerRow2 = playerRow1 + 1;
-    int playerRow3 = playerRow1 + 2;
+    int playerRow = y / blockSize;
 
-    if (isPassThroughBlock(playerRow1, previousColumn, gameMap) && 
-        isPassThroughBlock(playerRow2, previousColumn, gameMap) &&
-        isPassThroughBlock(playerRow3, previousColumn, gameMap)) {
+    if (canPassThrough(playerRow, previousColumn, gameMap)) {
       updateFrame('L');
       x -= step;
     }
@@ -546,9 +538,15 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
+   bool canPassThrough(int row, int column, const Map gameMap) {
+     return isPassThroughBlock(row, column, gameMap) &&
+            isPassThroughBlock(row + 1, column, gameMap) &&
+            isPassThroughBlock(row + 2, column, gameMap);
+   }
+
    bool isPassThroughBlock(int row, int column, const Map gameMap) {
-     return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
-            gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
+     return gameMap[row][column] == AIR_ID || gameMap[row][column] == OPEN_DOOR_ID ||
+            gameMap[row][column] == LADDER_ID || gameMap[row][column] == OPEN_FINAL_DOOR_ID;
    }
 };
 
