@@ -1065,9 +1065,14 @@ class Chest {
   // loadQuestion {END}
   // ---------------------------------------------------------------
 
-  void openLock(const Inventory *inventory, bool didClickLeftButton, int clickedX, int clickedY, int cursorX, int cursorY) { // OpenLock: openLock
-    if (!isOpen) return;
+  void highlightLock(int cursorX, int cursorY) {
+    if (!lockerLight->contains(cursorX, cursorY)) return;
+    int distance = distanceFromLocker(cursorX, cursorY);
 
+    lockerLight->show = distance > 55 && distance < 88;  // within the ring
+  }
+
+  void openLock(const Inventory *inventory, bool didClickLeftButton, int clickedX, int clickedY) { // OpenLock: openLock
     if (didClickLeftButton && !lock->contains(clickedX, clickedY) && !inventory->containsInOpenInventory(clickedX, clickedY)) // did not clicked lock
       isOpen = false;
 
@@ -1076,12 +1081,6 @@ class Chest {
       currentDigit = (currentDigit + 1) % 3; // this might need to be moved lower?
     } else {
       circle->show = false;
-    }
-
-    if (lockerLight->contains(cursorX, cursorY)) {  // hover over
-      int distance = distanceFromLocker(cursorX, cursorY);
-      
-      lockerLight->show = distance > 55 && distance < 88; // within the ring
     }
 
     if (lockerLight->show && didClickLeftButton && locker->contains(clickedX, clickedY)) {  // left click
