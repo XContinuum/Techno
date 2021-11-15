@@ -1274,6 +1274,7 @@ class MovingBlock { // BlockMoves: MovingBlock
   int finalY;
   int initialY; // pX, pY
   int startTime;
+  const int increment = 5;
 
  public:
   MovingBlock(int x, int y, int finalY) {
@@ -1289,14 +1290,10 @@ class MovingBlock { // BlockMoves: MovingBlock
   bool moveUp(Map gameMap) { // BlockMoveUp: moveUp
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
-    if (y > finalY) {
-      gameMap[initialY / blockSize + 1][x / blockSize] = AIR_ID;
-    } else {
-      gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
-    }
+    updateBlock(gameMap, initialY, y > finalY);
 
     if (y > finalY) {
-      y -= std::min(y - finalY, 5);
+      y -= std::min(y - finalY, increment);
     }
 
     return y > finalY;
@@ -1304,19 +1301,23 @@ class MovingBlock { // BlockMoves: MovingBlock
   void moveDown(Map gameMap) { // BlockMoveDown: moveDown
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
-    if (y < initialY) {
-      gameMap[finalY / blockSize + 1][x / blockSize] = AIR_ID;
-    } else {
-      gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
-    }
+    updateBlock(gameMap, finalY, y < initialY);
 
     if (y < initialY) {
-      y += std::min(initialY - y, 5);
+      y += std::min(initialY - y, increment);
     }
   }
 
   void draw(Param *p) {
     p->draw(x, y, asset->width, asset->height, asset);
+  }
+
+  void updateBlock(Map gameMap, int currentY, bool shouldRemoveBlock) {
+    if (shouldRemoveBlock) {
+      gameMap[currentY / blockSize + 1][x / blockSize] = AIR_ID;
+    } else {
+      gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
+    }
   }
 
  private:
