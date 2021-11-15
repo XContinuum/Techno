@@ -23,7 +23,7 @@
 #define SUCCESS_UNLOCK_IMG "Images/chest/success_unlock_asset.bmp"
 #define CLOSED_CHEST_IMG "Images/chest/closed_chest.bmp"
 
-#define LOCKER_IMG "Images/chest/padlock.bmp"
+#define PADLOCK_IMG "Images/chest/padlock.bmp"
 #define LIGHT_LOCKER_IMG "Images/chest/highlighted_padlock.bmp"
 #define CIRCLE_IMG "Images/chest/padlock_circle.bmp"
 
@@ -924,7 +924,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   Sprite *successUnlockAsset; // OkOpen: successUnlockAsset
   
   Button *lockInstructions; // lock: lockInstructions
-  Button *locker; // locker:
+  Button *padlock; // locker: padlock
   Button *lockerLight; // LockerLight: lockerLight
   Button *circle; // lOK: circle
 
@@ -1079,7 +1079,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
   void openLock(int clickedX, int clickedY) { // OpenLock: openLock:
     if (!lockerLight->show) return;
-    if (!locker->contains(clickedX, clickedY)) return;
+    if (!padlock->contains(clickedX, clickedY)) return;
 
     int lockNumer = calculatePickedNumber(clickedX, clickedY);
     comboDigits[currentDigit] = lockNumer;
@@ -1125,7 +1125,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
     lockInstructions->draw(p);
 
     if (isChestLocked) {
-      locker->draw(p); // locked chest
+      padlock->draw(p); // locked chest
     } else {
       drawChestContents(p); // unlocked chest
     }
@@ -1168,12 +1168,12 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
     lockInstructions = new Button(x, y, LOCK_INSTRUCTIONS_IMG, WHITE);
     lockAngle = new LockAngle(x + 145, y + 149);
-    locker = new Button(x + 99, y + 107, LOCKER_IMG, WHITE);
+    padlock = new Button(x + 99, y + 107, PADLOCK_IMG, WHITE);
     lockerLight = new Button(x + 99, y + 107, LIGHT_LOCKER_IMG, WHITE);
     circle = new Button(x + 156, x + 161, CIRCLE_IMG, WHITE);
 
     lockInstructions->show = true;
-    locker->show = true;
+    padlock->show = true;
     lockerLight->show = false;
     circle->show = false;
 
@@ -1181,11 +1181,11 @@ class Chest { // Chest should be split into three classes: One for inventory man
   }
 
    int calculatePickedNumber(int clickedX, int clickedY) { // calculateAngle: calculatePickedNumber
-     double x = locker->w / 2;
-     double y = locker->h / 2;
+     double x = padlock->w / 2;
+     double y = padlock->h / 2;
 
-     double dx = (clickedX - locker->x) - x;
-     double dy = y - (clickedY - locker->y);
+     double dx = (clickedX - padlock->x) - x;
+     double dy = y - (clickedY - padlock->y);
 
      double hypotenuse = sqrt(dx * dx + dy * dy);
      double angleRadians = acos(dy / hypotenuse);
@@ -1193,7 +1193,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
      const double PI = 3.14;
      double angleDegrees = (angleRadians * 180) / PI;
 
-     if (clickedX - locker->x < x) angleDegrees = 360 - angleDegrees;
+     if (clickedX - padlock->x < x) angleDegrees = 360 - angleDegrees;
 
      double degreesPerNotch = 9; // 360/40
 
@@ -1201,8 +1201,8 @@ class Chest { // Chest should be split into three classes: One for inventory man
    }
 
    int distanceFromLocker(int cursorX, int cursorY) {
-     int dx = (cursorX - locker->x) - locker->w / 2;
-     int dy = locker->h / 2 - (cursorY - locker->y);
+     int dx = (cursorX - padlock->x) - padlock->w / 2;
+     int dy = padlock->h / 2 - (cursorY - padlock->y);
      int distance = sqrt(dx * dx + dy * dy);
 
      return distance;
