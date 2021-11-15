@@ -136,7 +136,7 @@ class NeoSprite : public Sprite {
   }
 
   void save(char *name) { // Save: save
-    std::ofstream os(name, std::ios::binary);
+    auto os = new std::ofstream(name, std::ios::binary);
 
     unsigned char signature[2] = {'B', 'M'};
     unsigned int fileSize = 14 + 40 + width * height * 4;
@@ -207,8 +207,10 @@ class Text {
 
  private:
   char *str; // string: str
-  Sprite *letters[77];
+  const int totalLetters = 77;
   int length; // size: length
+
+  Sprite *letters[totalLetters];
 
  public:
   Text(int x, int y, char *str, int color) { // remove color
@@ -314,7 +316,7 @@ class Text {
   void cutLetters() { // ChangeColor: changeColor: cutLetters
     const int w = 11, h = 11;
 
-    for (int i = 0; i < 77; i++) {
+    for (int i = 0; i < totalLetters; i++) {
       int column = i % 26;
       int row = (i - column) / 26;
 
@@ -324,7 +326,7 @@ class Text {
   }
 
   void changeColor(int color) {
-    for (int i = 0; i < 77; i++) {
+    for (int i = 0; i < totalLetters; i++) {
       letters[i]->replaceColor(BLACK, color);
     }
   }
