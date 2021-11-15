@@ -806,6 +806,9 @@ class Inventory { // Inventar: Inventory
   const int cellSpace = 7;
   const int inventorySize = 9;
 
+  const int xOffset = 17;
+  const int yOffset = 7;
+
  public:
   Inventory() {
     inventorySprite = new Sprite(INVENTORY_IMG, WHITE);
@@ -843,14 +846,12 @@ class Inventory { // Inventar: Inventory
   }
   int touchedCellIndex(int x, int y) { // TouchObject: touchedCellIndex
     // "Images/inventory/inventory_open.bmp"
-    int x1 = 17;
     int x2 = 297;
-    int y1 = 7;
     int y2 = 31;
 
-    int block = (x - x1) / (cellSize + cellSpace);
-    bool isWithinInventory = x >= x1 && x <= x2 && y >= y1 && y <= y2;
-    bool isWithinCell = x - x1 - block * (cellSize + cellSpace) <= cellSize;
+    int block = (x - xOffset) / (cellSize + cellSpace);
+    bool isWithinInventory = x >= xOffset && x <= x2 && y >= yOffset && y <= y2;
+    bool isWithinCell = x - xOffset - block * (cellSize + cellSpace) <= cellSize;
 
     if (isWithinInventory && isWithinCell) return block;
 
@@ -893,8 +894,7 @@ class Inventory { // Inventar: Inventory
    std::tuple<int, int> cellPosition(int cellIndex) {
      int offset = cellIndex == 0 ? -7 : 0;
 
-     return std::tuple<int, int>{
-         17 + cellIndex * (cellSpace + cellSize) + offset, 7};
+     return std::tuple<int, int>{xOffset + cellIndex * (cellSpace + cellSize) + offset, yOffset};
    }
 };
 
