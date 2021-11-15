@@ -630,7 +630,7 @@ class Door {
     this->x = x;
     this->y = y;
     
-    assets = loadAssets("Images/Door%d.bmp", 2, WHITE);
+    assets = loadAssets("Images/door/Door%d.bmp", 2, WHITE);
 
     currentFrame = assets[0];
     counter++;
@@ -1357,7 +1357,7 @@ class FinalDoor {
     this->doorType = doorType;
 
     needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
-    assets = loadAssets("Images/NextDoor%d.bmp", 2, WHITE);
+    assets = loadAssets("Images/door/NextDoor%d.bmp", 2, WHITE);
     currentFrame = assets[0];
 
     if (doorType == 1) {
