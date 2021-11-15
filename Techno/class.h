@@ -198,7 +198,7 @@ class NeoSprite : public Sprite {
    }
 };
 struct Point { // Tochka: Point
-  int X, Y;
+  int x, y; // X, Y
 };
 // Classes---
 class Text {
