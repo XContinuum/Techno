@@ -1290,7 +1290,7 @@ class MovingBlock { // BlockMoves: MovingBlock
   bool moveUp(Map gameMap) { // BlockMoveUp: moveUp
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
-    updateBlock(gameMap, initialY, y > finalY);
+    updateBlock(gameMap, initialY, y == finalY);
 
     if (y > finalY) {
       y -= std::min(y - finalY, increment);
@@ -1301,7 +1301,7 @@ class MovingBlock { // BlockMoves: MovingBlock
   void moveDown(Map gameMap) { // BlockMoveDown: moveDown
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
-    updateBlock(gameMap, finalY, y < initialY);
+    updateBlock(gameMap, finalY, y == initialY);
 
     if (y < initialY) {
       y += std::min(initialY - y, increment);
@@ -1312,15 +1312,15 @@ class MovingBlock { // BlockMoves: MovingBlock
     p->draw(x, y, asset->width, asset->height, asset);
   }
 
-  void updateBlock(Map gameMap, int currentY, bool shouldRemoveBlock) {
-    if (shouldRemoveBlock) {
-      gameMap[currentY / blockSize + 1][x / blockSize] = AIR_ID;
-    } else {
+ private:
+  void updateBlock(Map gameMap, int currentY, bool stoppedMoving) {
+    gameMap[currentY / blockSize + 1][x / blockSize] = AIR_ID;
+    
+    if (stoppedMoving) {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
     }
   }
 
- private:
   bool shouldUpdatePosition() {
     // https://docs.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime
     if (startTime == NULL) startTime = timeGetTime();
