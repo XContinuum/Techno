@@ -869,7 +869,7 @@ class Inventory { // Inventar: Inventory
     updateCellSprites();
   }
 
-  void clearInventory() {
+  void clearKeyFromInventory() {
     for (int i = 0; i < inventorySize; i++)
       if (cells[i] == INV_KEY) cells[i] = INV_EMPTY_CELL;
   }
@@ -882,7 +882,7 @@ class Inventory { // Inventar: Inventory
       cellSprites[i] = item_assets[cells[i]];
     }
   }
-  
+
   void drawNitems(int n) {
     for (int i = 0; i < n; i++) {
       if (cells[i] == INV_EMPTY_CELL) continue;
@@ -1267,21 +1267,21 @@ int PressurePlate::counter = 0;
 class MovingBlock { // BlockMoves: MovingBlock
  public:
   int x, y;
-  int pI;
   static int counter;
 
  private:
   Sprite *asset; // Image: asset
+  int finalY;
   int initialX, initialY; // pX, pY
   int startTime;
 
  public:
-  MovingBlock(int x, int y, int pi) {
+  MovingBlock(int x, int y, int finalY) {
     this->x = x;
-    this->y = y - 1;
+    this->y = y;
     this->initialX = x;
-    this->initialY = y - 1;
-    this->pI = pi - 1;
+    this->initialY = y;
+    this->finalY = finalY;
     asset = new Sprite(MOVING_BLOCK_IMG);
 
     counter++;
@@ -1290,13 +1290,13 @@ class MovingBlock { // BlockMoves: MovingBlock
   bool moveUp(Map gameMap) { // BlockMoveUp: moveUp
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
-    if (y > pI) {
+    if (y > finalY) {
       gameMap[initialY / blockSize + 1][initialX / blockSize] = AIR_ID;
 
-      y -= std::min(y - pI, 5);
+      y -= std::min(y - finalY, 5);
     }
 
-    if (y == pI) {
+    if (y == finalY) {
       gameMap[y / blockSize + 1][x / blockSize] = MOVING_BLOCK_ID;
       return false;
     }
@@ -1307,7 +1307,7 @@ class MovingBlock { // BlockMoves: MovingBlock
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
     if (y < initialY) {
-      gameMap[pI / blockSize + 1][x / blockSize] = AIR_ID;
+      gameMap[finalY / blockSize + 1][x / blockSize] = AIR_ID;
 
       y += std::min(initialY - y, 5);
     }

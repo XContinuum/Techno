@@ -365,6 +365,7 @@ void loadDoors() {
   // Global: gameMap, doorEntities, finalDoor, movingStairBlocks, blockSize
   // moving block
   int movingBlockCount = 0;
+  int finalYposition = 0;
 
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
@@ -384,10 +385,9 @@ void loadDoors() {
           break;
 
         case MOVING_BLOCK_ID: // Load moving blocks
-          int pi = 0;
-          if (movingBlockCount == 0) pi = (i - 1) * blockSize;
-
-          movingStairBlocks[movingBlockCount] = new MovingBlock(j * blockSize, i * blockSize, pi);
+          if (movingBlockCount == 0) finalYposition = (i - 1) * blockSize - 1;
+          
+          movingStairBlocks[movingBlockCount] = new MovingBlock(j * blockSize, i * blockSize - 1, finalYposition);
 
           movingBlockCount++;
           break;
@@ -449,7 +449,7 @@ void loadNextLevel() { // nextLevel: loadNextLevel
   // External: 
   level++;
 
-  inventory->clearInventory();
+  inventory->clearKeyFromInventory();
   clearClassInformation();
   resetEntities();
 
