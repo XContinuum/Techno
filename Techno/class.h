@@ -384,7 +384,7 @@ class Player { // Hero: Player
     height = currentFrame->height;
   }
 
-  void moveRight(const int gameMap[30][40]) { // MoveR: moveRight
+  void moveRight(const Map gameMap) { // MoveR: moveRight
     if (!isMovingRight) return;
     isMovingRight = false;
 
@@ -401,7 +401,7 @@ class Player { // Hero: Player
     }
   }
 
-  void moveLeft(const int gameMap[30][40]) { // MoveL: moveLeft
+  void moveLeft(const Map gameMap) { // MoveL: moveLeft
     if (!isMovingLeft) return;
     isMovingLeft = false;
 
@@ -417,7 +417,7 @@ class Player { // Hero: Player
       x -= step;
     }
   }
-  void gravity(const int gameMap[30][40]) { // Gravitaton: gravity
+  void gravity(const Map gameMap) { // Gravitaton: gravity
     if (isJumping) return;
     if (!canFall) return;
 
@@ -434,7 +434,7 @@ class Player { // Hero: Player
       velocity = 0;
     }
   }
-  void jump(const int gameMap[30][40]) { // Jump: jump
+  void jump(const Map gameMap) { // Jump: jump
     if (!isJumping) return;
     
     jumpVelocity -= acceleration;
@@ -450,7 +450,7 @@ class Player { // Hero: Player
     jumpVelocity = 0;
     isJumping = false;
   }
-  void moveUpLadder(const int gameMap[30][40]) {  // UD: moveUpLadder()
+  void moveUpLadder(const Map gameMap) {  // UD: moveUpLadder()
     if (!isClimbingUp) return;
     isClimbingUp = false;
 
@@ -469,7 +469,7 @@ class Player { // Hero: Player
       y = (y / blockSize + 1) * blockSize - height;
   }
 
-  void moveDownLadder(const int gameMap[30][40]) {
+  void moveDownLadder(const Map gameMap) {
     if (!isClimbingDown) return;
     isClimbingDown = false;
 
@@ -546,7 +546,7 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
-   bool isPassThroughBlock(int row, int column, const int gameMap[30][40]) {
+   bool isPassThroughBlock(int row, int column, const Map gameMap) {
      return gameMap[row][column] == AIR_ID || gameMap[row][column] == 5 ||
             gameMap[row][column] == LADDER_ID || gameMap[row][column] == 9;
    }
@@ -634,7 +634,7 @@ class Door {
     currentFrame = assets[frame];
   }
 
-  void switchDoorState(int gameMap[30][40]) {
+  void switchDoorState(Map gameMap) {
     int row = y / blockSize;
     int column = x / blockSize;
 
@@ -1282,7 +1282,7 @@ class MovingBlock { // BlockMoves: MovingBlock
     counter++;
   }
 
-  bool moveUp(int gameMap[30][40]) { // BlockMoveUp: moveUp
+  bool moveUp(Map gameMap) { // BlockMoveUp: moveUp
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
     if (y > pI) {
@@ -1298,7 +1298,7 @@ class MovingBlock { // BlockMoves: MovingBlock
 
     return true;
   }
-  void moveDown(int gameMap[30][40]) { // BlockMoveDown: moveDown
+  void moveDown(Map gameMap) { // BlockMoveDown: moveDown
     if (!movingStairBlocks[i].shouldUpdatePosition()) return;
 
     if (y < initialY) {
@@ -1377,7 +1377,7 @@ class FinalDoor {
               needKeyAsset->width, needKeyAsset->height, needKeyAsset);
   }
 
-  void updateFrame(int gameMap[30][40]) {  // ChangeCadr: updateFrame
+  void updateFrame(Map gameMap) {  // ChangeCadr: updateFrame
     if (doorType != 0) return;
     frame = (frame + 1) % 2;
 

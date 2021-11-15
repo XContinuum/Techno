@@ -13,7 +13,9 @@ Button* backButton; // Back: backButton
 // Missions---
 
 // Game+++
-int gameMap[30][40]; // MatMap: gameMap
+using Map = int[blocksInHeight][blocksInWidth];
+
+Map gameMap; // MatMap: gameMap
 int level = 1;
 const int blockSize = 20;
 
