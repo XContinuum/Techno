@@ -413,6 +413,7 @@ class Player { // Hero: Player
     if (canPlayerFallthrough(gameMap)) {
       y += velocity;
     } else {
+      int blockBelow = (y + height + velocity) / blockSize;
       y = blockBelow * blockSize - height;
       velocity = 0;
     }
@@ -437,16 +438,13 @@ class Player { // Hero: Player
 
     int leftPlayerSide = x / blockSize;
     int playerTopRow = y / blockSize;
-    int playerBottomRow = (y + height) / blockSize;
 
     if (gameMap[playerTopRow][leftPlayerSide] == LADDER_ID) {
       updateFrame('U');
       y -= 5;
     }
 
-    if (gameMap[playerTopRow][leftPlayerSide] == AIR_ID && 
-        gameMap[playerBottomRow][leftPlayerSide] == LADDER_ID &&
-        gameMap[playerTopRow + 1][leftPlayerSide] == LADDER_ID)
+    if (didPlayerFinishClimbingUp(gameMap))
       y = (y / blockSize + 1) * blockSize - height;
   }
 
@@ -527,6 +525,15 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
+   bool didPlayerFinishClimbingUp(const Map gameMap) {
+     int leftPlayerSide = x / blockSize;
+     int playerTopRow = y / blockSize;
+     int playerBottomRow = (y + height) / blockSize;
+
+     return gameMap[playerTopRow][leftPlayerSide] == AIR_ID &&
+            gameMap[playerBottomRow][leftPlayerSide] == LADDER_ID &&
+            gameMap[playerTopRow + 1][leftPlayerSide] == LADDER_ID;
+   }
    bool canPlayerJumpUp(const Map gameMap) {
      int leftPlayerSide = x / blockSize;
      int blockAbove = (y - jumpVelocity) / blockSize;
