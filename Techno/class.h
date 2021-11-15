@@ -6,7 +6,7 @@
 #define VERY_LIGHT_GRAY 0xffe5e5e5
 #define DARK_GRAY 0xff7f7f7f
 
-#define CHARACTERS_ASSET "Images/Text.bmp"
+#define CHARACTERS_ASSET "Images/text.bmp"
 
 #define CLOSED_BOOK_IMG "Images/closed_book.bmp"
 #define OPEN_BOOK_IMG "Images/open_book.bmp"
@@ -17,15 +17,15 @@
 #define INVENTORY_TOOLTIP_IMG "Images/inventory/tool_tip.bmp"
 
 // Chest
-#define CHEST_CODE_IMG "Images/chest/code.bmp"
+#define CHEST_CODE_IMG "Images/chest/lock_instructions.bmp"
 #define CHEST_TOOLTIP_IMG "Images/chest/tool_tip.bmp"
 #define CHEST_GRID_IMG "Images/chest/chest_grid.bmp"
 #define SUCCESS_UNLOCK_IMG "Images/chest/success_unlock_asset.bmp"
-#define CLOSED_CHEST_IMG "Images/chest/chest1.bmp"
+#define CLOSED_CHEST_IMG "Images/chest/closed_chest.bmp"
 
-#define LOCKER_IMG "Images/chest/locker.bmp"
-#define LIGHT_LOCKER_IMG "Images/chest/lockerL.bmp"
-#define CIRCLE_IMG "Images/chest/lOK.bmp"
+#define LOCKER_IMG "Images/chest/padlock.bmp"
+#define LIGHT_LOCKER_IMG "Images/chest/highlighted_padlock.bmp"
+#define CIRCLE_IMG "Images/chest/padlock_circle.bmp"
 
 #define MOVING_BLOCK_IMG "Images/blockM.bmp"
 #define PRESSURE_PLATE_IMG "Images/pressure_plate.bmp"
