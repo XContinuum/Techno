@@ -464,15 +464,7 @@ class Player { // Hero: Player
   void draw(Param *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
 
   bool didReachExitDoor() {  // ChangeLevel: didReachExitDoor
-    if (x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5)
-      return true;
-
-    if (x + currentFrame->width >= exitX &&
-        x + currentFrame->width <= exitX + 5 && 
-        y >= exitY && y <= exitY + 5)
-      return true;
-
-    return false;
+    return isWithinExit(x, y) || isWithinExit(x + currentFrame->width, y);
   }
 
   bool shouldUpdatePlayerActions() {
@@ -525,6 +517,9 @@ class Player { // Hero: Player
      height = currentFrame->height;
    }
 
+   bool isWithinExit(int x, int y) {
+     return x >= exitX && x <= exitX + 5 && y >= exitY && y <= exitY + 5;
+   }
    bool didPlayerFinishClimbingUp(const Map gameMap) {
      int leftPlayerSide = x / blockSize;
      int playerTopRow = y / blockSize;
