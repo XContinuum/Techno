@@ -934,7 +934,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
   char *question;
   int answer; // Answer: answer
 
-  bool correctCombination = false; // BOk: correctCombination
+  bool showCheckmark = false; // BOk: correctCombination: showCheckmark
 
   int frame = 0; // Cadr: frame
   int comboDigits[3] = {0, 0, 0}; // cd: comboDigits
@@ -1089,14 +1089,13 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
   void verifyCombination() {
     if (combination() == answer && currentDigit == 0) {
-      correctCombination = true;
+      showCheckmark = true;
     }
 
-    if (correctCombination == true) {
-      if (shouldHideSuccessCheckmark()) {  // shows success checkmark for 2 seconds then dissapears
-        isChestLocked = false;
-        correctCombination = false;
-      }
+    if (showCheckmark == true && shouldHideSuccessCheckmark()) {
+      // shows success checkmark for 2 seconds then dissapears
+      isChestLocked = false;
+      showCheckmark = false;
     }
   }
   bool shouldHideSuccessCheckmark() {
@@ -1137,7 +1136,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
     circle->draw(p);
     questionText->draw(p);
 
-    if (correctCombination) {
+    if (showCheckmark) {
       int x = lock->x + 99 + 2;
       int y = lock->y + 107;
       p->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
