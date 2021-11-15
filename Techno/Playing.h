@@ -379,9 +379,7 @@ void loadDoors() {
         case CLOSED_FINAL_DOOR_ID: // Load final doors
           if (gameMap[i - 1][j] == CLOSED_FINAL_DOOR_ID) continue;
 
-          int door_type = (j == 0) ? 1 : 0;
-
-          finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, door_type);
+          finalDoor[FinalDoor::counter - 1] = new FinalDoor(j * blockSize, i * blockSize, j != 0);
           break;
 
         case MOVING_BLOCK_ID: // Load moving blocks

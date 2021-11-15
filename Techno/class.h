@@ -1345,22 +1345,22 @@ class FinalDoor {
   int frame = 0; // Cadr: frame
   int isOpen = false; // num: doorId: isOpen
 
-  int doorType; // type: doorType
+  bool isEndDoor;
   Sprite *assets[2]; // Image: assets
   Sprite *currentFrame; // ImageView: currentFrame
   Sprite *needKeyAsset; // NeedKey: needKeyAsset
 
  public:
-  FinalDoor(int x, int y, int doorType) {
+  FinalDoor(int x, int y, int isEndDoor) {
     this->x = x;
     this->y = y;
-    this->doorType = doorType;
+    this->isEndDoor = isEndDoor;
 
     needKeyAsset = new Sprite(NEED_KEY_IMG, WHITE);
     assets = loadAssets("Images/door/final_door_%d.bmp", 2, WHITE);
     currentFrame = assets[0];
 
-    if (doorType == 1) {
+    if (!isEndDoor) {
       assets[0]->flipHorizontally();
       assets[1]->flipHorizontally();
     }
@@ -1382,7 +1382,7 @@ class FinalDoor {
   }
 
   void updateFrame() {  // ChangeCadr: updateFrame
-    if (doorType != 0) return;
+    if (!isEndDoor) return;
     frame = (frame + 1) % 2;
 
     currentFrame = assets[frame];
