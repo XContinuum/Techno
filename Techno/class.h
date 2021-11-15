@@ -222,7 +222,7 @@ class Text {
 
   void draw(Param *p) {
     for (int i = 0; i < length; i++) {
-      int index = convert(str[i]);
+      int index = getIndex(str[i]);
       int offset = charOffset(str[i]);
 
       p->draw(x + i * (letters[i]->width - offset), y, letters[index]->width,
@@ -232,7 +232,7 @@ class Text {
 
   void draw(Param *p, int *pos, int size, int highlightColor) {
     for (int i = 0; i < length; i++) {
-      int index = convert(str[i]);
+      int index = getIndex(str[i]);
       int offset = charOffset(str[i]);
 
       Sprite *letter = letters[index];
@@ -277,7 +277,7 @@ class Text {
 
     return 'O';
   }
-  int convert(char c) { // convertion: convert: getIndex
+  int getIndex(char c) { // convertion: convert: getIndex
     int code = getCode(c);
     int ascii = static_cast<int>(c);
 
@@ -498,17 +498,17 @@ class Player { // Hero: Player
    void updateFrame(char direction) { // ChangeImage: updateFrame
      switch (direction) {
        case 'L':
-         leftWalkFrame = (leftWalkFrame + 1) % 4;
+         leftWalkFrame = (leftWalkFrame + 1) % 5;
          currentFrame = leftWalk[leftWalkFrame];
          break;
 
        case 'R':
-         rightWalkFrame = (rightWalkFrame + 1) % 4;
+         rightWalkFrame = (rightWalkFrame + 1) % 5;
          currentFrame = rightWalk[rightWalkFrame];
          break;
 
        case 'U':
-         climbFrame = (climbFrame + 1) % 3;
+         climbFrame = (climbFrame + 1) % 4;
          currentFrame = ladderClimb[climbFrame];
          break;
      }
