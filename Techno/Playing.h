@@ -639,6 +639,7 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
 void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->isOpen) continue;
+    if (!chest[i]->isChestLocked) continue;
 
     chest[i]->highlightLock(cursorX, cursorY);
 

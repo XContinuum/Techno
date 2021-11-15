@@ -786,7 +786,7 @@ class LockAngle { // Arrow: LockAngle
 
 class Inventory { // Inventar: Inventory
  public:
-  int cells[9]; // objects: cells
+  int cells[inventorySize]; // objects: cells
 
   int x = 0, y = 0;
   int move;
@@ -802,13 +802,17 @@ class Inventory { // Inventar: Inventory
   
   Sprite *cellSprites[9]; // ImObjects: cellSprites
 
+  const int cellSize = 25;
+  const int cellSpace = 7;
+  const int inventorySize = 9;
+
  public:
   Inventory() {
     inventorySprite = new Sprite(INVENTORY_IMG, WHITE);
     openInventory = new Sprite(OPEN_INVENTORY_IMG, WHITE);
     toolTip = new Sprite(INVENTORY_TOOLTIP_IMG, WHITE);
 
-    for (int i = 0; i < 9; i++) cells[i] = INV_EMPTY_CELL;
+    for (int i = 0; i < inventorySize; i++) cells[i] = INV_EMPTY_CELL;
 
     updateCellSprites();
   }
@@ -817,7 +821,7 @@ class Inventory { // Inventar: Inventory
     if (show) {
       p->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
-      for (int i = 0; i < 9; i++) {
+      for (int i = 0; i < inventorySize; i++) {
         if (cells[i] != INV_EMPTY_CELL) {
           std::tie(x, y) = cellPosition(i);
 
@@ -841,7 +845,7 @@ class Inventory { // Inventar: Inventory
       p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   void updateCellSprites() { // ChangeImages: updateCellSprites
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < inventorySize; i++) {
       if (cells[i] == INV_EMPTY_CELL) continue;
 
       cellSprites[i] = item_assets[cells[i]];
@@ -856,8 +860,6 @@ class Inventory { // Inventar: Inventory
     int x2 = 297;
     int y1 = 7;
     int y2 = 31;
-    int cellSize = 25;
-    int cellSpace = 7;
 
     int block = (x - x1) / (cellSize + cellSpace);
     bool isWithinInventory = x >= x1 && x <= x2 && y >= y1 && y <= y2;
@@ -872,13 +874,13 @@ class Inventory { // Inventar: Inventory
     return x >= this->x && x <= this->x + openInventory->width && y >= this->y && y <= this->y + openInventory->height;
   }
 
-  void addItem(int num) { // AddObject: addItem
-    if (num == INV_EMPTY_CELL) return;
+  void addItem(int objectID) { // AddObject: addItem
+    if (objectID == INV_EMPTY_CELL) return;
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < inventorySize; i++) {
       if (cells[i] != INV_EMPTY_CELL) continue;
       
-      cells[i] = num;
+      cells[i] = objectID;
       break;
     }
 
@@ -886,16 +888,13 @@ class Inventory { // Inventar: Inventory
   }
 
   void clearInventory() {
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < inventorySize; i++)
       if (cells[i] == INV_KEY) cells[i] = INV_EMPTY_CELL;
   }
 
   private:
   std::tuple<int, int> cellPosition(int cellIndex) {
       int offset = cellIndex == 0 ? -7 : 0;
-
-      int cellSize = 25;
-      int cellSpace = 7;
 
       return std::tuple<int, int>{17 + cellIndex * (cellSpace + cellSize) + offset, 7};
   }
@@ -1092,8 +1091,8 @@ class Chest { // Chest should be split into three classes: One for inventory man
       showCheckmark = true;
     }
 
-    if (showCheckmark == true && shouldHideSuccessCheckmark()) {
-      // shows success checkmark for 2 seconds then dissapears
+    // shows success checkmark for 2 seconds then dissapears
+    if (showCheckmark && shouldHideSuccessCheckmark()) {
       isChestLocked = false;
       showCheckmark = false;
     }
