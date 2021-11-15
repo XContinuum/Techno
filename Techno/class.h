@@ -371,11 +371,11 @@ class Player { // Hero: Player
     rightWalk = loadAssets("Images/player/playerR%d.bmp", 5, WHITE);
     leftWalk = loadAssets("Images/player/playerL%d.bmp", 5, WHITE);
 
-    rightJump = loadAssets("Images/player/playerJ%d.bmp", 3, WHITE);
-    leftJump = loadAssets("Images/player/playerJ%d.bmp", 3, WHITE);
-    ladderClimb = loadAssets("Images/player/playerU%d.bmp", 3, WHITE);
+    rightJump = loadAssets("Images/player/playerJ%d.bmp", 4, WHITE);
+    leftJump = loadAssets("Images/player/playerJ%d.bmp", 4, WHITE);
+    ladderClimb = loadAssets("Images/player/playerU%d.bmp", 4, WHITE);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       leftJump[i]->flipHorizontally();
     }
     currentFrame = rightWalk[0];
