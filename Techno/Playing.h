@@ -24,8 +24,8 @@ const int blockSize = 20;
 #define CLOSED_DOOR_ID 4
 #define OPEN_DOOR_ID 5
 #define MOVING_BLOCK_ID 6
-#define FINAL_DOOR_ID 8
-#define CLOSED_FINAL_DOOR_ID 9 // Final open door?
+#define CLOSED_FINAL_DOOR_ID 8
+#define OPEN_FINAL_DOOR_ID 9
 
 // Inventory objects
 #define INV_EMPTY_CELL 0
@@ -375,8 +375,8 @@ void loadDoors() {
           doorEntities[Door::counter - 1] = new Door(j * blockSize, i * blockSize); 
           break;
 
-        case FINAL_DOOR_ID: // Load final doors
-          if (gameMap[i - 1][j] == FINAL_DOOR_ID) continue;
+        case CLOSED_FINAL_DOOR_ID: // Load final doors
+          if (gameMap[i - 1][j] == CLOSED_FINAL_DOOR_ID) continue;
 
           int door_type = (j == 0) ? 1 : 0;
 

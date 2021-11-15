@@ -1385,7 +1385,8 @@ class FinalDoor {
 
     int row = y / blockSize;
     int column = x / blockSize;
-    int doorId = isOpen ? FINAL_DOOR_ID : CLOSED_FINAL_DOOR_ID;
+    isOpen = !isOpen;
+    int doorId = isOpen ? OPEN_FINAL_DOOR_ID : CLOSED_FINAL_DOOR_ID;
 
     gameMap[row][column] = doorId;
     gameMap[row + 1][column] = doorId;
