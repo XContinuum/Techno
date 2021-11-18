@@ -54,7 +54,7 @@ class Button { // Button: TappableArea
   Sprite *image; // Image: image
   bool show;
 
-  bool SubShow; // SubShow
+  bool subShow; // SubShow
   bool showBorder;
   Sprite *Border; // Border
 
@@ -273,9 +273,9 @@ class Text {
     int ascii = static_cast<int>(c);
 
     if (getCode(c) != NULL) return 'O'; // other?
-    if (ascii - 97 >= 0) return 'L';  // low
-    if (ascii - 65 >= 0) return 'U';  // up
-    if (ascii - 48 >= 0) return 'N';  // num
+    if (ascii >= 97) return 'L';  // low
+    if (ascii >= 65) return 'U';  // up
+    if (ascii >= 48) return 'N';  // num
 
     return 'O';
   }
@@ -284,9 +284,9 @@ class Text {
     int ascii = static_cast<int>(c);
 
     if (code != NULL) return code; // other
-    if (ascii - 97 >= 0) return ascii - 97;  // low
-    if (ascii - 65 >= 0) return ascii - 65 + 26;  // up
-    if (ascii - 48 >= 0) return ascii - 48 + 52;  // num
+    if (ascii >= 97) return ascii - 97;  // low
+    if (ascii >= 65) return ascii - 65 + 26;  // up
+    if (ascii >= 48) return ascii - 48 + 52;  // num
 
     return 0;
   }
@@ -917,7 +917,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
  private:
   Sprite *currentFrame; // ImageView: currentFrame
-  Sprite *itemAssets[6 * 8]; // ImObjects: itemAssets
+  Sprite *itemAssets[chestRows * chestColumns]; // ImObjects: itemAssets
 
   Sprite *toolTip; // OpenExp: toolTip
   Sprite *chestGrid; // Content: chestGrid
