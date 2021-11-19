@@ -692,20 +692,24 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   // left clicked open inventory
   int inventoryCell = inventory->touchedCellIndex(clickedX, clickedY);
   
-  if (inventory->move) {
-    if (inventoryCell != NULL && inventory->selectedCell != inventoryCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL) {
+  if (inventory->move) { // Attempt to put a selected item into the clicked cell
+    bool didSelectCell = inventoryCell != NULL;
+    bool movingToADifferentCell = inventory->selectedCell != inventoryCell;
+    bool targetCellEmpty = didSelectCell && inventory->cells[inventoryCell] == INV_EMPTY_CELL;
+
+    if (didSelectCell &&  movingToADifferentCell && targetCellEmpty) {
       inventory->cells[inventoryCell] = selectedObjectId;
       inventory->updateCellSprites();
       selectedObjectId = INV_EMPTY_CELL;
     }
     inventory->move = false;
-  } else {
-    inventory->selectedCell = inventoryCell;
-
+  } else { // Attempt to pickup an item from a clicked cell
     if (inventoryCell != NULL) {
-      inventory->move = true;
+      inventory->selectedCell = inventoryCell;
       selectedObjectId = inventory->cells[inventoryCell];
       inventory->cells[inventoryCell] = INV_EMPTY_CELL;
+
+      inventory->move = true;
     }
   }
 
@@ -720,8 +724,12 @@ void chestMoveEvents(int clickedX, int clickedY) {
 
     int selectedChestCell = chest[i]->selectedChestCell(clickedX, clickedY);
 
-    if (chest[i]->move) {
-      if (selectedChestCell != NULL && chest[i]->selectedChestCell != selectedChestCell && chest[i]->items[selectedChestCell] == i) {
+    if (chest[i]->move) { // Attempt to put a selected item into the clicked cell
+      bool didSelectCell = selectedChestCell != NULL;
+      bool movingToADifferentCell = chest[i]->selectedChestCell != selectedChestCell;
+      bool targetCellEmpty = didSelectCell && chest[i]->items[selectedChestCell] == INV_EMPTY_CELL;
+    
+      if (didSelectCell && movingToADifferentCell && targetCellEmpty) {
         chest[i]->items[selectedChestCell] = selectedObjectId;
         chest[i]->updateChestCells();
         selectedObjectId = i;
@@ -729,10 +737,9 @@ void chestMoveEvents(int clickedX, int clickedY) {
 
       chest[i]->move = false;
       inventory->move = false;
-    } else {
-      chest[i]->selectedChestCell = selectedChestCell;
-
+    } else { // Attempt to pickup an item from a clicked cell
       if (selectedChestCell != NULL) {
+        chest[i]->selectedChestCell = selectedChestCell;
         chest[i]->move = true;
         inventory->move = true;
         selectedObjectId = chest[i]->items[selectedChestCell];
