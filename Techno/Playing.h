@@ -76,6 +76,8 @@ bool shouldMoveStairsUp = false;
 // -----
 // clickedX, clickedY - last cursor position after right/left click
 // cursorX, cursorY - current position of the cursor
+
+
 // ---------------------------------------------------------------------------------
 // drawScene function
 // ---------------------------------------------------------------------------------
