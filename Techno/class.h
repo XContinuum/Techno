@@ -52,7 +52,7 @@ class Button { // Button: TappableArea
   int x, y;
   int w, h;
   Sprite *image; // Image: image
-  bool show;
+  bool show = false;
 
   bool subShow; // SubShow
   bool showBorder = false;
