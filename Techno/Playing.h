@@ -621,7 +621,6 @@ bool shouldContinuePause(int clickedX, int clickedY) {
 // ---------------------------------------------------------------------------------
 void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   // Global: inventory
-
   inventory->showTooltip = inventory->contains(cursorX, cursorY); // show or hide tool tip
   if (inventory->contains(clickedX, clickedY)) inventory->show = true;
 
@@ -629,9 +628,15 @@ void interactiveObjects(int cursorX, int cursorY, int clickedX, int clickedY) {
   didPlayerPickupBook();
   didTouchPressurePlate();
   
-  inventoryMoveEvents(clickedX, clickedY);
-  doorInteractions(clickedX, clickedY);
-  chestMoveEvents(clickedX, clickedY);
+  if (didClickLeftButton) {
+    inventoryMoveEvents(clickedX, clickedY);
+    chestMoveEvents(clickedX, clickedY);
+  }
+
+  if (didClickRightButton) {
+    doorInteractions(clickedX, clickedY);
+  }
+
   chestLockerInteractions(cursorX, cursorY, clickedX, clickedY);
 }
 void chestLockerInteractions(int cursorX, int cursorY, int clickedX, int clickedY) {
@@ -686,7 +691,6 @@ void didPlayerTouchBonus() {
   }
 }
 void inventoryMoveEvents(int clickedX, int clickedY) {
-  if (!didClickLeftButton) return;
   if (!inventory->containsInOpenInventory(clickedX, clickedY) return;
 
   // left clicked open inventory
@@ -716,8 +720,6 @@ void inventoryMoveEvents(int clickedX, int clickedY) {
   for (int i = 0; i < Chest::counter; i++) chest[i]->move = !inventory->move;
 }
 void chestMoveEvents(int clickedX, int clickedY) {
-  if (!didClickLeftButton) return;
-
   for (int i = 0; i < Chest::counter; i++) {
     if (!chest[i]->isWithinInventory(clickedX, clickedY)) continue;
     if (chest[i]->isChestLocked) continue;
@@ -755,7 +757,6 @@ void didTouchPressurePlate() {
   }
 }
 void doorInteractions(int clickedX, int clickedY) {
-  if (!didClickRightButton) return;
   // Door
   for (int i = 0; i < Door::counter; i++) {
     if (!doorEntities[i]->contains(clickedX, clickedY)) continue;
