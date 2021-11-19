@@ -401,7 +401,9 @@ void mainMenuInteractions() {
     if (playMode) {
       playLoop(cursorX, cursorY, clickedX, clickedY);
     }
-    createMap();
+    if (createMapMode) {
+      createMap();
+    }
 }
 
 LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
