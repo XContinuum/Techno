@@ -402,7 +402,7 @@ void mainMenuInteractions() {
       playLoop(cursorX, cursorY, clickedX, clickedY);
     }
     if (createMapMode) {
-      createMap();
+      createMapInteractions(clickedX, clickedY);
     }
 }
 
