@@ -55,7 +55,7 @@ class Button { // Button: TappableArea
   bool show;
 
   bool subShow; // SubShow
-  bool showBorder;
+  bool showBorder = false;
   Sprite *Border; // Border
 
  public:
