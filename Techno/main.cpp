@@ -246,7 +246,7 @@ void Draw() {
     // PLAY-----------------------------------------------------------
 
     // CREATE MAP+++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (Create_map == true) Draw_Create();
+    if (createMapMode == true) drawCreateMapScreen();
     // CREATE MAP-----------------------------------------------------------
 }
 
@@ -308,7 +308,7 @@ void initialization() {
     inventory->show = false;
 
     // CREATE MAP+++
-    Init_CreateMap();
+    initializeCreateMap();
 
     PM[PM_CONTINUE] = new Button("Images/pm_continue.bmp");
     PM[PM_CONTINUE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
@@ -383,7 +383,7 @@ void mainMenuInteractions() {
         }
 
         if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
-            Create_map = true;
+            createMapMode = true;
             isInitialState = false;
         }
 
