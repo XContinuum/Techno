@@ -107,6 +107,12 @@ class NeoElement : public Sprite, public Button {
   int followColor(int x, int y) { // FollowColor: followColor
     return Button::image->img[x + y * width];
   }
+
+  void draw(Param *p) {
+    if (!show) return;
+    
+    p->draw(Button::x, Button::y, w, h, image);
+  }
 };
 class NeoSprite : public Sprite {
  public:
