@@ -41,8 +41,6 @@
 #define BACK_LAYER 0
 #define FOREGROUND_LAYER 1
 
-#define TEST_THE_MAP 0
-
 #define PM_CONTINUE 0
 #define PM_SAVE 1
 #define PM_SETTINGS 2
