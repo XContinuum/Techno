@@ -83,6 +83,13 @@ class Button { // Button: TappableArea
     
     p->draw(x, y, w, h, image);
   }
+
+  void drawBorder(Param *p) {
+    if (!show) return;
+    if (!showBorder) return;
+
+    p->draw(x, y, w, h, Border);
+  }
 };
 
 class NeoElement : public Sprite, public Button {
