@@ -43,19 +43,19 @@
 #define EXIT_BUTTON_IMG "Images/main_menu/btn_Exit.bmp"
 
 // Missions
-#define MISSIONS_GRID_IMG "Images/missions.bmp"
+#define MISSIONS_GRID_IMG "Images/missions/missions.bmp"
 #define MISSION_CELL_IMG "Images/missions/m1.bmp"
 #define LOCKED_MISSION_IMG "Images/missions/blocked.bmp"
 #define BACK_BUTTON_IMG "Images/missions/back.bmp"
 
 // Pause
-#define PAUSE_MENU_IMG "Images/pause/Pause_menu.bmp"
-#define BACKDROP_IMG "Images/pause/pause.bmp"
+#define PAUSE_MENU_IMG "Images/pause/menu.bmp"
+#define BACKDROP_IMG "Images/pause/backdrop.bmp"
 
-#define PAUSE_CONTINUE_IMG "Images/pause/pm_continue.bmp"
-#define PAUSE_SAVE_IMG "Images/pause/pm_save.bmp"
-#define PAUSE_SETTINGS_IMG "Images/pause/pm_settings.bmp"
-#define PAUSE_EXIT_IMG "Images/pause/pm_exit.bmp"
+#define PAUSE_CONTINUE_IMG "Images/pause/continue.bmp"
+#define PAUSE_SAVE_IMG "Images/pause/save.bmp"
+#define PAUSE_SETTINGS_IMG "Images/pause/settings.bmp"
+#define PAUSE_EXIT_IMG "Images/pause/exit.bmp"
 
 const int screenPixelWidth = 800;   // w: screenPixelWidth
 const int screenPixelHeight = 600;  // h: screenPixelHeight
