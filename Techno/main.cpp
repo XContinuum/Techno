@@ -288,25 +288,14 @@ void initPlay() {
   inventory->show = false;
 }
 void initPause() {
-  PM[PM_CONTINUE] = new Button("Images/pm_continue.bmp");
-  PM[PM_CONTINUE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
-  PM[PM_CONTINUE]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 55;
-  PM[PM_CONTINUE]->show = false;
+  int pauseX = (screenPixelWidth - pauseMenuSprite->width) / 2;
+  int pauseY = (screenPixelHeight - pauseMenuSprite->height) / 2;
+  int centeredX = pauseX + 79;
 
-  PM[PM_SAVE] = new Button("Images/pm_save.bmp");
-  PM[PM_SAVE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
-  PM[PM_SAVE]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 101;
-  PM[PM_SAVE]->show = false;
-
-  PM[PM_SETTINGS] = new Button("Images/pm_settings.bmp");
-  PM[PM_SETTINGS]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
-  PM[PM_SETTINGS]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 149;
-  PM[PM_SETTINGS]->show = false;
-
-  PM[PM_EXIT] = new Button("Images/pm_exit.bmp");
-  PM[PM_EXIT]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
-  PM[PM_EXIT]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 200;
-  PM[PM_EXIT]->show = false;
+  PM[PM_CONTINUE] = new Button(centeredX, pauseY + 55, "Images/pm_continue.bmp");
+  PM[PM_SAVE] = new Button(centeredX,  pauseY + 101, "Images/pm_save.bmp");
+  PM[PM_SETTINGS] = new Button(centeredX, pauseY + 149, "Images/pm_settings.bmp");
+  PM[PM_EXIT] = new Button(centeredX, pauseY + 200, "Images/pm_exit.bmp");
 }
 
 void InitialSys(HINSTANCE hInstance) {
