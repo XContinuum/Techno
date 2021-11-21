@@ -95,16 +95,17 @@ Param *paramDraw;
 
 class Sprite {
  public:
-  int x, y;
+  int x = 0, y = 0;
   int width, height;
-  int *img;
+  int *img = NULL;
   int *im;
-  int TransparentColor;  // 0xffffffff
+  int transparentColor = 0;  // TransparentColor: transparentColor
   char *name;
 
  public:
-  Sprite(char *fname)
-      : img(NULL), x(0), y(0), TransparentColor(0), name(fname) {
+  Sprite(char *fname) {
+    this->name = fname;
+
     std::ifstream is(fname, std::ios::binary);
     is.seekg(18);
     is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -118,8 +119,10 @@ class Sprite {
 
     is.close();
   }
-  Sprite(char *fname, int trColor)
-      : img(NULL), x(0), y(0), TransparentColor(trColor), name(fname) {
+  Sprite(char *fname, int transparentColor) {
+    this->transparentColor = transparentColor,
+    this->name = fname;
+
     std::ifstream is(fname, std::ios::binary);
     is.seekg(18);
     is.read(reinterpret_cast<char *>(&width), sizeof(width));
@@ -135,14 +138,14 @@ class Sprite {
   }
 
   ~Sprite() {
-    if (img != NULL) delete[] img;
+    if (img) delete[] img;
     img = NULL;
   }
 
   void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
     for (int i = 0; i < height; ++i)
       for (int j = 0; j < width; ++j)
-        if (img[j + i * width] != TransparentColor)
+        if (img[j + i * width] != transparentColor)
           memcpy(reinterpret_cast<char *>(lockedRect.pBits) + x * 4 + j * 4 +
                      i * lockedRect.Pitch + y * lockedRect.Pitch,
                  reinterpret_cast<char *>(&img[j + i * width]), 4);

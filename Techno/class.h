@@ -125,7 +125,7 @@ class NeoSprite : public Sprite {
         int index = j + i * sprite->width;
         int pixel = sprite->img[index];
         
-        if (pixel == TransparentColor) continue;
+        if (pixel == transparentColor) continue;
         
         if (j + x <= width && i + y <= height) {
           int currentPos = (j + x) + (i + y) * width;
