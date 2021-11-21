@@ -95,13 +95,13 @@ Param *paramDraw;
 
 class Sprite {
  public:
-  int x = 0, y = 0;
   int width, height;
   int *img = NULL;
   int *im;
   int transparentColor = 0;  // TransparentColor: transparentColor
 
  private:
+  int x = 0, y = 0;
   char *imgPath;
 
  public:
@@ -123,35 +123,30 @@ class Sprite {
   }
 
   void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
-    for (int i = 0; i < height; ++i)
-      for (int j = 0; j < width; ++j)
-        if (img[j + i * width] != transparentColor)
-          memcpy(reinterpret_cast<char *>(lockedRect.pBits) + x * 4 + j * 4 +
-                     i * lockedRect.Pitch + y * lockedRect.Pitch,
-                 reinterpret_cast<char *>(&img[j + i * width]), 4);
+    for (int i = 0; i < height; ++i) {
+      for (int j = 0; j < width; ++j) {
+        if (img[j + i * width] != transparentColor) {
+          void* destination = reinterpret_cast<char *>(lockedRect.pBits) +
+                             x * 4 + j * 4 + i * lockedRect.Pitch +
+                             y * lockedRect.Pitch;
+          void* source = reinterpret_cast<char *>(&img[j + i * width]);
+
+          memcpy(destination, source, 4);
+        }
+      }
+    }
   }
 
   // Flips around Y axis
   void flipHorizontally() {  // Rotate: flipHorizontally
-    std::ifstream is(imgPath, std::ios::binary);
-    is.seekg(18);
-    is.read(reinterpret_cast<char *>(&width), sizeof(width));
-    is.read(reinterpret_cast<char *>(&height), sizeof(height));
-    is.seekg(28, std::ios::cur);
-    im = new int[width * height * 32 / 8];
-
-    for (int i = height - 1; i >= 0; --i)
-      is.read(reinterpret_cast<char *>(im) + width * i * 32 / 8,
-              width * 32 / 8);
-
-    is.close();
-    //++++
+    int* tmp;
+    loadImageInto(imgPath, &tmp);
 
     int j1 = width;
 
-    for (int i = 0; i < height; ++i) {
-      for (int j = 0; j < width; ++j) {
-        img[j + i * width] = im[j1 + i * width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        img[j + i * width] = tmp[j1 + i * width];
 
         j1--;
       }
@@ -160,31 +155,18 @@ class Sprite {
     }
   }
 
-  void cut(int xI, int yI, int wI, int hI) {
-    int *im1 = new int[width * height * 32 / 8];
-    img = new int[wI * hI * 32 / 8];
+  void cut(int x, int y, int w, int h) {
+    img = new int[w * h * 32 / 8];
 
-    //++++
-    std::ifstream is(imgPath, std::ios::binary);
-    is.seekg(18);
-    is.read(reinterpret_cast<char *>(&width), sizeof(width));
-    is.read(reinterpret_cast<char *>(&height), sizeof(height));
-    is.seekg(28, std::ios::cur);
-    im1 = new int[width * height * 32 / 8];
+    int* tmp; // int *im1 = new int[width * height * 32 / 8];
+    loadImageInto(imgPath, &tmp);
+    
+    for (int i = y; i < y + h; ++i)
+      for (int j = x; j < x + w; ++j)
+        img[(j - x) + (i - y) * w] = im1[j + i * width];
 
-    for (int i = height - 1; i >= 0; --i)
-      is.read(reinterpret_cast<char *>(im1) + width * i * 32 / 8,
-              width * 32 / 8);
-
-    is.close();
-    //++++
-
-    for (int i = yI; i < yI + hI; ++i)
-      for (int j = xI; j < xI + wI; ++j)
-        img[(j - xI) + (i - yI) * wI] = im1[j + i * width];
-
-    width = wI;
-    height = hI;
+    width = w;
+    height = h;
   }
 
   void replaceColor(int from, int to) {  // RemplaceColor: replaceColor
@@ -205,6 +187,21 @@ class Sprite {
        is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8, width * 32 / 8);
 
      is.close();
+   }
+
+   void loadImageInto(char* path, int* &destination) {
+    std::ifstream is(path, std::ios::binary);
+    is.seekg(18);
+    is.read(reinterpret_cast<char *>(&width), sizeof(width));
+    is.read(reinterpret_cast<char *>(&height), sizeof(height));
+    is.seekg(28, std::ios::cur);
+    destination = new int[width * height * 32 / 8];
+
+    for (int i = height - 1; i >= 0; i--)
+      is.read(reinterpret_cast<char *>(destination) + width * i * 32 / 8,
+              width * 32 / 8);
+
+    is.close();
    }
 };
 class Param {
