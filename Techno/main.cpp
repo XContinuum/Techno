@@ -35,6 +35,24 @@
 #define PM_SETTINGS 2
 #define PM_EXIT 3
 
+#define MAIN_MENU_IMG "Images/main_menu.bmp"
+#define PLAY_BUTTON_IMG "Images/btn_Play.bmp"
+#define CREATE_MAP_BUTTON_IMG "Images/btn_Map.bmp"
+#define SETTINGS_BUTTON_IMG "Images/btn_Settings.bmp"
+#define EXIT_BUTTON_IMG "Images/btn_Exit.bmp"
+
+#define MISSIONS_GRID_IMG "Images/missions.bmp"
+#define PAUSE_MENU_IMG "Images/Pause_menu.bmp"
+#define MISSION_CELL_IMG "Images/m1.bmp"
+#define BACKDROP_IMG "Images/pause.bmp"
+#define LOCKED_MISSION_IMG "Images/blocked.bmp"
+#define BACK_BUTTON_IMG "Images/back.bmp"
+
+#define PAUSE_CONTINUE_IMG "Images/pm_continue.bmp"
+#define PAUSE_SAVE_IMG "Images/pm_save.bmp"
+#define PAUSE_SETTINGS_IMG "Images/pm_settings.bmp"
+#define PAUSE_EXIT_IMG "Images/pm_exit.bmp"
+
 const int screenPixelWidth = 800;   // w: screenPixelWidth
 const int screenPixelHeight = 600;  // h: screenPixelHeight
 
@@ -230,26 +248,26 @@ void initialization() {
   initPause();
 }
 void initMainMenu() {
-  mainMenu = new Sprite("Images/main_menu.bmp");
+  mainMenu = new Sprite(MAIN_MENU_IMG);
 
-  btnMain[PLAY] = new Button(271, 182, "Images/btn_Play.bmp");
-  btnMain[CREATE_MAP] = new Button(271, 280, "Images/btn_Map.bmp");
-  btnMain[SETTINGS] = new Button(271, 378, "Images/btn_Settings.bmp");
-  btnMain[EXIT] = new Button(271, 476, "Images/btn_Exit.bmp");
+  btnMain[PLAY] = new Button(271, 182, PLAY_BUTTON_IMG);
+  btnMain[CREATE_MAP] = new Button(271, 280, CREATE_MAP_BUTTON_IMG);
+  btnMain[SETTINGS] = new Button(271, 378, SETTINGS_BUTTON_IMG);
+  btnMain[EXIT] = new Button(271, 476, EXIT_BUTTON_IMG);
 }
 void initPlay() {
   char *tt = "score:0";                                // delete
   scoreText = new Text(8, 43, tt, DARK_GRAYISH_BLUE);  // score
 
-  missions = new Sprite("Images/missions.bmp");
-  pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
+  missions = new Sprite(MISSIONS_GRID_IMG);
+  pauseMenuSprite = new Sprite(PAUSE_MENU_IMG);
 
-  missionButton[0] = new Button(22, 63, "Images/m1.bmp");
+  missionButton[0] = new Button(22, 63, MISSION_CELL_IMG);
 
-  pauseOverlay = new Sprite("Images/pause.bmp", WHITE);
-  missionLock = new Sprite("Images/blocked.bmp", WHITE);
+  pauseOverlay = new Sprite(BACKDROP_IMG, WHITE);
+  missionLock = new Sprite(LOCKED_MISSION_IMG, WHITE);
 
-  backButton = new Button(15, 554, "Images/back.bmp", WHITE);
+  backButton = new Button(15, 554, BACK_BUTTON_IMG, WHITE);
 
   inventory = new Inventory();
 }
@@ -258,10 +276,10 @@ void initPause() {
   int pauseY = (screenPixelHeight - pauseMenuSprite->height) / 2;
   int centeredX = pauseX + 79;
 
-  PM[PM_CONTINUE] = new Button(centeredX, pauseY + 55, "Images/pm_continue.bmp");
-  PM[PM_SAVE] = new Button(centeredX,  pauseY + 101, "Images/pm_save.bmp");
-  PM[PM_SETTINGS] = new Button(centeredX, pauseY + 149, "Images/pm_settings.bmp");
-  PM[PM_EXIT] = new Button(centeredX, pauseY + 200, "Images/pm_exit.bmp");
+  PM[PM_CONTINUE] = new Button(centeredX, pauseY + 55, PAUSE_CONTINUE_IMG);
+  PM[PM_SAVE] = new Button(centeredX,  pauseY + 101, PAUSE_SAVE_IMG);
+  PM[PM_SETTINGS] = new Button(centeredX, pauseY + 149, PAUSE_SETTINGS_IMG);
+  PM[PM_EXIT] = new Button(centeredX, pauseY + 200, PAUSE_EXIT_IMG);
 }
 
 void InitialSys(HINSTANCE hInstance) { // InitialSys
