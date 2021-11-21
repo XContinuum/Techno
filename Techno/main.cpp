@@ -41,12 +41,14 @@
 #define SETTINGS_BUTTON_IMG "Images/btn_Settings.bmp"
 #define EXIT_BUTTON_IMG "Images/btn_Exit.bmp"
 
-#define MISSIONS_GRID_IMG "Images/missions.bmp"
 #define PAUSE_MENU_IMG "Images/Pause_menu.bmp"
-#define MISSION_CELL_IMG "Images/m1.bmp"
 #define BACKDROP_IMG "Images/pause.bmp"
-#define LOCKED_MISSION_IMG "Images/blocked.bmp"
-#define BACK_BUTTON_IMG "Images/back.bmp"
+
+// Missions
+#define MISSIONS_GRID_IMG "Images/missions.bmp"
+#define MISSION_CELL_IMG "Images/missions/m1.bmp"
+#define LOCKED_MISSION_IMG "Images/missions/blocked.bmp"
+#define BACK_BUTTON_IMG "Images/missions/back.bmp"
 
 #define PAUSE_CONTINUE_IMG "Images/pm_continue.bmp"
 #define PAUSE_SAVE_IMG "Images/pm_save.bmp"
