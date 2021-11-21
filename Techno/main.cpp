@@ -234,25 +234,10 @@ void initialization() {
 void initMainMenu() {
   mainMenu = new Sprite("Images/main_menu.bmp");
 
-  btnMain[PLAY] = new Button("Images/btn_Play.bmp");
-  btnMain[PLAY]->x = 271;
-  btnMain[PLAY]->y = 182;
-  btnMain[PLAY]->show = false;
-
-  btnMain[CREATE_MAP] = new Button("Images/btn_Map.bmp");
-  btnMain[CREATE_MAP]->x = 271;
-  btnMain[CREATE_MAP]->y = 280;
-  btnMain[CREATE_MAP]->show = false;
-
-  btnMain[SETTINGS] = new Button("Images/btn_Settings.bmp");
-  btnMain[SETTINGS]->x = 271;
-  btnMain[SETTINGS]->y = 378;
-  btnMain[SETTINGS]->show = false;
-
-  btnMain[EXIT] = new Button("Images/btn_Exit.bmp");
-  btnMain[EXIT]->x = 271;
-  btnMain[EXIT]->y = 476;
-  btnMain[EXIT]->show = false;
+  btnMain[PLAY] = new Button(271, 182, "Images/btn_Play.bmp");
+  btnMain[CREATE_MAP] = new Button(271, 280, "Images/btn_Map.bmp");
+  btnMain[SETTINGS] = new Button(271, 378, "Images/btn_Settings.bmp");
+  btnMain[EXIT] = new Button(271, 476, "Images/btn_Exit.bmp");
 }
 void initPlay() {
   char *tt = "score:0";                                // delete
@@ -261,31 +246,21 @@ void initPlay() {
   missions = new Sprite("Images/missions.bmp");
   pauseMenuSprite = new Sprite("Images/Pause_menu.bmp");
 
-  missionButton[0] = new Button("Images/m1.bmp");
-  missionButton[0]->x = 22;
-  missionButton[0]->y = 63;
-  missionButton[0]->show = false;
+  missionButton[0] = new Button(22, 63, "Images/m1.bmp");
 
   pauseOverlay = new Sprite("Images/pause.bmp", WHITE);
   missionLock = new Sprite("Images/blocked.bmp", WHITE);
 
   // Locker+++
-  lock = new Button("Images/chest/code.bmp", WHITE);
-  lock->x = (screenPixelWidth - lock->w) / 2;
-  lock->y = (screenPixelHeight - lock->h) / 2;
+  lock = new Button((screenPixelWidth - lock->w) / 2,
+                    (screenPixelHeight - lock->h) / 2, "Images/chest/code.bmp",
+                    WHITE);
   lock->show = true;
-
   // Locker---
 
-  backButton = new Button("Images/back.bmp", WHITE);
-  backButton->x = 15;
-  backButton->y = 554;
-  backButton->show = false;
+  backButton = new Button(15, 554, "Images/back.bmp", WHITE);
 
   inventory = new Inventory();
-  inventory->x = 0;
-  inventory->y = 0;
-  inventory->show = false;
 }
 void initPause() {
   int pauseX = (screenPixelWidth - pauseMenuSprite->width) / 2;
@@ -298,7 +273,7 @@ void initPause() {
   PM[PM_EXIT] = new Button(centeredX, pauseY + 200, "Images/pm_exit.bmp");
 }
 
-void InitialSys(HINSTANCE hInstance) {
+void InitialSys(HINSTANCE hInstance) { // InitialSys
   paramDraw = new Param();
 
   d3d = Direct3DCreate9(D3D_SDK_VERSION);
