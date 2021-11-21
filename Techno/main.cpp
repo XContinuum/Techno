@@ -43,9 +43,9 @@
 #define EXIT_BUTTON_IMG "Images/main_menu/btn_Exit.bmp"
 
 // Missions
-#define MISSIONS_GRID_IMG "Images/missions/missions.bmp"
-#define MISSION_CELL_IMG "Images/missions/m1.bmp"
-#define LOCKED_MISSION_IMG "Images/missions/blocked.bmp"
+#define MISSIONS_GRID_IMG "Images/missions/grid.bmp"
+#define MISSION_CELL_IMG "Images/missions/cell.bmp"
+#define LOCKED_MISSION_IMG "Images/missions/locked.bmp"
 #define BACK_BUTTON_IMG "Images/missions/back.bmp"
 
 // Pause
