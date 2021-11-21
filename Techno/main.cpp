@@ -346,27 +346,23 @@ void mainMenuInteractions() {
 
 void mainMenuInteractions(int cursorX, int cursorY, int clickedX, int clickedY) {
   for (int i = 0; i < 4; i++) {
-    if (btnMain[i]->contains(cursorX, cursorY) == true)
-      btnMain[i]->show = true;
-    else
-      btnMain[i]->show = false;
+      btnMain[i]->show = btnMain[i]->contains(cursorX, cursorY);
   }
 
-  if (btnMain[PLAY]->contains(clickedX, clickedY) == true &&
-      didClickLeftButton == true) {
+  if (!didClickLeftButton) return;
+
+  if (btnMain[PLAY]->contains(clickedX, clickedY)) {
     playMode = true;
     missionMode = true;
     mainMenuMode = false;
   }
 
-  if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true &&
-      didClickLeftButton == true) {
+  if (btnMain[CREATE_MAP]->contains(clickedX, clickedY)) {
     createMapMode = true;
     mainMenuMode = false;
   }
 
-  if (btnMain[SETTINGS]->contains(clickedX, clickedY) == true &&
-      didClickLeftButton == true) {
+  if (btnMain[SETTINGS]->contains(clickedX, clickedY)) {
     mainMenuMode = false;
   }
 }
