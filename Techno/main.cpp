@@ -96,9 +96,10 @@ Param *paramDraw;
 class Sprite {
  public:
   int width, height;
-  int *img = NULL;
-  int *im;
   int transparentColor = 0;  // TransparentColor: transparentColor
+
+ protected:
+  int *img = NULL;
 
  private:
   int x = 0, y = 0;
@@ -123,8 +124,8 @@ class Sprite {
   }
 
   void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
-    for (int i = 0; i < height; ++i) {
-      for (int j = 0; j < width; ++j) {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         if (img[j + i * width] != transparentColor) {
           void* destination = reinterpret_cast<char *>(lockedRect.pBits) +
                              x * 4 + j * 4 + i * lockedRect.Pitch +
@@ -139,34 +140,30 @@ class Sprite {
 
   // Flips around Y axis
   void flipHorizontally() {  // Rotate: flipHorizontally
-    int* tmp;
-    loadImageInto(imgPath, &tmp);
-
-    int j1 = width;
+    int* original;
+    loadImageInto(imgPath, &original);
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        img[j + i * width] = tmp[j1 + i * width];
-
-        j1--;
+        img[j + i * width] = original[(i + 1) * width - j];
       }
-
-      j1 = width;
     }
   }
 
   void cut(int x, int y, int w, int h) {
+    this->width = w;
+    this->height = h;
+
     img = new int[w * h * 32 / 8];
 
-    int* tmp; // int *im1 = new int[width * height * 32 / 8];
-    loadImageInto(imgPath, &tmp);
+    int* original; // int *im1 = new int[width * height * 32 / 8];
+    loadImageInto(imgPath, &original);
     
-    for (int i = y; i < y + h; ++i)
-      for (int j = x; j < x + w; ++j)
-        img[(j - x) + (i - y) * w] = im1[j + i * width];
-
-    width = w;
-    height = h;
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        img[j + i * w] = original[(j + x) + (i + y) * width];
+      }
+    }
   }
 
   void replaceColor(int from, int to) {  // RemplaceColor: replaceColor
@@ -190,6 +187,7 @@ class Sprite {
    }
 
    void loadImageInto(char* path, int* &destination) {
+    int width, height;
     std::ifstream is(path, std::ios::binary);
     is.seekg(18);
     is.read(reinterpret_cast<char *>(&width), sizeof(width));
