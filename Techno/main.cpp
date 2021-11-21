@@ -36,11 +36,12 @@
 #define PM_EXIT 3
 
 // Main menu
-#define MAIN_MENU_IMG "Images/main_menu/main_menu.bmp"
-#define PLAY_BUTTON_IMG "Images/main_menu/btn_Play.bmp"
-#define CREATE_MAP_BUTTON_IMG "Images/main_menu/btn_Map.bmp"
-#define SETTINGS_BUTTON_IMG "Images/main_menu/btn_Settings.bmp"
-#define EXIT_BUTTON_IMG "Images/main_menu/btn_Exit.bmp"
+#define MAIN_MENU_IMG "Images/main_menu/menu.bmp"
+
+#define PLAY_BUTTON_IMG "Images/main_menu/play.bmp"
+#define CREATE_MAP_BUTTON_IMG "Images/main_menu/modify_map.bmp"
+#define SETTINGS_BUTTON_IMG "Images/main_menu/settings.bmp"
+#define EXIT_BUTTON_IMG "Images/main_menu/exit.bmp"
 
 // Missions
 #define MISSIONS_GRID_IMG "Images/missions/grid.bmp"
