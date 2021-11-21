@@ -27,20 +27,6 @@
 #define SETTINGS 2
 #define EXIT 3
 
-#define SOLID_BLOCK 0
-#define DELETE_BLOCK 1
-#define BACKGROUND_BLOCK 2
-#define SAVE 3
-#define SMALL_SQUARE 4
-#define STAIRS 5
-
-#define POINT 0
-#define LINE 1
-#define RECTANGLE 2
-
-#define BACK_LAYER 0
-#define FOREGROUND_LAYER 1
-
 #define PM_CONTINUE 0
 #define PM_SAVE 1
 #define PM_SETTINGS 2
