@@ -78,17 +78,17 @@ class Button { // Button: TappableArea
     return x >= this->x && x <= this->x + w && y >= this->y && y <= this->y + h;
   }
 
-  void draw(Canvas *p) {
+  void draw(Canvas *canvas) {
     if (!show) return;
     
-    p->draw(x, y, w, h, image);
+    canvas->draw(x, y, w, h, image);
   }
 
-  void drawBorder(Canvas *p) {
+  void drawBorder(Canvas *canvas) {
     if (!show) return;
     if (!showBorder) return;
 
-    p->draw(x, y, w, h, Border);
+    canvas->draw(x, y, w, h, Border);
   }
 };
 
@@ -108,10 +108,10 @@ class NeoElement : public Sprite, public Button {
     return Button::image->img[x + y * width];
   }
 
-  void draw(Canvas *p) {
+  void draw(Canvas *canvas) {
     if (!show) return;
     
-    p->draw(Button::x, Button::y, w, h, image);
+    canvas->draw(Button::x, Button::y, w, h, image);
   }
 };
 class NeoSprite : public Sprite {
@@ -235,17 +235,17 @@ class Text {
     changeText(str);
   }
 
-  void draw(Canvas *p) {
+  void draw(Canvas *canvas) {
     for (int i = 0; i < length; i++) {
       int index = getIndex(str[i]);
       int offset = charOffset(str[i]);
 
-      p->draw(x + i * (letters[i]->width - offset), y, letters[index]->width,
+      canvas->draw(x + i * (letters[i]->width - offset), y, letters[index]->width,
               letters[index]->height, letters[index]);
     }
   }
 
-  void draw(Canvas *p, int *pos, int size, int highlightColor) {
+  void draw(Canvas *canvas, int *pos, int size, int highlightColor) {
     for (int i = 0; i < length; i++) {
       int index = getIndex(str[i]);
       int offset = charOffset(str[i]);
@@ -255,7 +255,7 @@ class Text {
         letter->replaceColor(color, highlightColor);
       }
 
-      p->draw(x + i * (letter->width - offset), y, letter->width,
+      canvas->draw(x + i * (letter->width - offset), y, letter->width,
               letter->height, letter);
     }
   }
@@ -476,7 +476,7 @@ class Player { // Hero: Player
     }
   }
 
-  void draw(Canvas *p) { p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
+  void draw(Canvas *canvas) { canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame); }
 
   bool didReachExitDoor() {  // ChangeLevel: didReachExitDoor
     return isWithinExit(x, y) || isWithinExit(x + currentFrame->width, y);
@@ -610,8 +610,8 @@ class Fire {
     currentFrame = assets[frame];
   }
 
-  void draw(Canvas *p) {
-    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  void draw(Canvas *canvas) {
+    canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
  private:
@@ -655,8 +655,8 @@ class Door {
     return x >= this->x && x <= this->x + currentFrame->width && y >= this->y && y <= this->y + currentFrame->height;
   }
 
-  void draw(Canvas *p) {
-    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  void draw(Canvas *canvas) {
+    canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
   void updateFrame() {  // ChangeCadr: updateFrame
@@ -717,8 +717,8 @@ class Book {
     return x >= this->x && x <= this->x + bookAsset->width && y >= this->y && this->y <= y + bookAsset->height;
   }
 
-  void draw(Canvas *p) {
-    p->draw(x, y, bookAsset->width, bookAsset->height, bookAsset);
+  void draw(Canvas *canvas) {
+    canvas->draw(x, y, bookAsset->width, bookAsset->height, bookAsset);
   }
 };
 int Book::counter = 0;
@@ -759,8 +759,8 @@ class Bonus {
            y <= this->y + currentFrame->height;
   }
 
-  void draw(Canvas *p) {
-    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  void draw(Canvas *canvas) {
+    canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 
  private:
@@ -792,10 +792,10 @@ class LockAngle { // Arrow: LockAngle
     angleAssets = loadAssets("Images/lock_angle/angle_%d.bmp", 40, WHITE);
   }
 
-  void draw(Canvas *p) {
+  void draw(Canvas *canvas) {
     Sprite *currentFrame = angleAssets[frame];
 
-    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+    canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
 };
 
@@ -836,19 +836,19 @@ class Inventory { // Inventar: Inventory
     updateCellSprites();
   }
 
-  void draw(Canvas *p, int cursorX, int cursorY) {
+  void draw(Canvas *canvas, int cursorX, int cursorY) {
     if (show) {
-      p->draw(x, y, openInventory->width, openInventory->height, openInventory);
+      canvas->draw(x, y, openInventory->width, openInventory->height, openInventory);
 
       drawNitems(inventorySize);
     } else {
-      p->draw(x, y, inventorySprite->width, inventorySprite->height, inventorySprite);
+      canvas->draw(x, y, inventorySprite->width, inventorySprite->height, inventorySprite);
 
       drawNitems(1);
     }
 
     if (showTooltip)
-      p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
+      canvas->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
   bool contains(int x, int y) { // Touch: contains
     return x >= this->x && x <= this->x + inventorySprite->width && y >= this->y && y <= this->y + inventorySprite->height;
@@ -1125,16 +1125,16 @@ class Chest { // Chest should be split into three classes: One for inventory man
       return comboDigits[0] * 10000 + comboDigits[1] * 100 + comboDigits[2];
   }
 
-  void draw(const Canvas *p) {
-    p->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
+  void draw(const Canvas *canvas) {
+    canvas->draw(x, y, currentFrame->width, currentFrame->height, currentFrame);
   }
-  void drawTooltip(const Canvas *p, int cursorX, int cursorY) {
+  void drawTooltip(const Canvas *canvas, int cursorX, int cursorY) {
     bool showToolTip = contains(cursorX, cursorY);
     if (!showToolTip) return;
 
-    p->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
+    canvas->draw(cursorX + 10, cursorY, toolTip->width, toolTip->height, toolTip);
   }
-  void drawOpenChest(const Canvas *p) { // drawC: drawOpenChest
+  void drawOpenChest(const Canvas *canvas) { // drawC: drawOpenChest
     lockInstructions->draw(p);
 
     if (isChestLocked) {
@@ -1152,14 +1152,14 @@ class Chest { // Chest should be split into three classes: One for inventory man
     if (showCheckmark) {
       int x = lockInstructions->x + 99 + 2;
       int y = lockInstructions->y + 107;
-      p->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
+      canvas->draw(x, y, successUnlockAsset->width, successUnlockAsset->height,
               successUnlockAsset);
     }
   }
 
  private:
-  void drawChestContents(Canvas *p) {
-    p->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
+  void drawChestContents(Canvas *canvas) {
+    canvas->draw(codeX, codeY, chestGrid->width, chestGrid->height, chestGrid);
 
     for (int i = 0; i < chestRows * chestColumns; i++) {
       if (items[i] == INV_EMPTY_CELL) continue;
@@ -1171,7 +1171,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
               column * (spaceBetweenCells + inventorySquareDim);
       int y = codeY + inventoryChestTop +
               row * (spaceBetweenCells + inventorySquareDim);
-      p->draw(x, y, itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
+      canvas->draw(x, y, itemAssets[i]->width, itemAssets[i]->height, itemAssets[i]);
     }
   }
 
@@ -1319,8 +1319,8 @@ class MovingBlock { // BlockMoves: MovingBlock
     }
   }
 
-  void draw(Canvas *p) {
-    p->draw(x, y, asset->width, asset->height, asset);
+  void draw(Canvas *canvas) {
+    canvas->draw(x, y, asset->width, asset->height, asset);
   }
 
  private:
@@ -1383,12 +1383,12 @@ class FinalDoor {
            y <= this->y + currentFrame->height;
   }
 
-  void draw(Canvas *p) {
-    p->draw((x + assets[0]->width) - currentFrame->width, y, currentFrame->width,
+  void draw(Canvas *canvas) {
+    canvas->draw((x + assets[0]->width) - currentFrame->width, y, currentFrame->width,
             currentFrame->height, currentFrame);
 
     if (needsKey)
-      p->draw((screenPixelWidth - needKeyAsset->width) / 2, (screenPixelHeight - needKeyAsset->height) / 2,
+      canvas->draw((screenPixelWidth - needKeyAsset->width) / 2, (screenPixelHeight - needKeyAsset->height) / 2,
               needKeyAsset->width, needKeyAsset->height, needKeyAsset);
   }
 
