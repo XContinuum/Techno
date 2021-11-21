@@ -72,8 +72,6 @@ char buffer[256];
 Param *paramDraw;
 // Global variables
 
-Button *lock;
-
 class Sprite {
  public:
   int x, y;
@@ -250,13 +248,6 @@ void initPlay() {
 
   pauseOverlay = new Sprite("Images/pause.bmp", WHITE);
   missionLock = new Sprite("Images/blocked.bmp", WHITE);
-
-  // Locker+++
-  lock = new Button((screenPixelWidth - lock->w) / 2,
-                    (screenPixelHeight - lock->h) / 2, "Images/chest/code.bmp",
-                    WHITE);
-  lock->show = true;
-  // Locker---
 
   backButton = new Button(15, 554, "Images/back.bmp", WHITE);
 
