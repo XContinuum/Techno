@@ -226,7 +226,12 @@ void drawMainMenu() {
 }
 
 void initialization() {
-  // Main menu+++
+  initMainMenu();
+  initPlay();
+  initCreateMap();
+  initPause();
+}
+void initMainMenu() {
   mainMenu = new Sprite("Images/main_menu.bmp");
 
   btnMain[PLAY] = new Button("Images/btn_Play.bmp");
@@ -248,8 +253,8 @@ void initialization() {
   btnMain[EXIT]->x = 271;
   btnMain[EXIT]->y = 476;
   btnMain[EXIT]->show = false;
-
-  // Play+++
+}
+void initPlay() {
   char *tt = "score:0";                                // delete
   scoreText = new Text(8, 43, tt, DARK_GRAYISH_BLUE);  // score
 
@@ -281,10 +286,8 @@ void initialization() {
   inventory->x = 0;
   inventory->y = 0;
   inventory->show = false;
-
-  // CREATE MAP+++
-  initializeCreateMap();
-
+}
+void initPause() {
   PM[PM_CONTINUE] = new Button("Images/pm_continue.bmp");
   PM[PM_CONTINUE]->x = (screenPixelWidth - pauseMenuSprite->width) / 2 + 79;
   PM[PM_CONTINUE]->y = (screenPixelHeight - pauseMenuSprite->height) / 2 + 55;
@@ -418,11 +421,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Sleep(20);
   }
 
-  if (keyboard != NULL) keyboard->Release();
-  if (di != NULL) di->Release();
-  if (d3d != NULL) d3d->Release();
-  if (videocard != NULL) videocard->Release();
-  UnregisterClass("class", hInstance);
+  cleanup();
 
   return 0;
 }
@@ -459,4 +458,12 @@ void initializeWindow(HINSTANCE hInstance, int nCmdShow) {
                       screenPixelHeight, NULL, NULL, hInstance, NULL);
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
+}
+
+void cleanup() {
+  if (keyboard) keyboard->Release();
+  if (di) di->Release();
+  if (d3d) d3d->Release();
+  if (videocard) videocard->Release();
+  UnregisterClass("class", hInstance);
 }
