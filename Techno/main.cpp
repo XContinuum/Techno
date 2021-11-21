@@ -371,26 +371,7 @@ LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
     initialization();
-
-    WNDCLASS wc;
-    HICON hMyIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
-
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hbrBackground = (HBRUSH)(6);
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hIcon = hMyIcon;
-    wc.hInstance = hInstance;
-    wc.lpfnWndProc = WndProc;
-    wc.lpszClassName = "class";
-    wc.lpszMenuName = NULL;
-    wc.style = CS_OWNDC;
-
-    RegisterClass(&wc);
-
-    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, screenPixelWidth, screenPixelHeight, NULL, NULL, hInstance, NULL);
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
+    intializeWindow(hInstance, nCmdShow);
 
     MSG msg;
 
@@ -449,4 +430,26 @@ LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     }
 
     return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+void initializeWindow(HINSTANCE hInstance, int nCmdShow) {
+    WNDCLASS wc;
+    HICON hMyIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hbrBackground = (HBRUSH)(6);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hIcon = hMyIcon;
+    wc.hInstance = hInstance;
+    wc.lpfnWndProc = WndProc;
+    wc.lpszClassName = "class";
+    wc.lpszMenuName = NULL;
+    wc.style = CS_OWNDC;
+
+    RegisterClass(&wc);
+
+    hWnd = CreateWindow("class", "Game", WS_POPUP, left, top, screenPixelWidth, screenPixelHeight, NULL, NULL, hInstance, NULL);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 }
