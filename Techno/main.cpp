@@ -90,7 +90,7 @@ IDirectInput8 *di;
 
 char buffer[256];
 
-Param *paramDraw;
+Canvas *paramDraw;
 // Global variables
 
 class Sprite {
@@ -202,7 +202,7 @@ class Sprite {
     is.close();
    }
 };
-class Param { // Param:
+class Canvas { // Param: Canvas
  public:
   IDirect3DSurface9 *backBuffer = NULL;
 
@@ -211,7 +211,7 @@ class Param { // Param:
   RECT rectSize;
 
  public:
-  Param() {}
+  Canvas() {}
 
   void draw(int x, int y, int w, int h, Sprite *sprite) {  // Draw: draw
     rectSize.left = x;
@@ -280,7 +280,7 @@ void initPause() {
 }
 
 void initDrawingSystem(HINSTANCE hInstance) { // InitialSys: initDrawingSystem
-  paramDraw = new Param();
+  paramDraw = new Canvas();
 
   d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
