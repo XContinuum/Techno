@@ -35,20 +35,22 @@
 #define PM_SETTINGS 2
 #define PM_EXIT 3
 
-#define MAIN_MENU_IMG "Images/main_menu.bmp"
-#define PLAY_BUTTON_IMG "Images/btn_Play.bmp"
-#define CREATE_MAP_BUTTON_IMG "Images/btn_Map.bmp"
-#define SETTINGS_BUTTON_IMG "Images/btn_Settings.bmp"
-#define EXIT_BUTTON_IMG "Images/btn_Exit.bmp"
-
-#define PAUSE_MENU_IMG "Images/Pause_menu.bmp"
-#define BACKDROP_IMG "Images/pause.bmp"
+// Main menu
+#define MAIN_MENU_IMG "Images/main_menu/main_menu.bmp"
+#define PLAY_BUTTON_IMG "Images/main_menu/btn_Play.bmp"
+#define CREATE_MAP_BUTTON_IMG "Images/main_menu/btn_Map.bmp"
+#define SETTINGS_BUTTON_IMG "Images/main_menu/btn_Settings.bmp"
+#define EXIT_BUTTON_IMG "Images/main_menu/btn_Exit.bmp"
 
 // Missions
 #define MISSIONS_GRID_IMG "Images/missions.bmp"
 #define MISSION_CELL_IMG "Images/missions/m1.bmp"
 #define LOCKED_MISSION_IMG "Images/missions/blocked.bmp"
 #define BACK_BUTTON_IMG "Images/missions/back.bmp"
+
+// Pause
+#define PAUSE_MENU_IMG "Images/Pause_menu.bmp"
+#define BACKDROP_IMG "Images/pause.bmp"
 
 #define PAUSE_CONTINUE_IMG "Images/pm_continue.bmp"
 #define PAUSE_SAVE_IMG "Images/pm_save.bmp"
