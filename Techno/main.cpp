@@ -100,41 +100,21 @@ class Sprite {
   int *img = NULL;
   int *im;
   int transparentColor = 0;  // TransparentColor: transparentColor
-  char *name;
+
+ private:
+  char *imgPath;
 
  public:
   Sprite(char *fname) {
-    this->name = fname;
+    this->imgPath = fname;
 
-    std::ifstream is(fname, std::ios::binary);
-    is.seekg(18);
-    is.read(reinterpret_cast<char *>(&width), sizeof(width));
-    is.read(reinterpret_cast<char *>(&height), sizeof(height));
-    is.seekg(28, std::ios::cur);
-    img = new int[width * height * 32 / 8];
-
-    for (int i = height - 1; i >= 0; --i)
-      is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8,
-              width * 32 / 8);
-
-    is.close();
+    loadImage(fname);
   }
   Sprite(char *fname, int transparentColor) {
     this->transparentColor = transparentColor,
-    this->name = fname;
+    this->imgPath = fname;
 
-    std::ifstream is(fname, std::ios::binary);
-    is.seekg(18);
-    is.read(reinterpret_cast<char *>(&width), sizeof(width));
-    is.read(reinterpret_cast<char *>(&height), sizeof(height));
-    is.seekg(28, std::ios::cur);
-    img = new int[width * height * 32 / 8];
-
-    for (int i = height - 1; i >= 0; --i)
-      is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8,
-              width * 32 / 8);
-
-    is.close();
+    loadImage(fname);
   }
 
   ~Sprite() {
@@ -153,7 +133,7 @@ class Sprite {
 
   // Flips around Y axis
   void flipHorizontally() {  // Rotate: flipHorizontally
-    std::ifstream is(name, std::ios::binary);
+    std::ifstream is(imgPath, std::ios::binary);
     is.seekg(18);
     is.read(reinterpret_cast<char *>(&width), sizeof(width));
     is.read(reinterpret_cast<char *>(&height), sizeof(height));
@@ -185,7 +165,7 @@ class Sprite {
     img = new int[wI * hI * 32 / 8];
 
     //++++
-    std::ifstream is(name, std::ios::binary);
+    std::ifstream is(imgPath, std::ios::binary);
     is.seekg(18);
     is.read(reinterpret_cast<char *>(&width), sizeof(width));
     is.read(reinterpret_cast<char *>(&height), sizeof(height));
@@ -212,6 +192,20 @@ class Sprite {
       for (int j = 0; j < width; ++j)
         if (img[j + i * width] == from) img[j + i * width] = to;
   }
+  private:
+   void loadImage(char* fname) {
+     std::ifstream is(fname, std::ios::binary);
+     is.seekg(18);
+     is.read(reinterpret_cast<char *>(&width), sizeof(width));
+     is.read(reinterpret_cast<char *>(&height), sizeof(height));
+     is.seekg(28, std::ios::cur);
+     img = new int[width * height * 32 / 8];
+
+     for (int i = height - 1; i >= 0; i--)
+       is.read(reinterpret_cast<char *>(img) + width * i * 32 / 8, width * 32 / 8);
+
+     is.close();
+   }
 };
 class Param {
  public:
