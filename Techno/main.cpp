@@ -32,6 +32,53 @@
 #define PM_SETTINGS 2
 #define PM_EXIT 3
 
+const int screenPixelWidth = 800; // w: screenPixelWidth
+const int screenPixelHeight = 600; // h: screenPixelHeight
+
+#include "class.h"
+
+const int blocksInWidth = 40; // mW: blocksInWidth
+const int blocksInHeight = 30; // mH: blocksInHeight
+
+int left = (1280 - screenPixelWidth) / 2;
+int top = (800 - screenPixelHeight) / 2;
+
+int clickedX, clickedY; // X, Y: clickedX, clickedY
+int cursorX, cursorY; // mX, mY: cursorX, cursorY
+bool didClickLeftButton = false; // lmb: didClickLeftButton
+bool didClickRightButton = false; // rmb: didClickRightButton
+
+// Main menu+++
+bool isInitialState = true; // Menu: isInitialState
+bool end = true;
+
+Sprite *mainMenu;
+Button *btnMain[4];
+
+// Main menu----------------------
+HWND hWnd;
+
+IDirect3D9 *d3d = NULL;
+IDirect3DDevice9 *videocard = NULL;
+D3DPRESENT_PARAMETERS pp;
+HRESULT hr;
+
+IDirectInputDevice8 *keyboard;
+IDirectInput8 *di;
+
+char buffer[256];
+
+Param *paramDraw;
+// Global variables---------------
+
+#include "Create_map.h"
+#include "Playing.h"
+
+int timer; // TODO: remove time
+int timer1;
+int dt;
+Button* lock;
+
 // Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class Sprite {
    public:
@@ -167,53 +214,6 @@ class Param {
         backBuffer->UnlockRect();
     }
 };
-
-const int screenPixelWidth = 800; // w: screenPixelWidth
-const int screenPixelHeight = 600; // h: screenPixelHeight
-
-#include "class.h"
-
-const int blocksInWidth = 40; // mW: blocksInWidth
-const int blocksInHeight = 30; // mH: blocksInHeight
-
-int left = (1280 - screenPixelWidth) / 2;
-int top = (800 - screenPixelHeight) / 2;
-
-int clickedX, clickedY; // X, Y: clickedX, clickedY
-int cursorX, cursorY; // mX, mY: cursorX, cursorY
-bool didClickLeftButton = false; // lmb: didClickLeftButton
-bool didClickRightButton = false; // rmb: didClickRightButton
-
-// Main menu+++
-bool isInitialState = true; // Menu: isInitialState
-bool end = true;
-
-Sprite *mainMenu;
-Button *btnMain[4];
-
-// Main menu----------------------
-HWND hWnd;
-
-IDirect3D9 *d3d = NULL;
-IDirect3DDevice9 *videocard = NULL;
-D3DPRESENT_PARAMETERS pp;
-HRESULT hr;
-
-IDirectInputDevice8 *keyboard;
-IDirectInput8 *di;
-
-char buffer[256];
-
-Param *paramDraw;
-// Global variables---------------
-
-#include "Create_map.h"
-#include "Playing.h"
-
-int timer; // TODO: remove time
-int timer1;
-int dt;
-Button* lock;
 
 void Draw() {
     // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
