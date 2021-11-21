@@ -22,6 +22,10 @@
 
 #include "resource.h"
 
+#include "class.h"
+#include "Create_map.h"
+#include "Playing.h"
+
 #define PLAY 0
 #define CREATE_MAP 1
 #define SETTINGS 2
@@ -35,8 +39,6 @@
 const int screenPixelWidth = 800; // w: screenPixelWidth
 const int screenPixelHeight = 600; // h: screenPixelHeight
 
-#include "class.h"
-
 const int blocksInWidth = 40; // mW: blocksInWidth
 const int blocksInHeight = 30; // mH: blocksInHeight
 
@@ -48,14 +50,14 @@ int cursorX, cursorY; // mX, mY: cursorX, cursorY
 bool didClickLeftButton = false; // lmb: didClickLeftButton
 bool didClickRightButton = false; // rmb: didClickRightButton
 
-// Main menu+++
+// Main menu
 bool isInitialState = true; // Menu: isInitialState
 bool end = true;
 
 Sprite *mainMenu;
 Button *btnMain[4];
 
-// Main menu----------------------
+// Library vars
 HWND hWnd;
 
 IDirect3D9 *d3d = NULL;
@@ -69,14 +71,8 @@ IDirectInput8 *di;
 char buffer[256];
 
 Param *paramDraw;
-// Global variables---------------
+// Global variables
 
-#include "Create_map.h"
-#include "Playing.h"
-
-int timer; // TODO: remove time
-int timer1;
-int dt;
 Button* lock;
 
 // Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -450,13 +446,6 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
         }
 
         hr = keyboard->GetDeviceState(sizeof(buffer), buffer);
-
-        // Timer+++
-        if (timer1 == 0) timer1 = timeGetTime();
-
-        timer = timeGetTime();
-        dt = timer - timer1;
-        // Timer---
 
         mainMenuInteractions();
 
