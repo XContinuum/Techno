@@ -280,7 +280,7 @@ void initPause() {
   int centeredX = pauseX + 79;
 
   PM[PM_CONTINUE] = new Button(centeredX, pauseY + 55, PAUSE_CONTINUE_IMG);
-  PM[PM_SAVE] = new Button(centeredX,  pauseY + 101, PAUSE_SAVE_IMG);
+  PM[PM_SAVE] = new Button(centeredX, pauseY + 101, PAUSE_SAVE_IMG);
   PM[PM_SETTINGS] = new Button(centeredX, pauseY + 149, PAUSE_SETTINGS_IMG);
   PM[PM_EXIT] = new Button(centeredX, pauseY + 200, PAUSE_EXIT_IMG);
 }
