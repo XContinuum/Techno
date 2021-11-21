@@ -123,7 +123,7 @@ class Sprite {
     img = NULL;
   }
 
-  void DrawIntObject(D3DLOCKED_RECT &lockedRect) {
+  void drawIntObject(D3DLOCKED_RECT &lockedRect) { // DrawIntObject: drawIntObject
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         if (img[j + i * width] != transparentColor) {
@@ -202,23 +202,25 @@ class Sprite {
     is.close();
    }
 };
-class Param {
+class Param { // Param:
  public:
+  IDirect3DSurface9 *backBuffer = NULL;
+
+ private:
   D3DLOCKED_RECT rectangle;
   RECT rectSize;
-  IDirect3DSurface9 *backBuffer;
 
  public:
-  Param() { backBuffer = NULL; }
+  Param() {}
 
-  void draw(int x, int y, int w, int h, Sprite *Image) {  // Draw: draw
+  void draw(int x, int y, int w, int h, Sprite *sprite) {  // Draw: draw
     rectSize.left = x;
     rectSize.top = y;
     rectSize.right = rectSize.left + w;
     rectSize.bottom = rectSize.top + h;
 
     backBuffer->LockRect(&rectangle, &rectSize, 0);
-    Image->DrawIntObject(rectangle);
+    sprite->drawIntObject(rectangle);
     backBuffer->UnlockRect();
   }
 };
