@@ -337,7 +337,7 @@ void InitialSys(HINSTANCE hInstance) {
                              &paramDraw->backBuffer);
 }
 
-void mainMenuInteractions() {
+void interactions(int cursorX, int cursorY, int clickedX, int clickedY) { // mainMenuInteractions: interactions
   if (mainMenuMode) mainMenuInteractions(cursorX, cursorY, clickedX, clickedY);
   if (missionMode) mission(cursorX, cursorY, clickedX, clickedY);
   if (playMode) playLoop(cursorX, cursorY, clickedX, clickedY);
@@ -403,32 +403,25 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
         didClickRightButton = false;
 
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_DESTROY) break;
+          if (msg.message == WM_DESTROY) break;
 
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+          TranslateMessage(&msg);
+          DispatchMessage(&msg);
+          cursorX = msg.pt.x - left;
+          cursorY = msg.pt.y - top;
 
-            if (msg.message == WM_LBUTTONUP) {
-                clickedX = msg.pt.x - left;
-                clickedY = msg.pt.y - top;
+          if (msg.message == WM_RBUTTONUP || msg.message == WM_LBUTTONUP) {
+            clickedX = cursorX;
+            clickedY = cursorY;
+          }
 
-                didClickLeftButton = true;
-            }
-
-            if (msg.message == WM_RBUTTONUP) {
-                clickedX = msg.pt.x - left;
-                clickedY = msg.pt.y - top;
-
-                didClickRightButton = true;
-            }
-
-            cursorX = msg.pt.x - left;
-            cursorY = msg.pt.y - top;
+          didClickLeftButton = msg.message == WM_LBUTTONUP;
+          didClickRightButton = msg.message == WM_RBUTTONUP;
         }
 
         hr = keyboard->GetDeviceState(sizeof(buffer), buffer);
 
-        mainMenuInteractions();
+        interactions(cursorX, cursorY, clickedX, clickedY);
 
         if (btnMain[EXIT]->Touch(clickedX, clickedY) && mainMenuMode) return 0;
 
