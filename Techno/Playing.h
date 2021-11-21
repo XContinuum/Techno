@@ -242,8 +242,7 @@ void readScript(char* filename) {
   char* fileBuffer = readFile(filename, bufferSize);
 
   readEntities(fileBuffer, bufferSize);
-  int mapDeliminatorPos = findDelimiter(fileBuffer, bufferSize);
-  loadMap(fileBuffer, mapDeliminatorPos);
+  loadMap(fileBuffer, bufferSize);
   setMap();
   loadDoors();
 
@@ -347,9 +346,11 @@ int findDelimiter(char* fileBuffer, int bufferSize) {
 
   return 0;
 }
-void loadMap(char* fileBuffer, int mapDeliminatorPos) {
+void loadMap(char* fileBuffer, int bufferSize) {
   // Global: gameMaps
   // External: blocksInHeight, blocksInWidth,
+  int mapDeliminatorPos = findDelimiter(fileBuffer, bufferSize);
+
   for (int i = 0; i < blocksInHeight; i++) {
     for (int j = 0; j < blocksInWidth; j++) {
       char num = fileBuffer[mapDeliminatorPos + i * blocksInWidth + j];
