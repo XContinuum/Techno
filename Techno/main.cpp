@@ -90,7 +90,7 @@ IDirectInput8 *di;
 
 char buffer[256];
 
-Canvas *paramDraw;
+Canvas *globalCanvas; // paramDraw: globalCanvas
 // Global variables
 
 class Sprite {
@@ -233,9 +233,9 @@ void draw() {  // Draw: draw
 }
 
 void drawMainMenu() {
-  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
+  globalCanvas->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
-  for (int i = 0; i < 4; i++) mainMenuButtons[i]->draw(paramDraw);
+  for (int i = 0; i < 4; i++) mainMenuButtons[i]->draw(globalCanvas);
 }
 
 void initialization() {
@@ -280,7 +280,7 @@ void initPause() {
 }
 
 void initDrawingSystem(HINSTANCE hInstance) { // InitialSys: initDrawingSystem
-  paramDraw = new Canvas();
+  globalCanvas = new Canvas();
 
   d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
@@ -309,7 +309,7 @@ void initDrawingSystem(HINSTANCE hInstance) { // InitialSys: initDrawingSystem
   ZeroMemory(buffer, sizeof(buffer));
 
   videocard->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO,
-                           &paramDraw->backBuffer);
+                           &globalCanvas->backBuffer);
 }
 
 void interactions(int cursorX, int cursorY, int clickedX, int clickedY) {  // mainMenuInteractions: interactions

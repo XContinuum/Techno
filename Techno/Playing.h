@@ -66,7 +66,7 @@ bool shouldMoveStairsUp = false;
 
 // Globals from main.cpp
 // -----
-// paramDraw - global buffer sprites are rendered to
+// globalCanvas - global buffer sprites are rendered to
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
 // mainMenuMode - 
@@ -83,69 +83,69 @@ bool shouldMoveStairsUp = false;
 // ---------------------------------------------------------------------------------
 void drawScene(int cursorX, int cursorY) { // ★★★
   // Global: isPaused, scoreText
-  // External: paramDraw
+  // External: globalCanvas
   drawEntities(cursorX, cursorY);
 
   if (isPaused) {
     drawPauseMenu();
   }
 
-  scoreText->draw(paramDraw);
+  scoreText->draw(globalCanvas);
 }
 void drawEntities(int cursorX, int cursorY) {
   // Global: fireEntities, doorEntities, bonusEntities, movingStairBlocks, chest, player, inventory, bookEntities, pauseOverlay
   // selectedObjectId
-  // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, map);
+  // External: globalCanvas, screenPixelWidth, screenPixelHeight
+  globalCanvas->draw(0, 0, screenPixelWidth, screenPixelHeight, map);
 
   for (int i = 0; i < Fire::counter; i++) {
-    fireEntities[i]->draw(paramDraw);
+    fireEntities[i]->draw(globalCanvas);
   }
 
   for (int i = 0; i < Door::counter; i++) {
-    doorEntities[i]->draw(paramDraw);
+    doorEntities[i]->draw(globalCanvas);
   }
 
   for (int i = 0; i < FinalDoor::counter; i++) {
-    finalDoor[i]->draw(paramDraw);
+    finalDoor[i]->draw(globalCanvas);
   }
 
   for (int i = 0; i < Bonus::counter; i++) {
     if (!bonusEntities[i]->show) continue;
 
-    bonusEntities[i]->draw(paramDraw);
+    bonusEntities[i]->draw(globalCanvas);
   }
 
   for (int i = 0; i < MovingBlock::counter; i++) {
-    movingStairBlocks[i]->draw(paramDraw);
+    movingStairBlocks[i]->draw(globalCanvas);
   }
 
   // Chest++++
-  player->draw(paramDraw);
+  player->draw(globalCanvas);
 
   for (int i = 0; i < Chest::counter; i++) {
-    chest[i]->draw(paramDraw);
-    chest[i]->drawTooltip(paramDraw, cursorX, cursorY);
+    chest[i]->draw(globalCanvas);
+    chest[i]->drawTooltip(globalCanvas, cursorX, cursorY);
 
     if (!chest[i]->isOpen) continue;
 
-    paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+    globalCanvas->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                     pauseOverlay);
-    chest[i]->drawOpenChest(paramDraw); // does not mutate parameter
+    chest[i]->drawOpenChest(globalCanvas); // does not mutate parameter
   }
   // Chest---
 
-  inventory->draw(paramDraw, cursorX, cursorY);
+  inventory->draw(globalCanvas, cursorX, cursorY);
 
   // Book++++
   for (int i = 0; i < Book::counter; i++) {
     if (!bookEntities[i]->show) continue;
 
     if (bookEntities[i]->isOpen) {
-      paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
+      globalCanvas->draw(0, 0, pauseOverlay->width, pauseOverlay->height, pauseOverlay);
     }
 
-    bookEntities[i]->draw(paramDraw);
+    bookEntities[i]->draw(globalCanvas);
   }
   // Book---
 
@@ -155,7 +155,7 @@ void drawEntities(int cursorX, int cursorY) {
   if (selectedObjectId != INV_EMPTY_CELL) {
     Sprite* cursorIcon = item_assets[selectedObjectId];
 
-    paramDraw->draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
+    globalCanvas->draw(cursorX, cursorY, cursorIcon->width, cursorIcon->height, cursorIcon);
   }
 }
 void updateFrames() {
@@ -183,17 +183,17 @@ void updateFrames() {
 }
 void drawPauseMenu() {
   // Global: pauseOverlay, pauseMenuSprite, pauseMenuButtons
-  // External: paramDraw, screenPixelWidth, screenPixelHeight
+  // External: globalCanvas, screenPixelWidth, screenPixelHeight
   int leftCentered = (screenPixelWidth - pauseMenuSprite->width) / 2;
   int topCentered = (screenPixelHeight - pauseMenuSprite->height) / 2;
   
-  paramDraw->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
+  globalCanvas->draw(0, 0, pauseOverlay->width, pauseOverlay->height,
                   pauseOverlay);
-  paramDraw->draw(leftCentered, topCentered, pauseMenuSprite->width,
+  globalCanvas->draw(leftCentered, topCentered, pauseMenuSprite->width,
                   pauseMenuSprite->height, pauseMenuSprite);
 
   for (int i = 0; i < 4; i++) {
-    pauseMenuButtons[i]->draw(paramDraw);
+    pauseMenuButtons[i]->draw(globalCanvas);
   }
 }
 // ---------------------------------------------------------------------------------
@@ -202,10 +202,10 @@ void drawPauseMenu() {
 
 void drawMission() { // ★★★
   // Global: missions, missionButton, missionLock, backButton
-  // External: paramDraw, screenPixelWidth, screenPixelHeight
-  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
+  // External: globalCanvas, screenPixelWidth, screenPixelHeight
+  globalCanvas->draw(0, 0, screenPixelWidth, screenPixelHeight, missions);
 
-  if (missionButton->show) missionButton->draw(paramDraw);
+  if (missionButton->show) missionButton->draw(globalCanvas);
 
   // missions.bmp
   int missionsRows = 4;
@@ -224,12 +224,12 @@ void drawMission() { // ★★★
       int x = missionsTableX + j * (missionLock->width + horizontalSpace);
       int y = missionsTableY + i * (missionLock->height + verticalSpace);
 
-      paramDraw->draw(x, y, missionLock->width, missionLock->height,
+      globalCanvas->draw(x, y, missionLock->width, missionLock->height,
                       missionLock);
     }
   }
 
-  if (backButton->show) backButton->draw(paramDraw);
+  if (backButton->show) backButton->draw(globalCanvas);
 }
 
 // ---------------------------------------------------------------------------------
