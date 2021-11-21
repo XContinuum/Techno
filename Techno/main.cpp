@@ -211,18 +211,16 @@ class Param {
 };
 
 void draw() { // Draw: draw
-    // Main menu
-    if (mainMenuMode) {
-        paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
-
-        for (int i = 0; i < 4; i++) btnMain[i]->draw(paramDraw);
-    }
-    // Play
+    if (mainMenuMode) drawMainMenu();
     if (playMode) drawScene(cursorX, cursorY);
     if (missionMode) drawMission();
-    
-    // Create map
     if (createMapMode) drawCreateMapScreen();
+}
+
+void drawMainMenu() {
+  paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
+
+  for (int i = 0; i < 4; i++) btnMain[i]->draw(paramDraw);
 }
 
 void initialization() {
@@ -340,45 +338,37 @@ void InitialSys(HINSTANCE hInstance) {
 }
 
 void mainMenuInteractions() {
-    if (mainMenuMode) {
-        // Mouse move+++
-        for (int i = 0; i < 4; i++) {
-            if (btnMain[i]->contains(cursorX, cursorY) == true)
-                btnMain[i]->show = true;
-            else
-                btnMain[i]->show = false;
-        }
-        // Mouse move---
+  if (mainMenuMode) mainMenuInteractions(cursorX, cursorY, clickedX, clickedY);
+  if (missionMode) mission(cursorX, cursorY, clickedX, clickedY);
+  if (playMode) playLoop(cursorX, cursorY, clickedX, clickedY);
+  if (createMapMode) createMapInteractions(clickedX, clickedY);
+}
 
-        // Click+++
-        if (btnMain[PLAY]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
-            playMode = true;
-            missionMode = true;
-            mainMenuMode = false;
-        }
+void mainMenuInteractions(int cursorX, int cursorY, int clickedX, int clickedY) {
+  for (int i = 0; i < 4; i++) {
+    if (btnMain[i]->contains(cursorX, cursorY) == true)
+      btnMain[i]->show = true;
+    else
+      btnMain[i]->show = false;
+  }
 
-        if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
-            createMapMode = true;
-            mainMenuMode = false;
-        }
+  if (btnMain[PLAY]->contains(clickedX, clickedY) == true &&
+      didClickLeftButton == true) {
+    playMode = true;
+    missionMode = true;
+    mainMenuMode = false;
+  }
 
-        if (btnMain[SETTINGS]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
-            mainMenuMode = false;
-        }
+  if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true &&
+      didClickLeftButton == true) {
+    createMapMode = true;
+    mainMenuMode = false;
+  }
 
-        // Click---
-    }
-
-    // Procedures+++++++++
-    if (missionMode) {
-      mission(cursorX, cursorY, clickedX, clickedY);
-    }
-    if (playMode) {
-      playLoop(cursorX, cursorY, clickedX, clickedY);
-    }
-    if (createMapMode) {
-      createMapInteractions(clickedX, clickedY);
-    }
+  if (btnMain[SETTINGS]->contains(clickedX, clickedY) == true &&
+      didClickLeftButton == true) {
+    mainMenuMode = false;
+  }
 }
 
 LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
