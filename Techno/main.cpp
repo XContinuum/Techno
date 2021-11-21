@@ -59,8 +59,8 @@ const int screenPixelHeight = 600;  // h: screenPixelHeight
 const int blocksInWidth = 40;   // mW: blocksInWidth
 const int blocksInHeight = 30;  // mH: blocksInHeight
 
-int left = (1280 - screenPixelWidth) / 2;
-int top = (800 - screenPixelHeight) / 2;
+const int left = (1280 - screenPixelWidth) / 2;
+const int top = (800 - screenPixelHeight) / 2;
 
 int clickedX, clickedY;            // X, Y: clickedX, clickedY
 int cursorX, cursorY;              // mX, mY: cursorX, cursorY
@@ -69,7 +69,6 @@ bool didClickRightButton = false;  // rmb: didClickRightButton
 
 // Main menu
 bool mainMenuMode = true;  // Menu: isInitialState: mainMenuMode
-bool end = true;
 
 Sprite *mainMenu;
 Button *btnMain[4];
@@ -80,7 +79,6 @@ HWND hWnd;
 IDirect3D9 *d3d = NULL;
 IDirect3DDevice9 *videocard = NULL;
 D3DPRESENT_PARAMETERS pp;
-HRESULT hr;
 
 IDirectInputDevice8 *keyboard;
 IDirectInput8 *di;
@@ -282,7 +280,7 @@ void initPause() {
   PM[PM_EXIT] = new Button(centeredX, pauseY + 200, PAUSE_EXIT_IMG);
 }
 
-void InitialSys(HINSTANCE hInstance) { // InitialSys
+void initDrawingSystem(HINSTANCE hInstance) { // InitialSys: initDrawingSystem
   paramDraw = new Param();
 
   d3d = Direct3DCreate9(D3D_SDK_VERSION);
@@ -315,8 +313,7 @@ void InitialSys(HINSTANCE hInstance) { // InitialSys
                            &paramDraw->backBuffer);
 }
 
-void interactions(int cursorX, int cursorY, int clickedX,
-                  int clickedY) {  // mainMenuInteractions: interactions
+void interactions(int cursorX, int cursorY, int clickedX, int clickedY) {  // mainMenuInteractions: interactions
   if (mainMenuMode) mainMenuInteractions(cursorX, cursorY, clickedX, clickedY);
   if (missionMode) mission(cursorX, cursorY, clickedX, clickedY);
   if (playMode) playLoop(cursorX, cursorY, clickedX, clickedY);
@@ -349,16 +346,14 @@ void mainMenuInteractions(int cursorX, int cursorY, int clickedX,
 
 LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                     LPSTR lCmdLine, int nCmdShow) {
+int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
   initialization();
   intializeWindow(hInstance, nCmdShow);
+  initDrawingSystem(hInstance);
 
   MSG msg;
 
-  InitialSys(hInstance);
-
-  while (end) {
+  while (true) {
     keyboard->Acquire();
 
     didClickLeftButton = false;
@@ -381,11 +376,11 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       didClickRightButton = msg.message == WM_RBUTTONUP;
     }
 
-    hr = keyboard->GetDeviceState(sizeof(buffer), buffer);
+    keyboard->GetDeviceState(sizeof(buffer), buffer);
 
     interactions(cursorX, cursorY, clickedX, clickedY);
 
-    if (btnMain[EXIT]->Touch(clickedX, clickedY) && mainMenuMode) return 0;
+    if (shouldExit()) break;
 
     videocard->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255),
                      1.0f, 0);
@@ -398,9 +393,13 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   return 0;
 }
+void shouldExit() {
+    if (mainMenuMode && btnMain[EXIT]->contains(clickedX, clickedY)) return true;
 
-LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam,
-                         LPARAM lParam) {
+    return false;
+}
+
+LRESULT _stdcall WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   switch (message) {
     case WM_DESTROY:
       PostQuitMessage(0);
