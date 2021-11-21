@@ -76,7 +76,7 @@ bool didClickRightButton = false;  // rmb: didClickRightButton
 bool mainMenuMode = true;  // Menu: isInitialState: mainMenuMode
 
 Sprite *mainMenu;
-Button *btnMain[4];
+Button *mainMenuButtons[4]; // btnMain: mainMenuButtons
 
 // Library vars
 HWND hWnd;
@@ -241,7 +241,7 @@ void draw() {  // Draw: draw
 void drawMainMenu() {
   paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
-  for (int i = 0; i < 4; i++) btnMain[i]->draw(paramDraw);
+  for (int i = 0; i < 4; i++) mainMenuButtons[i]->draw(paramDraw);
 }
 
 void initialization() {
@@ -253,10 +253,10 @@ void initialization() {
 void initMainMenu() {
   mainMenu = new Sprite(MAIN_MENU_IMG);
 
-  btnMain[PLAY] = new Button(271, 182, PLAY_BUTTON_IMG);
-  btnMain[CREATE_MAP] = new Button(271, 280, CREATE_MAP_BUTTON_IMG);
-  btnMain[SETTINGS] = new Button(271, 378, SETTINGS_BUTTON_IMG);
-  btnMain[EXIT] = new Button(271, 476, EXIT_BUTTON_IMG);
+  mainMenuButtons[PLAY] = new Button(271, 182, PLAY_BUTTON_IMG);
+  mainMenuButtons[CREATE_MAP] = new Button(271, 280, CREATE_MAP_BUTTON_IMG);
+  mainMenuButtons[SETTINGS] = new Button(271, 378, SETTINGS_BUTTON_IMG);
+  mainMenuButtons[EXIT] = new Button(271, 476, EXIT_BUTTON_IMG);
 }
 void initPlay() {
   char *tt = "score:0";                                // delete
@@ -328,23 +328,23 @@ void interactions(int cursorX, int cursorY, int clickedX, int clickedY) {  // ma
 void mainMenuInteractions(int cursorX, int cursorY, int clickedX,
                           int clickedY) {
   for (int i = 0; i < 4; i++) {
-    btnMain[i]->show = btnMain[i]->contains(cursorX, cursorY);
+    mainMenuButtons[i]->show = mainMenuButtons[i]->contains(cursorX, cursorY);
   }
 
   if (!didClickLeftButton) return;
 
-  if (btnMain[PLAY]->contains(clickedX, clickedY)) {
+  if (mainMenuButtons[PLAY]->contains(clickedX, clickedY)) {
     playMode = true;
     missionMode = true;
     mainMenuMode = false;
   }
 
-  if (btnMain[CREATE_MAP]->contains(clickedX, clickedY)) {
+  if (mainMenuButtons[CREATE_MAP]->contains(clickedX, clickedY)) {
     createMapMode = true;
     mainMenuMode = false;
   }
 
-  if (btnMain[SETTINGS]->contains(clickedX, clickedY)) {
+  if (mainMenuButtons[SETTINGS]->contains(clickedX, clickedY)) {
     mainMenuMode = false;
   }
 }
@@ -399,7 +399,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
   return 0;
 }
 void shouldExit() {
-    if (mainMenuMode && btnMain[EXIT]->contains(clickedX, clickedY)) return true;
+    if (mainMenuMode && mainMenuButtons[EXIT]->contains(clickedX, clickedY)) return true;
 
     return false;
 }
