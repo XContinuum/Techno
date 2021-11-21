@@ -49,13 +49,13 @@
 #define BACK_BUTTON_IMG "Images/missions/back.bmp"
 
 // Pause
-#define PAUSE_MENU_IMG "Images/Pause_menu.bmp"
-#define BACKDROP_IMG "Images/pause.bmp"
+#define PAUSE_MENU_IMG "Images/pause/Pause_menu.bmp"
+#define BACKDROP_IMG "Images/pause/pause.bmp"
 
-#define PAUSE_CONTINUE_IMG "Images/pm_continue.bmp"
-#define PAUSE_SAVE_IMG "Images/pm_save.bmp"
-#define PAUSE_SETTINGS_IMG "Images/pm_settings.bmp"
-#define PAUSE_EXIT_IMG "Images/pm_exit.bmp"
+#define PAUSE_CONTINUE_IMG "Images/pause/pm_continue.bmp"
+#define PAUSE_SAVE_IMG "Images/pause/pm_save.bmp"
+#define PAUSE_SETTINGS_IMG "Images/pause/pm_settings.bmp"
+#define PAUSE_EXIT_IMG "Images/pause/pm_exit.bmp"
 
 const int screenPixelWidth = 800;   // w: screenPixelWidth
 const int screenPixelHeight = 600;  // h: screenPixelHeight
