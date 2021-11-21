@@ -1055,7 +1055,7 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
     return i;
   }
-  char* copyChunk(const char* str, int start, int send) {
+  char* copyChunk(const char* str, int start, int end) {
     char* result = new char[end - start];
 
     for (int i = start; i < end; i++) {
