@@ -1187,8 +1187,6 @@ class Chest { // Chest should be split into three classes: One for inventory man
 
     lockInstructions->show = true;
     padlock->show = true;
-    highlightPadlock->show = false;
-    circle->show = false;
 
     combinationText = new Text(x + 199, y + 207, "00 00 00", DARK_GRAYISH_BLUE);
   }
