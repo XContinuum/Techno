@@ -69,7 +69,7 @@ bool shouldMoveStairsUp = false;
 // paramDraw - global buffer sprites are rendered to
 // blocksInHeight, blocksInWidth - 
 // screenPixelWidth, screenPixelHeight - 
-// isInitialState - 
+// mainMenuMode - 
 // -----
 
 // Dependency injected
@@ -401,13 +401,13 @@ void loadDoors() {
 
 void mission(int cursorX, int cursorY, int clickedX, int clickedY) {  // ★★★
   // Global: backButton, missionMode, playMode, missionButton, player, map, gameMap
-  // External: isInitialState
+  // External: mainMenuMode
 
   // Exit+++
   if (backButton->contains(clickedX, clickedY)) {
     missionMode = false;
     playMode = false;
-    isInitialState = true;
+    mainMenuMode = true;
   }
 
   backButton->show = backButton->contains(cursorX, cursorY);
@@ -597,7 +597,7 @@ void keyboardEvents() {
 
 void pauseMenuInteractions(int cursorX, int cursorY, int clickedX, int clickedY) { // menuPause: pauseMenuInteractions
   // Global: isPaused, pauseMenuButtons, playMode
-  // External: isInitialState
+  // External: mainMenuMode
   for (int i = 0; i < 4; i++) {
     pauseMenuButtons[i]->show = pauseMenuButtons[i]->contains(cursorX, cursorY);
   }
@@ -606,7 +606,7 @@ void pauseMenuInteractions(int cursorX, int cursorY, int clickedX, int clickedY)
 
   if (pauseMenuButtons[PM_EXIT]->contains(clickedX, clickedY)) {
     playMode = false;
-    isInitialState = true;
+    mainMenuMode = true;
   }
 }
 bool shouldContinuePause(int clickedX, int clickedY) {

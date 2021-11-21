@@ -51,7 +51,7 @@ bool didClickLeftButton = false; // lmb: didClickLeftButton
 bool didClickRightButton = false; // rmb: didClickRightButton
 
 // Main menu
-bool isInitialState = true; // Menu: isInitialState
+bool mainMenuMode = true; // Menu: isInitialState: mainMenuMode
 bool end = true;
 
 Sprite *mainMenu;
@@ -75,7 +75,6 @@ Param *paramDraw;
 
 Button* lock;
 
-// Global variables+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class Sprite {
    public:
     int x, y;
@@ -211,23 +210,19 @@ class Param {
     }
 };
 
-void Draw() {
-    // MAIN MENU+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (isInitialState == true) {
+void draw() { // Draw: draw
+    // Main menu
+    if (mainMenuMode) {
         paramDraw->draw(0, 0, screenPixelWidth, screenPixelHeight, mainMenu);
 
         for (int i = 0; i < 4; i++) btnMain[i]->draw(paramDraw);
     }
-    // MAIN MENU-------------------------------------------------------
-
-    // PLAY++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (playMode == true) drawScene(cursorX, cursorY);
+    // Play
+    if (playMode) drawScene(cursorX, cursorY);
     if (missionMode) drawMission();
-    // PLAY-----------------------------------------------------------
-
-    // CREATE MAP+++++++++++++++++++++++++++++++++++++++++++++++++++++
-    if (createMapMode == true) drawCreateMapScreen();
-    // CREATE MAP-----------------------------------------------------------
+    
+    // Create map
+    if (createMapMode) drawCreateMapScreen();
 }
 
 void initialization() {
@@ -345,7 +340,7 @@ void InitialSys(HINSTANCE hInstance) {
 }
 
 void mainMenuInteractions() {
-    if (isInitialState == true) {
+    if (mainMenuMode) {
         // Mouse move+++
         for (int i = 0; i < 4; i++) {
             if (btnMain[i]->contains(cursorX, cursorY) == true)
@@ -359,16 +354,16 @@ void mainMenuInteractions() {
         if (btnMain[PLAY]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
             playMode = true;
             missionMode = true;
-            isInitialState = false;
+            mainMenuMode = false;
         }
 
         if (btnMain[CREATE_MAP]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
             createMapMode = true;
-            isInitialState = false;
+            mainMenuMode = false;
         }
 
         if (btnMain[SETTINGS]->contains(clickedX, clickedY) == true && didClickLeftButton == true) {
-            isInitialState = false;
+            mainMenuMode = false;
         }
 
         // Click---
@@ -449,11 +444,11 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLin
 
         mainMenuInteractions();
 
-        if (btnMain[EXIT]->Touch(clickedX, clickedY) == true && isInitialState == true) return 0;
+        if (btnMain[EXIT]->Touch(clickedX, clickedY) && mainMenuMode) return 0;
 
         videocard->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255),
                          1.0f, 0);
-        Draw();
+        draw();
         videocard->Present(NULL, NULL, NULL, NULL);
         Sleep(20);
     }
